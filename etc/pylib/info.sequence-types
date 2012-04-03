@@ -1,0 +1,14 @@
+6.6. Sequence Types: 'str', 'unicode', 'list', 'tuple', 'buffer', 'xrang'
+
+There are six sequence types: 'strings', 'Unicode' 'strings', 'lists',
+                              'tuples', 'buffers', 'and' 'xrange' objects.
+
+For other containers see the built in 'dict' and 'set' classes, and
+the 'collections' module.
+
+# NOTE THIS makes lines like
+# word, word, word, word
+# into 
+# 'word', 'word', 'word', 'word'
+# crk '([, ]+)([^'"'"', ]+)' "\1'\2'"
+

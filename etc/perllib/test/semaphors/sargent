@@ -1,0 +1,123 @@
+#!/usr/bin/perl
+# A perl-5 script to "March instep" (Using Binary Semaphores)
+# There will be $num_privates and one sargent.  Optional $roll_call flag, has
+# each private call out (a test of proper forking).  Each private will take a
+# step (obtain their own semphore bringing it from 2 to 1) and wait a random
+# amount (up to 3 sec) of time before stepping again (clear semaphore, set to 0,
+# wait for sargent's cadance call).  This will simulate the time to complete
+# a task or computation.  After each step is complete the sargent calls cadance
+# and resets all semaphores (set them to 2).
+
+$sem=&initialize;
+
+foreach $private (0..($num_privates-1)) {
+  if      ( ($pid=fork) == -1 ) { 	# failed fork
+    print "fork failed.";
+  } elsif ( $pid == 0 ) { 	# child process
+    print "Private $private, reporting for duty, SARGENT!" if $roll_call;
+    &private($private,$sem);
+  } else {			# parent process
+    printf "Private %d!?!\t", $private  if $roll_call;
+  }
+}
+&sargent($sem);
+
+exit 0;
+
+sub sargent {
+  my($sem)=shift;
+  my($private,$step,$semop);
+  my(@cadance)=('Hup!','Two!','Three!','Four!');
+  sleep 2;
+  print "\nSargent: OK ... Forward ... March!!";
+  $sem->setall( ((2) x $num_privates) );
+  sleep 2;
+  for ($step=0; $step<$steps; $step++) {
+# WAIT FOR ALL SEMAPHORES TO BECOME ZERO
+    $semop=0;
+    foreach ($private=0; $private<$num_privates; $private++ ) {
+      print "waiting on private $private" if ($debug);
+      unless ($sem->op($private, $semop, $semflags)) {
+        die "Sargent at step $step: semop failed with " .
+	    "semnum $private, semop $semop and semflags $semflags:\n'$!'\n"
+      }
+    }
+# CALL CADANCE AND 
+  if ($ENV{'TERM'}=~/vt100/i) {
+    printf "${esc}[%dC%s\n", ($num_privates+2), $cadance[($step%4)];
+  } else {
+    printf "%sX\r", $indent;
+  }
+# SET ALL SEMAPHORES TO 2.
+    $sem->setall( ((2) x $num_privates) );
+  }
+  print "\nHalt, 2, 3, 4...\n";
+  $sem->remove;
+}
+
+sub private {
+  my($identity,$sem)=@_;
+  my($indent,$step,$semop);
+  $indent=" " x $identity;
+  $semop=-1;
+  for ($step=1; $step<=$steps; $step++) {
+# WAIT FOR MY SEMAPHORE TO BECOME POSITIVE
+    unless ($sem->op($identity, $semop, $semflags)) {
+      die "Private $identity ($$) at step $step: semop failed with " .
+	  "semnum $semnum, semop $semop and semflags $semflags:\n'$!'\n"
+    }
+# WAIT A RANDOM AMOUNT OF TIME (num between .1 and 3.0, presently)
+    $delay=(int(rand($naptime/$faction_of_sec))+1)*$faction_of_sec; 
+    select(undef,undef,undef,$delay); # select(RBITS,WBITS,EBITS,TIMEOUT)
+# TAKE STEP
+    if ($ENV{'TERM'}=~/vt100/i) {
+      printf "${esc}7${esc}[%dCX${esc}8", $identity;
+    } else {
+      printf "%sX\r", $indent;
+    }
+    @sem = $sem->getall;
+    printf $debug_format, ' ', ' ', $step, $semop, $sem[0] if ($debug);
+# CLEAR MY SEMAPHORE
+    unless ($sem->op($identity, $semop, $semflags)) {
+      die "Private $identity ($$) at step $step: semop failed with " .
+	  "semnum $semnum, semop $semop and semflags $semflags:\n'$!'\n"
+    }
+  } 
+  exit;
+}
+
+sub initialize {
+  my($sem);
+  use Class::Struct;
+  use IPC::SysV qw(IPC_PRIVATE S_IRGRP S_IROTH S_IRWXU IPC_CREAT);
+  use IPC::Semaphore;
+
+  $|=1; $\="\n";
+  $sargent_pid=$$;
+  $num_privates=8;
+  $esc="\033";
+  $steps=16;
+  $debug=0;
+  $roll_call=1;
+  $naptime=3;
+  $faction_of_sec=0.1;
+  $format="%6s %14s\t(%2d; %2d -> %2d)\n";
+
+# get a semphore object with a unique key and a N flags
+# initial permissions are --rax------
+  $semflags=0;
+  $perms= S_IRWXU | S_IRGRP | S_IROTH;
+  return $sem = new IPC::Semaphore(IPC_PRIVATE, $num_privates, $perms | IPC_CREAT);
+}
+__END__
+
+             $sem->op(
+                 0, -1, IPC_NOWAIT,
+                 1,  1, IPC_NOWAIT
+             );
+
+					Read	Write	Read+Write+Execute
+        S_IRUSR S_IWUSR S_IRWXU        		USER
+        S_IRGRP S_IWGRP S_IRWXG			GROUP
+        S_IROTH S_IWOTH S_IRWXO			OTHER
+         @sem = $sem->getall;

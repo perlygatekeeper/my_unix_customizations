@@ -1,0 +1,33 @@
+#!/usr/bin/perl
+
+# provide df output with percentage used giving one decimal place
+
+open(df,"df|");
+
+print $line = <df>;
+
+line: while (<df>) {
+
+    if (!/ /) {
+	print;
+	$long_line = 1;
+	next line;
+    }
+
+    chop;	# strip record separator
+
+    if ($long_line) {
+	$fsystem = '';
+	( $space, $used, $avail, $dummy, $mount ) = split(' ');
+    }
+    else {
+	( $fsystem, $space, $used, $avail, $dummy, $mount ) = split(' ');
+    }
+    $long_line = 0;
+
+    $percent = $used * 100 / ($used + $avail);
+    printf "%-20s%8d%8d%8d%7.1f%%   %s\n", $fsystem, $space, $used, $avail,
+      $percent, $mount;
+}
+
+close(df);

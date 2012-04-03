@@ -1,0 +1,20 @@
+#!/usr/local/bin/perl
+#
+# A perl script to test inputs for numbers.
+#
+$\="\n";
+while (<>) {
+  chop;
+  if ( ($_==0) && ($_!~/^\s*[-+]?0\x?\.?0*e?0*$/i) ) {
+    print "'$_'\tis NOT a number";
+  } else {
+    print "'$_'\tIS     a number";
+  }
+#  print sqrt('a');
+   printf "%3d %s %5.3f\n", $_, $_, $_;
+   $,="  ";
+   $str="d";
+   print $str,$str++,$str++,$str++,$str++,$str+=1,$str+=2,$str+=3,$str+=b;
+#  printf "%3d %s %5.3f\n", 'a'+0, 'a'+0, 'a'+0;
+#  printf "%3d %s %5.3f\n", 'a'+1, 'a'+1, 'a'+1;
+}

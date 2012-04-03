@@ -1,0 +1,65 @@
+#!/usr/local/bin/perl
+#-----------------------------------------------------------------------------
+
+&initialize;
+&readin_player_derectives;
+
+#-----------------------------------------------------------------------------
+#   ***   Parse Command Line Argument(s)   ***
+while ( @ARGV >= 1 ) {
+  if    ( $ARGV[0] eq '-filesize' ) {
+    shift; shift; }
+  elsif ( $ARGV[0] eq '-dirsize' ) {
+    $min_size_decend = "$ARGV[1]";
+    shift; shift; }
+  elsif ( $ARGV[0] eq '-maxdepth' ) {
+    $max_depth = "$ARGV[1]";
+    shift; shift; }
+  elsif ( $ARGV[0] eq '-?' ) { do help($usage); }
+  else { last; }
+}  # end while
+#-----------------------------------------------------------------------------
+#   ***   Start Recurvise Decent  ***
+#-----------------------------------------------------------------------------
+#   ***   EXIT GRACEFULLY   ***
+exit 0;
+#-----------------------------------------------------------------------------
+#   ***   SUBROUTINES   ***
+sub x {
+  local($dir,$indent_string,$depth)=@_;
+  foreach $line (@list)
+  {
+  }
+}
+sub initialize {
+$name = $0;
+$usage = "usage:\n$name [-filesize #] [-dirsize #] [-maxdepth #]";
+$pwd=`pwd`;
+($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst)=localtime(time);
+@mo = ('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec');
+@day = ('Sun','Mon','Tue','Wed','Thu','Fri','Sat');
+$date="$day[$wday], $mo[$mon] $mday 19$year";
+@comodities = ('Ochre','Hides','Iron','Papyrus','Salt','Timber',
+               'Grain','Oil','Cloth','Wine','Bronze','Silver',
+               'Spice','Resin','Gems','Dye','Gold','Ivory');
+@countries_full_names = ('North Africa','Iberia','Illyria',
+		         'Thrace','Crete','Asia','Assyria',
+		         'Babylon','Egypt');
+@countries = ('NOA','IBE','ILY','THC','CRT','ASA','ASS','BAB','EGY');
+$base_cost['Ochre']=1;	$base_cost['Hides']=1;
+$base_cost['Iron']=2;	$base_cost['Papyrus']=2;
+$base_cost['Salt']=3;	$base_cost['Timber']=3;
+$base_cost['Grain']=4;	$base_cost['Oil']=4;
+$base_cost['Cloth']=5;	$base_cost['Wine']=5;
+$base_cost['Bronze']=6;	$base_cost['Silver']=6;
+$base_cost['Spice']=7;	$base_cost['Resin']=7;
+$base_cost['Gems']=8;	$base_cost['Dye']=8;
+$base_cost['Gold']=9;	$base_cost['Ivory']=9;
+
+}
+sub	readin_player_directives	{
+}
+sub	help	{
+print	"@_[0]\n";
+exit	1;
+}

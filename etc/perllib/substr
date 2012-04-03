@@ -1,0 +1,29 @@
+     substr EXPR,OFFSET,LENGTH,REPLACEMENT
+     substr EXPR,OFFSET,LENGTH
+     substr EXPR,OFFSET
+
+First character is at offset 0
+
+OFFSET negative             == that far from the end of the string.
+no LENGTH                   == everything to the end of the string.
+negative LENGTH is negative == leaves that many characters off the end of the string.
+
+To keep the string the same length you may need to pad
+or chop your value using "sprintf".
+
+
+OFFSET and LENGTH partly outside, only part returned.
+OFFSET and LENGTH completely outside, UNDEF returned.
+
+Here's an example showing the behavior for boundary cases:
+
+  my $name = 'fred';
+  substr($name, 4) = 'dy';       # $name is now 'freddy'
+  my $null = substr $name, 6, 2; # returns '' (no warning)
+  my $oops = substr $name, 7;    # returns undef, with warning
+  substr($name, 7) = 'gap';      # fatal error
+
+  my $str="abd123hij";		 # 2 ways to replace 123 with efg
+  substr($str, 2, 3, 'efg');	 # assign 4th arg.
+  substr($str, 2, 3)='efg';	 # substr as an lvalue
+

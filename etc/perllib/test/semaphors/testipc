@@ -1,0 +1,75 @@
+#!/usr/bin/perl
+#
+# A perl script to handle electronic Abstract Submission for the MSS-96
+#
+$last_mod_date='Thu Jan 18 1996';
+$version="1.0"; # written to test semaphors
+$author="Dr. Steven Parker";
+$copyright="$last_mod_date. All rights reserved.";
+
+$name = $0;
+$name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name";
+
+#   ***   BEGIN MAIN PROGRAM   ***
+
+select( (select(STDOUT), $|=1) [ $[ ] );
+
+$queues_key="1234";
+foreach $i (0 .. 3) {
+  push(@queues," Queue #" . $last_queue++);
+}
+
+&ipc_create($queues_key,$last_queue);
+for (local($queue)=$[; $queue<=$#queues; $queue++) {
+  &ipc_wait_lock($queues_key,$queue);
+  print "$$: $queues[$queue]\n";
+  &ipc_signal($queues_key,$queue);
+  sleep 5;
+}
+
+exit 0;
+
+#   ***   SUBROUTINES   ***
+#   ---   ---   ---
+sub ipc_create {
+  local($queue,$conditions)=@_;
+  $IPC_KEY=$queue || "1234";
+  $IPC_NUMBER_OF_SEMAPHORS=$conditions || 1;
+  $UMASK = 0600;
+  $IPC_RMID = 0;
+  $IPC_CREATE = 0001000;
+# get semaphor ID or create it if needed
+  $semkey = semget($IPC_KEY,  0 , 0 );
+  $semkey = semget($IPC_KEY, $IPC_NUMBER_OF_SEMAPHORS,
+                   $UMASK | $IPC_CREATE ) if !defined($semkey);
+  &s_die("sub wait: $!") if !defined($semkey);
+}
+sub ipc_wait_lock {
+  local($queue,$condition)=@_;
+  $IPC_KEY=$queue || "1234";
+  $semnum=$condition || 0;
+
+  &ipc_create($IPC_KEY,$semnum);
+
+# Wait for semaphor to become 0, then set it to 1 and go
+  $semop = 0; $semflag = 0;
+  $opstring1 = pack("sss", $semnum, $semop, $semflag);
+  $semop = 1; $semflag = 0;
+  $opstring2 = pack("sss", $semnum, $semop,  $semflag);
+  $opstring = $opstring1 . $opstring2;
+  semop($semkey,$opstring) || &s_die("sub signal: $!");
+}
+sub ipc_signal {
+  local($queue,$condition)=@_;
+  $IPC_KEY=$queue || "1234";
+  $semnum=$condition || 0;
+# Signal queue by clearing semaphore
+  $semop = -1; $semflag = 0;
+  $opstring = pack("sss", $semnum, $semop, $semflag);
+  semop($semkey,$opstring) || &s_die("sub signal: $!");
+}
+sub s_die {
+  die("$_[0]");
+}
+__END__

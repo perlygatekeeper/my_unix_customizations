@@ -1,0 +1,56 @@
+#!/usr/local/localadm/bin/perl
+#!/usr/local/bin/perl
+# This assumes your /etc/utmp file looks like ours
+$file='/etc/utmp';
+if (open(UTMP,$file)!=1) { die "Can's open $file"; }
+@mo = ('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec');
+$entry=0;
+while (read(UTMP,$utmp,36)) {
+  $entry++;
+  ($line[$entry],$name[$entry],$host[$entry],$time[$entry])
+  =unpack('A8A8A16l',$utmp);
+  if ($name[$entry]) {
+#     $host[$entry] = "($host[$entry])" if ($host[$entry]=~/^\w+$/);
+      $host[$entry] = ($host[$entry]=~/^\w+$/) ? "($host[$entry])" : "";
+      ($sec,$min,$hour,$mday,$mon) = localtime($time[$entry]);
+      printf "%-9s%-8s%s %2d %02d:%02d   %s\n",
+      $name[$entry],$line[$entry],$mo[$mon],$mday,$hour,$min,$host[$entry];
+    }
+}
+close(UTMP);
+#
+#  Parker addition
+#
+$entries=$entry;
+$file='>/home/parker/bin/newutmp';
+if (open(NEWUTMP,$file)!=1) { die "Can's open $file"; }
+$tty=`tty|cut -d/ -f3`;
+chop($tty);
+# print "-",$tty,"*\n";
+#
+for($entry=1;$entry<=$entries;$entry++)
+  {
+# if ($name[$entry]=~/zellmer/ )
+# if ($name[$entry]=~/zellmer/ && $line[$entry]=~// )
+# if ($name[$entry]=~/.+/ )
+  if (($line[$entry]=~/ttyp[cdef]/ )||($line[$entry]=~/ttyq1/ ))
+    {
+    $line[$entry]="       ";
+   #$name[$entry]=$ENV{"Jean"};
+   #$name[$entry]="tsoo";
+   #$name[$entry]="Dr. Who";
+   #$name[$entry]="Dr_Who";
+   #$name[$entry]="hsu";
+    $name[$entry]="";
+   #$host[$entry]="128.146.216.242";
+   #$host[$entry]="TARDIS";
+    $host[$entry]="";
+    $time[$entry]=time;
+    }
+     print NEWUTMP pack('a8a8a16l',
+     $line[$entry],$name[$entry],$host[$entry],$time[$entry]);
+  }
+close(NEWUTMP);
+
+# print "-",getlogin,"*\n";
+exit 0;

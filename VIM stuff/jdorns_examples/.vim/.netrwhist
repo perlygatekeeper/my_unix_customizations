@@ -1,0 +1,9 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =7
+let g:netrw_dirhist_1='/home/dorn/devel/manta/comsite5/ppc_getlisted_new_registration/templates/member/simple_register'
+let g:netrw_dirhist_2='/home/dorn/devel/manta/comsite5/merge_ppc_new_reg/templates/member/simple_register'
+let g:netrw_dirhist_3='/home/dorn/devel/manta/content/trunk/bin'
+let g:netrw_dirhist_4='/home/dorn/devel/manta/comsite5/trunk_footer_update'
+let g:netrw_dirhist_5='/home/dorn/devel/manta/comsite5/trunk/scripts'
+let g:netrw_dirhist_6='/home/dorn/devel/manta/comsite5/trunk_share_prompt_update-trac_3889/Manta/Web/CompanyPage'
+let g:netrw_dirhist_7='/home/dorn/devel/manta/comsite5/trunk_international_claim_related_link_target-trac_4150/templates/profile/mymanta'

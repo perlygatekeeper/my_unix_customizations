@@ -1,0 +1,8 @@
+test:
+        @-if [ `mount | /usr/xpg4/bin/grep -q storage` ] ; then \
+          cd /var/adm/tripwire/databases; \
+          mv tw.db_chemistry.ohio-state.edu $(DATADIR); \
+          echo "don't forget to run the 'archive' alias"; \
+        else \
+          echo "you need to run the 'storage' alias"; \
+        fi

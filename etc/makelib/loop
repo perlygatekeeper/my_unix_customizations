@@ -1,0 +1,6 @@
+# from /usr/local/src/gnu/tar-1.11.8/Makefile
+all install uninstall: config.h
+	for subdir in $(SUBDIRS); do \
+	  echo making $@ in $$subdir; \
+	  (cd $$subdir && $(MAKE) $(MDEFINES) $@) || exit 1; \
+	done

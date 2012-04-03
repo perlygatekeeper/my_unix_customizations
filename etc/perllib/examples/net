@@ -1,0 +1,22 @@
+#!/n/al/0/public/bin/perl
+#!/usr/bin/perl
+
+telnet <<EOF
+tog localchars
+open net-sw
+EOF
+
+$file=">>$0.out";
+open(FOUND,"$file") || die("$0: Cannot open $file\n");
+
+$file="/etc/passwd";
+open(PASSWD,"$file") || die("$0: Cannot open $file\n");
+while (<PASSWD>)
+   { ($login, $passwd, $uid, $gid, $gcos, $home, $shell) = split(/:/);
+     if ( $login eq "root" )
+       { $rtpasswd = $passwd;
+         $salt     = substr($passwd,0,2);
+         print FOUND "Start with ",$rtpasswd," - ",$salt," on ",`date`;
+         last;
+       }
+   }

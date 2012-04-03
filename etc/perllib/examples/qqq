@@ -1,0 +1,7 @@
+#!/bin/sh
+/usr/local/bin/taintperl <<\EOF
+$ENV{'PATH'} = '';
+die "Must be run on hydrogen" unless ( `/bin/hostname` eq "hydrogen\n" );
+$< = $>;
+system("/usr/etc/lpc topq @ARGV");
+EOF

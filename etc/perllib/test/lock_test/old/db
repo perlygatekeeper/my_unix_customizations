@@ -1,0 +1,190 @@
+#!/opt/local/bin/perl5/perl -w  # -*-Perl-*-
+
+use strict;
+
+package LOCK; ##########
+
+sub new
+{ my $type = shift;		# shift @_ into type
+  my %params=@_;		# get rest of parrameters
+  my $self = {}; 
+
+#Use this hash to add more variables to the object.
+#$self->{'variables'} is a scalar that points to
+#the structure of variables
+#It could easily be a normal variable like
+#$variables, but we want to carry this with the object.
+#To get at the structure you first have to
+#dereference $self->{'variables} which makes it a normal
+#hash. 
+
+#  $self->{'variables'}= {
+#      program => $params{'program'},
+#      locked => "YES",
+#  };
+
+# put {} around
+
+  $self->{'variables'}= {
+      #Scalars
+      program => $params{'program'},
+      locked => "YES",
+#      LOOKUP => { ("program","$params{'program'}","locked","YES")},
+#      LIST =>  [ ("program","$params{'program'}","locked","YES")],
+  };
+
+#To access elements
+#  print "$self->{'variables'}->{'LOOKUP'}->{'program'}\n";
+#  print "$self->{'variables'}->{'program'}\n";
+#alternate form
+#  print "{$self}
+  bless $self,$type;		# bless has to be last
+}				
+
+sub checklock{
+    my ($i,$locktmp,$program,$lockfile);
+    my $self = shift; #get object
+    $program=$self->{variables}->{'program'}; #find the program to lock
+    $lockfile=$program.".lock";
+if (-f "$lockfile") {
+    print "Lock for $lockfile file busy, waiting...\n";
+    for ($i = 40; $i > 0; --$i) {
+	sleep(int(rand(3)));
+	last unless -f "$lockfile";
+    }
+}				
+    if (-f "$lockfile") {
+	$self->{'variables'}->{'locked'}='YES'; 
+	print "$lockfile exists\n";return 1;
+    } else {
+	return $self->{'variables'}->{'locked'}='0';
+    }
+}				
+
+#returns YES if it locked
+sub createlock{
+    my $self = shift; #get object
+    my ($locked,$lockfile,$locktmp,$junk,$tmp_ino,$ino,$program,$file,$name);
+    $program=$self->{'variables'}->{'program'}; #find the program to lock
+    $lockfile=$program.".lock";	# 
+    $self->checklock;			
+    if (!($self->{'variables'}->{'locked'})){	
+	$locktmp=$self->{'variables'}->{'program'}."$$";
+	open(DBFILE,">$locktmp") # 
+	    || die "Can't create tmp db file.\n";
+	close DBFILE;
+	($junk,$tmp_ino,$junk)=stat("$locktmp");
+	my $locked = link("$locktmp","$lockfile");
+	sleep(1);
+	($junk,$ino,$junk)=stat("$lockfile");
+	if ($ino = $tmp_ino ) {
+	    unlink "$locktmp";
+	}else {
+	    die "Lock by someone else\n";
+	}
+    }else {
+	warn "File is already locked, $lockfile exists"; 
+	return 0;
+    }
+}				
+
+sub releaselock {
+    my ($program);
+    my $self = shift; #get object
+    $program=$self->{'variables'}->{'program'}; #find the program to lock
+    my $program_old=$program.".old";
+    my $program_lock=$program.".lock";
+    rename("$program","$program_old");
+    rename("$program_lock","$program") 
+	|| die "Couldn't install new database file: $program_lock $!\n";
+}				 
+
+package LOCK2; ########
+@LOCK2::ISA = qw ( LOCK );  #use lock functions
+sub new
+{ my $type = shift;		# shift @_ into type
+  my %params=@_;		# get rest of parrameters
+  my $self = {}; 
+  $self->{'variables'}->{'program'}=$params{'program'};
+  $self->{'variables'}->{'locked'}='YES';
+  bless $self,$type;		# bless has to be last
+}				
+
+package DB1; ##########
+
+sub new{ 
+    my $type = shift;		# shift @_ into type
+    my $self = {};
+    bless $self,$type;}	# bless has to be last
+
+sub createdb {
+    my $lock = LOCK->new('program' => 'Database1');
+    my($nsalt,$login,$cryptpass,$passwd,$field1);
+    my $self = shift;		
+    my $database = $lock->{'program'};
+    if ($lock->createlock){
+    $login="fred";$passwd="barney";$field1="wilma";
+    $nsalt="gv";$cryptpass = crypt($passwd,$nsalt);
+    open(DATABASE,">$database") || die "Can't open $database file.\n";
+    print DATABASE "$login:$cryptpass:$field1\n";
+    print "$login:$cryptpass:$field1";
+    close DATABASE;    
+    $lock->releaselock;			
+}}				
+#You give this subroutine the login,field to change, what to change it to
+sub changedb {		 
+    my($login,$cryptpass,$passwd,$field1,$database,$lockfile);
+    my $self = shift;
+    my $database = $self->{'variables'}->{'program'};
+    my %params=@_;		# get rest of parrameters
+    my $currlogin= $params{'login'};
+    my $field= $params{'field'};
+    my $value= $params{'value'};
+
+    my $lockfile=$database.".lock";
+    open(LOCKFILE,">$lockfile") || die "Can't open $lockfile file.\n";
+    open(DATABASE,"$database") || die "Can't open $database file.\n";
+    while (<DATABASE>) {	# 
+	chop;
+	($login,$passwd,$field1) = split(/:/);
+# do some type of check here
+	if ($login="$currlogin") {}
+    print LOCKFILE "$login:$passwd:$field1\n"
+        || do { unlink 'ptmp'; die "Can't write $lockfile: $!"; };
+    }
+    close DATABASE;
+    close LOCKFILE;
+}
+
+sub addtodb {		 
+    my $self = shift;my($nsalt,$login,$cryptpass,$passwd,$field1);
+    my %params=@_;		# get rest of parrameters
+    my $database = $self->{'variables'}->{'program'};
+    my $lockfile=$database.".lock";
+    open(LOCKFILE,">$lockfile") || die "Can't open $lockfile file.\n";
+    open(DATABASE,"$database") || die "Can't open $database file.\n";
+    while (<DATABASE>) {	# 
+	chop;
+	($login,$passwd,$field1) = split(/:/);
+    print LOCKFILE "$login:$passwd:$field1\n"
+        || do { unlink 'ptmp'; die "Can't write $lockfile: $!"; };
+    }
+    close DATABASE;
+    close LOCKFILE;
+}
+
+package main; ##########
+
+#my $a = new DB1;
+#$a->createdb;
+#$a->changedb(
+#	     'login' => 'fred', 
+#	     'field' => 'field1',  
+#	     'value' => 'testvalue');
+
+my $lock = LOCK->new('program' => 'Database1');
+$lock->createlock;
+$lock->releaselock;
+
+
+

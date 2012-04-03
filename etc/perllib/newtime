@@ -1,0 +1,52 @@
+#!/usr/bin/perl
+#
+# Comments.pl
+#
+# Comments submission form parser
+# written by Patrick Fleming 17 July 1995
+# based on
+# joke-sub.pl
+# By Brian Exelbierd (bex@ncsu.edu) 1-2-95
+#
+
+push(@INC,"/opt/local/etc/httpd/cgi-bin");
+require("cgi-lib.pl");
+
+$htdocs="/opt/local/etc/httpd/htdocs");
+
+&ReadParse;
+
+print &PrintHeader;
+print "<HTML>\n";
+print "<HEAD>\n";
+print "<TITLE>Comment Response</TITLE>\n";
+print "</HEAD>\n";
+print "<BODY>\n";
+print "<h1>Thanks!</h1>\n";
+print "Thank you ",$in{'name'},". We appreciate your input!<p>\n";
+print "Return to the <a href=",$in{'curl'},">previous page</a>?\n";
+print "</BODY>\n";
+print "</HTML>\n";
+
+open(Comments,">>$htdocs/ChemEd/comments.txt");
+print Comments "Name: ",$in{'name'},"\n";
+print Comments "\n";
+print Comments $in{'comments'},"\n";
+
+($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst)=localtime(time);
+@mo = ('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec');
+@day = ('Sun','Mon','Tue','Wed','Thu','Fri','Sat');
+@day_full = ('Sunday','Monday','Tuesday','Wednesday',
+	     'Thursday','Friday','Saturday');
+$time_date= sprintf("%02d:%02d:%02d %s %s 19%s",
+            $hour, $min, $sec, $mday, $mo[$mon], $year";
+
+print Comments $time_date;
+
+print Comments "--------------------------------------------------\n";
+close Comments;
+
+exit 0;
+
+__END__
+

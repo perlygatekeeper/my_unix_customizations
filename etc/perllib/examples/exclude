@@ -1,0 +1,37 @@
+#!/usr/bin/perl
+#
+# EXCLUDE
+#
+# A perl script to print lines excluding range(s) from BEGIN_ and END_ at least once
+# possibly more and possibly inclusively
+#
+$print=0;
+$num_allowed=7;
+$looking=$num_allowed; # remove all references to $looking to turn check
+                       # of BEGIN_ back ON for entire file (ONLY ONE)
+while (<>) {
+  if ($looking and $print) {	# (MORE THAN ONE)
+    if (/BEGIN_/) {
+      $print=0;
+      next; # remove this line to allow BEGIN- line to be printed (INCLUSIVE)
+    } 
+    print;
+  } else {
+    if (/END_/) {
+      $print=1;
+      $looking--;		# (MORE THAN ONE)
+    # print; # uncomment this line to allow for printing of END_ line (INCLUSIVE)
+    }
+    last if (not $looking);	# remove conditional to make only one (MORE THAN ONE)
+  }
+}
+exit 0;
+__END__
+# Simpler version of this script, but harder to read and understand
+# not allowing for INCLUSIVE nor ONLY ONE
+# $on=1;
+# while (<>) {
+#   $on=not ($_=~/BEGIN-/);
+#   print $_ if ($on);
+#   $on=($on or ($_=~/END-/));
+# }

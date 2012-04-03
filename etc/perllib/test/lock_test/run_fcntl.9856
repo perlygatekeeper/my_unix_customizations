@@ -1,0 +1,177 @@
+fcntl_test.pl.pkg (9860) got a lock at Mon Apr 22 09:47:39 1996, after 1 attempts.
+fcntl_test.pl.pkg (9868) got a lock at Mon Apr 22 09:47:42 1996, after 1 attempts.
+File lock not obtained after 1.
+Last attempt gave a lock result of '0 but true'
+strange... query_lock reports lock is obtainable,
+since query_lock routine returned '0 but true'.
+Mon Apr 22 09:47:42 1996
+File lock not obtained after 1.
+Last attempt gave a lock result of '0 but true'
+strange... query_lock reports lock is obtainable,
+since query_lock routine returned '0 but true'.
+Mon Apr 22 09:47:43 1996
+fcntl_test.pl.pkg (9876) got a lock at Mon Apr 22 09:47:44 1996, after 1 attempts.
+File lock not obtained after 1.
+Last attempt gave a lock result of '0 but true'
+strange... query_lock reports lock is obtainable,
+since query_lock routine returned '0 but true'.
+Mon Apr 22 09:47:44 1996
+File lock not obtained after 1.
+Last attempt gave a lock result of '0 but true'
+strange... query_lock reports lock is obtainable,
+since query_lock routine returned '0 but true'.
+Mon Apr 22 09:47:44 1996
+File lock not obtained after 1.
+Last attempt gave a lock result of '0 but true'
+strange... query_lock reports lock is obtainable,
+since query_lock routine returned '0 but true'.
+Mon Apr 22 09:47:45 1996
+File lock not obtained after 1.
+Last attempt gave a lock result of '0 but true'
+strange... query_lock reports lock is obtainable,
+since query_lock routine returned '0 but true'.
+Mon Apr 22 09:47:46 1996
+File lock not obtained after 1.
+Last attempt gave a lock result of '0 but true'
+strange... query_lock reports lock is obtainable,
+since query_lock routine returned '0 but true'.
+Mon Apr 22 09:47:46 1996
+fcntl_test.pl.pkg (9880) got a lock at Mon Apr 22 09:47:47 1996, after 1 attempts.
+File lock not obtained after 1.
+Last attempt gave a lock result of '0 but true'
+strange... query_lock reports lock is obtainable,
+since query_lock routine returned '0 but true'.
+Mon Apr 22 09:47:48 1996
+fcntl_test.pl.pkg (9886) got a lock at Mon Apr 22 09:47:50 1996, after 1 attempts.
+File lock not obtained after 1.
+Last attempt gave a lock result of '0 but true'
+strange... query_lock reports lock is obtainable,
+since query_lock routine returned '0 but true'.
+Mon Apr 22 09:47:50 1996
+File lock not obtained after 1.
+Last attempt gave a lock result of '0 but true'
+strange... query_lock reports lock is obtainable,
+since query_lock routine returned '0 but true'.
+Mon Apr 22 09:47:51 1996
+fcntl_test.pl.pkg (9896) got a lock at Mon Apr 22 09:47:53 1996, after 1 attempts.
+File lock not obtained after 1.
+Last attempt gave a lock result of '0 but true'
+strange... query_lock reports lock is obtainable,
+since query_lock routine returned '0 but true'.
+Mon Apr 22 09:47:53 1996
+File lock not obtained after 1.
+Last attempt gave a lock result of '0 but true'
+strange... query_lock reports lock is obtainable,
+since query_lock routine returned '0 but true'.
+Mon Apr 22 09:47:54 1996
+File lock not obtained after 1.
+Last attempt gave a lock result of '0 but true'
+strange... query_lock reports lock is obtainable,
+since query_lock routine returned '0 but true'.
+Mon Apr 22 09:47:54 1996
+File lock not obtained after 1.
+Last attempt gave a lock result of '0 but true'
+strange... query_lock reports lock is obtainable,
+since query_lock routine returned '0 but true'.
+Mon Apr 22 09:47:56 1996
+fcntl_test.pl.pkg (9904) got a lock at Mon Apr 22 09:47:56 1996, after 1 attempts.
+File lock not obtained after 1.
+Last attempt gave a lock result of '0 but true'
+strange... query_lock reports lock is obtainable,
+since query_lock routine returned '0 but true'.
+Mon Apr 22 09:47:57 1996
+File lock not obtained after 1.
+Last attempt gave a lock result of '0 but true'
+strange... query_lock reports lock is obtainable,
+since query_lock routine returned '0 but true'.
+Mon Apr 22 09:47:57 1996
+fcntl_test.pl.pkg (9906) got a lock at Mon Apr 22 09:47:58 1996, after 1 attempts.
+File lock not obtained after 1.
+Last attempt gave a lock result of '0 but true'
+strange... query_lock reports lock is obtainable,
+since query_lock routine returned '0 but true'.
+Mon Apr 22 09:47:59 1996
+File lock not obtained after 1.
+Last attempt gave a lock result of '0 but true'
+strange... query_lock reports lock is obtainable,
+since query_lock routine returned '0 but true'.
+Mon Apr 22 09:48:01 1996
+fcntl_test.pl.pkg (9916) got a lock at Mon Apr 22 09:48:02 1996, after 1 attempts.
+File lock not obtained after 1.
+Last attempt gave a lock result of '0 but true'
+strange... query_lock reports lock is obtainable,
+since query_lock routine returned '0 but true'.
+Mon Apr 22 09:48:03 1996
+File lock not obtained after 1.
+Last attempt gave a lock result of '0 but true'
+strange... query_lock reports lock is obtainable,
+since query_lock routine returned '0 but true'.
+Mon Apr 22 09:48:03 1996
+fcntl_test.pl.pkg (9920) got a lock at Mon Apr 22 09:48:04 1996, after 1 attempts.
+File lock not obtained after 1.
+Last attempt gave a lock result of '0 but true'
+strange... query_lock reports lock is obtainable,
+since query_lock routine returned '0 but true'.
+Mon Apr 22 09:48:05 1996
+File lock not obtained after 1.
+Last attempt gave a lock result of '0 but true'
+strange... query_lock reports lock is obtainable,
+since query_lock routine returned '0 but true'.
+Mon Apr 22 09:48:05 1996
+fcntl_test.pl.pkg (9930) got a lock at Mon Apr 22 09:48:07 1996, after 1 attempts.
+File lock not obtained after 1.
+Last attempt gave a lock result of '0 but true'
+strange... query_lock reports lock is obtainable,
+since query_lock routine returned '0 but true'.
+Mon Apr 22 09:48:07 1996
+File lock not obtained after 1.
+Last attempt gave a lock result of '0 but true'
+strange... query_lock reports lock is obtainable,
+since query_lock routine returned '0 but true'.
+Mon Apr 22 09:48:07 1996
+File lock not obtained after 1.
+Last attempt gave a lock result of '0 but true'
+strange... query_lock reports lock is obtainable,
+since query_lock routine returned '0 but true'.
+Mon Apr 22 09:48:08 1996
+File lock not obtained after 1.
+Last attempt gave a lock result of '0 but true'
+strange... query_lock reports lock is obtainable,
+since query_lock routine returned '0 but true'.
+Mon Apr 22 09:48:09 1996
+fcntl_test.pl.pkg (9938) got a lock at Mon Apr 22 09:48:09 1996, after 1 attempts.
+File lock not obtained after 1.
+Last attempt gave a lock result of '0 but true'
+strange... query_lock reports lock is obtainable,
+since query_lock routine returned '0 but true'.
+Mon Apr 22 09:48:10 1996
+File lock not obtained after 1.
+Last attempt gave a lock result of '0 but true'
+strange... query_lock reports lock is obtainable,
+since query_lock routine returned '0 but true'.
+Mon Apr 22 09:48:11 1996
+File lock not obtained after 1.
+Last attempt gave a lock result of '0 but true'
+strange... query_lock reports lock is obtainable,
+since query_lock routine returned '0 but true'.
+Mon Apr 22 09:48:13 1996
+File lock not obtained after 1.
+Last attempt gave a lock result of '0 but true'
+strange... query_lock reports lock is obtainable,
+since query_lock routine returned '0 but true'.
+Mon Apr 22 09:48:13 1996
+File lock not obtained after 1.
+Last attempt gave a lock result of '0 but true'
+strange... query_lock reports lock is obtainable,
+since query_lock routine returned '0 but true'.
+Mon Apr 22 09:48:14 1996
+File lock not obtained after 1.
+Last attempt gave a lock result of '0 but true'
+strange... query_lock reports lock is obtainable,
+since query_lock routine returned '0 but true'.
+Mon Apr 22 09:48:14 1996
+File lock not obtained after 1.
+Last attempt gave a lock result of '0 but true'
+strange... query_lock reports lock is obtainable,
+since query_lock routine returned '0 but true'.
+Mon Apr 22 09:48:14 1996

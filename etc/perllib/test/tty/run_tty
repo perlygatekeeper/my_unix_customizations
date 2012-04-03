@@ -1,0 +1,2 @@
+sleep 5
+/usr/global/etc/perllib/test/tty/tty_test.pl

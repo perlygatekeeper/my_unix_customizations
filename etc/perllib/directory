@@ -1,0 +1,6 @@
+$dir="/home/parker/perllib";
+opendir(DIR,$dir) || die "Can't open dir $dir: $!\n";
+@files=readdir(DIR);
+closedir(DIR);
+shift(@files);shift(@files); # for . and .. entries
+@files=grep(! /^\./,@files);

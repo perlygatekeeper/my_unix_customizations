@@ -1,0 +1,22 @@
+#!/n/al/0/public/bin/perl
+#perl script to expand names of the THCHEM Sun workstations.
+# while (<>) {
+for (i=0; i<=$ARGC; i++) {
+	s/He/ helium /g;
+	s/H/ hydrogen /g;
+	s/Li/ lithium /g;
+	s/Be/ beryllium /g;
+	s/B/ boron /g;
+	s/C/ carbon /g;
+	s/Ne/ neon /g;
+	s/Na/ sodium /g;
+	s/N/ nitrogen /g;
+	s/O/ oxygen /g;
+	s/F/ fluorine /g;
+	s/Mg/ magnesium /g;
+	s/Al/ aluminum /g;
+	s/Si/ silicon /g;
+	s/P/ phosphorus /g;
+               } continue {
+                    print;
+               }

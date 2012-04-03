@@ -1,0 +1,22 @@
+#   ---   ---   ---
+sub case {
+#
+# parker's new case
+# 1) syntax:
+#    case(*foobar,<<'EOC')
+#      a..z ) statement;
+#             statement; ...;;
+#      case1 ) statement_list;;
+#      case2 | case3 ) statement_list;;
+#    EOC
+# 2) used by
+#    eval $assoc{SELECTOR} if defined($assoc{SELECTOR});
+#
+  local($/,$*)=("",1); # enable multiline searches
+  local(*assoc,$_)=@_;
+  for (split(/;;/)) {
+    s/\n/ /g;
+    /^\s*(\S+)\s*\)\s*(\S+.*)/;
+    for (split(/\|/,$1)) {  $assoc{$_} = $2; }
+  }
+}

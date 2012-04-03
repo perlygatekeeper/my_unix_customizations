@@ -1,0 +1,55 @@
+#from $uge/perllib/perl.ans:
+
+        foreach $key (sort by_value keys %ary) {
+            print $key, '=', $ary{$key}, "\n";
+        }
+        sub by_value { $ary{$a} cmp $ary{$b}; }
+
+#   If you wanted a descending numeric sort, you could do this:
+
+        sub by_value { $ary{$b} <=> $ary{$a}; }
+        sub numerically { $a<=>$b; }
+        sub reverse_numerically { $b<=>$a; }
+
+#   If you wanted a function that didn't have the array name hard-wired
+#   into it, you could so this:
+
+        foreach $key (&sort_by_value(*ary)) {
+            print $key, '=', $ary{$key}, "\n";
+        }
+        sub sort_by_value {
+            local(*x) = @_;
+            sub _by_value { $x{$a} cmp $x{$b}; }
+            sort _by_value keys %x;
+        }
+
+	sub by_file_date {
+	 (-M $storage_dir/$a) <=> (-M $storage_dir/$b);
+        } 
+
+# The Orich Maneuver or 
+
+my %cache;
+sub by_number {
+  ($cache{$a} ||= to_number($a)) <=> ($cache{$b} ||= to_number($b));
+}
+
+
+
+use Memoize;
+
+sub compare_dates {
+  to_number($a) <=> to_number($b);
+}
+
+# Convert "Apr 2, 1969" to "196990402"
+sub to_number {
+  my ($m, $d, $y) = 
+    ($_[0] =~ /(\w{3}) (\d+), (\d+)/);
+
+  sprintf("%04d%02d%02d", $y, $m2n{$m}, $d);
+}
+
+memoize 'to_number';
+
+

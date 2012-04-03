@@ -1,0 +1,27 @@
+Use diff -Naur   old_dir/FILENAME   new_dir/FILENAME
+
+       -N     In directory comparison, if a file is found in only one directory,
+or --newfile  treat it as present but empty in the other  directory.
+       -a     Treat all files as text and compare them line-by-line, even if they do
+              not seem to be text.
+       -u     Use the unified output format.
+       -r     When comparing directories, recursively compare any subdirectories found.
+or --recursive
+
+
+from patch(1) RHEL 5.2:
+
+       If the recipient is supposed to use the -pN option, do not send output that looks like this:
+
+          diff -Naur v2.0.29/prog/README prog/README
+          --- v2.0.29/prog/README   Mon Mar 10 15:13:12 1997
+          +++ prog/README   Mon Mar 17 14:58:22 1997
+
+       because  the  two file names have different numbers of slashes, and different versions of patch interpret the file names differ-
+       ently.  To avoid confusion, send output that looks like this instead:
+
+          diff -Naur v2.0.29/prog/README v2.0.30/prog/README
+          --- v2.0.29/prog/README   Mon Mar 10 15:13:12 1997
+          +++ v2.0.30/prog/README   Mon Mar 17 14:58:22 1997
+
+

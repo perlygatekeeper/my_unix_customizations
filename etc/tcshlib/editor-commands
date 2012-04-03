@@ -1,0 +1,279 @@
+  Editor commands (+)
+     `bindkey' lists key bindings  and  `bindkey  -l'  lists  and
+     briefly  describes  editor commands.  Only new or especially
+     interesting  editor  commands  are  described   here.    See
+     emacs(1)  and  vi(1)  for  descriptions of each editor's key
+     bindings.
+
+     The character or characters to which each command  is  bound
+     by  default  is  given in parentheses.  `^character' means a
+     control character and `M-character' a meta character,  typed
+     as  escape-character  on terminals without a meta key.  Case
+     counts, but commands that are bound to  letters  by  default
+     are  bound to both lower- and uppercase letters for conveni-
+     ence.
+
+     complete-word (tab)
+             Completes a word as described under  Completion  and
+             listing.
+
+     complete-word-back (not bound)
+             Like complete-word-fwd, but steps up from the end of
+             the list.
+
+     complete-word-fwd (not bound)
+             Replaces the current word with the first word in the
+             list  of  possible  completions.  May be repeated to
+             step down through the list.  At the end of the list,
+             beeps and reverts to the incomplete word.
+
+     complete-word-raw (^X-tab)
+             Like complete-word, but ignores user-defined comple-
+             tions.
+
+     copy-prev-word (M-^_)
+             Copies the previous word in the  current  line  into
+             the input buffer.  See also insert-last-word.
+
+     dabbrev-expand (M-/)
+             Expands the current word to the most recent  preced-
+             ing  one  for  which  the  current is a leading sub-
+             string, wrapping around the history list  (once)  if
+             necessary.   Repeating  dabbrev-expand  without  any
+             intervening typing changes to the next previous word
+             etc.,  skipping identical matches much like history-
+             search-backward does.
+
+     delete-char (not bound)
+             Deletes the character under the  cursor.   See  also
+             delete-char-or-list-or-eof.
+
+     delete-char-or-eof (not bound)
+             Does delete-char if there is a character  under  the
+             cursor  or  end-of-file  on an empty line.  See also
+             delete-char-or-list-or-eof.
+
+     delete-char-or-list (not bound)
+             Does delete-char if there is a character  under  the
+             cursor  or list-choices at the end of the line.  See
+             also delete-char-or-list-or-eof.
+
+     delete-char-or-list-or-eof (^D)
+             Does delete-char if there is a character  under  the
+             cursor,  list-choices at the end of the line or end-
+             of-file on an empty line.  See also those three com-
+             mands,  each of which does only a single action, and
+             delete-char-or-eof,  delete-char-or-list  and  list-
+             or-eof,  each  of  which does a different two out of
+             the three.
+
+     down-history (down-arrow, ^N)
+             Like up-history, but steps  down,  stopping  at  the
+             original input line.
+
+     end-of-file (not bound)
+             Signals an end of file, causing the  shell  to  exit
+             unless the ignoreeof shell variable (q.v.) is set to
+             prevent this.  See also delete-char-or-list-or-eof.
+
+     expand-history (M-space)
+             Expands history substitutions in the  current  word.
+             See  History  substitution.   See  also magic-space,
+             toggle-literal-history  and  the  autoexpand   shell
+             variable.
+
+     expand-glob (^X-*)
+             Expands the glob-pattern to the left of the  cursor.
+             See Filename substitution.
+
+     expand-line (not bound)
+             Like expand-history, but expands  history  substitu-
+             tions in each word in the input buffer,
+
+     expand-variables (^X-$)
+             Expands the variable to the left of the cursor.  See
+             Variable substitution.
+
+     history-search-backward (M-p, M-P)
+             Searches backwards through the history  list  for  a
+             command  beginning  with the current contents of the
+             input buffer up to the cursor and copies it into the
+             input  buffer.   The  search  string  may be a glob-
+             pattern (see Filename substitution) containing  `*',
+             `?', `[]' or `{}'.  up-history and down-history will
+             proceed from the appropriate point  in  the  history
+             list.   Emacs  mode  only.  See also history-search-
+             forward and i-search-back.
+
+     history-search-forward (M-n, M-N)
+             Like history-search-backward, but searches forward.
+
+     i-search-back (not bound)
+             Searches  backward   like   history-search-backward,
+             copies  the  first  match into the input buffer with
+             the cursor positioned at the end of the pattern, and
+             prompts  with  `bck:  '  and the first match.  Addi-
+             tional characters may be typed to extend the search,
+             i-search-back  may  be  typed  to continue searching
+             with the same pattern, wrapping around  the  history
+             list if necessary, (i-search-back must be bound to a
+             single character for this to work)  or  one  of  the
+             following special characters may be typed:
+
+                 ^W      Appends the rest of the word  under  the
+                         cursor to the search pattern.
+                        char)
+                 delete (or any character  bound  to  backward-
+                         delete-
+                         Undoes the effect of the last  character
+                         typed  and  deletes a character from the
+                         search pattern if appropriate.
+                 ^G      If the previous search  was  successful,
+                         aborts  the entire search.  If not, goes
+                         back to the last successful search.
+                 escape  Ends the  search,  leaving  the  current
+                         line in the input buffer.
+
+             Any other character not bound to self-insert-command
+             terminates  the  search, leaving the current line in
+             the input buffer, and is then interpreted as  normal
+             input.   In particular, a carriage return causes the
+             current line to be executed.  Emacs mode only.   See
+             also i-search-fwd and history-search-backward.
+
+     i-search-fwd (not bound)
+             Like i-search-back, but searches forward.
+
+     insert-last-word (M-_)
+             Inserts the last word of  the  previous  input  line
+             (`!$')  into  the input buffer.  See also copy-prev-
+             word.
+
+     list-choices (M-^D)
+             Lists completion possibilities  as  described  under
+             Completion  and  listing.   See also delete-char-or-
+             list-or-eof and list-choices-raw.
+
+     list-choices-raw (^X-^D)
+             Like list-choices, but ignores user-defined  comple-
+             tions.
+
+     list-glob (^X-g, ^X-G)
+             Lists (via the ls-F builtin) matches  to  the  glob-
+             pattern  (see  Filename substitution) to the left of
+             the cursor.
+
+     list-or-eof (not bound)
+             Does list-choices or end-of-file on an  empty  line.
+             See also delete-char-or-list-or-eof.
+
+     magic-space (not bound)
+             Expands history substitutions in the  current  line,
+             like  expand-history,  and  appends a space.  magic-
+             space is designed to be bound to the space bar,  but
+             is not bound by default.
+
+     normalize-command (^X-?)
+             Searches for the current word in PATH and, if it  is
+             found, replaces it with the full path to the execut-
+             able.  Special characters are quoted.   Aliases  are
+             expanded  and quoted but commands within aliases are
+             not.  This command is useful with commands that take
+             commands as arguments, e.g., `dbx' and `sh -x'.
+
+     normalize-path (^X-n, ^X-N)
+             Expands the current  word  as  described  under  the
+             `expand' setting of the symlinks shell variable.
+
+     overwrite-mode (unbound)
+             Toggles between input and overwrite modes.
+
+     run-fg-editor (M-^Z)
+             Saves the current input line and looks for a stopped
+             job  with  a name equal to the last component of the
+             file name part of the EDITOR or  VISUAL  environment
+             variables,  or, if neither is set, `ed' or `vi'.  If
+             such a job is found, it is restarted as if `fg %job'
+             had  been  typed.   This  is used to toggle back and
+             forth between an editor and the shell easily.   Some
+             people bind this command to `^Z' so they can do this
+             even more easily.
+
+     run-help (M-h, M-H)
+             Searches for documentation on the  current  command,
+             using  the  same  notion of `current command' as the
+             completion routines, and prints it.  There is no way
+             to  use a pager; run-help is designed for short help
+             files.  If the special alias helpcommand is defined,
+             it  is run with the command name as a sole argument.
+             Else,  documentation  should  be  in  a  file  named
+             command.help,  command.1,  command.6,  command.8  or
+             command, which should be in one of  the  directories
+             listed  in the HPATH environment variable.  If there
+             is more  than  one  help  file  only  the  first  is
+             printed.
+
+     self-insert-command (text characters)
+             In insert mode  (the  default),  inserts  the  typed
+             character  into  the  input line after the character
+             under the cursor.  In overwrite mode,  replaces  the
+             character under the cursor with the typed character.
+             The input mode is normally preserved between  lines,
+             but  the  inputmode  shell  variable  can  be set to
+             `insert' or `overwrite' to put the  editor  in  that
+             mode  at  the  beginning  of  each  line.   See also
+             overwrite-mode.
+
+     sequence-lead-in (arrow prefix, meta prefix, ^X)
+             Indicates that the following characters are part  of
+             a  multi-key  sequence.   Binding  a  command  to  a
+             multi-key sequence really creates two bindings:  the
+             first  character  to  sequence-lead-in and the whole
+             sequence to the command.   All  sequences  beginning
+             with  a  character  bound  to  sequence-lead-in  are
+             effectively bound to undefined-key unless  bound  to
+             another command.
+
+     spell-line (M-$)
+             Attempts to correct the spelling of each word in the
+             input  buffer,  like  spell-word,  but ignores words
+             whose first character is one of  `-',  `!',  `^'  or
+             `%',  or  which  contain  `\',  `*' or `?', to avoid
+             problems with switches, substitutions and the  like.
+             See Spelling correction.
+
+     spell-word (M-s, M-S)
+             Attempts to correct the spelling of the current word
+             as described under Spelling correction.  Checks each
+             component of a word which appears to be a pathname.
+
+     toggle-literal-history (M-r, M-R)
+             Expands or `unexpands' history substitutions in  the
+             input  buffer.   See  also  expand-history  and  the
+             autoexpand shell variable.
+
+     undefined-key (any unbound key)
+             Beeps.
+
+     up-history (up-arrow, ^P)
+             Copies the previous entry in the history  list  into
+             the  input  buffer.   If  histlit  is  set, uses the
+             literal form of the entry.  May be repeated to  step
+             up through the history list, stopping at the top.
+
+     vi-search-back (?)
+             Prompts with `?' for a search string (which may be a
+             glob-pattern,   as   with  history-search-backward),
+             searches for it and copies it into the input buffer.
+             The bell rings if no match is found.  Hitting return
+             ends the search and leaves the  last  match  in  the
+             input  buffer.   Hitting  escape ends the search and
+             executes the match.  vi mode only.
+
+     vi-search-fwd (/)
+             Like vi-search-back, but searches forward.
+
+     which-command (M-?)
+             Does a which (see the  description  of  the  builtin
+             command) on the first word of the input buffer.
+

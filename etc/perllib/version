@@ -1,0 +1,5 @@
+$last_mod_date='DATE';
+#version="1.0"; # Comments
+$todo="Things yet to do.";
+$author="Dr. Steven Parker";
+$copyright="$last_mod_date. All rights reserved.";

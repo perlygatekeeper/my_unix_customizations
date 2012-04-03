@@ -1,0 +1,35 @@
+sub  fileperms {
+# see $uge/perllib/fileperms/makefiles.pl to make files with all
+# possible permission bits.
+  my($perm_string, $perm_string_S, $perm_string_s, $perm_string_l,
+     $perm_string_T, $perm_string_t, $perm);
+  push(@perms,'---');	  # $perms{'---'}=0;
+  push(@perms,'--x');	  # $perms{'--x'}=1;
+  push(@perms,'-w-');	  # $perms{'-w-'}=2;
+  push(@perms,'-wx');	  # $perms{'-wx'}=3;
+  push(@perms,'r--');	  # $perms{'r--'}=4;
+  push(@perms,'r-x');	  # $perms{'r-x'}=5;
+  push(@perms,'rw-');	  # $perms{'rw-'}=6;
+  push(@perms,'rwx');	  # $perms{'rwx'}=7;
+
+  for ($perm=$[; $perm<=$#perms; $perm++) {
+    $perm_string=$perms[$perm];
+    $perm{$perm_string}=$perm;
+    if ($perm_string=~/-$/) {
+      $extra_bits{($perm_string_S=$perm_string) =~ s/-$/S/}=4;
+      $extra_bits{($perm_string_l=$perm_string) =~ s/-$/l/}=2;
+      $extra_bits{($perm_string_T=$perm_string) =~ s/-$/T/}=1;
+      $perm{$perm_string_T}=
+      $perm{$perm_string_S}=
+      $perm{$perm_string_l}=$perm;
+    } else {
+      $extra_bits{($perm_string_s=$perm_string) =~ s/x$/s/}=6;
+      $extra_bits{($perm_string_t=$perm_string) =~ s/x$/t/}=1;
+      $perm{$perm_string_t}=
+      $perm{$perm_string_s}=$perm;
+    }
+  }
+# -rwSrwlrwT   1 root     other          0 Mar 22 10:33 f07666
+# -rwsrwsrwt   1 root     other          0 Mar 22 10:29 f07777
+}	
+1;

@@ -1,0 +1,110 @@
+#!/usr/local/bin/perl
+#   ***   Define Default Strings, Values & Flags   ***
+$name = $0;
+$usage = "usage:\n$name [-maxdepth #]";
+$pwd=`pwd`; chop $pwd;
+chdir($pwd);
+$max_depth=1;		#maxium depth down the directory tree.
+
+($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst)=localtime(time);
+@mo = ('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec');
+@day = ('Sun','Mon','Tue','Wed','Thu','Fri','Sat');
+$date=sprintf("%s, %s %d, %d", $day[$wday], $mo[$mon], $mday, $year+1900);
+$true=1; $false=0;
+
+#-----------------------------------------------------------------------------
+#   ***   PARSE COMMAND LINE ARGUMENT(S)   ***
+while ( @ARGV >= 1 ) {
+  if ( $ARGV[0] eq '-maxdepth' ) {
+    $max_depth = "$ARGV[1]";
+    shift; shift; }
+  elsif ( $ARGV[0] eq '-?' ) { do help($usage); }
+  else { last; }
+}  # end while
+#-----------------------------------------------------------------------------
+#   ***   START RECURVISE DECENT  ***
+$list_file=\&list_file;
+$list_link=\&list_link;
+print "Decending into $pwd on $date:\n";
+&decend($list_file,$list_link,$pwd,0,$false);
+#-----------------------------------------------------------------------------
+#   ***   EXIT GRACEFULLY   ***
+exit 0;
+
+#-----------------------------------------------------------------------------
+#   ***   SUBROUTINES   ***
+sub decend {
+  my($file_routine,$link_routine,$dir,$depth,$do_dots)=@_;
+  my($debug)=0;
+  my($entry,@entries,$dir_entry,$indent_string);
+#
+  if ($debug) {
+    local($debug_format)="%10s is\t'%s'\n";
+    printf $debug_format, 'dir', $dir;
+    printf $debug_format, 'depth', $depth;
+    printf $debug_format, 'do_dots', $do_dots;
+  }
+  opendir(DIR,$dir) || die "Can't open dir $dir: $!\n";
+  @entries=readdir(DIR);
+  closedir(DIR);
+  shift(@entries);shift(@entries);			# for . and .. entries
+  @entries=grep(! /^\./,@entries) if (not $do_dots);	# remove dotfiles
+  if ($debug) {
+    $indent_string = ' ' x $depth;
+    print "$dir contains $#entries entries\n";
+  }
+#
+  foreach $entry (@entries)
+  {
+    $dir_entry="$dir/$entry";
+    if (-d $dir_entry) {
+      if (($depth+1)<=$max_depth) {
+        print $indent_string,"$dir_entry -- directory, decending...\n" if ($debug);
+	chdir $entry;
+        &decend($file_routine,$link_routine,$dir_entry,$depth,$do_dots);
+	chdir '..';
+	next;
+      } else {
+        print $indent_string,"$dir_entry -- directory, at bottom of decent!\n"
+	  if ($debug);
+	next;
+      }
+    } elsif (-f $dir_entry) {
+      &{$file_routine}("$dir_entry");
+    } elsif (-l $dir_entry) {
+      local($file)=
+      &{$link_routine}("$dir_entry");
+      &{$file_routine}("$file");
+    } else {
+      print "'$dir_entry' is not a file, link nor directory\n" if ($debug);
+    }
+  }
+}
+
+sub list_file {
+  my($file)=shift;
+  ($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,$atime,$mtime,$ctime,
+   $blksize,$blocks) = stat($file);
+  require("datetime.pl");
+  printf "%-15s;\n  atime: %s;\n  mtime: %s;\n  ctime: %s\n",
+         $file, &ampm_date($atime), &ampm_date($mtime), &ampm_date($ctime);
+  return $file;
+}
+
+sub list_link {
+  my($link)=shift;
+  ($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,$atime,$mtime,$ctime,
+   $blksize,$blocks) = stat($link);
+  local($link_points_to)=readlink($link);
+  printf "%-15s --> %-15s\n", $link, $link_points_to;
+  if (-l $link_points_to) {
+    $link_points_to=&list_link($link_points_to);
+  }
+  return $link_points_to;
+}
+
+sub help {
+  print "@_[0]\n";
+  exit 1;
+}
+__END__

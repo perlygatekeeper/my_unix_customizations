@@ -1,0 +1,171 @@
+From kedziora@sodium.mps.ohio-state.edu Tue Apr 27 13:19:01 1993
+Received: from silicon.theorychem (silicon.mps.ohio-state.edu) by sodium (4.1/1.890401)
+	id AA09157; Tue, 27 Apr 93 13:19:00 EDT
+Date: Tue, 27 Apr 93 13:19:00 EDT
+From: Gary Kedziora <kedziora@sodium.mps.ohio-state.edu>
+Message-Id: <9304271719.AA09157@sodium>
+To: parker@sodium.mps.ohio-state.edu
+Status: R
+
+#!/bin/sh  -- # actually a perl program
+eval 'exec $PERL -S $0 ${1+"$@"}'
+    if 0;
+
+print "\n";
+print '
+
+       NUMBER OF EXTERNAL-SPACE LOOP EXTENTIONS OF VARIOUS TYPES.  
+          The boundry vertex and number are given as a pair. ',"\n" ;
+
+open(LOOPS, "all.loops")  || die "Can't open all.loops: $!\n";
+
+LINE:
+while (<LOOPS>) {
+
+    next LINE if /^\n/ ; # Skip if a blank line.
+    if (/(\(.*\))/) {    # Match a set of parentheses.  They contain
+        $type = $1 ;     # loop types.  
+        next LINE ;
+    }
+
+    if (/(^Four|^Three|^Two|^One)/) { # Match the number of external
+        $extind = $1         ;        # indices.
+        next LINE ;
+    }
+
+    next LINE if /^\w/ ;  # if not starting vertices get a new line
+
+    if (/         (\w+)/) {   # match boundry vertices
+        $test = 1 ; 
+        BOUND:
+        for $i ($[ .. $#boundkey) {
+            if ($boundkey[$i] eq $1) {
+                $test = 0 ; 
+                last BOUND ; 
+            } 
+            else {
+                $test = 1 ; 
+            }
+        }
+        if ($test) {
+           push(@boundkey, $1); 
+        }
+        $boundv{$type,$extind,$1} = $1 ; 
+        #$type_count{$extind,$type}++ ;
+        $count{$type,$extind,$1}++ ; 
+        $bcount{$1}++ ; 
+    }
+
+}
+
+# Process the data for printing
+
+
+%integral = ( '(1a)',  '[ij;kl]',
+              '(1b)',  '[jk;il]', 
+              '(2a)',  '[ij;kl]', 
+              '(2b)',  '[ik;jl]',
+              '(3a)',  '[ik;jl]',
+              '(3b)',  '[jk;il]',
+              '(4a)',  '[ii;kl]',
+              '(4b)',  '[ik;il]',
+              '(5)',   '[ik;il]',
+              '(6a)',  '[kk;il]',
+              '(6b)',  '[ik;kl]',
+              '(7)',   '[ik;kl]',
+              '(8a)',  '[ij;ll]',
+              '(8b)',  '[il;jl]',
+              '(9)',   '[il;jl]',
+              '(10)',  '[il;jl]',
+              '(11a)', '[ii;ll]',
+              '(11b)', '[il;il]',
+              '(12a)', '[ii;il]',
+              '(12b)', '[il;ll]',
+              '(12c)', '<i|h|l>',
+              '(13)',  '[il;il]' ) ;
+
+@key = ('(1a)', '(1b)', '(2a)', '(2b)', '(3a)', '(3b)', '(4a)', '(4b)',
+         '(5)', '(6a)', '(6b)', '(7)', '(8a)', '(8b)', '(9)', '(10)', 
+         '(11a)', '(11b)', '(12a)', '(12b)', '(12c)', '(13)') ;
+
+foreach $first (@key) {
+
+    $typcount = 0 ;
+
+    foreach $third (sort(@boundkey)) {
+
+        $typcount++ ; 
+
+        if ($boundv{$first,'One',$third}) {
+            push(@one,$boundv{$first,'One',$third}) ;
+        }
+        if ($count{$first,'One',$third}) {
+            push(@cone,"$count{$first,'One',$third}") ;
+        }
+        if ($boundv{$first,'Two',$third}) {
+            push(@two,$boundv{$first,'Two',$third}) ;
+        }
+        if ($count{$first,'Two',$third}) {
+            push(@ctwo,$count{$first,'Two',$third}) ;
+        }
+        if ($boundv{$first,'Three',$third}) {
+            push(@three,$boundv{$first,'Three',$third}) ;
+        }
+        if ($count{$first,'Three',$third}) {
+            push(@cthree,$count{$first,'Three',$third}) ;
+        }
+        if ($boundv{$first,'Four',$third}) {
+            push(@four,$boundv{$first,'Four',$third}) ;
+        }
+        if ($count{$first,'Four',$third}) {
+            push(@cfour,$count{$first,'Four',$third}) ;
+        }
+
+        if ($typcount > 1) {
+            push(@types,' ') ;
+        } 
+        else {
+            push(@types,$first) ;
+        }
+
+    } # end of boundry vertice loop--"$third"
+
+    while ( $cone[$[] || $ctwo[$[] || $cthree[$[] || $cfour[$[] ) {
+
+        write ; 
+        shift @one ; shift @cone ; shift @two ; shift @ctwo ; 
+        shift @three ; shift @cthree ; shift @four ; shift @cfour ; 
+        shift @types ; 
+
+    }
+
+    undef @one ; undef @cone ; undef @two ; undef @ctwo ; 
+    undef @three ; undef @cthree ; undef @four ; undef @cfour ; 
+    undef @types ; undef $integral{$first} ;
+    
+    write ; 
+
+}
+
+format STDOUT_TOP = 
+
+
+                                  Number of External Space Indices
+
+Loop Type  Integral Type      One         Two        Three        Four
+---------  -------------    -------     -------     -------     ------- 
+.
+
+format STDOUT =
+@<<<<<<<<  @||||||||||||     @< @>       @< @>       @< @>       @< @>
+$types[$[], $integral{$first}, $one[$[], $cone[$[], $two[$[], $ctwo[$[], $three[$[], $cthree[$[], $four[$[], $cfour[$[]
+.
+
+#  Totals for each set of boundry vertices
+
+print "\n", "\n", "Totals for each set of boundry vertices:", "\n" ; 
+
+foreach $bvert (sort @boundkey) {
+    print 'number of ', $bvert, ' loops = ', $bcount{$bvert}, "\n";
+}
+

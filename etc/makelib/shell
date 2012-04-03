@@ -1,0 +1,33 @@
+# /usr/ccs/bin/make
+#TXT_FILES:sh =ls [0-9]*.txt
+ 
+# GNU's make; /usr/local/bin/gmake
+TXT_FILES := $(shell ls [0-9]*.txt)
+ 
+  Command Substitutions
+     To incorporate the standard output of a shell command  in  a
+     macro, use a definition of the form:
+
+          MACRO:sh =command
+
+     The command is executed only once, standard error output  is
+     discarded,  and NEWLINE characters are replaced with SPACEs.
+     If the command has a non-zero exit status, make  halts  with
+     an error.
+
+     To capture the output of a shell command in a  macro  refer-
+     ence, use a reference of the form:
+
+          $(MACRO:sh)
+
+     where MACRO is the name of a macro containing a valid Bourne
+     shell  command  line.  In this case, the command is executed
+     whenever the reference is evaluated.  As with shell  command
+     substitutions,  the  reference is replaced with the standard
+     output of the command.  If the command has a  non-zero  exit
+     status, make halts with an error.
+
+     In contrast to commands in rules, the command is not subject
+     for  macro  substitution;  therefore, a dollar sign ($) need
+     not be replaced with a double dollar sign ($$).
+

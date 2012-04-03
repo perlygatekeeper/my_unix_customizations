@@ -1,0 +1,191 @@
+#!/usr/local/bin/perl
+#
+# A perl script to test subroutines number2ascii & ascii2number
+#
+require "abbrev.pl";
+
+# $test_string="The rain in Spain stays mainly on the plain.\n";
+# $test_string.="The quick brown fox jumped over the lazy dog.\n";
+# @numbers=&ascii2number('decimal',$test_string);
+# $there_and_back=&number2ascii('d',@numbers);
+# print "results:\n$there_and_back\n";
+
+$fold_length=80;
+# $type='decimal';
+# $type='hex';
+# $type='octal';
+# $type='-hex';
+# $type='-octal';
+@types=();
+# &abbrev(*types,'decimal','hex','octal','-hex','-octal');
+&abbrev(*types,'decimal','hex','octal');
+$old_string="Hello world!";
+
+# test alpha-one!
+# @hiden=(104,101,108,108,111,32,119,111,114,108,100,33);
+# $exposed=&number2ascii(decimal,@hiden);
+# print "test one: '$exposed'\n";
+# test alpha-two!
+# @hiden=(48,65,6c,6c,6f,20,77,6f,72,6c,64,21);
+# $exposed=&number2ascii(-hex,@hiden);
+# print "test two(smallest): '$exposed'\n";
+
+print "Hiden string perl-code generater, format is '$type'.\n";
+print "Hit return alone or ^C to quit; hit ^E to eval last code,\n";
+print "^A to do last string Again; hit ^T to set type/format.\n";
+while (1) {
+  print "Input a string: ";
+  $string=<>; chop $string;
+  last if ($string =~ /^$/);
+  if ($string eq '' ) {
+    $string=$old_string;
+  } elsif ($string eq '' ) {
+    next if (! $code );
+    print "evaluating:\n${code}print \"'\$exposed'\\n\";\n\n";
+    $execute=          "${code}print \"'\$exposed'\\n\";";
+    eval($execute);
+    if (!$@) {
+      print "\ndone (hope that it worked!).\n\n";
+    } else {
+      print "\nsyntax error detected '$@'.\n\n";
+    }
+    next;
+  } elsif ($string eq '' ) {
+    print "Input a format (decimal,hex,octal): ";
+    $new_type=<>; chop $new_type;
+    $new_type=~tr/A-Z/a-z/;
+    if ($types{$new_type}) {
+      $type=$types{$new_type};
+      print "Reset format to '$type'.\n\n";
+    }
+    next;
+  }
+  print "perl code for hiden string '$string':\n\n";
+
+  $numbers=&ascii2number($type,$string);
+  if (length($numbers)>=$fold_length) {
+    $numbers=~s?^(.{69,}[^,]*,)?\1\n?; reset;
+    $numbers=~s/(.{77,}[^,]*,)/\1\n/g;
+  }
+
+  $untype=($type=~/^-/)?$type:'decimal';
+  $code =join('', '@hiden=(',"$numbers",");\n");
+  $code.=join('', '$exposed=&number2ascii("', "$untype", '",@hiden);',"\n");
+  print "$code\n";
+
+  $old_string=$string;
+}
+
+exit 0;
+
+#   ***   SUBROUTINES   ***
+#   ---   ---   ---
+sub number2ascii {
+# returns string (or array of characters) who's ascii values are
+# given by numbers stored in the argument array @_;
+# decimal      numbers if argument 0 = "d" or "D"
+# octal or hex numbers  otherwise
+   local($char,@chars);
+   if ($_[0] =~ /^d/i) {
+     shift;
+     $char=pack('C*',@_);
+
+# Possible alternent method other than pack.
+# perl -e 'for ($i=32; $i<127; $i++) '\
+# '{ print "'\''",pack("C1", $i),"'\'', "; print "\n" if (! (($i-31)%10)); }'\
+# 'print "\n";'
+# @ASCII=
+# ( ' ', '!', '"', '#', '$', '%', '&', "'",
+#   '(', ')', '*', '+', ',', '-', '.', '/',
+#   '0' .. '9', ':', ';', '<', '=', '>', '?', '@',
+#   'A' .. 'Z', '[', '\', ']', '^', '_', '`',
+#   'a' .. 'z', '{', '|', '}', '~');
+# (@ASCII)[@_];
+   } elsif ($_[0] =~ /^-h/i) {	# force hex interp.
+     shift;			# ie. prepend the '0x'
+     while (@_) {
+       $hex=$_[0]; $hex=~s/^([^0][^x])/0x\1/;
+       $char=pack('C1',oct($hex));
+       push(@chars,$char);
+       shift;
+     }
+     undef $char;
+   } elsif ($_[0] =~ /^-o/i) {	# force octal interp.
+     shift;			# ie. prepend the '0'
+     while (@_) {
+       $octal=$_[0]; $octal=~s/^([^0])/0\1/;
+       $char=pack('C1',oct($octal));
+       push(@chars,$char);
+       shift;
+     }
+     undef $char;
+   } else { # hex or octal strings
+     if ($_[0] =~ /hex|octal/i) { shift; }
+     while (@_) {
+       $char=pack('C1',oct($_[0]));
+       push(@chars,$char);
+       shift;
+     }
+     print "wrong place\n";
+     undef $char;
+   }
+   if (wantarray) {
+     @chars=split(//,$char) if (!@chars);
+     return @chars;
+   } else {
+     $char=join('',@chars) if (! $char);
+     return $char;
+   }
+}
+
+sub ascii2number {
+# returns series of numbers in form appropos for sub number2ascii.
+  local($type,@strings)=@_;
+  local(@decimal,@numbers,@chars,$string);
+
+# print "'$type'\n";
+  $smallest= $hex= $octal=0;
+  $decimal=1;
+  if      ($type =~ /-/ ) { # smallest output, hex numbers don't have 0x!
+    $smallest=1;	    # and octals don't start with a '0'
+#   print "I'm getting smaller!!!!\n";
+  }
+  if      ($type =~ /^d/i) { # decimal output
+    $decimal=1; shift;
+  } elsif ($type =~ /^-?o/i) { # octal   output
+    $octal=1;   shift;
+  } elsif ($type =~ /^-?h/i) { # hex     output
+    $hex=1;     shift;
+  } else {
+    $decimal=1; shift;
+  }
+  $string=join('',@strings);
+# print "'$string'\n";
+
+  @chars=split(//,$string);
+  foreach (@chars) {
+   $number=ord;
+#  $number=unpack("c",$_);
+   push(@decimal,$number);
+  }
+  if      ( $hex ) {
+    foreach (@decimal) {
+      local($hex)= ($smallest)?sprintf("%lx",$_):sprintf("0x%lx",$_);
+      push(@numbers,$hex);
+    }
+  } elsif ( $octal ) {
+    foreach (@decimal) {
+      local($octal)= ($smallest)?sprintf("%lo",$_):sprintf("0%lo",$_);
+      push(@numbers,$octal);
+    }
+  } else {
+    @numbers=@decimal;
+  }
+
+  if (wantarray) {
+    return @numbers;
+  } else {
+    return join(',',@numbers);
+  }
+}
+__END__

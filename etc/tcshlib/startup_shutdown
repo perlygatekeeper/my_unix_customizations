@@ -1,0 +1,25 @@
+  Startup and shutdown
+     A login shell begins by executing commands from  the  system
+     files  /etc/csh.cshrc  and /etc/csh.login.  It then executes
+     commands from files in the  user's  home  directory:   first
+     ~/.tcshrc  (+) or, if ~/.tcshrc is not found, ~/.cshrc, then
+     ~/.history (or the value of the  histfile  shell  variable),
+     then  ~/.login,  and finally ~/.cshdirs (or the value of the
+     dirsfile  shell  variable)  (+).    The   shell   may   read
+     /etc/csh.login  before  instead of after /etc/csh.cshrc, and
+     ~/.login before instead of after ~/.tcshrc or  ~/.cshrc  and
+     ~/.history,  if so compiled; see the version shell variable.
+     (+)
+
+     Non-login shells read only /etc/csh.cshrc and  ~/.tcshrc  or
+     ~/.cshrc on startup.
+
+     Commands like stty(1) and tset(1), which need  be  run  only
+     once  per  login,  usually go in one's ~/.login file.  Users
+     who need to use the same set of files with both  csh(1)  and
+     tcsh can have only a ~/.cshrc which checks for the existence
+     of the tcsh shell variable (q.v.) before using tcsh-specific
+     commands,  or can have both a ~/.cshrc and a ~/.tcshrc which
+     sources (see the builtin command)  ~/.cshrc.   The  rest  of
+     this  manual  uses  `~/.tcshrc'  to  mean  `~/.tcshrc or, if
+     ~/.tcshrc is not found, ~/.cshrc'.

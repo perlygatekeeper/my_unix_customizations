@@ -1,0 +1,11 @@
+sub response {
+  my($prompt,$regexp,$exit_regexp)=(@_);
+  print ($prompt)?$prompt:"yes|no ";
+  $response=<STDIN>;
+  $regexp||="^y";
+  if ($exit_regexp and $response=~/$exit_regexp/i) {
+    print "Quitting $name in response to user input '$response'\n";
+    exit;
+  }
+  return ($response=~/$regexp/i);
+}

@@ -1,0 +1,2 @@
+  #  array composed of previous file handle and 1
+  select( ( select(FILE), $|=1 ) [$[] );

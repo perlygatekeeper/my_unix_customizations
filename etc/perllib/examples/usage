@@ -1,0 +1,139 @@
+#!/usr/local/bin/perl
+#-----------------------------------------------------------------------------
+select(STDOUT); $|=1;
+#   ***   Define Default Strings, Values & Flags   ***
+$name = $0;
+$usage = "usage:\n$name [-filesize #] [-dirsize #] [-maxdepth #]";
+$pwd=`pwd`;
+chop $pwd;
+
+($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst)=localtime(time);
+@mo = ('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec');
+@day = ('Sun','Mon','Tue','Wed','Thu','Fri','Sat');
+$day="$day[$wday], $mo[$mon] $mday 19$year";
+$ds="$mon"."$mday"."$year";
+
+$min_size_report=50;	#minimum size a file must be to report it.
+$min_size_decend=100;	#minimum size a directory must be to decend into it.
+$max_depth=16;		#maxium depth down the directory tree.
+$indentstring=' ';
+#-----------------------------------------------------------------------------
+#   ***   Parse Command Line Argument(s)   ***
+while ( @ARGV >= 1 ) {
+  if    ( $ARGV[0] eq '-filesize' ) {
+    $min_size_report = $ARGV[1];
+    shift; shift; }
+  elsif ( $ARGV[0] eq '-dirsize' ) {
+    $min_size_decend = "$ARGV[1]";
+    shift; shift; }
+  elsif ( $ARGV[0] eq '-maxdepth' ) {
+    $max_depth = "$ARGV[1]";
+    shift; shift; }
+  elsif ( $ARGV[0] eq '-?' ) { do help($usage); }
+  else { last; }
+}  # end while
+#-----------------------------------------------------------------------------
+#   ***   Start Recurvise Decent  ***
+print "Disk usage for $pwd on $date:\n";
+&report_and_decend($pwd,$indent_string,0);
+#-----------------------------------------------------------------------------
+#   ***   EXIT GRACEFULLY   ***
+exit 0;
+#-----------------------------------------------------------------------------
+#   ***   SUBROUTINES   ***
+sub report_and_decend {
+  local($dir,$indent_string,$depth)=@_;
+  local($file,$size,$line,$depth);
+  local(@list)=sort rev_numercally_field1 `/bin/du -s *`;
+  foreach $line (@list)
+  {
+    chop $line;
+    ($size,$file)=split(/[ \t\n]+/,$line);
+    if (-d $file) {
+      if (($size>=$min_size_decend) && (($depth+1)<=$max_depth)) {
+        print $indent_string,"$line -- directory, decending...\n";
+	chdir $file;
+	$newdir="$dir/$file";
+        &report_and_decend($newdir,$indent_string." ",$depth);
+	chdir '..';
+	next;
+      } else {
+#       print $indent_string,"$line -- directory, at bottom of decent!\n";
+        print $indent_string,"$line\n";
+	next;
+      }
+    }
+    elsif ($size >= $min_size_report) {
+#     print $indent_string,$line,"\t -- file.\n";
+      print $indent_string,$line,"\n";
+      next;
+    }
+    else {
+      last;
+    }
+  }
+}
+sub rev_numercally_field1 {
+local($file1,$size1,$file2,$size2);
+($size1,$file1)=split(/[ \t\n]+/,$a);
+($size2,$file2)=split(/[ \t\n]+/,$b);
+$size2<=>$size1;
+}
+sub help {
+print "@_[0]\n";
+exit 1;
+}
+################################################################################
+#!/bin/sh
+# define recursive directory decender:
+
+#  tree ()
+#  {
+#  (
+#  #
+#  # initalize!
+#  indent="$1"
+#  depth=$2
+#  toggel=1
+#  enter=0
+#  # gather sizedir output for this subdirectory!
+#  output=`/bin/du -s *|/usr/5bin/sort -2 -nr`
+#  # report!
+#  echo ${output} |\
+#  awk '{ n=split($0,a," ");
+#         for( i=1;
+#              i<=n && a[i]>='$minsizrep';
+#              printf "'"$indent"'%s\t%s\n",a[i++],a[i++] )
+#       }'
+#  /usr/5bin/echo "${indent}"
+#  # check for subdirectories into which to descend!
+#  for i in `echo $output`
+#  do
+#    toggel=` expr 1 - $toggel `
+#    if [ $toggel -eq 1 ] ; then
+#      if [ \( $enter -eq 1 \) -a \( -d $i \) -a \( $depth -lt $maxdepth \) ] ; then
+#        save="$indent"
+#        indent=">"$indent
+#        /usr/5bin/echo "${indent}Further breakdown of usage:"
+#        /usr/5bin/echo "${indent}"
+#        /usr/5bin/echo "${indent}${size}"'\t'"${i} <-----"
+#  # descend!
+#        cd $i
+#        tree "${indent}" `expr $depth + 1`
+#  # ascend!
+#        cd ..
+#        indent="$save"
+#        enter=0
+#      fi
+#    else
+#      if [ $i -gt $minsizdec ] ; then
+#        enter=1
+#        size=$i
+#      else
+#        break
+#      fi
+#    fi
+#  done
+#  )
+#  }
+#  tree "${indent}" 0

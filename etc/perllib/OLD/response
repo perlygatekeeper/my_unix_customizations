@@ -1,0 +1,17 @@
+sub response {
+  local($string,$regexp,$exit_regexp)=(@_);
+  if ($string) {
+    print $string;
+  } else {
+    print "yes|no";
+  }
+  $response=<STDIN>;
+  if ($regexp) {
+    return ($response=~/$regexp/i);
+  } elsif ($exit_regexp and $response=~/$exit_regexp/i) {
+    print "Quitting $name in response to user input '$response'\n";
+    exit;
+  } else {
+    return ($response=~/^y/i);
+  }
+}

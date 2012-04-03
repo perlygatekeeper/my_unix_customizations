@@ -1,0 +1,18 @@
+if (&ping_first($computer_name) {
+}
+
+#   ***   Parse Command Line Argument(s)   ***
+sub ping_first {
+
+  local($machine)=@_;
+  $command='/usr/etc/ping';
+  $timeout=1;
+
+  local($responce)=`$command $time_out`;
+  if ( ( ! $? ) || ( $responce =~ /no answer from/ ) ) {
+    return 0;
+  } else {
+    return 1;
+  }
+
+}  # end ping_first

@@ -1,0 +1,10 @@
+#   ***   SUBROUTINES   ***
+#   ---   ---   ---
+sub help {
+print "@_[0]\n";
+print "Valid replacement string expressions are:\n";
+print "\\t for tabs, \\n for newlines, \\f for formfeeds, \\b for backspaces\n";
+print "\\r for returns, \\e for escapes, and \### for octal ascii codes\n";
+exit 1;
+}
+

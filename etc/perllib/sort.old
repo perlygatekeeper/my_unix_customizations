@@ -1,0 +1,2 @@
+sub numerically { $a <=> $b; }
+sub numerically { $a <=> $b; }

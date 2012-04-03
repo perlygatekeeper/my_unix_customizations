@@ -1,0 +1,42 @@
+# get results from a unix command
+  $out_of="UNIX_COMMAND |";
+
+# put results to   a unix command
+# $in_to="| UNIX_COMMAND";
+
+  open(OUT_OF,"$out_of") ||
+  die("$name: Cannot COMMAND_DISCRIPTION with '$out_of': $!.");
+
+
+# push(@report,"Results from COMMAND_DISCRIPTION :\n");
+# push(@report,@results);
+
+# child  will be writer
+# parent will be reader
+
+FORK: {
+        pipe(OUT_OF,IN_TO);
+	if ($pid = fork) {
+	  # parent here (READER)
+	  # child process pid is available in $pid
+	  close(IN_TO);
+
+          local(@results)=<OUT_OF>;
+          close(OUT_OF);
+
+	} elsif (defined $pid) { # $pid is zero here if defined
+	  # child here
+	  # parent process pid is available with getppid
+          close(OUT_OF);
+
+          print IN_TO "command 1\n";
+	  close(IN_TO);
+	} elsif ($! =~ /No more process/) {     
+	  # EAGAIN, supposedly recoverable fork error
+	  sleep 5;
+	  redo FORK;
+	} else {
+	  # weird fork error
+	  die "$name: can't fork: $!\n";
+	}
+}

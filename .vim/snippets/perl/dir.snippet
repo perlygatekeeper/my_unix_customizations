@@ -1,0 +1,6 @@
+	$dir="${1:directory}";
+	opendir(${2:DIR},$dir) || die "Can't open dir $dir: $!\n";
+	@${3:files}=readdir($2);
+	closedir($2);
+	shift(@$3);shift(@$3); # for . and .. entries
+	@$3=grep(! /^\./,@$3);

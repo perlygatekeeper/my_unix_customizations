@@ -1,0 +1,53 @@
+5.15) How can I capture STDERR from an external command?
+
+    There are three basic ways of running external commands:
+
+        system $cmd;
+        $output = `$cmd`;
+        open (PIPE, "cmd |");
+
+    In the first case, both STDOUT and STDERR will go the same place as
+    the script's versions of these, unless redirected.  You can always put
+    them where you want them and then read them back when the system
+    returns.  In the second and third cases, you are reading the STDOUT
+    *only* of your command.  If you would like to have merged STDOUT and
+    STDERR, you can use shell file-descriptor redirection to dup STDERR to
+    STDOUT:
+
+        $output = `$cmd 2>&1`;
+        open (PIPE, "cmd 2>&1 |");
+
+    Another possibility is to run STDERR into a file and read the file
+    later, as in
+
+        $output = `$cmd 2>some_file`;
+        open (PIPE, "cmd 2>some_file |");
+
+    Here's a way to read from both of them and know which descriptor
+    you got each line from.  The trick is to pipe only STDERR through
+    sed, which then marks each of its lines, and then sends that
+    back into a merged STDOUT/STDERR stream, from which your Perl program
+    then reads a line at a time:
+
+        open (CMD,
+          "cmd args | sed 's/^/STDOUT:/' |");
+
+        while (<CMD>) {
+          if (s/^STDOUT://)  {
+              print "line from stdout: ", $_;
+          } else {
+              print "line from stdeff: ", $_;
+          }
+        }
+
+    Be apprised that you *must* use Bourne shell redirection syntax in
+    backticks, not csh!  For details on how lucky you are that perl's
+    system() and backtick and pipe opens all use Bourne shell, fetch the
+    file from convex.com called /pub/csh.whynot -- and you'll be glad that
+    perl's shell interface is the Bourne shell.
+
+    There's an &open3 routine out there which was merged with &open2 in
+    perl5 production.
+
+
+.

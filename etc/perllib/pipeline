@@ -1,0 +1,2 @@
+    unshift(@history, $previous);
+    shift(@history) if ($#history > $max_hist);

@@ -1,0 +1,62 @@
+#!/usr/local/bin/perl
+#
+# A perl script to test the ascii2number subroutine.
+#
+
+$string='set';
+while (1) {
+  print "Input a string: ";
+  $string=<>; chop $string;
+  last if ($string =~ /^$/);
+  print "string '$string' gives \n";
+  @nums=&ascii2number('octal',$string);
+  print join(',',@nums), "\n";
+}
+exit 0; 
+
+sub ascii2number {
+# returns series of numbers in form appropos for sub number2ascii.
+  local($type,@strings)=@_;
+  local(@decimal,@numbers,@chars,$string);
+
+  print "'$type'\n";
+  $hex= $octal=0; $decimal=1;
+  if      ($type =~ /^d/i) { # decimal output
+    $decimal=1; shift;
+  } elsif ($type =~ /^o/i) { # octal   output
+    $octal=1;   shift;
+  } elsif ($type =~ /^h/i) { # hex     output
+    $hex=1;     shift;
+  } else {
+    $decimal=1; shift;
+  }
+  $string=join('',@strings);
+  print "'$string'\n";
+
+  @chars=split(//,$string);
+  foreach (@chars) {
+   $number=ord;
+#  $number=unpack("c",$_);
+   push(@decimal,$number);
+  }
+  if      ( $hex ) {
+    foreach (@decimal) {
+      local($hex)= sprintf("0x%lx",$_);
+      push(@numbers,$hex);
+    }
+  } elsif ( $octal ) {
+    foreach (@decimal) {
+      local($octal)= sprintf("0%lo",$_);
+      push(@numbers,$octal);
+    }
+  } else {
+    @numbers=@decimal;
+  }
+
+  if (wantarray) {
+    return @numbers;
+  } else {
+    return join(',',@numbers);
+  }
+}
+__END__

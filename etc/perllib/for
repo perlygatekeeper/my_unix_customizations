@@ -1,0 +1,3 @@
+  for (local($i)=0; $i<LIMIT; $i++) {
+    print $i;
+  }

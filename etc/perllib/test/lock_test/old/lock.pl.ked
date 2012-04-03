@@ -1,0 +1,89 @@
+From kedziora@sodium.mps.ohio-state.edu Mon Jan  3 16:44:45 1994
+Received: from silicon.mps.ohio-state.edu (silicon.mps.ohio-state.edu [128.146.33.14]) by sodium.mps.ohio-state.edu (8.6.4/8.6.4) with ESMTP id QAA16810 for <parker>; Mon, 3 Jan 1994 16:44:44 -0500
+Received: from localhost (kedziora@localhost) by silicon.mps.ohio-state.edu (8.6.4/8.6.4) id QAA08996 for parker; Mon, 3 Jan 1994 16:44:34 -0500
+Date: Mon, 3 Jan 1994 16:44:34 -0500
+From: Gary Kedziora <kedziora@sodium.mps.ohio-state.edu>
+Message-Id: <199401032144.QAA08996@silicon.mps.ohio-state.edu>
+To: parker@sodium.mps.ohio-state.edu
+Subject: locking file eg.
+Status: R
+
+#!/usr/local/bin/perl
+$disc=$ARGV[0];
+($fnum,$pnum) = split(/p/,$disc);
+($dummy,$fnum) = split(/f/,$fnum);
+#print "file number = ", $fnum, " point number = ", $pnum, "\n";
+$lockfile="/n/si/0/kedziora/water/production/.lock." . $fnum ;
+$max_attempts=20;
+$nap_time=10;
+$attempts=0;
+while ( ($locked=&lock($lockfile)) && ($attempts<=$max_attempts) ) {
+   #print "lock file ", $lockfile, " exists...sleeping\n";
+   sleep($nap_time) ; 
+   $attempts++;
+}
+if ($attempts==$max_attempts) {
+   print "";
+   exit 1;
+}
+if ( ! $locked ) { # $locked is now 0 (false), but the file was locked
+                   # in subroutine lock, and this program has control 
+                   # of the points file.
+   print "Processing points file, points.", $fnum,"\n";
+   open (GEOLIST,"</n/si/0/kedziora/water/production/points.$fnum") || die;
+   open (NEWLIST,">/n/si/0/kedziora/water/production/npoints.$fnum") || die;
+   #
+   # go to point number and replace i with o
+   #
+   $inum=0;
+   while(++$inum<$pnum) {
+      $_ = <GEOLIST>;
+      print NEWLIST $_;
+   }
+   $_ = <GEOLIST>;
+   if (/^[^i]/) { 
+      print "No i at line ", $pnum, " in file points.",$fnum,"\n";
+      &unlock($lockfile);
+      exit 1;
+   }
+   s/^i/o/;
+   print NEWLIST ;
+   while(<GEOLIST>) {
+      print NEWLIST;
+   }
+   close(NEWLIST); close(GEOLIST);
+   rename("/n/si/0/kedziora/water/production/npoints.$fnum",
+          "/n/si/0/kedziora/water/production/points.$fnum");
+   &unlock($lockfile);
+} else { # should'nt be locked in this section of code.
+   print "";
+   exit 1;
+}
+ 
+@mo = ('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec');
+@day = ('Sun','Mon','Tue','Wed','Thu','Fri','Sat');
+ 
+sub lock {
+   local($lock_file)=@_;
+   if ( -f $lock_file ) { # lock file exists; return true.
+      #print "lock file, ",$lock_file, " exist.\n";
+      return 1;
+   } else { # lock file does not exist.  create it and return false.
+      open (LOCKFILE, ">$lock_file");
+      ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst)=localtime(time);
+      $time="$hour:$min:$sec $day[$wday], $mo[$mon] $mday 19$year";
+      print LOCKFILE $time, "\n";
+      close(LOCKFILE);
+      #print "lock file, ",$lock_file, " created ",$time,"\n";
+      return 0;
+   }
+}
+ 
+sub unlock {
+   local($lock_file)=@_;
+   unlink($lock_file);
+   return;
+}
+
+  
+

@@ -1,0 +1,70 @@
+#!/usr/local/bin/sun3/perl
+#-----------------------------------------------------------------------------
+
+#   ***   Define Default Strings, Values & Flags   ***
+$name = $0;
+$usage = "usage:\n$name [-t target_string] [-r target_string] [-m modifier_char]";
+
+$newline="\n"; 
+$tab="\t"; 
+$backspace="\010"; 
+$formfeed="\014"; 
+$escape="\033"; 
+$return="\015"; 
+
+$crackstring=$tab;
+$replacestring=$newline;
+$all="g";
+
+#   ***   Parse Command Line Argument(s)   ***
+while ( @ARGV >= 1 ) {
+  if    ( $ARGV[0] eq '-r' ) {
+    $replacestring = $ARGV[1];
+    $replacestring =~ s/([^\\]?)\\n/\1$newline/g;
+    $replacestring =~ s/([^\\]?)\\t/\1$tab/g;
+    $replacestring =~ s/([^\\]?)\\b/\1$backspace/g;
+    $replacestring =~ s/([^\\]?)\\f/\1$formfeed/g;
+    $replacestring =~ s/([^\\]?)\\r/\1$return/g;
+    $replacestring =~ s/([^\\]?)\\e/\1$escape/g;
+    while (! $2) {
+     $replacestring =~ /([^\\]?)\\([0-7][0-7][0-7])/;
+     $octal=&ascii($2);
+     $replacestring =~ s/(\\[0-7][0-7][0-7])/$octal/eg;
+    }
+    shift; shift; }
+  elsif ( $ARGV[0] eq '-t' ) {
+    $crackstring = "$ARGV[1]";
+    shift; shift; }
+  elsif ( $ARGV[0] eq '-m' ) {
+    $all = "$ARGV[1]";
+    shift; shift; }
+  elsif ( $ARGV[0] eq '-?' ) { do help($usage); }
+  else { last; }
+}  # end while
+
+  while (<>)  { $line=$_;
+		$line =~ s/${crackstring}/${replacestring}/eog ;
+		print $line;}
+
+#   ***   EXIT GRACEFULLY   ***
+exit 0;
+
+####   SUBROUTINES   ####
+sub help {
+print "@_[0]\n";
+print "Valid replacement string expressions are:\n";
+print "\\t for tabs, \\n for newlines, \\f for formfeeds, \\b for backspaces\n";
+print "\\r for returns, \\e for escapes, and \### for octal ascii codes\n";
+exit 1;
+}
+sub ascii {
+# returns character whos
+# ascii value equals argument 0 as
+#    octal or hex number if only one arg 
+# OR    decimal   number if argument 2 = "d" or "D"
+   if ($_[1]=="d") { return pack('C1',$_[0]); }
+elsif ($_[1]=="D") { return pack('C1',$_[0]); }
+return pack('C1',oct($_[0]));
+}
+#/usr/local/localadm/bin/perl -n -e 'split (/\t/);for ($i=0; $i<=$#_; $i++) {print $_[$i]."\n";}'
+#/usr/local/localadm/bin/perl -p -e 's/\t+/\n/'

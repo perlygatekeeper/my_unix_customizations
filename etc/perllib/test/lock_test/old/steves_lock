@@ -1,0 +1,41 @@
+sub lock {
+ # subroutine to obtain lock on a file.
+ # one argument -- the name of the lock_file 
+ # returns the status of the lock on lock_file after attempt.
+ # version 2.0 -- write and check for own pid in lock file.
+  local($lock_file)=@_;
+  ($true,$false)=(1,0);
+  if ( -f $lock_file ) { # lock file exists; return false.
+    print "lock file, ",$lock_file, " exists.\n" if ($debug>$true);
+    return $false;
+  } else { # lock file does not exist.  create it and return true if 
+           # our PID is that makes it into the file.
+    ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst)=localtime(time);
+    $time=sprintf("%02d:%02d:%02d %s, %s, %s 19%s",
+      $hour,$min,$sec,$day[$wday],$mo[$mon],$mday,$year);
+    open (LOCKFILE, ">$lock_file");
+    print LOCKFILE "locked by process, pid='$$'";
+    print LOCKFILE " at $time";
+    close(LOCKFILE);
+    print " lock file, '$lock_file' created on $time.\n" if ($debug>$true);
+    open (LOCKFILE, "<$lock_file");
+    while (<LOCKFILE>) {
+      chop;
+      print " from inside of lock file '$lock_file'\n '$_'\n" if ($debug>$true);
+      if ($_ =~ /pid='$$'/o) {
+        print " GOT THE LOCK!\n" if ($debug>$true);
+        close LOCKFILE;
+        return $true;
+      }
+    }
+    close LOCKFILE;
+    return $false;
+  }
+}
+ 
+sub unlock {
+  local($lock_file)=@_;
+  return unlink($lock_file);
+}
+
+1;

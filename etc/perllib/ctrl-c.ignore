@@ -1,0 +1,10 @@
+#$SIG{'INT'}='IGNORE';
+
+#system("stty intr u");
+
+#print "Starting\n";
+#$SIG{'TERM'} = 'does not exist';
+#$SIG{'INT'} = 'does not exist';
+#sleep(300);
+#print "Done.\n";
+

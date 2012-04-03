@@ -1,0 +1,7 @@
+
+$newline="\n"; 
+$tab="\t"; 
+$backspace="\010"; 
+$formfeed="\014"; 
+$escape="\033"; 
+$return="\015"; 

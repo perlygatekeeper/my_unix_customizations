@@ -1,0 +1,9 @@
+# extracting environment variable 
+$variable = $ENV{'environment_variable_name'}
+         || `command`
+	 || 'default_value';
+
+# setting environment variable   
+# $ENV{'environment_variable_name'}=$variable;
+
+#example $EDITOR = $ENV{VISUAL} || $ENV{EDITOR} || emacs;

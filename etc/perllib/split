@@ -1,0 +1,2 @@
+# will split string into the array on space, comma or (semi) colon
+@array=split(/[\s,;:]+/,$string);

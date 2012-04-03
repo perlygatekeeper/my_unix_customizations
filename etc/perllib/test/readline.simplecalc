@@ -1,0 +1,22 @@
+#!/usr/bin/perl
+#
+# A perl-5 script to test various features of the Term::ReadLine module
+#
+$name = $0; $name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name";
+
+use Term::ReadLine;
+$term = new Term::ReadLine 'Simple Perl calc';
+$prompt = "Enter your arithmetic expression: ";
+$OUT = $term->OUT || STDOUT;
+while ( defined ($_ = $term->readline($prompt)) ) {
+  $res = eval($_), "\n";
+  warn $@ if $@;
+  print $OUT $res, "\n" unless $@;
+# history works without next line
+# $term->addhistory($_) if /\S/;
+}
+
+exit 0;
+
+__END__

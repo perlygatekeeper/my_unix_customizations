@@ -1,0 +1,40 @@
+#!/usr/local/bin/perl
+#
+# A perl script to test various permission schema
+#
+$name = $0;
+$name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name [-opt1] [-opt2] [-opt3]";
+
+  $message ="run from sendmail\n";
+  $message.="onwed by mss.root.\n";
+# $message.="setuid mss, swapped real/eff uid's.\n";
+  $message.="setgid, with real and eff gid set to 105.\n";
+# $message.="setgid mss, swapped real/eff gid's.\n";
+
+#($realuid,$effuid)=($>,$<);
+($realgid,$effgid)=($),$();
+#$>=$<=422;
+$)=$(=105;
+
+($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst)=localtime(time);
+@mo = ('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec');
+@day = ('Sun','Mon','Tue','Wed','Thu','Fri','Sat');
+$day="$day[$wday], $mo[$mon] $mday 19$year";
+
+$outfile="/tmp/$name.$$";
+
+system("touch $outfile");
+#open(OUTFILE,">$outfile") || die("$name: Cannot write to '$outfile': $!\n");
+#print OUTFILE "$name: $day\n";
+#print OUTFILE "     real (uid,gid): ($<,$()\n";
+#print OUTFILE "effective (uid,gid): ($>,$))\n";
+#print OUTFILE "$message\n";
+#close(OUTFILE);
+
+#($>,$<) = ($realuid,$effuid);
+($),$() = ($realgid,$effgid);
+
+exit 0;
+
+__END__

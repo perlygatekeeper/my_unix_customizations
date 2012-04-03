@@ -1,0 +1,3 @@
+# sort by second letter of strings
+list.sort( cmp=lambda x,y: cmp( x[1:], y[1:] ) )
+

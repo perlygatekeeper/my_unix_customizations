@@ -1,0 +1,25 @@
+#!/usr/local/localadm/bin/perl
+# script to print every nth line of a file (skipping first two lines)
+
+$name =~ s'.*/''; $usage = "usage: $name position\n";
+
+$maxcolumns=$ARGV[0];
+if ($maxcolumns eq "" ) { $maxcolumns=80; }
+
+for ($col=1;$col<=$maxcolumns;$col++) {
+  $num=$col%10;
+  print $num;
+}
+
+print "\n";
+
+$tens=int($maxcolumns/10);
+
+for ($ten=1;$ten<=$tens;$ten++) {
+  if ($ten<=9) { print " " x 9 . $ten; }
+  else         { print " " x 8 . $ten; }
+}
+
+print "\n";
+
+exit 0;

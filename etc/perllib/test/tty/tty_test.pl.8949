@@ -1,0 +1,13 @@
+speed 9600 baud; 
+rows = 57; columns = 80; ypixels = 859; xpixels = 743;
+eucw 1:0:0:0, scrw 1:0:0:0
+intr = ^c; quit = ^\; erase = ^?; kill = ^u;
+eof = ^d; eol = <undef>; eol2 = <undef>; swtch = <undef>;
+start = ^q; stop = ^s; susp = ^z; dsusp = ^y;
+rprnt = ^r; flush = ^o; werase = ^w; lnext = ^v;
+-parenb -parodd cs8 -cstopb -hupcl cread -clocal -loblk -crtscts -crtsxoff -parext 
+-ignbrk brkint ignpar -parmrk -inpck -istrip -inlcr -igncr icrnl -iuclc 
+ixon -ixany -ixoff imaxbel 
+isig icanon -xcase echo echoe echok -echonl -noflsh 
+-tostop echoctl -echoprt echoke -defecho -flusho -pendin iexten 
+opost -olcuc onlcr -ocrnl -onocr -onlret -ofill -ofdel 

@@ -1,0 +1,875 @@
+     1	12:49	echo $autologout
+     2	12:49	c
+     3	12:49	apt-get rlwrap
+     4	12:50	inst rlwrap
+     5	12:51	apt-cache search 'sqlplus'
+     6	12:52	apt-cache search 'sql*'
+     7	12:52	apt-cache search 'sql' | less
+     8	13:13	apt-cache search 'sqlplus' | less
+     9	13:13	apt-cache search 'sqlplus'
+    10	13:15	inst sqlline
+    11	10:27	RPN
+    12	13:03	dpkg -l 'YAML'
+    13	13:03	dpkg -l '*YAML*'
+    14	13:03	apt-cache search '*YAML*'
+    15	13:03	apt-cache search 'YAML.*'
+    16	13:04	dpkg -l | egrep -i '*YAML*'
+    17	13:05	inst libyaml-perl
+    18	13:05	dpkg -l | egrep -i '*YAML*'
+    19	13:06	inst python-yaml python3-yaml
+    20	13:07	ls
+    21	13:07	cd /media
+    22	13:07	ls
+    23	13:07	cd sf_Downloads/
+    24	13:07	ll ~/Downloads/
+    25	13:07	ll
+    26	13:08	cp documents-export-2011-12-07.zip ~/Downloads/
+    27	13:08	cd ~/Downloads/
+    28	13:08	ls
+    29	13:08	unzip documents-export-2011-12-07.zip
+    30	13:08	ll
+    31	13:08	unwrap bin.tgz etc.tgz python_the_hard_way.tgz
+    32	13:08	ll
+    33	13:08	rm documents-export-2011-12-07.zip
+    34	13:08	ls
+    35	13:08	ll
+    36	13:08	cd bin
+    37	13:08	ll
+    38	13:08	lr
+    39	13:09	lr ~/bin
+    40	13:09	lr
+    41	13:09	ls
+    42	13:09	ls -1
+    43	13:09	ls -l
+    44	13:09	ls -l | grep -v '>'
+    45	13:09	ls -l | grep -v '>' | cut -c55-
+    46	13:10	ls -l | grep -v '>' | cut -c50-
+    47	13:10	ls -l | grep -v '>' | cut -c52-
+    48	13:10	ls -l | grep -v '>' | cut -c53-
+    49	13:10	ls -l | grep -v '>' | cut -c53- > /tmp/new
+    50	13:10	pu ~/bin
+    51	13:10	ls -l | grep -v '>' | cut -c53-
+    52	13:10	ls -l | grep -v '>' | cut -c53- > /tmp/old
+    53	13:10	pu /tmp
+    54	13:10	ls
+    55	13:10	ll
+    56	13:10	sdiff old new
+    57	13:10	sdiff old new | less
+    58	13:11	ll sumlses
+    59	13:12	rot
+    60	13:12	ll sumlses
+    61	13:12	rot
+    62	13:12	ll sumlses
+    63	13:12	rot
+    64	13:12	ls
+    65	13:12	sdiff old new | less
+    66	13:13	sdiff old new | egrep '\||
+    67	13:13	sdiff old new | egrep '\||>'
+    68	13:14	sdiff old new | egrep '\||>' | cut -c50-
+    69	13:14	sdiff old new | egrep '\||>' | cut -c30-
+    70	13:14	sdiff old new | egrep '\||>' | expand | cut -c30-
+    71	13:14	sdiff old new | egrep '\||>' | expand | cut -c50-
+    72	13:14	sdiff old new | egrep '\||>' | expand | cut -c59-
+    73	13:14	sdiff old new | egrep '\||>' | expand | cut -c63-
+    74	13:14	sdiff old new | egrep '\||>' | expand | cut -c65-
+    75	13:14	sdiff old new | egrep '\||>' | expand | cut -c65- > toadd
+    76	13:14	vi toadd
+    77	13:15	cx toadd
+    78	13:15	rot
+    79	13:15	/tmp/toadd
+    80	13:15	rot
+    81	13:15	/tmp/toadd
+    82	13:15	rot
+    83	13:15	ls
+    84	13:56	ls -l | grep -v '>' | cut -c53- > /tmp/old
+    85	13:56	rot
+    86	13:56	sdiff old new | less
+    87	13:57	rot
+    88	13:57	ls
+    89	13:57	file c2ph
+    90	13:57	vi c2ph
+    91	13:57	which c2ph
+    92	13:57	rm c2ph
+    93	13:58	diff box box.bbak
+    94	13:58	diff box box.bak
+    95	13:58	ls
+    96	13:58	ll bo*
+    97	13:58	vi boxit
+    98	13:58	sdiff boxit boxit2 | less
+    99	13:59	man sdiff
+   100	13:59	sdiff -B -b boxit boxit2 | less
+   101	14:00	vi box
+   102	14:01	vi boxit
+   103	14:01	vi boxit2
+   104	14:01	ls
+   105	14:01	sdiff -bB in in.BAK
+   106	14:01	sdiff -bB in in.BAK | less
+   107	14:01	ll
+   108	14:02	rm in.BAK
+   109	14:02	cat tac
+   110	14:02	cat tac.orig
+   111	14:03	cat tac
+   112	14:04	ll tac*
+   113	14:04	ll
+   114	14:05	vi showtable
+   115	14:05	lsd
+   116	14:05	ll
+   117	14:05	vi X_to.orig
+   118	14:06	sdiff X_to.orig X_to | less
+   119	14:50	ls
+   120	14:50	cd ..
+   121	14:50	ls
+   122	14:50	cd VIM\ stuff/
+   123	14:50	ls
+   124	14:50	ll
+   125	14:50	ll /media/sf_Downloads/vimball.tar.gz
+   126	14:50	unwrap vimball.tar.gz
+   127	14:51	cd vimball/
+   128	14:51	ls
+   129	14:51	ll
+   130	14:51	cd ..
+   131	14:51	ls
+   132	14:51	ll
+   133	14:51	lr
+   134	14:51	cd vimball/
+   135	14:51	ls
+   136	14:51	ls -a
+   137	14:51	cd ..
+   138	14:51	cd bim
+   139	14:51	cd vimball/
+   140	14:51	ls
+   141	14:51	tar ztvf /media/sf_Downloads/vimball.tar.gz
+   142	14:52	tar zxvf /media/sf_Downloads/vimball.tar.gz
+   143	14:52	ls
+   144	14:53	cp -r * ~/.vim/
+   145	14:53	ll
+   146	14:53	ll ~/.vim/
+   147	14:53	cd ..
+   148	14:53	ls
+   149	14:53	vi a.vim
+   150	14:53	vi python_match.vim
+   151	14:54	unzip snipMate.zip
+   152	14:54	ll
+   153	14:54	lr
+   154	14:55	rm -r doc/ after/ autoload/ syntax/ snippets/ plugin/ ftplugin/
+   155	14:55	ll
+   156	14:55	unzip -\?
+   157	14:55	unzip -l surround.zip
+   158	14:56	cd ~/.VIM
+   159	14:56	cd ~/.vim
+   160	14:56	unzip ~/VIM\ stuff/surround.zip
+   161	14:56	ll
+   162	14:56	unzip ~/VIM\ stuff/snipMate.zip
+   163	14:56	ll
+   164	14:57	unzip -l ~/VIM\ stuff/matchit.zip
+   165	14:57	unzip -l ~/VIM\ stuff/NERD_tree.zip
+   166	14:57	unzip ~/VIM\ stuff/matchit.zip
+   167	14:58	unzip ~/VIM\ stuff/NERD_tree.zip
+   168	14:58	h > README.txt
+   169	14:58	vi README.txt
+   170	15:00	cat README.txt
+   171	15:06	ls ../VIM\ stuff/
+   172	15:07	ls ../VIM\ stuff/*.vim
+   173	15:08	cd plugin/
+   174	15:08	cp ~/VIM\ stuff/*.vim .
+   175	15:08	ll
+   176	15:08	h >> ../README.txt
+   177	15:08	vi ../README.txt
+   178	15:16	ls
+   179	15:16	cd ../
+   180	15:16	ls
+   181	15:16	cd syntax
+   182	15:16	ls
+   183	15:25	cd ..
+   184	15:25	rot
+   185	15:25	po
+   186	15:25	pu ../VIM\ stuff/
+   187	15:25	ls
+   188	15:26	cp /media/sf_Downloads/vcscommand-1.99.46.zip .
+   189	15:28	inst ack-grep
+   190	15:31	cp /media/sf_Downloads/mileszs-ack.vim-9895285.zip .
+   191	15:31	unzip -l mileszs-ack.vim-9895285.zip
+   192	15:32	unzip mileszs-ack.vim-9895285.zip
+   193	15:32	ll
+   194	15:32	rm mileszs-ack.vim-9895285.zip
+   195	15:32	unzip -l vcscommand-1.99.46.zip
+   196	15:32	cd ../.cim
+   197	15:32	cd ../.vim
+   198	15:32	ls
+   199	15:32	unzip ~/VIM\ stuff/vcscommand-1.99.46.zip
+   200	15:33	h | tail -2 >> README.txt
+   201	15:33	vi README.txt
+   202	15:33	vim ../VIM\ stuff/mileszs-ack.vim-9895285/README.md
+   203	15:33	which vim
+   204	15:34	vi ../VIM\ stuff/mileszs-ack.vim-9895285/README.md
+   205	15:34	vi ../VIM\ stuff/mileszs-ack.vim-9895285/Rakefile
+   206	15:35	cp ../VIM\ stuff/mileszs-ack.vim-9895285/plugin/ack.vim plugin/
+   207	15:35	cp ../VIM\ stuff/mileszs-ack.vim-9895285/doc/ack.txt doc/
+   208	15:35	h | tail >> README.txt
+   209	15:35	vi README.txt
+   210	15:38	rot
+   211	15:38	cd ../VIM\ stuff/
+   212	15:38	ls
+   213	15:38	cp /media/sf_Downloads/command-t-1.3.vba .
+   214	15:38	vim command-t-1.3.vba
+   215	15:38	vi command-t-1.3.vba
+   216	15:39	which vi
+   217	15:39	which vim
+   218	15:39	apt-cache search vim
+   219	15:40	dpkg -l | grep -i vim
+   220	15:41	inst vim
+   221	15:41	ls
+   222	15:41	vim
+   223	16:06	vim ../R
+   224	16:07	vim ../.vim/README.txt
+   225	16:08	cd ../.vim/plugin/
+   226	16:08	ls
+   227	16:15	svn up
+   228	16:15	cd
+   229	16:15	cd MantaDev/
+   230	16:15	ls
+   231	16:15	svn up
+   232	16:15	cd comsite5.trunk1/
+   233	16:15	ls
+   234	16:16	svn up
+   235	16:16	swc sync
+   236	16:16	ls
+   237	16:17	ll
+   238	16:17	lr
+   239	16:28	lsd
+   240	16:28	vi run_rsync.txt
+   241	16:32	vi ~/.vim/plugin/surround.vim
+   242	16:32	vi run_rsync.txt
+   243	16:33	lsd
+   244	16:33	which ack
+   245	16:33	pp
+   246	11:39	vim
+   247	11:54	apt-cache search vim | grep perl
+   248	11:54	cd /usr/src/
+   249	11:54	ls
+   250	11:55	apt-cache search vim
+   251	11:56	man apt-cache
+   252	11:56	apt-cache showpkg vim-scripts
+   253	11:56	man apt-cache
+   254	11:58	apt-cache -f showpkg vim-scripts
+   255	11:58	man apt-cache
+   256	11:59	man dpkg
+   257	12:02	apt-cache help
+   258	12:03	apt-cache -f showsrc vim-scripts
+   259	12:06	apt-get
+   260	12:15	apt-get source vim-scripts
+   261	12:17	apt-cache search git
+   262	12:17	apt-cache search git | wwo -digit
+   263	12:17	apt-cache search git | grep -v digit
+   264	12:19	apt-get source vim-scripts
+   265	12:22	apt-cache search '^git'
+   266	12:23	inst git-man
+   267	12:23	inst git-sh
+   268	12:24	inst git-doc git-el git-arch git-cvs git-svn git-email git-daemon-run git-gui gitk gitweb diffutils-doc
+   269	12:29	which git
+   270	12:29	man git
+   271	12:34	mkdir vim-scripts
+   272	12:34	sudo mkdir vim-scripts
+   273	12:34	ls
+   274	12:34	cd vim-scripts/
+   275	12:34	ls
+   276	12:35	rp
+   277	12:37	cd vim-scripts/
+   278	12:38	man git-sh
+   279	12:38	man git
+   280	12:39	apt-get source vim-scripts
+   281	12:39	git checkout git://git.debian.org/git/pkg-vim/vim-scripts.git
+   282	12:39	git init
+   283	12:39	sudo git init
+   284	12:40	sudo git checkout git://git.debian.org/git/pkg-vim/vim-scripts.git
+   285	12:40	man git
+   286	12:40	sudo git checkout -html git://git.debian.org/git/pkg-vim/vim-scripts.git
+   287	12:40	man git
+   288	12:41	sudo git checkout --html-path git://git.debian.org/git/pkg-vim/vim-scripts.git
+   289	12:42	sudo git clone git://git.debian.org/git/pkg-vim/vim-scripts.git
+   290	12:42	ls
+   291	12:42	cd vim-scripts/
+   292	12:42	ls
+   293	12:42	cd dod
+   294	12:42	cd doc
+   295	12:42	ls
+   296	12:44	cd
+   297	12:44	ls
+   298	12:44	cd MantaDev/
+   299	12:44	ls
+   300	12:46	cd comsite5.trunk1/
+   301	12:46	svn up
+   302	12:46	swc sync
+   303	12:49	ls ~/.vim/doc/
+   304	12:50	rot
+   305	12:50	pu ~/VIM\ stuff/
+   306	12:50	ls
+   307	12:51	vi command-t-1.3.vba
+   308	12:52	rot
+   309	12:52	ls
+   310	12:52	ls doc
+   311	12:52	rot
+   312	12:52	ls
+   313	12:52	vim
+   314	13:06	fg
+   315	13:07	vim ~/.vimrc
+   316	13:09	pu /media/sf_Downloads/
+   317	13:09	ls
+   318	13:10	tar ztvf /media/sf_Downloads/parkers.tgz
+   319	13:10	tar ztvf /media/sf_Downloads/parkers.tgz | head
+   320	13:10	vi ~/.tcshrc
+   321	13:14	tar ztvf /media/sf_Downloads/vim_laptop.tgz
+   322	13:14	rot
+   323	13:14	ls
+   324	13:14	mkdir laptop
+   325	13:14	cd laptop
+   326	13:14	ls
+   327	13:14	tar ztvf /media/sf_Downloads/vim_laptop.tgz
+   328	13:14	tar zxvf /media/sf_Downloads/vim_laptop.tgz
+   329	13:14	ls
+   330	13:14	mv .vim _vim
+   331	13:14	ls
+   332	13:14	cd _vim
+   333	13:14	ls
+   334	13:14	cd doc
+   335	13:14	ls
+   336	13:15	ls ~/.vim/doc
+   337	13:15	cd ../../../ ls
+   338	13:15	cd ../../../
+   339	13:15	ls
+   340	13:20	mv /media/sf_Downloads/Align.vba.gz .
+   341	13:20	gunzip Align.vba.gz
+   342	13:20	ls
+   343	13:21	vim
+   344	13:21	rot
+   345	13:21	ls
+   346	13:22	cd doc
+   347	13:22	ls
+   348	13:22	vim
+   349	13:24	cd ..
+   350	13:24	ls
+   351	13:24	ls -a
+   352	13:24	cat .vimrc
+   353	13:24	rot
+   354	13:26	pu ~
+   355	13:27	cp ~/VIM\ stuff/laptop/.vimrc .
+   356	13:27	cd ~/VIM\ stuff/laptop/.vimrc
+   357	13:27	ls
+   358	13:27	cd VIM\ stuff/laptop/
+   359	13:27	ls
+   360	13:27	ls -a
+   361	13:27	ls -la
+   362	13:27	cat ._.vim
+   363	13:27	PuTTY
+   364	13:28	rm ._.vim ._.vimrc
+   365	13:28	cd _vim
+   366	13:28	ls -al
+   367	13:28	find -t file -name '._*'
+   368	13:28	find -type f -name '._*'
+   369	13:28	find -name '._*'
+   370	13:29	find -name '._*' -a not -name '*snip*'
+   371	13:29	find -name '._*' -a ! -name '*snip*'
+   372	13:29	find -name '._*' -a ! -name '*snip*' -exec rm {} \;
+   373	13:30	rot
+   374	13:30	cd .vim
+   375	13:30	ls
+   376	13:30	cd colors
+   377	13:30	ls
+   378	13:30	cp ~/VIM\ stuff/laptop/_vim/colors/* .
+   379	13:30	cd ..
+   380	13:30	cd syntax/
+   381	13:30	ls
+   382	13:31	cp ~/VIM\ stuff/laptop/_vim/syntax/bbcode.vim .
+   383	13:31	cp ~/VIM\ stuff/laptop/_vim/syntax/snippet.vim .
+   384	13:31	cp ~/VIM\ stuff/laptop/_vim/syntax/svnannotate.vim .
+   385	13:31	ls
+   386	13:31	cd ..
+   387	13:31	ls
+   388	13:31	cd plugin/
+   389	13:31	ls
+   390	13:32	ll ~/VIM\ stuff/repeat.vim
+   391	13:32	cp ~/VIM\ stuff/repeat.vim .
+   392	13:32	ls
+   393	13:39	po
+   394	13:39	rot
+   395	13:39	po
+   396	13:39	ls
+   397	15:39	svn up
+   398	15:39	cd ../
+   399	17:04	ls
+   400	17:04	lsd
+   401	17:04	cd com
+   402	17:04	cd comsite5.trunk1/
+   403	17:04	ls
+   404	17:04	cd ..
+   405	17:08	ls
+   406	17:08	cd comsite5.trunk1/
+   407	17:08	ls
+   408	17:08	cd ..
+   409	17:08	ls
+   410	17:09	svn copy http://subversion/svn/main/comsite5/trunk http://subversion/svn/main/comsite5/branches/member-service
+   411	17:10	ls
+   412	17:11	mkdir comsite5.branch.member-service
+   413	17:11	cd comsite5.branch.member-service
+   414	17:11	ls
+   415	17:11	svn co http://subversion/svn/main/comsite5/branches/member-service
+   416	17:12	ls
+   417	17:12	cd ..
+   418	17:12	ls
+   419	17:12	mv comsite5.branch.member-service comsite5.branches
+   420	17:12	kll
+   421	17:12	ll
+   422	17:13	cd comsite5.branches/
+   423	17:13	ls
+   424	17:13	cd member-service/
+   425	17:13	ls
+   426	17:35	cd member-service/
+   427	17:38	ls
+   428	17:38	cd Manta/
+   429	17:38	ls
+   430	17:38	cd Web/
+   431	17:38	ls
+   432	17:38	vi MemberProfile
+   433	17:39	cd ../../
+   434	17:39	ls
+   435	17:39	cd templates/
+   436	17:39	ls
+   437	17:39	cd ..
+   438	17:39	vim
+   439	9:02	cd ../
+   440	9:02	ls
+   441	9:03	svn status
+   442	9:03	pwd
+   443	9:03	ls
+   444	9:03	cd member-service/
+   445	9:03	ls
+   446	9:03	svn status
+   447	9:05	syn sync
+   448	9:05	swc sync
+   449	9:05	swc sync --name=comsite5
+   450	9:05	swc init
+   451	9:09	swc --name=comsite5 sync
+   452	9:19	vim
+   453	9:19	swc sync
+   454	9:20	svn status
+   455	9:20	svn up
+   456	9:20	swc sync
+   457	9:23	perl -c Manta/Web/MemberProfile/Contacts.pm
+   458	9:34	svn up
+   459	9:34	swc sync
+   460	9:57	svn revert
+   461	9:57	svn status
+   462	9:57	svn revert Manta/Web/MemberProfile/Contacts.pm
+   463	9:57	svn sync
+   464	9:57	svn up
+   465	9:57	swc sync
+   466	10:16	man ack
+   467	10:16	which ack
+   468	10:16	ack help
+   469	10:16	ack --help
+   470	10:17	ack -thpppt
+   471	10:17	ack --thpppt
+   472	10:17	ack --man
+   473	10:19	ack profile.html
+   474	10:19	ack profile_view
+   475	10:20	ack --man
+   476	10:22	ack -G profile_view
+   477	10:22	ack --man
+   478	10:22	ack -g profile_view
+   479	10:23	vi `ack -g profile_view`
+   480	10:25	ack -g profile_view
+   481	10:25	vi `ack -g profile_view`
+   482	10:25	ack wkhr.to.canonical_url
+   483	10:25	ack canonical_url
+   484	10:26	ack canonical_url -m 1
+   485	10:27	cd Manta/
+   486	10:27	ls
+   487	10:28	vi Member3Mgr.pm
+   488	10:28	cd Member3Mgr/
+   489	10:28	ls
+   490	10:28	vi MemberCache.pm
+   491	10:29	cd ..
+   492	10:29	ls
+   493	10:29	ack sort
+   494	10:30	ack --pager=less sort
+   495	10:30	ack sort | less
+   496	10:31	vi Member3Mgr.pm
+   497	12:41	h | less
+   498	12:41	vi `ack -g profile_view`
+   499	12:41	cd ..
+   500	12:41	vi `ack -g profile_view`
+   501	12:45	vi Manta/Member3Mgr.pm
+   502	12:57	vim -p `ack -g profile_view` Manta/Member3Mgr.pm
+   503	12:58	c
+   504	12:58	tmux
+   505	12:59	which look
+   506	12:59	file `which look`
+   507	12:59	man look
+   508	12:59	which seek
+   509	12:59	vi ~/.tcshrc
+   510	13:00	vi ~/.manta
+   511	13:00	which search
+   512	13:00	which \search
+   513	13:00	search tmux
+   514	13:00	inst tmux
+   515	13:01	tmux
+   516	16:24	ifconfig
+   517	14:53	ls
+   518	14:53	vim Manta/Member3Mgr.pm
+   519	14:54	find . -name Container.pm
+   520	14:55	vim Manta/Member3Mgr.pm ./Manta/Connection/Container.pm
+   521	15:57	find . -name 'profile_view.html'
+   522	15:57	vi `find . -name 'profile_view.html'`
+   523	15:59	svn up
+   524	15:59	swc sync
+   525	16:00	vi /home/sbx/sandboxes/member-service/installs/inuse/9zyenM02CI/Manta/Member3Mgr.pm
+   526	16:01	vi Manta/Member3Mgr.pm
+   527	16:01	swc sync
+   528	16:02	svn revert Manta/Member3Mgr.pm
+   529	16:02	swc sync
+   530	16:02	svn status
+   531	16:04	vi Manta/Connection/Container.pm
+   532	16:04	swc sync
+   533	16:05	vi Manta/Connection/Container.pm
+   534	16:05	swc sync
+   535	16:05	vi Manta/Connection/Container.pm
+   536	16:06	swc sync
+   537	16:07	vi Manta/Connection/Container.pm
+   538	16:08	swc sync
+   539	16:08	vi Manta/Connection/Container.pm
+   540	16:09	swc sync
+   541	16:10	vi Manta/Connection/Container.pm
+   542	16:10	swc sync
+   543	16:11	vi Manta/Connection/Container.pm
+   544	16:12	swc sync
+   545	16:12	vi Manta/Connection/Container.pm
+   546	16:13	swc sync
+   547	16:13	vi Manta/Connection/Container.pm
+   548	16:16	swc sync
+   549	16:16	vi Manta/Connection/Container.pm
+   550	16:18	swc sync
+   551	16:18	vi Manta/Connection/Container.pm
+   552	16:19	swc sync
+   553	16:19	vi Manta/Connection/Container.pm
+   554	16:21	swc sync
+   555	16:21	vi Manta/Connection/Container.pm
+   556	16:22	swc sync
+   557	16:22	vi Manta/Connection/Container.pm
+   558	16:23	swc sync
+   559	16:23	vi Manta/Connection/Container.pm
+   560	16:24	swc sync
+   561	16:24	a
+   562	16:25	lr ~/bin
+   563	16:32	find . -name 'profile_view.html'
+   564	16:32	vi `find . -name 'profile_view.html'`
+   565	16:33	swc sync
+   566	16:34	vi Manta/Connection/Container.pm
+   567	16:36	swc sync
+   568	16:36	vi Manta/Connection/Container.pm
+   569	16:36	swc sync
+   570	16:39	vi Manta/Connection/Container.pm
+   571	16:42	swc sync
+   572	16:43	vi Manta/Connection/Container.pm
+   573	16:44	vi `find . -name 'profile_view.html'`
+   574	16:45	vi Manta/Connection/Container.pm
+   575	16:50	pu ../../
+   576	16:50	ls
+   577	16:50	cd core.trunk1/
+   578	16:50	ls
+   579	16:50	cd Manta/
+   580	16:50	ls
+   581	16:50	vi DateTime.pm
+   582	16:51	po
+   583	16:51	vi Manta/Connection/Container.pm
+   584	16:54	swc sync
+   585	16:55	vi Manta/Connection/Container.pm
+   586	17:12	swc sync
+   587	17:13	vi Manta/Connection/Container.pm
+   588	17:24	swc sync
+   589	17:49	vi Manta/Connection/Container.pm
+   590	17:51	swc sync
+   591	17:51	vi Manta/Connection/Container.pm
+   592	17:54	swc sync
+   593	17:55	vi Manta/Connection/Container.pm
+   594	18:03	swc sync
+   595	18:05	vi Manta/Connection/Container.pm
+   596	18:06	swc sync
+   597	8:32	cat > ~/.tmux.conf << EOF
+   598	8:35	tmux
+   599	8:36	echo $term
+   600	8:36	set term screen
+   601	8:36	tmux
+   602	8:37	locate xterm | less
+   603	8:37	set term xterm
+   604	8:37	locate xterm | less
+   605	8:37	cd /lib/terminfo
+   606	8:37	ls
+   607	8:37	cd s
+   608	8:37	ls
+   609	8:38	set term screen
+   610	8:38	echo $term
+   611	8:38	set term=screen
+   612	8:38	echo $term
+   613	8:38	tmux
+   614	8:40	echo $term
+   615	8:42	tmux
+   616	9:20	ll
+   617	9:20	vi /etc/terminfo/README
+   618	9:21	po
+   619	9:21	cd
+   620	9:21	cd MantaDev/
+   621	9:21	ls
+   622	9:21	cd comsite5.trunk1/
+   623	9:21	ls
+   624	9:22	cd locate member
+   625	9:22	locate member
+   626	9:22	locate member | less
+   627	9:23	ls
+   628	9:23	ll
+   629	9:23	cd ..
+   630	9:23	cd comsite5.trunk1/
+   631	9:23	ls
+   632	9:23	lr
+   633	9:23	h | grep cd
+   634	9:24	cd ../comsite5.branches/
+   635	9:24	ls
+   636	9:24	cd member-service/
+   637	9:24	ls
+   638	9:24	cd Manta/
+   639	9:24	ls
+   640	9:24	vi Manta/Connection/Container.pm
+   641	9:24	cd ..
+   642	9:24	vi Manta/Connection/Container.pm
+   643	9:32	vi `find . -name 'profile_view.html'`
+   644	9:33	svn up
+   645	9:33	swc sync
+   646	9:35	vi Manta/Connection/Container.pm
+   647	9:38	swc sync
+   648	9:40	vi Manta/Connection/Container.pm
+   649	9:42	swc sync
+   650	9:45	vi Manta/Connection/Container.pm
+   651	9:46	svn up
+   652	9:47	vi `find -name 'recommend*'`
+   653	9:49	find -name 'recommend*'
+   654	9:50	find -name 'recommend_company.html'
+   655	9:50	vi `find -name 'recommend_company.html'`
+   656	9:54	swc sync
+   657	10:20	vi `find . -name 'profile_view.html'`
+   658	10:20	vi Manta/Connection/Container.pm
+   659	10:34	fg
+   660	10:36	vi `find . -name 'profile_view.html'`
+   661	10:36	vi Manta/Connection/Container.pm
+   662	10:39	vi ~/.vimrc
+   663	10:39	vi Manta/Connection/Container.pm
+   664	10:43	svn up
+   665	10:43	swc sync
+   666	10:46	vi Manta/Connection/Container.pm
+   667	10:46	vi `find . -name 'profile_view.html'`
+   668	10:47	vi Manta/Connection/Container.pm
+   669	10:47	swc sync
+   670	11:00	vi Manta/Connection/Container.pm
+   671	11:01	swc sync
+   672	11:01	vi Manta/Connection/Container.pm
+   673	11:02	swc sync
+   674	11:03	perldoc Data::Dumper
+   675	11:04	vi Manta/Connection/Container.pm
+   676	11:04	swc sync
+   677	11:06	perldoc Data::Dumper
+   678	11:06	vi Manta/Connection/Container.pm
+   679	11:07	swc sync
+   680	11:09	vi Manta/Connection/Container.pm
+   681	11:17	vi `find . -name 'profile_view.html'`
+   682	11:18	swc sync
+   683	11:19	vi Manta/Connection/Container.pm
+   684	11:19	swc sync
+   685	11:20	vi Manta/Connection/Container.pm
+   686	11:23	swc sync
+   687	11:24	vi Manta/Connection/Container.pm
+   688	11:25	swc sync
+   689	11:27	vi Manta/Connection/Container.pm
+   690	11:41	swc sync
+   691	11:42	vi Manta/Connection/Container.pm
+   692	11:46	swc sync
+   693	11:48	vi `find . -name 'profile_view.html'`
+   694	11:49	swc sync
+   695	11:50	vi `find . -name 'profile_view.html'`
+   696	11:50	swc sync
+   697	11:51	vi Manta/Connection/Container.pm
+   698	11:54	swc sync
+   699	11:58	vi Manta/Connection/Container.pm
+   700	12:04	vi ~/.vimrc
+   701	12:04	vi Manta/Connection/Container.pm
+   702	12:05	vi ~/.vimrc
+   703	12:05	vi Manta/Connection/Container.pm
+   704	12:13	swc sync
+   705	12:14	vi Manta/Connection/Container.pm
+   706	12:14	swc sync
+   707	13:04	perldoc Date::Time
+   708	13:04	vi Manta/Connection/Container.pm
+   709	13:06	swc sync
+   710	13:08	pushd ../../../..
+   711	13:08	cd sparker/
+   712	13:08	ls
+   713	13:08	cd MantaDev/
+   714	13:08	ls
+   715	13:08	find . -name 'DateTime'
+   716	13:08	find . -name 'DateTime.pm'
+   717	13:09	find . -name 'DateTime' | xargs ls -l
+   718	13:09	find . -name 'DateTime.pm' | xargs ls -l
+   719	13:09	cd core.trunk1/Manta
+   720	13:09	ls
+   721	13:09	vi DateTime.pm Util/DateTime.pm
+   722	13:15	vim -p DateTime.pm Util/DateTime.pm
+   723	13:15	po
+   724	13:15	vi Manta/Connection/Container.pm
+   725	13:16	vi ~/bin/crk
+   726	13:16	vi Manta/Connection/Container.pm
+   727	13:18	cat Manta/Connection/Container.pm | crk as_time_t epoch
+   728	13:18	cat Manta/Connection/Container.pm | crk as_time_t epoch | /dev/null
+   729	13:18	cat Manta/Connection/Container.pm | crk as_time_t epoch > /dev/null
+   730	13:18	cat Manta/Connection/Container.pm | crk as_time_t epoch | & less
+   731	13:19	vi Manta/Connection/Container.pm
+   732	13:19	vi ~/bin/crk
+   733	13:21	wc Manta/Connection/Container.pm
+   734	13:21	swc sync
+   735	13:24	vi `find . -name 'profile_view.html'`
+   736	13:24	pu ~
+   737	13:24	ls
+   738	13:24	ls -a
+   739	13:24	vi .vimrc
+   740	13:48	po
+   741	13:48	vi find . -name 'profile_view.html'
+   742	13:48	find . -name 'profile_view.html'
+   743	13:48	vim ./templates/profile/inc/profile_view.html
+   744	13:49	ll ~/.viminfo
+   745	13:49	date
+   746	13:54	vi ~/.viminfo
+   747	13:56	vim ./templates/profile/inc/profile_view.html
+   748	13:56	vi Manta/Connection/Container.pm
+   749	13:57	svn up
+   750	13:57	swc sync
+   751	13:58	vi Manta/Connection/Container.pm
+   752	13:58	swc sync
+   753	13:59	vi find . -name 'profile_view.html'
+   754	13:59	vim ./templates/profile/inc/profile_view.html
+   755	14:00	swc sync
+   756	14:01	vim ./templates/profile/inc/profile_view.html
+   757	14:01	swc sync
+   758	14:02	vim ./templates/profile/inc/profile_view.html
+   759	14:03	wc Manta/Connection/Container.pm
+   760	14:03	vi Manta/Connection/Container.pm
+   761	14:05	svn up
+   762	14:05	swc sync
+   763	14:06	vi Manta/Connection/Container.pm
+   764	14:06	swc sync
+   765	14:12	ll ~/bin/s*
+   766	14:14	ls
+   767	14:14	cd Manta
+   768	14:14	ls
+   769	14:14	cd Web
+   770	14:14	ls
+   771	14:14	vi LoginPage.pm
+   772	14:17	cd ../../
+   773	14:17	ls
+   774	14:17	svn status
+   775	14:17	vi Manta/Connection/Container.pm
+   776	14:19	swc sync
+   777	15:26	svn up
+   778	15:30	vi Manta/Connection/Container.pm
+   779	15:30	cd Manta/Connection/
+   780	15:30	ls
+   781	15:30	cp Container.pm Container-with-debug.pm
+   782	15:30	vi .svn
+   783	15:31	svn ignore Container-with-debug.pm
+   784	15:31	svn help
+   785	15:33	svn ps ignore Container-with-debug.pm
+   786	15:33	svn ps Container-with-debug.pm ignore
+   787	15:35	svn pg Container-with-debug.pm
+   788	15:35	svn ps Container-with-debug.pm svn:ignore
+   789	15:37	svn ps ignore Container-with-debug.pm .
+   790	15:38	svn ps svn:ignore Container-with-debug.pm .
+   791	15:38	svn pl
+   792	15:38	svn pg ignore
+   793	15:38	svn propdel ignore .
+   794	15:38	svn pl
+   795	15:38	svn ps svn:ignore Container-with-debug.pm .
+   796	15:38	svn pg svn:ignore Container-with-debug.pm .
+   797	15:38	ls
+   798	15:39	vi Container.pm
+   799	17:04	cd ../..
+   800	17:04	ls
+   801	17:04	svn diff Manta/Connection/Container.pm
+   802	17:06	svn diff Manta/Connection/Container.pm > /media/sf_Downloads/Container.patch
+   803	17:06	vi /media/sf_Downloads/Container.patch
+   804	17:08	vi `find . -name 'profile_view.html'`
+   805	17:09	vi /media/sf_Downloads/Container.patch
+   806	17:09	vi Manta/Connection/Container.pm
+   807	17:10	vi `find . -name 'profile_view.html'`
+   808	17:17	which swc
+   809	17:18	pu /home/sparker/sbx-mgr-prod
+   810	17:18	svn status
+   811	17:18	ls -a
+   812	17:18	svn up
+   813	17:45	po
+   814	17:45	svn status
+   815	17:46	cat /media/sf_Downloads/Container.patch
+   816	10:35	ping ecnext87
+   817	10:35	ping ecnext87.ecnext.com
+   818	10:37	ping ecnext37.ecnext.com
+   819	11:50	svn status
+   820	11:50	svn revert Manta/Web/LoginPage.pm
+   821	11:50	svn status
+   822	11:51	swc sync
+   823	13:23	vi Manta/Connection/Container.pm
+   824	13:27	svn up
+   825	13:27	swc sync
+   826	16:23	vi Manta/Connection/Container.pm
+   827	13:47	perldoc -f const
+   828	13:47	perldoc -f constant
+   829	13:47	perldoc -f use
+   830	13:50	perldoc -f pragma
+   831	13:50	perldoc -k pragma
+   832	13:58	perldoc perl
+   833	13:58	perldoc perlguts
+   834	10:21	tmux
+   835	10:22	ls -a
+   836	10:22	vi .tmux.conf
+   837	10:22	tmux
+   838	10:48	byobu
+   839	10:49	inst byobu
+   840	10:49	byobu
+   841	11:25	ping ecnext87.ecnext.com
+   842	12:28	cd $md
+   843	12:28	ls
+   844	12:28	cd comsite5.branches/
+   845	12:28	ls
+   846	12:28	cd member-service/
+   847	12:28	ls
+   848	12:59	vi Manta/Connection/Container.pm
+   849	13:11	svn status
+   850	13:11	svn up
+   851	13:11	swc sync
+   852	13:21	svn diff templates/c/inc/connection_overlays/recommend_company.html
+   853	13:22	svn revert templates/c/inc/connection_overlays/recommend_company.html
+   854	13:22	svn status
+   855	13:22	svn up
+   856	13:25	svn vi templates/profile/inc/profile_view.html
+   857	13:25	vi templates/profile/inc/profile_view.html
+   858	13:27	svn up
+   859	13:28	svn --help
+   860	13:28	svn --help committ
+   861	13:28	svn --help commit
+   862	13:29	svn commit "trac #4226, (For mutilple existing connections, most recent will be listed first (reverse chronological order based on the from date) is completed and tested."
+   863	13:30	svn commit -m "trac #4226, (For mutilple existing connections, most recent will be listed first (reverse chronological order based on the from date) is completed and tested."
+   864	13:37	ack 'Refine Your Results"
+   865	13:37	ack 'Refine Your Results'
+   866	14:02	svn copy http://subversion/svn/main/comsite5/trunk http://subversion/svn/main/comsite5/branches/trac_4743_sparker_mb_connections_filter -m "branch for #4743, to add a member- connections/associations filter to MegaBrowse"
+   867	14:03	pu ~
+   868	14:03	cd .subversion/
+   869	14:03	ls
+   870	14:03	vi servers
+   871	14:05	po
+   872	14:05	cd ..
+   873	14:05	ls
+   874	14:06	svn co http://subversion/svn/main/comsite5/branches/trac_4743_sparker_mb_connections_filter/
+   875	14:08	h > ~/early.history

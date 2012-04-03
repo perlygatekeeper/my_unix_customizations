@@ -1,0 +1,82 @@
+#!/usr/local/bin/perl
+#
+# A perl script to first output contents of a list of files
+# then to echo STDIN
+#
+$name = $0;
+$name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name [-e] [-|-STR|filename]*";
+
+#   ***   Parse Command Line Argument(s)   ***
+while ( @ARGV ) {
+  if ( $ARGV[0] eq '-e' ) {
+    $stderr=1;
+    shift;
+  } elsif ( $ARGV[0] =~ '-([^?d]\S*)') {
+    push(@FILES,'-'); shift;
+    $STOP[$files]=$1;
+    $files++;
+    $stdin++;
+  } elsif ( $ARGV[0] eq '-d' ) {
+    $debug=1;
+    shift;
+  } elsif ( $ARGV[0] eq '-?' ) {
+    do help($usage);
+  } else {
+    if ( ( -r $ARGV[0] ) || ( $ARGV[0] == '-' ) ) {
+      $files++;
+      $stdin++ if ($ARGV[0] =~ /^-$/);
+      push(@FILES,shift);
+    } else {
+      warn("unknown option OR unreadable file: '$ARGV[0]'\n...discarding\n");
+      shift;
+    }
+  }
+}  # end while
+if ( ! $stdin) {
+  push(@FILES,'-');
+  $files++;
+}
+
+# DEBUGGING
+if ($debug) {
+  print STDERR "stdin '$stdin'\n";
+  print STDERR "files '$files'\n";
+  print STDERR "FILES\n";
+  foreach $i ($[..$#FILES) { print STDERR "$i\t'$FILES[$i]'\n"; }
+  print STDERR "STOP\n";
+  foreach $i ($[..$#STOP) { print STDERR "$i\t'$STOP[$i]'\n"; }
+}
+# DEBUGGING
+
+select(STDOUT); $|=1;
+while ( $FILE=shift(@FILES) ) {
+  if ($FILE eq '-') {
+    print STDERR "Waiting for STDIN as file: '$fileno'\n";
+    if ($STOP[$fileno]) {
+      print STDERR "'$STOP[$fileno]' will serve as EOF for this input.\n";
+    }
+  }
+  open(FILE,"$FILE") || die("$name: Cannot open '$FILE': $!\n");
+  while ( <FILE> ) {
+    if ( $STOP[$fileno] && ( $_=~/^$STOP[$fileno]$/ ) ) {
+      print STDERR "stopped on '$STOP[$fileno]' for file '$fileno'\n"
+        if ($debug);
+      last;
+    }
+    print STDERR if ($stderr);
+    print "$.\.$fileno ($STOP[$fileno];$ARGV[0]):$_";
+  }
+  $fileno++;
+}
+#   ***   SUBROUTINES   ***
+#   ---   ---   ---
+sub help {
+  $\="\n";
+  print "@_[0]";
+  print "'-e'\tcopy the STDIN to STDERR as well as to STDOUT here";
+  print "'-'\tread from STDIN here";
+  print "'-STR'\tread from STDIN here, until first line exactly matching STR";
+  print "filename\tname of file to include inthe STDOUT stream";
+  exit 1;
+}
