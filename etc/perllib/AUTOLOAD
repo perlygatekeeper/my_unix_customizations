@@ -1,0 +1,35 @@
+# simplest AUTOLOAD
+sub AUTOLOAD {      
+  my $self = shift;                             
+  my $type = ref($self) || croak "AUTOLOAD called as $AUTOLOAD and '$self' is not an object";
+  my $name = $AUTOLOAD;                         
+  my($table, $field);
+# print "We find that we are type '$type' called with the name '$name'\n";
+# when called from an instance of the DPR::User, $user->SOME_METHOD();
+# We find that we are type 'DPR::User' called with the name 'DPR::User::SOME_METHOD'
+# obtain table name from type of object we are
+  if ($type=~/DPR$/i) {        # we have a DPR instance
+    ($table=$name) =~ s/.*://; # strip fully-qualified portion
+    if (not exists $primary_keys{$table}) { return undef; }
+    if (not $self->{$table}) {
+      $self->{$table}=$self->get_field_types($table);
+    }
+    return $self->{$table};
+  } else {                     # we have a sub-class of DPR instance
+    ($table=$type) =~ s/.*://; # strip fully-qualified portion
+    ($field=$name) =~ s/.*://; # strip fully-qualified portion
+    $table=lc $table;
+    $table.='s' unless ($table=~/log/i);
+# instead of following validate that field exists within table
+# OR Begins with an underscore!
+#   unless (exists $self->{$name} ) {
+#     croak "Can't access `$name' field in object of class $type";
+#   } 
+    if (@_) { 
+      $self->{'_natural_key'}='';
+      return $self->{$field} = shift;
+    } else {
+      return $self->{$field};
+    }
+  }
+}

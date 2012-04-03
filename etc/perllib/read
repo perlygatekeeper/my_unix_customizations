@@ -1,0 +1,7 @@
+  $infile="$name.in";
+  open(INFILE,"<$infile")
+    || die("$name: Cannot read from '$infile': $!\n");
+  while (<INFILE>) {
+    print $_;
+  }
+  close(INFILE);

@@ -1,0 +1,5 @@
+#   ***   Define Values & Flags   ***
+
+$true=1;
+$false=0;
+

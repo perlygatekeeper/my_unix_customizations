@@ -1,0 +1,19 @@
+
+#   ***   Parse Command Line Argument(s)   ***
+while ( @ARGV >= 1 ) {
+  if      ( $ARGV[0] eq '-r' ) {
+    $rflag=1;
+    shift;
+  } elsif ( $ARGV[0] eq '-t' ) {
+    $crackstring = "$ARGV[1]";
+    shift; shift;
+  } elsif ( $ARGV[0] eq '-m' ) {
+    $mflag=1;
+    shift;
+  } elsif ( $ARGV[0] eq '-?' ) {
+    do help($usage);
+    shift;
+  } else {
+    last;
+  }
+}  # end while

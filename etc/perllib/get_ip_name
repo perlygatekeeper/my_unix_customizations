@@ -1,0 +1,21 @@
+sub get_ip_name {
+  my($ip_number)=@_;
+  my($ip_name)='';
+# Get results from a unix command.
+  $ENV{SHELL}="/bin/sh";
+  $command="/usr/local/bin/host $ip_number 2>&1 |";
+  open(COMMAND,"$command") || die("$ip_name: Cannot find IP ip_name with '$command': $!.");
+  my(@results)=<COMMAND>;
+  close(COMMAND);
+# Check if command was successfull and strip out IP name.
+  ($ip_name)=grep(/^Name: |domain name pointer |not found /i, @results);
+  if (not defined $ip_name or $ip_name eq '') {
+    $ip_name = $ip_number;
+  } elsif ( $ip_name =~ /not found/i ){
+    $ip_name = $ip_number;
+  } else {
+    $ip_name=~s/^Name: |.*domain name pointer //;
+  }
+  chomp($ip_name);
+  return $ip_name;
+}

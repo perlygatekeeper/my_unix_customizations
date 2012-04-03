@@ -1,0 +1,89 @@
+#!/usr/local/localadm/bin/perl
+#-----------------------------------------------------------------------------
+
+#   ***   Define Default Strings, Values & Flags   ***
+$name = $0;
+$usage = "usage:\n$name [-t target_string] [-r target_string] [-m modifier_char]";
+
+$newline="\n"; 
+$tab="\t"; 
+$backspace="\010"; 
+$formfeed="\014"; 
+
+$crackstring=$tab;
+$replacestring=$newline;
+$all="g";
+
+# /usr/local/localadm/bin/perl -n -e 'split (/\t/);for ($i=0; $i<=$#_; $i++) {print $_[$i]."\n";}'
+#-----------------------------------------------------------------------------
+
+
+#   ***   Parse Command Line Argument(s)   ***
+while ( @ARGV >= 1 ) {
+  if    ( $ARGV[0] eq '-r' ) {
+    $replacestring = $ARGV[1];
+print "begin\t>$replacestring<\n";
+    $replacestring =~ s/([^\\]?)\\n/\1$newline/g;
+print "newline\t>$replacestring<\n";
+    $replacestring =~ s/([^\\]?)\\t/\1$tab/g;
+print "tab\t>$replacestring<\n";
+    $replacestring =~ s/([^\\]?)\\b/\1$backspace/g;
+print "backspace\t>$replacestring<\n";
+    $replacestring =~ s/([^\\]?)\\f/\1$formfeed/g;
+print "formfeed\t>$replacestring<\n";
+    $replacestring =~ /([^\\]?)\\([0-7][0-7][0-7])/;
+    $octal=&ascii($2);
+    $replacestring =~ s/(\\[0-7][0-7][0-7])/$octal/e;
+print "octal\t>$replacestring<\n";
+    shift; shift; }
+  elsif ( $ARGV[0] eq '-t' ) {
+    $crackstring = "$ARGV[1]";
+    shift; shift; }
+  elsif ( $ARGV[0] eq '-m' ) {
+    $all = "$ARGV[1]";
+    shift; shift; }
+  elsif ( $ARGV[0] eq '-?' ) { do help($usage); }
+  else { last; }
+}  # end while
+
+print "  >>  crackstring $crackstring replacestring $replacestring all $all  <<\n\n";
+
+  while (<>)  { $line=$_;
+		$line =~ s/${crackstring}/${replacestring}/eog ;
+		print $line;}
+
+#   ***   EXIT GRACEFULLY   ***
+exit 0;
+
+####   SUBROUTINES   ####
+sub help {
+print "@_[0]\n";
+print "Valid replacement string expressions are:\n";
+print "\\t for tabs, \\n for newlines, \\f for formfeeds, \\b for backspaces\n";
+print "and \### for octal ascii codes\n";
+exit 1;
+}
+sub ascii {
+return pack('C1',oct($_[0]));
+$a= "\\" . "$_[0]";
+print "from subroutine ascii $a\n";
+return sprintf($a);
+pack('C1',$a); return $a;
+   if($_[0]==0){return"\000";}
+elsif($_[0]==1){return"\001";}
+elsif($_[0]==2){return"\002";}
+elsif($_[0]==3){return"\003";}
+elsif($_[0]==4){return"\004";}
+elsif($_[0]==5){return"\005";}
+elsif($_[0]==6){return"\006";}
+elsif($_[0]==7){return"\007";}
+elsif($_[0]==10){return"\010";}
+elsif($_[0]==11){return"\011";}
+elsif($_[0]==12){return"\012";}
+elsif($_[0]==13){return"\013";}
+else	{
+	  $a=" ";
+	  for ($i=32;$i<=oct($_[0]);$a++,$i++) {print "$i\t$a\n";}
+	  return $a;
+	}
+}

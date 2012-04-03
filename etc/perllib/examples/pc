@@ -1,0 +1,180 @@
+#!/usr/local/localadm/bin/perl
+#-----------------------------------------------------------------------------
+
+#   ***   Define Strings, Values & Flags   ***
+$name = $0;
+#$name =~ s'.*/'';
+$usage = "usage: $name [-l] [-n] [-f PRINTCAP_file] [-e printer ... ]\n";
+$entry=0;
+$explaination_flag=1;
+$locate_only_flag=0;
+$rm_flag=0;
+$first_flag=0;
+#$printcap_default="/usr/share/lib/printcap"; # for sparcs
+$printcap_default="/etc/printcap";           # for 3-50's
+$explain="/home/parker/bin/printcaps";
+
+#   ***   Parse Command Line Argument(s)   ***
+# while ( @ARGV > 1 && $ARGV[0] =~ /^-[^-]/ ) {
+while ( @ARGV >= 1 ) {
+  if ( $ARGV[0] eq '-e' ) {
+    $entries[$entry++] = $ARGV[1];
+    shift; shift;
+    until ( $ARGV[0] =~ /^-[^-]/ || @ARGV == 0 ) { 
+      $entries[$entry++] = $ARGV[0];
+      shift;
+    }  # end while
+  } # end if 
+  elsif ( $ARGV[0] eq '-f' ) {
+    $printcap = $ARGV[1];
+    shift; shift; }
+  elsif ( $ARGV[0] eq '-n' ) { shift; $explaination_flag=0; }
+  elsif ( $ARGV[0] eq '-l' ) { shift; $locate_only_flag=1; }
+  else { print "Illegal argument: \"$ARGV[0]\"\n"; die $usage; }
+}  # end while
+
+#   ***   Deprintine PRINT Entry & PRINTCAP File or Environment Variable   ***
+if ( $entry == 0  )      { $entries[$entry]="[A-z][A-z]"; $first_flag=1; }
+if ( $printcap == "^$" ) { $printcap=$printcap_default; }
+
+#   *** Report on planned activity   ***
+if ($first_flag==1) {
+  print "Examining the first entry (";
+}
+else {
+  print "Attempting to find $entries[0]";
+if (@entries >1) {
+  for ($entry=1; $entry<=($#entries-1); $entry++) {
+  print ", $entries[$entry]";
+  } # end for
+print " & $entries[$#entries]";
+} # end if
+print " in the printcap file $printcap.\n";
+} # end if/else
+
+#   ***   MAIN LOOP ON ENTRIES   ***
+for ($entry=0; $entry<=$#entries; $entry++) {
+#   ***   Find PRINTER Entry in printcap_default   ***
+$line=0;
+$found=0;                         # start search
+open(PRINTCAP,"$printcap") || die("$0: cannot open $printcap file.\n");
+while(<PRINTCAP>) {
+  chop;
+  if ($found) {
+    $test=chop;                   # use $test later
+    $entryline[$line++]=$_;       # makes end_point_inclusive
+    if ("$test" ne "\\" ) {       # NEW test for 'OFF' condition
+	$entryline[$line-1].=$test; # don't know what it was so put it back
+	if ($locate_only_flag) { print $_.$test."\n"; }
+	last;                       # printinates search after entry is found
+        $found=0;
+    } # end if
+    if ($locate_only_flag) { print $_."\n"; }
+  }
+  else {
+    if ($first_flag) {
+      if ($_ =~ /^[^#]*($entries[$entry])\|.*$/ ) { # test for 'ON' condition
+	$entries[$entry]=$1; # store the first entry if not defined
+	print "$entries[$entry]) in the printcap file $printcap.\n";
+	chop;
+        $entryline[$line++]=$_; # makes begin_point_inclusive
+        if ($locate_only_flag) { print $_."\n"; }
+        $found=1;
+      } # end if on 'ON' condition
+    }
+    else {
+      if ($_ =~ /^[^\s#]*$entries[$entry]\|/ ) { # test for 'ON' condition
+	chop;
+        $entryline[$line++]=$_; # makes begin_point_inclusive
+        if ($locate_only_flag) { print $_."\n"; }
+        $found=1;
+      } # end if on 'ON' condition
+    } # end if/else on first_flag
+  } # end if/else on found
+} # end while on <PRINTCAP>
+close(PRINTCAP);
+
+if ($locate_only_flag) { next; }
+
+#   ***   Strip Seperate Capabilities and Sort Them   ***
+$n=0; @caps=();
+print $entryline[0] ."\n";
+for ($lines=1; $lines<=$#entryline; $lines++)
+{                                    # loop on entry lines
+$entryline[$lines] =~ s/^[\s:]+//g;  # remove leading whitespace and :'s
+$n += split(/:/,$entryline[$lines]); # split entry line on :'s
+@caps=(@caps,@_);                    # add @_ to array @caps
+} # end for on entry lines
+
+$tc_flag=($caps[$#caps]=~/^tc=(.*)[:]?/); # set flag for similar printer entry
+$tc_entry=$1;
+@caps=sort(@caps);                    # sort array @caps
+
+#   ***   Add Printer Capability from Appropriate File   ***
+if ($explaination_flag) {
+
+# LOAD EXPLAIN ARRAY
+  open(EXPLAIN,"$explain") || die("$0: cannot open $explain file.\n");
+  while (<EXPLAIN>) {
+    if ($_=~/^(..)\S*\s*/) {
+      $explain{$1}=$';
+    }
+  } # end while
+  close(EXPLAIN);
+
+  for ($i=0; $i<=$#caps; $i++) {
+
+# Don't bother adding explaination for duplicate entries.
+if ( ($i>0) && ( "$cap" eq substr($caps[$i],0,2) ) ) { next; }
+
+$cap=$caps[$i];      # copy cap
+$cap=~s/^(..).*/\1/; # strip first two characters for cap search
+
+$rm_flag=($caps[$i]=~/^rm=(.*)[:]?/)||$rm_flag; # set flag for remote printer entry
+if ( $rm_flag && length($rm_entry)==0 ) { # using length check so as not to spoil
+					  # $1 with a null string matching check.
+  $rm_entry=$1; # store remote host if not already stored.
+} # end if
+
+# $maxlength=14 used in the two following lines
+if (length($caps[$i])>14) { $caps[$i].="\n"; $caps[$i].= " " x 14 ; }
+$caps[$i]=sprintf("%-14s %s", $caps[$i],$explain{$cap});
+chop($caps[$i]);
+
+  } # end for 
+} # end if
+
+if ($tc_flag) {
+  print "Entry similar to $tc_entry\n";
+  print "except for the following additions/changes:\n"; }
+
+print join("\n",@caps)."\n";
+
+if ($tc_flag && $explaination_flag) {
+  print "\nNow for printcap entry $tc_entry\n" . "-" x 45 . "\n";
+  print `$0 -e $tc_entry -f $printcap`;
+} # end if
+
+if ($rm_flag && $explaination_flag) {
+  print "\nNow for printcap entry from $rm_entry\n" . "-" x 45 . "\n";
+  $command="perl $name -e $entries[$entry] -f $printcap";
+  $result= `rsh $rm_entry $command`;
+  print "$result\n";
+} # end if
+
+} # end for on entries
+
+#   ***   EXIT GRACEFULLY   ***
+#print  "All done.  (rm_flag=$rm_flag) \007\n";
+exit 0;
+
+####   SUBROUTINES   ####
+sub split_and_sort {
+}
+
+#  TIMING RESULTS 
+# time tc.work -e vt100
+# yielded 
+#  0.7 real  0.5 user 0.2 sys <- explainations stored in an associative array
+# 15.0 real 14.2 user 0.4 sys <- generated for each entry by perl
+# 17.0 real  2.1 user 6.8 sys <- generated for each entry by `grep|cut`

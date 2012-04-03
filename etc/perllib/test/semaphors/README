@@ -1,0 +1,166 @@
+Unix commands;
+
+ipcs   (list information on SysV;IPC objects, ie. Semaphores, Shared Memory and Message Queues.
+ipcrm  (destroys SysV;IPC objects)
+
+
+
+Perl mod IPC::Semaphore man page
+
+User Contributed Perl Documentation                  Semaphore(3)
+
+NAME
+     IPC::Semaphore - SysV Semaphore IPC object class
+
+SYNOPSIS
+         use IPC::SysV qw(IPC_PRIVATE S_IRWXU IPC_CREAT);
+         use IPC::Semaphore;
+
+         $sem = new IPC::Semaphore(IPC_PRIVATE, 10, S_IRWXU | IPC_CREAT);
+
+         $sem->setall( (0) x 10);
+
+         @sem = $sem->getall;
+
+         $ncnt = $sem->getncnt;
+
+         $zcnt = $sem->getzcnt;
+
+         $ds = $sem->stat;
+
+         $sem->remove;
+
+DESCRIPTION
+METHODS
+     new ( KEY , NSEMS , FLAGS )
+         Create a new semaphore set associated with KEY. NSEMS is
+         the number of semaphores in the set. A new set is
+         created if
+
+     +       KEY is equal to IPC_PRIVATE
+
+     +       KEY does not already  have  a  semaphore  identifier
+             associated with it, and FLAGS & IPC_CREAT is true.
+
+             On creation of a new semaphore set FLAGS is used to
+             set the permissions.
+
+     getall
+         Returns the values of the semaphore set as an array.
+
+     getncnt ( SEM )
+         Returns the number of processes waiting for the
+         semaphore SEM to become greater than it's current value
+
+     getpid ( SEM )
+         Returns the process id of the last process that
+         performed an operation on the semaphore SEM.
+
+     getval ( SEM )
+         Returns the current value of the semaphore SEM.
+
+30/Nov/97       Last change: perl 5.004, patch 03               1
+
+User Contributed Perl Documentation                  Semaphore(3)
+
+     getzcnt ( SEM )
+         Returns the number of processed waiting for the
+         semaphore SEM to become zero.
+
+     id  Returns the system identifier for the semaphore set.
+
+     op ( OPLIST )
+         OPLIST is a list of operations to pass to semop. OPLIST
+         is a concatenation of smaller lists, each which has
+         three values. The first is the semaphore number, the
+         second is the operation and the last is a flags value.
+         See the semop manpage for more details. For example
+
+             $sem->op(
+                 0, -1, IPC_NOWAIT,
+                 1,  1, IPC_NOWAIT
+             );
+
+     remove
+         Remove and destroy the semaphore set from the system.
+
+     set ( STAT )
+
+     set ( NAME => VALUE [, NAME => VALUE ...] )
+         set will set the following values of the stat structure
+         associated with the semaphore set.
+
+             uid
+             gid
+             mode (oly the permission bits)
+
+         set accepts either a stat object, as returned by the
+         stat method, or a list of name-value pairs.
+
+     setall ( VALUES )
+         Sets all values in the semaphore set to those given on
+         the VALUES list.  VALUES must contain the correct number
+         of values.
+
+     setval ( N , VALUE )
+         Set the Nth value in the semaphore set to VALUE
+
+     stat
+         Returns an object of type IPC::Semaphore::stat which is
+         a sub-class of Class::Struct. It provides the following
+         fields. For a description of these fields see you system
+         documentation.
+
+30/Nov/97       Last change: perl 5.004, patch 03               2
+
+User Contributed Perl Documentation                  Semaphore(3)
+
+             uid
+             gid
+             cuid
+             cgid
+             mode
+             ctime
+             otime
+             nsems
+
+SEE ALSO
+     the IPC::SysV manpage the Class::Struct manpage the semget
+     manpage the semctl manpage the semop manpage
+
+AUTHOR
+     Graham Barr <gbarr@pobox.com>
+
+COPYRIGHT
+     Copyright (c) 1997 Graham Barr. All rights reserved.  This
+     program is free software; you can redistribute it and/or
+     modify it under the same terms as Perl itself.
+
+30/Nov/97       Last change: perl 5.004, patch 03               3
+
+
+
+From IPC::SysV
+
+        IPC_ALLOC IPC_CREAT IPC_EXCL IPC_GETACL IPC_LOCKED IPC_M
+        IPC_NOERROR IPC_NOWAIT IPC_PRIVATE IPC_R IPC_RMID IPC_SET
+        IPC_SETACL IPC_SETLABEL IPC_STAT IPC_W IPC_WANTED
+
+        MSG_FWAIT MSG_LOCKED MSG_MWAIT MSG_NOERROR MSG_QWAIT
+        MSG_R MSG_RWAIT MSG_STAT MSG_W MSG_WWAIT
+
+        SEM_A SEM_ALLOC SEM_DEST SEM_ERR SEM_ORDER SEM_R SEM_UNDO
+
+        SETALL SETVAL
+
+        SHMLBA
+
+        SHM_A SHM_CLEAR SHM_COPY SHM_DCACHE SHM_DEST SHM_ECACHE
+        SHM_FMAP SHM_ICACHE SHM_INIT SHM_LOCK SHM_LOCKED SHM_MAP
+        SHM_NOSWAP SHM_R SHM_RDONLY SHM_REMOVED SHM_RND SHM_SHARE_MMU
+        SHM_SHATTR SHM_SIZE SHM_UNLOCK SHM_W
+
+					Read	Write	Read+Write+Execute
+        S_IRUSR S_IWUSR S_IRWXU        		USER
+        S_IRGRP S_IWGRP S_IRWXG			GROUP
+        S_IROTH S_IWOTH S_IRWXO			OTHER

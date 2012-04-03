@@ -1,0 +1,268 @@
+#!/usr/bin/perl
+#
+# A perl-5 script to return time for a date
+# utilizing binary search
+#     with an initial upper limit calculated by assuming that
+# all months have 31 days and that all years are leap years
+# and with an initial lower limit calculated by assuming that
+# all months have 28 days and that all years are NOT leap years
+#
+# also is first demonstration of the expanded string-flag capibility
+# of version 5.x of Parker's Debug perl module.
+#
+# could easily expand capibilities to find a given time on the target
+# date by brute force adjustment once a arbitary time on the target date is found
+# or by expanding the binary search conditions to include hour, minute and then second.
+# since there are  86400 seconds in a day, (this is between 2^16 65536 and 2^17 131072)
+# therefore it would add at most 15 or 16 guesses (I think!).
+#
+# if only hour and minute were needed then
+# there would be 60*24 = 1440 ( this is between 2^10 1024 and 2^11 2048) possible number ranges
+# to search and therefore would only add 9 or 10 guesses
+#
+# brute force method seems best, though the tough part is the parsing of the date-time.
+# MANY MANY varients...
+# still if given the array ($mon,$mday,$year,$hour,$min,$sec) this routine could easily
+# return $time
+
+$name = $0; $name =~ s'.*/''; # remove path--like basename
+$author="Dr. Steven Parker";
+$last_mod_date='Fri Jun 02, 2000';
+$version="1.0"; # reverse_date routine done and tested
+$version="1.1"; # reverse_date_time routine done but not tested
+$version="1.2"; # safety checks in for reasonable mon, mday and year
+$todo ="european flag.";
+$todo.="time-date parser.";
+$copyright="$name ($version-$last_mod_date). All rights reserved by $author.";
+$usage = "usage:\n$name";
+
+require("datetime.pl");
+use Debug;
+&debug_destination(\*STDOUT);
+
+&initialize();
+&test();
+
+sub test {
+  &debug(1);
+  while (<DATA>) {
+    if (/^$|^\s*#/) { # skip blank and commented lines.
+      print; next;
+    }
+    chomp;
+    print "looking for reverse date for '$_'\n";
+    if ($_=~s/^\s*TIME:\s*//i) {
+      ($date,$hour,$min,$sec,$ampm)=&time_date_parser($_);
+      $hour+=12 if ($ampm=~/p/i);
+      $date=~s/^\s*|\s*$//g;
+      $date=~s/day|mon|tues?|wed(nes)?|thur?|fri|sat(ur)?|sun//ig;
+      &debug_print(1,"date: '$date'\n");
+      &debug_print(1,"hour: '$hour'\n");
+      &debug_print(1," min: '$min' \n");
+      &debug_print(1," sec: '$sec' \n");
+      $time=&reverse_date_with_time($date,$hour,$min,$sec);
+      $ampm_date=&ampm_date($time);
+      print "Time '$time' gives '$ampm_date'\n";
+    } elsif ($time=&reverse_date($_)) {
+      $ampm_date=&ampm_date($time);
+      print "time '$time' gives '$ampm_date'\n";
+    }
+    print "-" x 80 . "\n\n";
+  }
+}
+
+sub time_date_parser {
+  my($time_date)=@_;
+  my($hour,$min,$sec,$ampm,$date);
+  ($date=$time_date) =~ s/(\d{1,2})[:](\d{1,2})([:.](\d{1,2}))?\s*([aApP]\.?[mM]\.?)?//;
+  ($hour,$min,$sec,$ampm) = ($1,$2,$4,$5);
+  return ($date,$hour,$min,$sec,$ampm);
+}
+
+sub reverse_date_with_time {
+  my($date,$hour,$min,$sec)=@_;
+  my($rough_time,$rough_sec,$rough_min,$rough_hour,@junk,$time);
+  $rough_time=&reverse_date($date);
+  return $rough_time if ( not $rough_time); # reverse_date didn't work
+  ($rough_sec,$rough_min,$rough_hour,@junk)=&Y2K_localtime($rough_time);
+  $time=$rough_time
+       -( ( $rough_hour * 60 + $rough_min ) * 60 + $rough_sec )
+       +( ( $hour * 60 + $min ) * 60 + $sec );
+  return $time;
+}
+
+sub reverse_date_and_time {
+  my($mon,$mday,$year,$hour,$min,$sec)=@_;
+  my($rough_time,$rough_sec,$rough_min,$rough_hour,@junk,$time);
+  $rough_time=&reverse_date(sprintf("%2d/%2d/%s",$mon,$mday,$year));
+  return $rough_time if ( not $rough_time); # reverse_date didn't work
+  ($rough_sec,$rough_min,$rough_hour,@junk)=&Y2K_localtime($rough_time);
+  $time=$rough_time
+       -( ( $rough_hour * 60 + $rough_min ) * 60 + $rough_sec )
+       +( ( $hour * 60 + $min ) * 60 + $sec );
+  return $time;
+}
+
+sub reverse_date {
+  my($date)=shift;
+  my($target_mon,$target_mday,$target_year);
+  &debug("date parsing");
+# &debug("limits");
+# &debug("each step");
+# &debug("actions");
+  &debug("total steps");
+  ($target_mon,$target_mday,$target_year) =
+    ( $date =~ m'([^-/ ]+)[-/ ]+([^-/, ]+)[-/ ,]+([^-/ ]+)' );
+  &debug_scalar("date parsing","target_mon",\$target_mon);
+  &debug_scalar("date parsing","target_mday",\$target_mday);
+  &debug_scalar("date parsing","target_year",\$target_year);
+  if ($target_year =~ /^\d{2}$/) {	# two digit year
+    if ($target_year<30) { $target_year+=2000; } else  { $target_year+=1900; }
+  }
+  if ($target_mon !~ /^\d\d?$/ ) {	# string target_month
+    $target_mon=$mo_byname{lc($target_mon)};
+  } else {
+    $target_mon--;
+  }
+  &debug_print("date parsing","target mon, mday and year adjusted...\n");
+  &debug_scalar("date parsing","target_mon(-1)",\$target_mon);
+  &debug_scalar("date parsing","target_mday",\$target_mday);
+  &debug_scalar("date parsing","target_year",\$target_year);
+  # binary search begins
+  # construct beginning large time (all months are 31 days, all years are leap years)
+  $upper_limit=( ($target_year-1970) *	$seconds_in_366days +
+                  $target_mon *		$seconds_in_31days +
+                  $target_mday *	$seconds_in_day);
+  # construct beginning small time (all months are 28 days, all years aren't leap years)
+  $lower_limit=( ($target_year-1970) *	$seconds_in_365days +
+                  $target_mon *		$seconds_in_28days +
+                  $target_mday *	$seconds_in_day);
+# check for invalid dates (febrary test is weak since leap-year's are ignored).
+  if ( $target_year<1970	 			# year before epoch
+    or ( $target_mon<0 or $target_mon>11)		# invalid mon-1
+    or ($target_mday<1 or $target_mday>31)		# invalid mday
+    or ($target_mon==1 and $target_mday>29)		# feb test
+    or ( ( $target_mon==3				# apr
+        or $target_mon==5				# jun
+        or $target_mon==8				# sep
+        or $target_mon==10 )				# nov
+     and $target_mday>30 )				# 30-day-month tests
+     ) {
+# this was too complicated but worked (in theory)
+#   or ( ( ($target_mon<6 and $target_mon%2)		# 30-day-months before july (feb, arp, jun)
+#      or ($target_mon>=6 and not $target_mon%2) )	# 30-day-months after  july (sep, nov)
+#    and $target_mday>30)			# 30-day-month test
+    warn sprintf("invalid date detected '%s/%s/%s'",$target_mon,$target_mday,$target_year);
+    return 0;
+  }
+  $found=0;
+  $binary_step=0;
+  $actions='';
+  &debug_print("limits",sprintf("lower limit %10d gives %s.\n",
+               $lower_limit, &ampm_date($lower_limit)));
+  &debug_print("limits",sprintf("upper limit %10d gives %s.\n",
+               $upper_limit, &ampm_date($upper_limit)));
+  while ($binary_step < 12) {
+    $time=int(($upper_limit+$lower_limit)/2);
+    $binary_step++;
+    &debug_print("each step",
+      sprintf("On step %3d, lower limit , guess and upper limit are: is (%10d, %10d, %10d)\n",
+              $binary_step, $lower_limit, $time, $upper_limit));
+    ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst)=&Y2K_localtime($time);
+    if ($year<30) { $year+=2000; } else { $year+=1900; }
+    if ( $year < $target_year ) {
+      $lower_limit=$time;
+      $actions .= sprintf("\nThe %4s for %2d/%2d/%4d was too %4s for %9d",
+                          "year", $mon+1, $mday, $year, "low", $time);
+      next;
+    } elsif ( $year > $target_year ) {
+      $upper_limit=$time;
+      $actions .= sprintf("\nThe %4s for %2d/%2d/%4d was too %4s for %9d",
+                          "year", $mon+1, $mday, $year, "high", $time);
+      next;
+    } # year was right for $time
+
+    if ( $mon < $target_mon ) {
+      $lower_limit=$time;
+      $actions .= sprintf("\nThe %4s for %2d/%2d/%4d was too %4s for %9d",
+                          "mon", $mon+1, $mday, $year, "low", $time);
+      next;
+    } elsif ( $mon > $target_mon ) {
+      $upper_limit=$time;
+      $actions .= sprintf("\nThe %4s for %2d/%2d/%4d was too %4s for %9d",
+                          "mon", $mon+1, $mday, $year, "high", $time);
+      next;
+    } # mon was right for $time
+
+    if ( $mday < $target_mday ) {
+      $lower_limit=$time;
+      $actions .= sprintf("\nThe %4s for %2d/%2d/%4d was too %4s for %9d",
+                          "mday", $mon+1, $mday, $year, "low", $time);
+      next;
+    } elsif ( $mday > $target_mday ) {
+      $upper_limit=$time;
+      $actions .= sprintf("\nThe %4s for %2d/%2d/%4d was too %4s for %9d",
+                          "mday", $mon+1, $mday, $year, "high", $time);
+      next;
+    } # mday was right for $time
+
+# time is sometime on the target date
+    $found=1;
+    last;
+  }
+  &debug_scalar("actions","Actions taken in search",\$actions);
+  &debug_print("total steps","Took $binary_step steps to find that ");
+  if ($found) {
+    return($time);
+  } else {
+    return(0);
+  }
+}
+
+sub initialize {
+  &debug(0);
+  @lc_mo = ('jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec');
+  @lc_mo_full = ('january','february','march','april','may','june','july',
+                 'august','september','october','november','december');
+  foreach $mo (0 .. $#mo) { $mo_byname{$lc_mo[$mo]}= $mo_byname{$lc_mo_full[$mo]}= $mo; }
+  &debug_hash(1,"month by name", \%mo_byname);
+  $seconds_in_day= 60 * 60 * 24;
+  $seconds_in_31days= $seconds_in_day * 31;
+  $seconds_in_28days= $seconds_in_day * 28;
+  $seconds_in_365days= $seconds_in_day * 365;
+  $seconds_in_366days= $seconds_in_day * 366;
+}
+
+exit 0;
+
+__END__
+# invalid dates
+# 00/30/01
+# 13/30/01
+# 06/00/01
+# 06/32/01
+# 02/30/01
+# 04/31/01
+# 06/31/01
+# 09/31/01
+# 11/31/01
+# 12/31/69
+# valid dates
+March/31/79
+09/09/00
+12-31-1999
+01/01/70
+April 4, 1999
+April 4, 2020
+TIME: Fri Jun  2 21:11:59 2000
+TIME: 05:30:45 PM Dec 31, 1998
+TIME: 07:00:01 PM Jan  1, 1973
+TIME: 09:55:55 PM Apr  4, 1994
+TIME: 10:00:00 PM Apr  4, 1994
+TIME: Apr  4, 2025 05:31:23 AM
+TIME: 12:30:33 A.M. Mar 31, 1979
+TIME: 12:30:33 pm Mar 31, 1979
+TIME: 09:46:40 PM Sep  8, 2001
+TIME: 03:43:40 AM Mar  6, 1975
+June 6,  2001
+TIME: 05:00:00 PM June 10, 2003

@@ -1,0 +1,21 @@
+#!/usr/bin/perl
+#
+# A perl-5 script to list the attributes of
+# a simple semaphore set with 10 flags.
+# simliar to the action of the unix 'ipcs' command.
+#
+$name = $0; $name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name [-opt1] [-opt2] [-opt3]";
+
+unshift(@INC,'.');
+$debug=0;
+require "sem.pl";		# $sem object defined
+require "lssem.pl";		# $sem_stat struct defined, ipcs-type printout upon &lssem($sem)
+require "user_group.pl";	# user_from_uid and group_from_gid routines defined
+$debug=0;
+
+&lssem($sem);
+
+exit 0;
+
+__END__

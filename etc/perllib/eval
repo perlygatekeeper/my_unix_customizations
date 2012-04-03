@@ -1,0 +1,9 @@
+sub eval {
+  my($code)=@_;
+  my($debug)=0;
+  if ($debug) {
+    print "$code\n";
+  } else {
+    eval($code);
+  }
+}

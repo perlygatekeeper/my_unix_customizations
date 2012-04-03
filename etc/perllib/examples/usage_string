@@ -1,0 +1,4 @@
+ 
+#   ***   Define Usage String   ***
+$name =~ s'.*/'';
+$usage = "usage: $name  [ start(10) ] [ end(1) ] [ by(1*sign(end-start)) ]\n";

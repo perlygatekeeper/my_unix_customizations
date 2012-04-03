@@ -1,0 +1,5 @@
+  $file=">>$name.out";
+  open(FILE,"$file") || die("$name: Cannot open '$file': $!\n");
+# print FILE "stuff\n";
+  close(FILE);
+

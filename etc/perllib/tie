@@ -1,0 +1,29 @@
+# $nis='/net/chemistry/var/yp/Chemistry-0628.mps.ohio-state.edu';
+$nis='/var/yp/Chemistry-0628.mps.ohio-state.edu';
+if ( -d $nis ) {
+  $netgroup_file="$nis/netgroup";
+} else {
+  $domainname=`domainname`; chomp $domainname;
+  $netgroup_file="/var/yp/$domainname";
+}
+
+if ( -r "$netgroup_file.pag" ) {
+print STDERR "DEBUG: TIEing to netgroup files '$netgroup_file'\n" if $debug;
+  use NDBM_File;
+  tie(%netgroups,NDBM_File,$netgroup_file, O_RDONLY, 0);
+  if ($debug > 1) {
+    $group="sparcs";
+    print STDERR "'$group':'$netgroups{$group}'\n";
+    $group="sparcs\0";
+    print STDERR "'$group':'$netgroups{$group}'\n";
+    foreach $group (sort keys %netgroups) {
+       print STDERR "$group:'$netgroups{$group}'\n";
+    }
+  }
+} else {
+  if ($debug) {
+    print STDERR "DEBUG: couldn't find netgroup files '$netgroup_file'\n";
+    print STDERR "       will use ypmatch instead.\n";
+  }
+  $netgroup_file='';
+}

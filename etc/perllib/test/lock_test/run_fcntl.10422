@@ -1,0 +1,6 @@
+fcntl_test.pl.pkg (10426) got a lock at Mon Apr 22 10:40:40 1996, after 1 attempts.
+File lock not obtained after 1.
+Last attempt gave a lock result of '0 but true'
+strange... query_lock reports lock is obtainable,
+since query_lock routine returned '0 but true'.
+Mon Apr 22 10:40:43 1996

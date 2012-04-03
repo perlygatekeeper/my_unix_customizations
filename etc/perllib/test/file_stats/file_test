@@ -1,0 +1,42 @@
+#!/usr/bin/perl
+#
+# A perl-5 script to file tests.
+#
+$name = $0; $name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name";
+
+$dir=".";
+opendir(DIR,$dir) || die "Can't open dir $dir: $!\n";
+@files=readdir(DIR);
+closedir(DIR);
+shift(@files);shift(@files); # for . and .. entries
+@files=grep(! /$name/,@files);
+
+foreach $file (sort @files, file_dont_exist) {
+   $status="$file:\n";
+   if (-e $file) { $status.="exists            (-e)\n"; }
+   if (-r $file) { $status.="readable          (-r)\n"; }
+   if (-w $file) { $status.="writable          (-w)\n"; }
+   if (-x $file) { $status.="executable        (-x)\n"; }
+   if (-o $file) { $status.="owned             (-o)\n"; }
+   if (-R $file) { $status.="readable   (real) (-R)\n"; }
+   if (-W $file) { $status.="writable   (real) (-W)\n"; }
+   if (-X $file) { $status.="executable (real) (-X)\n"; }
+   if (-O $file) { $status.="owned      (real) (-O)\n"; }
+   if (-f $file) { $status.="file              (-f)\n"; }
+   if (-d $file) { $status.="directory         (-d)\n"; }
+   if (-l $file) { $status.="symlink           (-l)\n"; }
+   if (-u $file) { $status.="setuid            (-u)\n"; }
+   if (-g $file) { $status.="setgid            (-g)\n"; }
+   if (-k $file) { $status.="sticky            (-k)\n"; }
+   if (-b $file) { $status.="block special     (-b)\n"; }
+   if (-c $file) { $status.="character special (-c)\n"; }
+   if (-p $file) { $status.="named pipe        (-p)\n"; }
+   if (-s $file) { $status.="file is non-zero  (-s)\n"; }
+   if (-z $file) { $status.="file is zero      (-z)\n"; }
+   print $status . "\n";
+}
+
+exit 0;
+
+__END__

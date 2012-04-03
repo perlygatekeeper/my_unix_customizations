@@ -1,0 +1,41 @@
+&parse_args;
+
+#   ***   Parse Command Line Argument(s)   ***
+sub parse_args {
+
+  local(%abbrev)=();
+  local(@args)=('help','?','who','w','finger','command','machines');
+  grep(s/^/-/,@args);
+  &abbrev(*abbrev, @args);
+  # foreach $ab ( keys %abbrev) {
+  #   print "'$ab'-'$abbrev{$ab}'\n";
+  # }
+
+  while ( @ARGV >= 1 ) {
+    if      ( $abbrev{$ARGV[0]} eq '-who' ) {
+      $command='/bin/who';
+      shift(@ARGV);
+    } elsif ( $abbrev{$ARGV[0]} eq '-w' ) {
+      $command='/usr/ucb/w -h';
+      shift(@ARGV);
+    } elsif ( $abbrev{$ARGV[0]} eq '-finger' ) {
+      $command='/usr/ucb/finger';
+      shift(@ARGV);
+    } elsif ( $abbrev{$ARGV[0]} eq '-command' ) {
+      $command=$ARGV[1];
+      shift(@ARGV); shift(@ARGV);
+    } elsif ( $abbrev{$ARGV[0]} eq '-machines' ) {
+      shift(@ARGV);
+      while ($ARGV[0] !~ /^-/) {
+        push(@MACHINES,$ARGV[0]);
+        shift(@ARGV);
+      }
+    } elsif ( ($abbrev{$ARGV[0]} eq '-help' )
+           || ($abbrev{$ARGV[0]} eq '-?' ) ) {
+      do help($usage);
+      shift(@ARGV);
+    } else {
+      last;
+    }
+  }# end while
+}  # end parse_args

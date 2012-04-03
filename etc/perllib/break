@@ -1,0 +1,10 @@
+# example usage: print join("<BR>\n",&break($str)) . "\n";
+sub break {
+  my($str,$length)=@_;
+  my @arr;
+  $length||=50;
+  while (length $str) {
+    push(@arr,substr($str,0,$length,''));
+  }
+  return @arr;
+}

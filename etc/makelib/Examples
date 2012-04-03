@@ -1,0 +1,35 @@
+#  Begin parker modifications Wed Feb 01, 1995
+
+PROGRAM = binhex
+ALT_NAME= unxbin
+OBJECTS = OFILES
+RM      = /usr/bin/rm -f
+INSTALL = install
+BINDIR  = /opt/local/bin
+MANDIR  = /opt/local/man
+MANEXT  = 1
+MANPAGE = $(PROGRAM).$(MANEXT)
+
+INSTPGMFLAGS = -m 0755
+INSTMANFLAGS = -m 0444
+
+install:	$(PROGRAM)
+		$(INSTALL) -c $(INSTPGMFLAGS) $(PROGRAM) $(BINDIR)
+
+uninstall:
+		$(RM) $(BINDIR)/$(PROGRAM)
+		$(RM) $(BINDIR)/$(ALT_NAME)
+		$(RM) $(MANDIR)/man$(MANEXT)/$(PROGRAM).$(MANEXT)
+
+install.man:	$(MANPAGE)
+		$(INSTALL) -c $(INSTMANFLAGS) $(MANPAGE) $(MANDIR)/man$(MANEXT)/$(PROGRAM).$(MANEXT)
+
+clean:
+		$(RM) $(OBJECTS) $(PROGRAM) $(ALT_NAME) #* *~
+
+package:	clean
+		cd ..
+		tar cvf $(PROGRAM).tar $(PROGRAM)
+		gzip $(PROGRAM).tar
+
+#  End  parker modifications Tue May 11 1993

@@ -1,0 +1,8 @@
+#   ***   MAIN LOOP   ***
+
+&sub1();
+
+&sub2();
+
+exit 0;
+

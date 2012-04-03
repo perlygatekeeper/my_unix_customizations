@@ -1,0 +1,13 @@
+perl scritps to write
+
+1) restricted shell with 
+   pwd
+   cd
+   ls
+   mail
+
+2) newfmt with comment support.
+   PLFMT now works at least as well as unix fmt.
+
+3) write a old mail stripper
+4) collect voting booth from sws as mail filter example/template

@@ -1,0 +1,7 @@
+  $dir=".";
+  opendir(PWD,"$dir") || die("$name: Cannot open '$dir': $!\n");
+  @files=readdir(PWD);
+  closedir(PWD);
+  foreach $file (%files) {
+  }
+

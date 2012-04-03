@@ -1,0 +1,122 @@
+#!/usr/local/bin/perl
+#
+# A perl script to save a ls listing in a direcotry
+#
+$name = $0;
+$name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name [directory]";
+
+&parse_args;
+
+$directory='/home/parker/perllib' if ( ! $directory);
+
+$outfile="$directory/$name.out";
+open(OUTFILE,">$outfile") || die("$name: Cannot write to '$outfile': $!\n");
+
+
+opendir(DIR,$directory) || die "Can't open dir $directory: $!\n";
+@files=readdir(DIR);
+closedir(DIR);
+unless ($all) {
+  shift(@files);shift(@files); # for . and .. entries
+}
+unless ($ALL || $all) {
+  @files=grep( ! /^\./,@files);
+}
+select( ( select(OUTFILE), $|=1 , $"="\n" ) [$[] );
+
+format OUTFILE=
+^<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<~~
+$_
+.
+
+print "before write\n";
+#print OUTFILE "@files\n";
+
+#foreach (sort @files) {
+#  write OUTFILE;
+#}
+
+$_=join(" ", sort @files);
+write OUTFILE;
+
+print "after write\n";
+
+exit 0;
+
+#   ***   Parse Command Line Argument(s)   ***
+sub parse_args {
+
+  local(%abbrev)=();
+  local(@args)=('?','help');
+  push(@args,'A','a',);
+  grep(s/^([^-])/-\1/,@args);
+
+  push(@INC,'/usr/local/lib/perl',"$HOME/perllib");
+  require("abbrev.pl");
+  &abbrev(*abbrev, @args);
+
+  # foreach $ab ( keys %abbrev) {
+  #   print "'$ab'-'$abbrev{$ab}'\n";
+  # }
+
+  while ( @ARGV >= 1 ) {
+    if      ( $abbrev{$ARGV[0]} eq '-a' ) {
+      $all=1;
+      shift(@ARGV);
+    } elsif ( $abbrev{$ARGV[0]} eq '-A' ) {
+      $ALL=1;
+      shift(@ARGV);
+    } elsif ( ($abbrev{$ARGV[0]} eq '-help' )
+           || ($abbrev{$ARGV[0]} eq '-?' ) ) {
+      do help($usage);
+      shift(@ARGV);
+    } else {
+      $directory=$ARGV[0];
+      shift(@ARGV);
+    }
+  }  # end while
+}  # end parse_args
+
+__END__
+  elsif ( $ARGV[0] =~ /-\d|\d/ ) { $l=$ARGV[0]; $l=~s/^-//; shift; }
+  elsif ( $ARGV[0] eq '-?' ) { die($usage); }
+  else { last; }
+}  # end while
+
+#   ***   Construct Format Statement   ***
+#
+#   $format will later be eval'ed to make format for STDOUT 
+
+if ($f || $F) {
+  $first=<>;
+  if ($F) { $l=10*int((length($first)+9)/10); }
+  if ($f) { $l=length($first); }
+  print $first;
+}
+# below "second" means second line if !$f && !$F
+# or third if either $f or $F
+# in other words the second input line from this point on.
+$/=""; $*=1;
+while (<>) { # loop over paragraphs
+  if (/^.*\n(\s*)\S/) {
+# set up format with proper indentation
+    $spaces=length($1);
+    $format.=" " x $spaces . "^" ."<" x ($l-1) . "~~\n" ;
+    $format.=" " x $spaces . "\$_\n.\n";
+# strip out spaces from the first line
+    $strip="s/^" . " " x $spaces . "//;";
+    eval $strip;
+# strip out spaces from the rest of the lines
+    $strip="s/\n" . " " x $spaces . "/\n/g;";
+    eval $strip;
+  } else {
+    $format.="^" ."<" x ($l-1) . "~~" ;
+    $format.="\n\$_\n.\n";
+  }
+  eval $format;
+  s/\n/ /g;
+# write out paragraph with newlines and indentation spacing removed
+# with our new format
+  write STDOUT ; 
+}

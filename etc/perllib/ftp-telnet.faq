@@ -1,0 +1,20 @@
+5.20) Can I use Perl to run a telnet or ftp session?
+
+    Sure, you can connect directly to them using sockets, or you can run a
+    session on a pty.  In either case, Randal's chat2 package, which is
+    distributed with the perl source, will come in handly.  It address
+    much the same problem space as Don Libes's expect package does.  Two
+    examples of using managing an ftp session using chat2 can be found on
+    convex.com in /pub/perl/scripts/ftp-chat2.shar .
+
+    Caveat lector: chat2 is documented only by example, may not run on
+    System V systems, and is subtly machine dependent both in its ideas
+    of networking and in pseudottys.
+
+    Randal also has code showing an example socket session for handling the
+    telnet protocol.  You might nudge him for a copy.
+
+    Gene Spafford* has a nice ftp library package that will help with ftp.
+
+
+.

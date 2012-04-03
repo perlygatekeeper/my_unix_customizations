@@ -1,0 +1,27 @@
+#!/usr/local/bin/perl
+#
+# A perl script to run test_lock X times in background
+#
+$name = $0;
+$name =~ s'.*/''; # remove path--like basename
+select( (select(STDOUT), $|=1) [ $[ ] );
+
+$true=1; $false=0;
+
+$to_run=$ARGV[0];
+$to_run=($to_run=~/^\d+$/) ? $to_run : 100;
+$command="./fcntl_test.pl.pkg";
+$single_run="$command $name.$$ &";
+
+print "$name: starting $to_run occurances of $command with\n'$single_run'\n";
+print "as fast as I can:\n";
+foreach ($run=1; $run<=$to_run; $run++) {
+  system($single_run);
+  printf " %3d", $run;
+  print "\n" if ( ! ($run%10) );
+}
+print "\n";
+
+exit 0;
+
+__END__

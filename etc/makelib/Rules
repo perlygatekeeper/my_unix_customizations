@@ -1,0 +1,35 @@
+  Rules
+     +               make will always execute the  commands  pre-
+                    ceded by a "+", even when -n is specified.
+
+     -               make ignores any nonzero error code returned
+                    by a command line for which the first non-TAB
+                    character is a `-'.  This  character  is  not
+                    passed  to  the  shell as part of the command
+                    line.  make normally terminates when  a  com-
+                    mand returns nonzero status, unless the -i or
+                    -k options, or the .IGNORE:  special-function
+                    target is in effect.
+
+     @              If the first non-TAB character is a  @,  make
+                    does  not  print the command line before exe-
+                    cuting it.  This character is not  passed  to
+                    the shell.
+
+     ?              Escape command-dependency checking.   Command
+                    lines  starting  with  this character are not
+                    subject to command dependency checking.
+
+     !              Force command-dependency checking.   Command-
+                    dependency  checking  is  applied  to command
+                    lines  for  which  it  would   otherwise   be
+                    suppressed.    This   checking   is  normally
+                    suppressed for lines that contain  references
+                    to  the  `?'   dynamic  macro  (for  example,
+                    `$?').
+
+                    When any combination of `+', `-',  `@',  `?',
+                    or  `!'  appear as the first characters after
+                    the TAB, all that are  present  apply.   None
+                    are passed to the shell.
+

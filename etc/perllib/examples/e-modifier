@@ -1,0 +1,1 @@
+perl -le '$off="stuff >1< other stuff"; print $off; $off=~s/(\d+)/($1+1)/e; print $off;'

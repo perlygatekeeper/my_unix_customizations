@@ -1,0 +1,26 @@
+  Bourne Shell Constructs
+     To use the Bourne shell if control structure for  branching,
+     use a command line of the form:
+
+          if expression ; \
+          then command ; \
+               ... ; \
+          else command ; \
+               ... ; \
+          fi
+
+     Although composed of several input lines, the  escaped  NEW-
+     LINE  characters  insure  that  make  treats them all as one
+     (shell) command line.
+
+     To use the Bourne shell for control structure for loops, use
+     a command line of the form:
+
+          for var in list ; \
+               do command; \
+               ... ; \
+          done
+
+     To refer to a shell variable, use a double-dollar-sign ($$).
+     This prevents expansion of the dollar-sign by make.
+

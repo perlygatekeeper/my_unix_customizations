@@ -1,0 +1,63 @@
+#!/usr/bin/perl
+# inplaced on 021403 with these lines for demonstration/testing
+#@numbers=(1..64);
+#@bin_numbers=&binary(@numbers);
+#print join("\n",@bin_numbers) . "\n" ;
+#exit 0;
+
+sub binary {
+  my(@numbers)=@_;
+  my(@binaries);
+  my($num_digits)=8;
+  my($use_unpack)=0;
+  foreach $number (@numbers) {
+    if ($number>255)    { $num_digits=16; }
+    if ($number>65535)  { $num_digits=32; }
+    $binary='';
+    if ($use_unpack) {
+      push(@binaries,$binary=unpack("8b",$number));
+    } else {
+      foreach $digit ( reverse 0 .. ($num_digits-1)  ) {
+        if ($number & 2**$digit) {
+          $binary.='1';
+        } else {
+          $binary.='0';
+        }
+      }
+      push(@binaries,$binary);
+    }
+  }
+  if (wantwarray) {
+    return @binaries;
+  } else {
+    return $binaries[0];
+  }
+}
+
+
+# Binary OUTPUT
+# use the %b format in (s)printf
+
+for ($k=1; $k<40; $k+=7) {
+        printf ("%10b %3d\n",$k,$k);
+        }
+
+# Binary INPUT
+# use the "oct" function and preceed the string with 0b
+
+@bvals = qw(100101 1001 10001 1 11111);
+foreach $num (@bvals) {
+        $dec = oct("0b$num");
+        print "$num converts to $dec\n";
+        }
+
+# Also look at bitwise operators and pack and unpack
+
+$first = 175;
+$second = 31;
+$combo1 = $first | $second; # bitwise or
+$combo2 = $first ^ $second; # bitwise xor
+$combo3 = $first & $second; # bitwise and
+$combo4 = ~ $first ; # bitwise not
+
+print "$combo1 $combo2 $combo3 $combo4\n";

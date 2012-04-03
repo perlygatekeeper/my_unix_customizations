@@ -1,0 +1,15 @@
+if (expr) then
+     ...
+else if (expr2) then
+     ...
+else
+     ...
+endif
+
+set machine = `hostname`
+if ( ${machine} == "ariadna" ) then
+   echo 'IF'
+else
+   echo 'ELSE'
+endif
+echo 'END'

@@ -1,0 +1,9 @@
+	# splice @array, pos, [n], [list]
+	#   removes and returns n elements from @array
+	#   starting at pos, replacing them with list if given
+	#   if n is not given will remove to end of @array
+	#        push(@a,$x,$y)      splice(@a,$#a+1,0,$x,$y)
+	#        pop(@a)             splice(@a,-1)
+	#        shift(@a)           splice(@a,0,1)
+	#        unshift(@a,$x,$y)   splice(@a,0,0,$x,$y)
+	#        $a[$x] = $y         splice(@a,$x,1,$y);

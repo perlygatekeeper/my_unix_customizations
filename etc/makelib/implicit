@@ -1,0 +1,4 @@
+# don't forget to define suffixes
+# to make  txt's  INTO  html's 
+.txt.html:
+        ./txt2html.pl $<

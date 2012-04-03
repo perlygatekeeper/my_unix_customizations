@@ -1,0 +1,19 @@
+#!/usr/bin/perl
+#
+# A perl-5 script to test chmod function in perl
+#
+$name = $0; $name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name";
+
+system('touch a_file');
+
+chmod 0600, "a_file";
+system('ls -l a_file');
+chmod oct(0600), "a_file";
+system('ls -l a_file');
+chmod oct('0600'), "a_file";
+system('ls -l a_file');
+
+exit 0;
+
+__END__

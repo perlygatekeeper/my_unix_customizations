@@ -1,0 +1,39 @@
+#!/usr/bin/perl
+#
+# BEGIN-END
+#
+# A perl script to print lines matching range(s) from BEGIN_ and END_ at least once
+# possibly more and possibly inclusively
+#
+$print=0;
+$num_allowed=7;
+$looking=$num_allowed; # remove all references to $looking to turn check
+                       # of BEGIN_ back ON for entire file  (MORE THAN ONE)
+while (<>) {
+  if ($print) {
+    if (/END_/) {
+      $print=0;
+      # next; # uncomment this line to NOT print END- line (NON-INCLUSIVE)
+    } 
+    print;
+    last if (not $looking);  # remove conditional to make only once (MORE THAN ONE)
+  } else {
+    if ($looking and /BEGIN_/) {	# (MORE THAN ONE)
+      $print=1;
+      $looking=0;			# (MORE THAN ONE)
+    }
+    print; # uncomment this line to allow for printing of END_ line (NON-INCLUSIVE)
+  }
+}
+exit 0;
+__END__
+# Simpler version of this script, but harder to read and understand
+# $on=0;
+# while (<>) {
+#   $on=($on and not ($_=~/END-/));
+#   print $_ if ($on);
+#   $on=($_=~/BEGIN-/) if (not $on);
+# }
+
+
+perl -ne 'print if (10..99 or 200..1000);'

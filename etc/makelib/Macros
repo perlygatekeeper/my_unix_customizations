@@ -1,0 +1,97 @@
+  Macros
+     =              Macro definition.  The word to  the  left  of
+                    this  character  is  the macro name; words to
+                    the right comprise its  value.   Leading  and
+                    trailing  white space characters are stripped
+                    from the value.  A word break following the =
+                    is implied.
+
+     $              Macro reference.  The following character, or
+                    the  parenthesized  or  bracketed  string, is
+                    interpreted  as  a  macro  reference:    make
+                    expands  the  reference  (including the $) by
+                    replacing it with the macro's value.
+
+     ( )
+     { }            Macro-reference    name    delimiters.      A
+                    parenthesized or bracketed word appended to a
+                    $ is taken as the name  of  the  macro  being
+                    referred  to.   Without  the delimiters, make
+                    recognizes only the first  character  as  the
+                    macro name.
+
+     $$             A reference to  the  dollar-sign  macro,  the
+                    value of which is the character `$'.  Used to
+                    pass variable expressions beginning with $ to
+                    the  shell, to refer to environment variables
+                    which are expanded by the shell, or to  delay
+                    processing   of  dynamic  macros  within  the
+                    dependency list of a target, until that  tar-
+                    get is actually processed.
+
+     \$             Escaped dollar-sign  character.   Interpreted
+                    as a literal dollar sign within a rule.
+
+     +=             When used in place of `=', appends  a  string
+                    to  a macro definition (must be surrounded by
+                    white space, unlike `=').
+
+     :=             Conditional macro assignment.  When  preceded
+                    by  a  list  of  targets with explicit target
+                    entries, the macro  definition  that  follows
+                    takes  effect when processing only those tar-
+                    gets, and their dependencies.
+
+     :sh =          Define the value of a macro to be the  output
+                    of  a  command  (see  Command  Substitutions,
+                    below).
+     :sh            In a macro  reference,  execute  the  command
+                    stored  in  the macro, and replace the refer-
+                    ence with the output  of  that  command  (see
+                    Command Substitutions).
+
+
+  Dynamic Macros
+     There are several dynamically  maintained  macros  that  are
+     useful  as  abbreviations within rules.  They are shown here
+     as references; if you were to define them, make would simply
+     override the definition.
+
+     $*             The basename of the current  target,  derived
+                    as if selected for use with an implicit rule.
+
+     $<             The name of a dependency file, derived as  if
+                    selected for use with an implicit rule.
+
+     $@             The name of the current target.  This is  the
+                    only  dynamic  macro  whose value is strictly
+                    determined when used in  a  dependency  list.
+                    (In which case it takes the form `$$@'.)
+
+     $?             The list of dependencies that are newer  than
+                    the  target.   Command-dependency checking is
+                    automatically suppressed for lines that  con-
+                    tain  this  macro, just as if the command had
+                    been  prefixed   with   a   `?'.    See   the
+                    description  of  `?',  under Makefile Special
+                    Tokens, above.  You can force this check with
+                    the ! command-line prefix.
+
+     $%             The name of the  library  member  being  pro-
+                    cessed.  (See Library Maintenance, below.)
+
+     To refer to the $@ dynamic macro within a  dependency  list,
+     precede  the  reference with an additional `$' character (as
+     in, `$$@').  Because make assigns $< and $* as it would  for
+     implicit  rules  (according  to  the  suffixes  list and the
+     directory contents), they may be unreliable when used within
+     explicit target entries.
+
+     These macros can be modified to apply either to the filename
+     part,  or  the directory part of the strings they stand for,
+     by adding an upper case F or D, respectively (and  enclosing
+     the resulting name in parentheses or braces).  Thus, `$(@D)'
+     refers to the directory part of the string `$@'; if there is
+     no  directory  part,  `.'  is assigned.  $(@F) refers to the
+     filename part.
+

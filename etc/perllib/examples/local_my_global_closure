@@ -1,0 +1,14 @@
+echo '======= local $var'
+perl -le 'sub a {local $var; $var++; print $var}; a;a;a;'
+echo '======= my $var'
+perl -le 'sub a {my $var; $var++; print $var}; a;a;a;'
+echo '======= global $var'
+perl -le 'sub a {$var++; print $var}; a;a;a;'
+echo '======= closure'
+perl -le '{my $var; sub a {$var++; print $var}}; a;a;a;'
+echo '======='
+perl -le '$foo = 5; sub do_lots_of_things { local $foo = "asdf"; print do_a_little_thing(); }  sub do_a_little_thing { return $foo + 10;};  &do_lots_of_things(); print $foo'
+perl -le '$foo = 5; sub do_lots_of_things { my $foo = "asdf"; print do_a_little_thing(); }  sub do_a_little_thing { return $foo + 10;};  &do_lots_of_things(); print $foo'
+
+<beth> {local $foo = 5; do_something_entirely_unrelated() } # what if that function uses a $foo, unbeknownst to you??
+<beth> consider that last piece of code though, that is the key to the difference betweeen local and my

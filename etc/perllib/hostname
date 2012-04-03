@@ -1,0 +1,3 @@
+$user= $ENV{HOST} || $ENV{Hostname} || (chop ($junk=`hostname`),$junk);
+#$hostname=`hostname`; chop $hostname;
+#print "$hostname\n";

@@ -1,0 +1,58 @@
+  Dynamic Macros
+     There are several dynamically  maintained  macros  that  are
+     useful  as  abbreviations within rules.  They are shown here
+     as references; if you were to define them, make would simply
+     override the definition.
+
+     $*             The basename of the current  target,  derived
+  BASENAME          as if selected for use with an implicit rule.
+
+     $<             The name of a dependency file, derived as  if
+  DEPENDENCY FILE   selected for use with an implicit rule.
+
+     $@             The name of the current target.  This is  the
+                    only  dynamic  macro  whose value is strictly
+  TARGET            determined when used in  a  dependency  list.
+                    (In which case it takes the form `$$@'.)
+
+     $?             The list of dependencies that are newer  than
+ DEPENDENCY LIST    the  target.   Command-dependency checking is
+ NEWER THAN TARGET  automatically suppressed for lines that  con-
+                    tain  this  macro, just as if the command had
+                    been  prefixed   with   a   `?'.    See   the
+                    description  of  `?',  under Makefile Special
+                    Tokens, above.  You can force this check with
+                    the ! command-line prefix.
+
+     $%             The name of the  library  member  being  pro-
+                    cessed.  (See Library Maintenance, below.)
+
+     To refer to the $@ dynamic macro within a  dependency  list,
+     precede  the  reference with an additional `$' character (as
+     in, `$$@').  Because make assigns $< and $* as it would  for
+     implicit  rules  (according  to  the  suffixes  list and the
+     directory contents), they may be unreliable when used within
+     explicit target entries.
+
+     These macros can be modified to apply either to the filename
+     part,  or  the directory part of the strings they stand for,
+     by adding an upper case F or D, respectively (and  enclosing
+     the resulting name in parentheses or braces).  Thus, `$(@D)'
+     refers to the directory part of the string `$@'; if there is
+     no  directory  part,  `.'  is assigned.  $(@F) refers to the
+     filename part.
+
+      Examples:
+      @mv $*..o $*.o
+
+      C            .c                   $(LINK.c) -o $@ $< $(LDLIBS)
+                  _____________________________________________________________
+      Files        .c.ln                $(LINT.c) $(OUTPUT_OPTION) -i $<
+                  _____________________________________________________________
+                   .c.o                 $(COMPILE.c) $(OUTPUT_OPTION) $<
+                  _____________________________________________________________
+                   .c.a                 $(COMPILE.c) -o $% $<
+                                        $(AR) $(ARFLAGS) $@ $%
+                                        $(RM) $%
+                  _____________________________________________________________
+

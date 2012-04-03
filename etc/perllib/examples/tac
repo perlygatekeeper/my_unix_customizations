@@ -1,0 +1,9 @@
+#!/usr/local/bin/perl
+#
+# A perl script to reverse order of lines in a file,
+# ie. the vertical equivilant to rev, (tac is reverse of cat)
+#
+@lines=<>;
+print reverse @lines;
+#for ($i=$#lines; $i>=$[; $i-- ) { print $lines[$_]; }
+exit 0;

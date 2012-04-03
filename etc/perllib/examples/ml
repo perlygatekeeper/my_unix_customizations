@@ -1,0 +1,34 @@
+#!/usr/bin/perl
+#!/usr/local/localadm/bin/perl
+#!/n/al/0/public/bin/perl
+
+# MAKELINE is a
+# script to make a vertical line down a file
+
+$0 =~ s'.*/'';
+$usage = "usage: $0 position [<seperator> (-)]\n";
+
+if (@ARGV>2) { die("$usage"); }
+$position=$ARGV[0];
+shift;
+$seperator=(@ARGV>0) ? "$ARGV[0]" : "-";
+shift;
+
+while ($line=<>) {
+chop($line);
+
+# QUESTION? pad with spaces.
+     $len=length($line);
+if ( $len <  ($position-1) ) { $line .= " "x($position-1-$len); $len=$position-1; }
+
+# NOTE: line will now be $position-1 long or greater.
+if ( $len == ($position-1) )
+  { print $line,$seperator."\n";
+  }
+else 
+  { print substr($line,0,($position-1)), $seperator,
+          substr($line,($position-1),($len-$position+1))."\n";
+  }
+}
+
+exit 0;

@@ -1,0 +1,6 @@
+$pointer={}; # ref to empty HASH
+print ref($pointer) . "\n";
+$pointer={}; # ref to empty ARRAY
+print ref($pointer) . "\n";
+$pointer=\$junk; # ref to empty SCALAR
+print ref($pointer) . "\n";

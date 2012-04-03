@@ -1,0 +1,5 @@
+	sub system {
+		my($command,$noecho,$do)=@_;
+		print "$command\n" if (not $noecho);
+		system($command)   if ($do);
+	}

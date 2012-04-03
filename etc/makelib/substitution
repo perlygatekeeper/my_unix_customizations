@@ -1,0 +1,33 @@
+HTML_FILES= $(TXT_FILES:%txt=%html)
+  Suffix Replacement Macro References
+     Substitutions within macros can be made as follows:
+
+          $(name:string1=string2)
+
+     where string1 is either a suffix, or a word to  be  replaced
+     in the macro definition, and string2 is the replacement suf-
+     fix or word.  Words in a macro value are separated by SPACE,
+     TAB, and escaped NEWLINE characters.
+
+  Pattern Replacement Macro References
+     Pattern matching replacements can also be applied to macros,
+     with a reference of the form:
+
+          $(name:  op%os= np%ns)
+
+     where op is the existing (old) prefix and os is the existing
+     (old)  suffix,  np and ns are the new prefix and new suffix,
+     respectively, and the pattern matched by % (a string of zero
+     or more characters), is carried forward from the value being
+     replaced.  For example:
+
+          PROGRAM=fabricate
+          DEBUG= $(PROGRAM:%=tmp/%-g)
+
+     sets the value of DEBUG to tmp/fabricate-g.
+
+     Note that pattern replacement  macro  references  cannot  be
+     used  in the dependency list of a pattern matching rule; the
+     % characters are not  evaluated  independently.   Also,  any
+     number of % metacharacters can appear after the equal-sign.
+

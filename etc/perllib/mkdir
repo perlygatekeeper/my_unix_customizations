@@ -1,0 +1,2 @@
+    mkdir("$faculty_directory",0755)
+    || warn("$name: could not make faculty directory '$faculty_directory': $!\n");

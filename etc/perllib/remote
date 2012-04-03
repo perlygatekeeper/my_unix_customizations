@@ -1,0 +1,3 @@
+$hostname=`hostname`; chop $hostname;
+$remote="rsh $dumphost" if ($hostname ne "$dumphost");
+

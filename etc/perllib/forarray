@@ -1,0 +1,3 @@
+  for (local($var)=$[; $var<=$#array; $var++) {
+    print FILE "$array[$var]\n";
+  }

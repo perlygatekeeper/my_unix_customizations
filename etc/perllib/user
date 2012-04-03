@@ -1,0 +1,4 @@
+#!/usr/local/bin/perl
+$user= $ENV{USER} || $ENV{LOGNAME} || (chop ($junk=`whoami`),$junk);
+#$user= $ENV{LOgNAME} || $ENV{UsER} || `who am i`;
+#print "$user\n";

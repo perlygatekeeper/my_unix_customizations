@@ -1,0 +1,7 @@
+sub help {
+  select(STDOUT); $|=1; $\=''; 
+  print "@_[0]\n";
+  print "Other messages.\n";
+  exit 1;
+}
+

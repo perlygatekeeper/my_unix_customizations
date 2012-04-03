@@ -1,0 +1,28 @@
+# SDP last modification date 2/24/2011
+# alias pu	pushd
+# alias po	popd
+# alias rot	popd
+alias com	complete
+com cd          'p/1/d/'
+com pu          'p/1/d/'
+com pushd       'p/1/d/'
+com set         'c/*=/f/' 'p/1/s/=' 'n/=/f/'
+com unset       'n/*/s/'
+com alias       'p/1/a/'         # only aliases are valid
+com unalias     'n/*/a/'
+com kill        "p/1/S/" "n/`ps -elf   | perl -lane 'print [2];'`/"
+com talk        "p/1/u/"
+com which       'p/1/f/'
+com alias       'p/1/a/'
+com man         'n/*/c/'
+com set         'p/1/s/'
+com elm         "c@=@F:$HOME/Mail/@"
+com mutt        "c@=@F:$HOME/Mail/@"
+com find        'n/-name/f/' 'n/-newer/f/' 'n/-{,n}cpio/f/' 'n/-user/u/' \
+                'n/-fstype/(nfs 4.2)/' 'n/-type/(b c d f | p s)/' \
+                'c/-/(name newer cpio ncpio exec ok user group fstype type \
+                atime ctime mtime depth inum ls nogroup nouser perm print \
+                prune size xdev mount follow a o local)/' \
+                'n/-exec/c/{} \\;' 'n/-ok/c/{} \\;' 'n/-group/g/' \
+                'n/*/d/'
+unalias com

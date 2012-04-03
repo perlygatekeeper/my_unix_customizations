@@ -1,0 +1,11 @@
+use Carp qw(carp croak cluck confess);
+
+# die	  - gives file:line# of place where die was called, prints msg, exits
+# croak   - die of errors (from perspective of caller)
+# confess - die of errors with stack backtrace
+#          (not exported by default)
+#
+# warn	  - gives file:line# of place where die was called, prints msg but doesn't exit
+# carp    - warn of errors (from perspective of caller)
+# cluck   - warn of errors with stack backtrace
+#           (not exported by default)

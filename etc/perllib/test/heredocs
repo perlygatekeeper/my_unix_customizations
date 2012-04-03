@@ -1,0 +1,51 @@
+#!/usr/bin/perl
+#
+# A perl-5 script to test various here documents.
+#
+$name = $0; $name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name\n";
+
+$variable="value of variable";
+
+print <<EOF;
+stuff here print <<EOF;
+variable on next line
+$variable
+last line
+EOF
+
+print "-" x 20 . "\n";
+
+print <<"EOF";
+stuff here print <<"EOF";
+variable on next line
+$variable
+last line
+EOF
+
+print "-" x 20 . "\n";
+
+print <<'EOF';
+stuff here print <<'EOF';
+variable on next line
+$variable
+last line
+EOF
+
+print "-" x 20 . "\n";
+
+$ENV{'SHELL'}="/usr/bin/tcsh";
+print <<`EOC`;
+echo I will execute shell commands
+echo variable on next line
+echo $variable
+for i in *
+do
+  echo \$i
+done
+echo last line
+EOC
+
+exit 0;
+
+__END__

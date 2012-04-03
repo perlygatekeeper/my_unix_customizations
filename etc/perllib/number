@@ -1,0 +1,11 @@
+[14:56] <integral> /^\d+$/ is the proper, reliable test for a whole number or zero
+[14:56] <beth> I thought you were asking *what* a consensus is
+[14:56] <integral> /^\d+$/ is the proper, reliable test for a whole number or zero
+[14:56] <perlygatekeeper> isn't there a module that does number tests?
+[14:56] <beth> perlbot -q number
+[14:56] <perlbot> Search results can be found here: http://xrl.us/crsx
+[14:56] <integral> and /^([+-]?)(?=\d|\.\d)\d*(\.\d*)?([Ee]([+-]?\d+))?$/ for the whole lot
+[14:57] <perlygatekeeper> will that work for hex and octal too?
+[14:57] <integral> oh, here's a cool one! Scalar::Util::looks_like_number !
+[14:57] <beth> integral: that's the one
+[14:57] <integral> there's also Data::Types and Regexp::Common

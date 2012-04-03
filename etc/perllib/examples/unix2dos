@@ -1,0 +1,97 @@
+#!/usr/bin/perl
+#
+# A perl script to emulate part of the dos2unix command
+#
+$name = $0; $name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name [-ascii] [-iso] [-7]";
+
+if ($name=~/dos2unix/i) {
+  while (<>) {
+    s/\r\n/\n/g;
+    print;
+  }
+} elsif ($name=~/dos2unix/i) {
+  while (<>) {
+    s/([^\r])\n/$1\r\n/g;
+    print;
+  }
+} else {
+  while (<>) {
+    print;
+  }
+}
+
+exit 0;
+
+__END__
+DESCRIPTION
+     The  dos2unix   utility  converts  characters  in  the   DOS
+     extended  character  set  to the corresponding  ISO standard
+     characters.
+
+     This command can be invoked from either DOS or  SunOS.  How-
+     ever,  the  filenames must conform to the conventions of the
+     environment in which the command is invoked.
+
+     If the original file and the converted file  are  the  same,
+     dos2unix   will  rewrite  the original file after converting
+     it.
+
+OPTIONS
+     -ascii    Removes extra carriage returns and converts end of
+               file   characters in DOS format text files to con-
+               form to SunOS requirements.
+
+     -iso      This is the default.  It  converts  characters  in
+               the  DOS extended character set to the correspond-
+               ing  ISO standard characters.
+
+     -7        Convert 8 bit DOS graphics  characters  to  7  bit
+               space characters so that  SunOS can read the file.
+
+ATTRIBUTES
+     See attributes(5) for descriptions of the  following  attri-
+     butes:
+     ____________________________________________________________
+    |       ATTRIBUTE TYPE        |       ATTRIBUTE VALUE       |
+    |_____________________________|_____________________________|
+    | Availability                | SUNWesu                     |
+    |_____________________________|_____________________________|
+
+SEE ALSO
+     unix2dos(1), attributes(5)
+
+DIAGNOSTICS
+     File filename not found, or no read permission
+               The input file you specified does  not  exist,  or
+               you  do  not  have read permission (check with the
+               SunOS ls  -l command).
+
+     Bad output filename filename, or no write permission
+               The output file you specified is  either  invalid,
+
+SunOS 5.7           Last change: 14 Sep 1992                    1
+
+User Commands                                         dos2unix(1)
+
+               or  you do not have write permission for that file
+               or the directory that  contains  it.   Check  also
+               that   the   drive  or  diskette   is  not  write-
+               protected.
+
+     Error while writing to temporary file
+               An error occurred while converting your file, pos-
+               sibly  because   there  is not enough space on the
+               current drive.  Check the amount of space  on  the
+               current drive using the DIR command.  Also be cer-
+               tain that the default diskette or drive is  write-
+               enabled (not write-protected). Note that when this
+               error occurs, the original file remains intact.
+
+     Could not rename temporary file to filename.
+
+     Translated temporary file  name = filename.
+               The program could not perform the  final  step  in
+               converting  your  file.  Your  converted  file  is
+               stored under the name indicated on the second line
+               of this message.

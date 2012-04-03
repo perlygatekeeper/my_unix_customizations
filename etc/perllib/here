@@ -1,0 +1,14 @@
+
+    ($d=<<'    HERE')=~s/^\s{4}//gm;
+    Indented here document.
+
+    With indented content.  Stored in
+    the $d variable.
+
+    I) Outline
+      A) with indented stuff
+	1) indented further
+      B) more indented stuff
+      C) Yet more indented stuff
+    HERE
+    print $d;

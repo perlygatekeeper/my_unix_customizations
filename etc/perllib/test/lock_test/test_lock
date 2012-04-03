@@ -1,0 +1,54 @@
+#!/usr/local/bin/perl
+#
+# A perl script to test various locking subroutines
+#
+$name = $0;
+$name =~ s'.*/''; # remove path--like basename
+
+$true=1; $false=0;
+$nap_time=2;
+$max_attempts=10;
+
+require(steves_lock);
+
+$file=$ARGV[0];
+$lock_file="/tmp/${file}.lock";
+
+$lock_obtained=$false;
+
+$attempts=1;
+
+while ( ! ($lock_obtained=&lock($lock_file))
+       && ($attempts<=$max_attempts) ) {
+  if ($debug) {
+    print "Lock on Tally file '$tally_file' not obtained; sleeping '$nap_time' seconds...\n";
+  }
+  sleep($nap_time) ; 
+  $attempts++;
+}
+
+if (! $lock_obtained ) {
+  if ($debug) {
+    print "Lock on Tally file '$tally_file' not obtained after '$attempts' attempts.\n";
+  }
+  exit 1;
+} else { # lock was obtained
+
+  $outfile="$name.out";
+  open(FILE,">>$file")
+    || die("$name: Cannot append to '$file': $!\n");
+
+  ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst)=localtime(time);
+  $time=sprintf("%02d:%02d:%02d", $hour,$min,$sec);
+
+  printf FILE "attempts:%3d pid:%6d time:%s\n", $attempts, $$, $time;
+  close(FILE);
+  if ($debug) {
+    print "Lock on Tally file '$file' was obtained after '$attempts' attempts.\n";
+  }
+  &unlock($lock_file);
+}
+
+exit 0;
+
+__END__

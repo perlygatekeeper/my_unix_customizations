@@ -1,0 +1,79 @@
+#!/usr/local/bin/p5
+#
+# A perl-5 script to SCRIPT_DESCRIPTION
+#
+$name = $0; $name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name [-opt1] [-opt2] [-opt3]";
+
+require("fcntl.pl");
+
+$max_attempts=1;
+$time_between_attempts=5;
+$log=1;
+
+$file_to_be_locked='/tmp/lock';
+
+open(FH,"+>>$file_to_be_locked")
+  || die "can't open '$file_to_be_locked' to write.";
+
+if ($log) {
+  $logfile=$ARGV[0] || "log.$$";
+  open(LOG,">>$logfile") || die("$name: Cannot write to '$logfile': $!\n");
+}
+
+$not_written=$attempts=1;
+while ($not_written and $attempts<=$max_attempts) {
+  print "\nAttempt $attempts\n";
+  if ( $lock_result=&lock_file(FH,$lock_info={}) ) {
+    $date=localtime;
+    printf FH "%s (%5d) after %2d attempts lock result was '%s',\n%s obtained lock: %s\n",
+              $name, $$, $attempts, $lock_result, " " x length($name), $date;
+    sleep 2;
+    $date=localtime;
+    printf FH "%s released lock: %s\n",
+              " " x length($name), $date;
+    $not_written=0;
+  } else {
+    sleep $time_between_attempts;
+    $attempts++;
+  }
+}
+
+if ($not_written) {
+  $date=localtime;
+  if ($log) {
+    print LOG "File lock not obtained after $max_attempts.\n";
+    print LOG "Last attempt gave a lock result of '$lock_result'\n";
+    if ( ! ( $lock_result=&query_lock(FH,$lock_info={},1) )  ) {
+      print LOG "Lock on file '$file_to_be_locked' appearently owned by\n";
+      print LOG "process ($lock_info->{l_pid}) on system ($lock_info->{l_sysid})\n";
+    } else {
+      print LOG "strange... query_lock reports lock is obtainable,\n";
+      print LOG "since query_lock routine returned '$lock_result'.\n";
+    }
+    print LOG "$date\n";
+    close(LOG);
+  } else {
+    print "$name ($$): file lock not obtained after $max_attepts.\n";
+  }
+} else {
+  $date=localtime;
+  if ($log) {
+    print LOG "$name ($$) got a lock at $date, after $attempts attempts.\n";
+    close(LOG);
+  }
+}
+close(FH);
+&unlock_file(FH, $lock_info={});
+exit 0;
+
+__END__
+
+  $fcntl_t="ssllllllll";
+      ( $lock_info->{l_type},    # F_WRLCK or F_RDLCK
+        $lock_info->{l_whence},
+        $lock_info->{l_start},
+        $lock_info->{l_len},
+        $lock_info->{l_sysid},
+        $lock_info->{l_pid},
+        $lock_info->{pad} ) = unpack($fcntl_t,$packed_ret_buff);

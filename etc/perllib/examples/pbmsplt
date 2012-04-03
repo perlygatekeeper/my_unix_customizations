@@ -1,0 +1,39 @@
+#!/usr/local/localadm/bin/perl
+# script to print every nth line of a file (skipping first two lines)
+# used for *.pbm files (portable bitmap)
+# elaborated for special 2 row format of macptopbm files ???
+# each line has 1152 or (72 * 8 * 2) characters or two rows of a macp graphic.
+
+$name =~ s'.*/''; $usage = "usage: $name position\n";
+
+$file=$ARGV[0];
+
+open(PBMFILE,"$file.pbm") ||
+die("$name: cannot open $file.pbm file for input.\n");
+
+$line=<PBMFILE>; # pbm magic numbers ('P' & '1' for this example)
+print "$line";
+$line=<PBMFILE>;
+print "$line";
+($x,$y)=split(/[ \\t\\n]+/,$line);
+$i=0;
+
+$numfiles   = int(($x/70)+0.999);
+print "The number of files is $numfiles\n";
+
+for ($num=1;$num<=$numfiles;$num++) {
+  open($num,">$file$num") ||
+  die("$name: cannot open $file$num file for output.\n");
+}
+
+while (<PBMFILE>) {
+  $i%=$numfiles; $i++;
+    s/0/ /g;
+    print $i $_;
+} # end while
+
+for ($num=1;$num<=$numfiles;$num++) {
+  close($num);
+}
+
+exit 0;

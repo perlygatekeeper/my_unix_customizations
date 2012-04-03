@@ -1,0 +1,88 @@
+#!/usr/bin/perl
+#
+# A perl-5 script to test various loop structures
+#
+$name = $0; $name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name [-opt1] [-opt2] [-opt3]";
+
+print "While loop:\n";
+  $i=0;
+  while ( $i<10 ) {
+    printf "%2d ", $i++;
+  }
+  print "\n\n";
+
+print "Empty While loop (thus check is before execution):\n";
+  $i=10;
+  while ( $i<10 ) {
+    printf "%2d ", $i++;
+  }
+  print "\n\n";
+
+print "Do {} Until loop:\n";
+  $i=0;
+  do {
+    printf "%2d ", $i++;
+  } until ($i>9);
+  print "\n\n";
+
+print "Empty Do {} Until loop (thus check is after execution, guarantying one execution):\n";
+  $i=10;
+  do {
+    printf "%2d ", $i++;
+  } until ($i>9);
+  print "\n\n";
+
+print "Foreach loop:\n";
+  foreach $i ( 0 .. 10 ) { $array[$i]="$i is a number"; }
+  foreach $i ( 0 .. 10 ) { print "$array[$i]\n"; }
+  print "\n\n";
+
+print "For loop:\n";
+  for ($i=0; $i<10; $i++) {
+    print "'$i' ";
+  }
+  print "\n\n";
+
+print "Empty For loop:\n";
+  for ($i=10; $i<10; $i++) {
+    print "'$i' ";
+  }
+  print "\n\n";
+
+
+exit 0;
+
+__END__
+While loop:
+ 0  1  2  3  4  5  6  7  8  9 
+
+Empty While loop:
+
+
+Do {} Until loop:
+ 0  1  2  3  4  5  6  7  8  9 
+
+Empty Do {} Until loop:
+10 
+
+Foreach loop:
+0 is a number
+1 is a number
+2 is a number
+3 is a number
+4 is a number
+5 is a number
+6 is a number
+7 is a number
+8 is a number
+9 is a number
+10 is a number
+
+
+For loop:
+'0' '1' '2' '3' '4' '5' '6' '7' '8' '9' 
+
+Empty For loop:
+
+

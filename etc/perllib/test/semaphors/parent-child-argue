@@ -1,0 +1,94 @@
+#!/usr/bin/perl
+# Using Binary Semaphores
+
+use Class::Struct;
+use IPC::SysV qw(IPC_PRIVATE S_IRGRP S_IROTH S_IRWXU IPC_CREAT);
+use IPC::Semaphore;
+
+$|=1; $\="\n";
+$ppid=$$;
+$debug=1;
+$naptime=1;
+$steps=10;
+
+# get a semphore object with a unique key and a single flag
+# initial permissions are --rax------
+$perms= S_IRWXU | S_IRGRP | S_IROTH;
+$sem = new IPC::Semaphore(IPC_PRIVATE, 1, $perms | IPC_CREAT);
+
+$semnum=0;
+$semflags=0;
+
+$format="%6s %14s\t(%2d; %2d -> %2d)\n";
+print "\nParent: So you're the one who took the car last night!";
+
+if      ( ($pid=fork) == -1 ) { 	# failed fork
+  print "fork failed.";
+} elsif ( $pid == 0 ) { 	# child process
+# Child:
+# 1 waits for semaphore to be zero,
+# 2 sleeps a little
+# 3 says "I did not."
+# 4 set semaphore to 2. 
+  $i_am="Child:";
+  for ($i=1; $i<=$steps; $i++) {
+    $semop=0;
+    die "Semaphore/Child: semop failed with " .
+	"semnum $semnum, semop $semop and semflags $semflags:\n'$!'\n"
+    unless $sem->op($semnum, $semop, $semflags);
+    @sem = $sem->getall;
+    sleep $naptime;
+    printf $format, $i_am, '"I did not."', $i, $semop, $sem[0];
+    $semop=2;
+    die "Semaphore/Child: semop failed with " .
+	"semnum $semnum, semop $semop and semflags $semflags:" .
+	"\n'$!'\n" unless 
+      $sem->op($semnum, $semop, $semflags);
+    @sem = $sem->getall;
+    printf $format, ' ', ' ', $i, $semop, $sem[0];
+  } 
+} else {			# parent process
+# Parent:
+# 1 waits for semaphore to be greater than 0 (will be 2 from child)
+# 2 removes 1 from semaphore (now it is 1)
+# 3 sleeps a little
+# 4 says "You did too."
+# 5 removes 1 from semaphore (now it is 0)
+  $i_am="Parent:";
+  for($i=1; $i<=$steps; $i++) {
+    $semop=-1; # acquire the semaphore
+    die "Semaphore/Parent: semop failed with " .
+	"semnum $semnum, semop $semop and semflags $semflags:" .
+	"\n'$!'\n" unless 
+      $sem->op($semnum, $semop, $semflags);
+    @sem = $sem->getall;
+    sleep $naptime;
+    printf $format, $i_am, '"You did too."', $i, $semop, $sem[0];
+    $semop=-1;
+    die "Semaphore/Parent: semop failed with " .
+	"semnum $semnum, semop $semop and semflags $semflags:" .
+	"\n'$!'\n" unless 
+      $sem->op($semnum, $semop, $semflags);
+    @sem = $sem->getall;
+    printf $format, ' ', ' ', $i, $semop, $sem[0];
+  }
+}
+if ( $ppid==$$){ 
+        print "\nParent gets the last word.";
+	print `ipcs -s -a`;
+        $sem->remove;
+}
+
+exit 0;
+__END__
+
+             $sem->op(
+                 0, -1, IPC_NOWAIT,
+                 1,  1, IPC_NOWAIT
+             );
+
+					Read	Write	Read+Write+Execute
+        S_IRUSR S_IWUSR S_IRWXU        		USER
+        S_IRGRP S_IWGRP S_IRWXG			GROUP
+        S_IROTH S_IWOTH S_IRWXO			OTHER
+         @sem = $sem->getall;

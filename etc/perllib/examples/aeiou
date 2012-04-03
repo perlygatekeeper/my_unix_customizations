@@ -1,0 +1,16 @@
+#! /usr/local/localadm/bin/perl
+
+$file="/usr/dict/words";
+open(DICT,"$file") || die("$0: Cannot open $file\n");
+while (<DICT>)
+   {
+   $a=(/a/i);
+   $e=(/e/i);
+   $i=(/i/i);
+   $o=(/o/i);
+   $u=(/u/i);
+   if ( $a && $e && $i && $o && $u && length($_)<=10 ) { print "$_"; }
+#  if ( $a && $e && $i && $o && $u                   ) { print "$_"; }
+   }
+
+exit 0;

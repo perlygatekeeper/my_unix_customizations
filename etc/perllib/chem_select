@@ -1,0 +1,23 @@
+  my($results,$table,$what,$where,$group,$order,$debug);
+# require("CHEM_DBI.pl");
+# $dbh=&connect_readonly($database);
+  $table="users";
+  $what="username";
+  $where= "username=parker";
+  $group= $order= '';
+# $debug='result';
+  $debug='select';
+  $results= &select($dbh,
+                    {'table'    =>$table,
+                     'where'    =>$where,
+                     'what'     =>$what,
+                     'order'    =>$order,
+                     'group'    =>$group,
+                     'debug'    =>$debug});
+  if (not $results or
+      not ref($results) eq 'ARRAY' or
+      scalar(@{$results})    != 1 or
+      scalar(@{$results->[0]}) != 1) { # should be one and ONLY one chartfield_id  that matches
+    &debug_print('no match|err',"_ME: error encountered or no match found\n");
+    return undef;
+  }

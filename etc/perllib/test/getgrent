@@ -1,0 +1,16 @@
+#!/usr/bin/perl
+#
+# A perl-5 script to test what $members returns from getgrent;
+#
+$name = $0; $name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name";
+
+while (($name,$passwd,$gid,$members) = getgrent) {
+  printf "name:\t%s\npasswd:\t'%s'\ngid:\t%s\nmembers:\t%s\n----------\n",
+       ($name,$passwd,$gid,$members);
+	 
+}
+
+exit 0;
+
+__END__

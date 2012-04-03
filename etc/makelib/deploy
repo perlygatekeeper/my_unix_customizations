@@ -1,0 +1,180 @@
+# SYS V make
+ HOSTNAME:sh = hostname
+ PWD:sh = pwd | sed "s:/AOLSERVER/servers/chemistry::"
+ DS:sh = date '+%m%d%y'
+# HOSTNAME:sh = uname -n
+  
+# GNU's make
+#HOSTNAME := $(shell hostname)
+#HOSTNAME := $(shell uname -n)
+
+# ROOTS
+CGI=                      /www/cgi
+ACCOUNTING_CGI=           $(CGI)/accounting
+ONLY=                     $(ACCOUNTING_CGI)/only
+# DPR AND SUBORDINATE DEFS
+DPR=                      $(ACCOUNTING_CGI)/dpr
+DPR-DEV=                  $(ONLY)/dpr-dev
+DPR_INIT=                 $(ACCOUNTING_CGI)/dpr_initialization.pl
+DPR_INIT-DEV=             $(ONLY)/dpr_initialization-dev.pl
+DPR_VENDOR_ROUTINES=      $(ACCOUNTING_CGI)/dpr_vendor_routines.pl
+DPR_VENDOR_ROUTINES-DEV=  $(ONLY)/dpr_vendor_routines-dev.pl
+CHART_FIELD_ROUTINES=     $(ACCOUNTING_CGI)/chart_field_routines.pl
+CHART_FIELD_ROUTINES-DEV= $(ONLY)/chart_field_routines-dev.pl
+# DPR ADMIN DEFS
+DPR_ADMIN=                $(ONLY)/dpr_admin
+DPR_ADMIN-DEV=            $(ONLY)/dpr_admin-dev
+DPR_SEARCH=               $(ONLY)/dpr_search
+DPR_SEARCH-DEV=           $(ONLY)/dpr_search-dev
+DPR_NOTICE=               $(ONLY)/dpr_notice
+# DPR-RELAVENT DIRECTORIES
+USER_PROFILES=            $(ACCOUNTING_CGI)/user_profiles
+VENDORS=                  $(ACCOUNTING_CGI)/vendors
+BPOs=                     $(ACCOUNTING_CGI)/blanket_pos
+CHART_FIELD_DATA=         $(ACCOUNTING_CGI)/chart_field_data
+LOCK=                     $(ACCOUNTING_CGI)/lock.pl
+REQUESTS=                 $(ACCOUNTING_CGI)/pcard_requests
+TESTING=                  $(ACCOUNTING_CGI)/testing
+VENDORS=                  $(ACCOUNTING_CGI)/vendors
+ACCOUNTING_HTML=          /www/pages/support/account
+NOSEARCH=                 /www/nosearch_pages
+ACCOUNTING_NOSEARCH=      $(NOSEARCH)/accounting
+#
+CHEMDBI=                  $(ONLY)/CHEM_DBI.pl
+CHEMDBI-DEV=              $(ONLY)/CHEM_DBI-dev.pl
+
+#WORKING=	$(DEBUG)
+ WORKING=	$(SCRIPT)
+
+ME= $(TOP)/Makefile
+MAKE= /usr/ccs/bin/make
+MFLAGS= -f $(ME)
+
+test:
+	echo $$EDITOR
+
+howbig:
+	@wc $(DPR) $(DPR_ADMIN) $(DPR_SEARCH) $(DPR_NOTICE) $(DPR_INIT) \
+	   $(DPR_VENDOR_ROUTINES) $(CHART_FIELD_ROUTINES)
+	@echo " "
+	@echo "Chart Fields \c"; grep -v '^#' $(CHART_FIELD_DATA) | wc -l
+	@echo "User Profiles\c"; ls -l $(USER_PROFILES)/*	  | wc -l
+	@echo "Vendors      \c"; ls -l $(VENDORS)/*		  | wc -l
+	@echo "Blanket PO's \c"; ls -l $(BPOs)/*		  | wc -l
+
+deploy: deploy-dpr
+
+deploy-dpr:
+	perl -c $(DPR-DEV)
+	@-if [ -f $(DPR).$(DS) ] ; then \
+	  echo "There is already a file $(DPR).$(DS), not backing up."; \
+	else \
+	  cp -i $(DPR) $(DPR).$(DS); \
+	fi
+	cp -f $(DPR-DEV) $(DPR)
+	chmod 550 $(DPR)
+
+deploy-pcard:
+	cp $(PCARD) $(PCARD).$(DS)
+	cp $(PCARD-DEV) $(PCARD)
+
+deploy-admin:
+	perl -c $(DPR_ADMIN-DEV)
+	@-if [ -f $(DPR_ADMIN).$(DS) ] ; then \
+	  echo "There is already a file $(DPR_ADMIN).$(DS), not backing up."; \
+	else \
+	  cp -i $(DPR_ADMIN) $(DPR_ADMIN).$(DS); \
+	fi
+	cp -f $(DPR_ADMIN-DEV) $(DPR_ADMIN)
+	chmod 550 $(DPR_ADMIN)
+
+deploy-search:
+	perl -c $(DPR_SEARCH-DEV)
+	@-if [ -f $(DPR_SEARCH).$(DS) ] ; then \
+	  echo "There is already a file $(DPR_SEARCH).$(DS), not backing up."; \
+	else \
+	  cp -i $(DPR_SEARCH) $(DPR_SEARCH).$(DS); \
+	fi
+	cp -f $(DPR_SEARCH-DEV) $(DPR_SEARCH)
+	chmod 550 $(DPR_SEARCH)
+
+deploy-init:
+	perl -c $(DPR_INIT-DEV)
+	@-if [ -f $(DPR_INIT).$(DS) ] ; then \
+	  echo "There is already a file $(DPR_INIT).$(DS), not backing up."; \
+	else \
+	  cp -i $(DPR_INIT) $(DPR_INIT).$(DS); \
+	fi
+	cp -f $(DPR_INIT-DEV) $(DPR_INIT)
+	chmod 640 $(DPR_INIT)
+
+deploy-vendor:
+	perl -c $(DPR_VENDOR_ROUTINES-DEV)
+	@-if [ -f $(DPR_VENDOR_ROUTINES).$(DS) ] ; then \
+	  echo "There is already a file $(DPR_VENDOR_ROUTINES).$(DS), not backing up."; \
+	else \
+	  cp -i $(DPR_VENDOR_ROUTINES) $(DPR_VENDOR_ROUTINES).$(DS); \
+	fi
+	cp -f $(DPR_VENDOR_ROUTINES-DEV) $(DPR_VENDOR_ROUTINES)
+	chmod 640 $(DPR_VENDOR_ROUTINES)
+
+deploy-cfr:
+	perl -c $(CHART_FIELD_ROUTINES-DEV)
+	@-if [ -f $(CHART_FIELD_ROUTINES).$(DS) ] ; then \
+	  echo "There is already a file $(CHART_FIELD_ROUTINES).$(DS), not backing up."; \
+	else \
+	  cp -i $(CHART_FIELD_ROUTINES) $(CHART_FIELD_ROUTINES).$(DS); \
+	fi
+	cp -f $(CHART_FIELD_ROUTINES-DEV) $(CHART_FIELD_ROUTINES)
+	chmod 640 $(CHART_FIELD_ROUTINES)
+
+deploy-dbi:
+	perl -c $(CHEMDBI-DEV)
+	@-if [ -f $(CHEMDBI).$(DS) ] ; then \
+	  echo "There is already a file $(CHEMDBI).$(DS), not backing up."; \
+	else \
+	  cp -i $(CHEMDBI) $(CHEMDBI).$(DS); \
+	fi
+	cp -f $(CHEMDBI-DEV) $(CHEMDBI)
+	chmod 550 $(CHEMDBI)
+
+backup: $(ACCOUNTING_CGI) $(ACCOUNTING_NOSEARCH) $(ACCOUNTING_HTML)
+	gtar -zcvf $(ACCOUNTING_CGI)/../accounting.$(DS).tgz \
+	--exclude=$(ACCOUNTING_CGI)/ARCHIVE \
+	--exclude=$(ONLY)/ARCHIVE \
+	--exclude=$(ACCOUNTING_NOSEARCH)/ARCHIVE \
+	$(ACCOUNTING_CGI) $(ACCOUNTING_NOSEARCH) $(ACCOUNTING_HTML)
+	chmod 600 $(ACCOUNTING_CGI)/../accounting.$(DS).tgz
+	ls -l $(ACCOUNTING_CGI)/../accounting.$(DS).tgz
+
+#--exclude=www/cgi/accounting/ARCHIVE \
+#--exclude=$(ACCOUNTING_CGI)/ARCHVIE --exclude=$(ACCOUNTING_NOSEARCH)/ARCHVIE \
+
+edit:
+	$$EDITOR $(ME)
+
+pcard:
+	$$EDITOR $(PCARD)
+
+dev:
+	$$EDITOR $(PCARD-DEV)
+
+diff:
+	-diff $(PCARD) $(PCARD-DEV)
+
+search:
+	$$EDITOR $(DPR_SEARCH-DEV)
+
+print:
+	lp -d2105nw $(WORKING)
+
+check:
+	@perl -c $(PCARD-DEV)
+	@perl -c $(SEARCH-DEV)
+
+log:
+	tail /www/server.log
+
+Description: Describe_DPR Makefile
+	mysql -v -v -v -u root -p                    < Describe_DPR | grep -v rows > Description
+#	mysql -v -v -v -u root --password="A%ocIwuP" < Describe_DPR | grep -v rows > Description

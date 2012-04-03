@@ -1,0 +1,14 @@
+#!/usr/local/localadm/bin/perl
+
+$file="/etc/passwd";
+open(PASSWD,"$file") || die("$0: Cannot open $file\n");
+printf "%-8s\t%8s      %s  %s  %-24s%s\n",
+        "login","passwd","userid","groupid","home","shell";
+while (<PASSWD>)
+   {
+     ($login, $passwd, $uid, $gid, $gcos, $home, $shell) = split(/:/);
+     printf "%-8s\t%13s\t%s\t%s\t%-18s\t%s",
+            $login, $passwd, $uid, $gid,  $home, $shell;
+   }
+
+exit 0;
