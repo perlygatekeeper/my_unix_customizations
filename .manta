@@ -20,6 +20,9 @@ setenv core			"$svn/core/"
 alias svn-changelog	'svn diff --diff-cmd /usr/bin/diff -x "-uwB" -r`svn log --stop-on-copy | grep -P "^r\d+" | sort | head -n 1 | cut -d "|" -f 1 | sed "s/\s//g"`:HEAD . --summarize'
 alias svn-changes	'svn diff --diff-cmd /usr/bin/diff -x "-uwB" -r`svn log --stop-on-copy | grep -P "^r\d+" | sort | head -n 1 | cut -d "|" -f 1 | sed "s/\s//g"`:HEAD .'
 alias svn-revlog	'svn log --stop-on-copy'
+alias untrace		"crk '\\n' '\n' | crk '\\t' '    ' | crk 'called at(.*)"'$'"' '\n\tcalled at "'$'"1\n'"
+alias puptest		'sudo /usr/sbin/puppetd --test'
+
 alias sbx           'setenv SBXIP   "192.168.241.75";       echo now interacting with sparker-sbx: $SBXIP;          source ~/.manta'
 alias sbx2          'setenv SBXIP   "192.168.241.153";      echo now interacting with sparker2-sbx: $SBXIP;         source ~/.manta'
 alias sbx2012       'setenv SBXIP   "192.168.241.79";       echo now interacting with sparker2012-sbx: $SBXIP;      source ~/.manta'
@@ -28,3 +31,4 @@ alias ecnext30      'setenv SBXIP   "10.28.16.211";         echo now interacting
 alias mrc           'vi ~/.manta; source ~/.manta'
 
 setenv PERL5LIB "/svn/core:/svn/comsite5:/svn/community:/svn/image-service:/svn/manta-app-base:/svn/web-platform"
+
