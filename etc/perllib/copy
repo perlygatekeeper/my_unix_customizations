@@ -7,5 +7,5 @@ move("/dev1/fileA","/dev2/fileB");
 use POSIX;
 use File::Copy cp;
 
-$n=FileHandle->new("/dev/null","r");
-cp($n,"x");'
+my $null = FileHandle->new("/dev/null","r");
+cp($null,"x");'

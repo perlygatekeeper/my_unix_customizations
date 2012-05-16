@@ -1,7 +1,7 @@
 #   ***   SUBROUTINES   ***
 #   ---   ---   ---
 sub xxx {
-  local($arg1,$arg2)=@_;
+  my($arg1,$arg2)=@_;
 
 }
 

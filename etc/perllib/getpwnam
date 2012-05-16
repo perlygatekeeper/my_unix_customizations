@@ -1,1 +1,1 @@
-($login,$passwd,$uid,$gid,$quota,$comment,$gcos,$home,$shell)=getpwnam($name);
+my($login,$passwd,$uid,$gid,$quota,$comment,$gcos,$home,$shell)=getpwnam($name);

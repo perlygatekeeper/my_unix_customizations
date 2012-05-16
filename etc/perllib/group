@@ -1,16 +1,16 @@
 # -- BY FILE --
-$groupfile="/etc/yp/group";
+my $groupfile="/etc/yp/group";
 open(GROUP,"<$groupfile")
   || die("$name: Cannot read from '$groupfile': $!\n");
 while (<GROUP>) {
-  ($name,$passwd,$gid,$members) = split(/:/,$_);
+  my ($name,$passwd,$gid,$members) = split(/:/,$_);
   printf "name:\t%s\npasswd:\t'%s'\ngid:\t%s\nmembers:\t%s\n----------\n",
   ($name,$passwd,$gid,$members);
 }
 close(GROUP);
 
 # -- BY getgrent --
-while (($name,$passwd,$gid,$members) = getgrent) {
+while (my ($name,$passwd,$gid,$members) = getgrent) {
   printf "name:\t%s\npasswd:\t'%s'\ngid:\t%s\nmembers:\t%s\n----------\n",
   ($name,$passwd,$gid,$members);
 }

@@ -1,6 +1,6 @@
 sub assign_roman {
 # Assign the roman numeral array.
-($capitals,$length)=@_;
+my ($capitals,$length)=@_;
   $maxium_for_length[1]=1;
   $maxium_for_length[2]=2;
   $maxium_for_length[3]=7;

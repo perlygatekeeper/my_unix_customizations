@@ -1,5 +1,5 @@
 # to sleep by seconds
-# my($naptime)=5;
+# my($naptime) = 5;
 # sleep($naptime);
 # to sleep by less than a second, as per programming perl First Ed. p. 179;
 # select(undef,undef,undef,4.75); # select(RBITS,WBITS,EBITS,TIMEOUT)

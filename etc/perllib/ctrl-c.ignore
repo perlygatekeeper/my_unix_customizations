@@ -1,4 +1,4 @@
-#$SIG{'INT'}='IGNORE';
+# my $SIG{'INT'}='IGNORE';
 
 #system("stty intr u");
 

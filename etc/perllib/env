@@ -1,7 +1,7 @@
 # extracting environment variable 
-$variable = $ENV{'environment_variable_name'}
-         || `command`
-	 || 'default_value';
+my $variable = $ENV{'environment_variable_name'}
+           || `command`
+	       || 'default_value';
 
 # setting environment variable   
 # $ENV{'environment_variable_name'}=$variable;

@@ -22,11 +22,13 @@ files_from_2012-01-09
 .fontconfig/
 .gconf/
 .gegl-0.0/
+.gitignore
 .gnome2/
 GNUstep/
 .gtk-bookmarks
 .gvfs/
 .history
+host switch
 hosts.20111206
 hosts.20120202
 .ICEauthority

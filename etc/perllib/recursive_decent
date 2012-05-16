@@ -1,16 +1,16 @@
-#!/usr/local/bin/perl
+#!/usr/bin/perl
 #   ***   Define Default Strings, Values & Flags   ***
-$name = $0;
-$usage = "usage:\n$name [-maxdepth #]";
-$pwd=`pwd`; chop $pwd;
+my $name = $0;
+my $usage = "usage:\n$name [-maxdepth #]";
+my $pwd=`pwd`; chop $pwd;
 chdir($pwd);
-$max_depth=1;		#maxium depth down the directory tree.
+my $max_depth=1;		#maxium depth down the directory tree.
 
-($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst)=localtime(time);
-@mo = ('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec');
-@day = ('Sun','Mon','Tue','Wed','Thu','Fri','Sat');
-$date=sprintf("%s, %s %d, %d", $day[$wday], $mo[$mon], $mday, $year+1900);
-$true=1; $false=0;
+my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst)=localtime(time);
+my @mo = ('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec');
+my @day = ('Sun','Mon','Tue','Wed','Thu','Fri','Sat');
+my $date=sprintf("%s, %s %d, %d", $day[$wday], $mo[$mon], $mday, $year+1900);
+my $true=1; $false=0;
 
 #-----------------------------------------------------------------------------
 #   ***   PARSE COMMAND LINE ARGUMENT(S)   ***

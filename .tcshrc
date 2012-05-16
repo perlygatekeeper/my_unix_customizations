@@ -74,7 +74,10 @@ if ( $uid == 0 ) then
 else
   set prompt = "%S%m%s@%c03 <%h> "
 endif
-set history=2048 savehist=2048
+set history=2048 savehist=(2048 merge)
+# set histdup='prev'
+# set histdup='all'
+set histdup='erase'
 set autolist=ambiguous          # autolist on ambiguous
 set histdup=prev                # don't push dup entries oh history
 set echo_style=both             # honor both SYSV and BSD style echo conventions

@@ -1,1 +1,1 @@
-$PWD=`pwd`; chop $PWD;
+my $PWD=`pwd`; chop $PWD;

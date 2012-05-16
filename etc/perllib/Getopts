@@ -1,7 +1,7 @@
 #   ---   ---   ---
 sub Getopts {
-    local($argumentative) = @_;
-    local(@args,$_,$first,$rest,$errs);
+    my($argumentative) = @_;
+    my(@args,$_,$first,$rest,$errs);
     local($[) = 0;
 
     @args = split( / */, $argumentative );

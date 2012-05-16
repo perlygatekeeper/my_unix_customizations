@@ -1,1 +1,1 @@
-%hash=map(($_=>1),@array); # %hash=map{$_=>1},@array);
+my %hash=map(($_=>1),@array);

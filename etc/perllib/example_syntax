@@ -1,10 +1,10 @@
-%divisions=( key1, value1,
-             key2, value2,
-             key3, value3,
-             key4, value4,
-             key5, value5,
-             key6, value6,
-             key7, value7,
-             key8, value8);
+my %divisions=( key1, value1,
+                key2, value2,
+                key3, value3,
+                key4, value4,
+                key5, value5,
+                key6, value6,
+                key7, value7,
+                key8, value8);
 if ($divisions{key1} eq value1) { statement; }
 foreach (sort keys %divisions) {  statements; }

@@ -1,8 +1,8 @@
 # given an array reference, return index of smallest element
 sub array_min {
   my($arr)=shift;
-  $j=0;
-  foreach $i ( 1 .. $#{$arr)) {
+  my $j=0;
+  foreach my $i ( 1 .. $#{$arr)) {
     if ($arr[$i]<$arr[$j]) {
       $j=$i;
     };
@@ -12,7 +12,7 @@ sub array_min {
 
 sub array_max {
   my($arr)=shift;
-  $j=0;
+  my $j=0;
   foreach $i ( 1 .. $#{$arr)) {
     if ($arr[$i]>$arr[$j]) {
       $j=$i;

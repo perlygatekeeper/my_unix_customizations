@@ -1,4 +1,3 @@
-#!/usr/local/bin/perl
-$user= $ENV{USER} || $ENV{LOGNAME} || (chop ($junk=`whoami`),$junk);
-#$user= $ENV{LOgNAME} || $ENV{UsER} || `who am i`;
+#!/usr/bin/perl
+my $user= $ENV{USER} || $ENV{LOGNAME} || chomp ($junk=`whoami`),$junk);
 #print "$user\n";

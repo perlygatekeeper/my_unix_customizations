@@ -1,5 +1,5 @@
 #   ***   Define Values & Flags   ***
 
-$true=1;
-$false=0;
+use CONSTANT $true=1;
+use CONSTANT $false=0;
 

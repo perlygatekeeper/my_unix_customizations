@@ -1,1 +1,1 @@
-($name,$passwd,$gid,$members)=getgrnam($name);
+my($name,$passwd,$gid,$members) = getgrnam($name);

@@ -1,4 +1,4 @@
-$pointer={}; # ref to empty HASH
+my $pointer={}; # ref to empty HASH
 print ref($pointer) . "\n";
 $pointer={}; # ref to empty ARRAY
 print ref($pointer) . "\n";

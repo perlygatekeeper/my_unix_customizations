@@ -5,8 +5,8 @@ sub ascii {
 # ascii value equals argument 0 as
 #    octal or hex number if only one arg 
 # OR    decimal   number if argument 2 = "d" or "D"
-   if ($_[1]=="d") { return pack('C1',$_[0]); }
-elsif ($_[1]=="D") { return pack('C1',$_[0]); }
-return pack('C1',oct($_[0]));
+	if ($_[1]=="d") { return pack('C1',$_[0]); }
+	elsif ($_[1]=="D") { return pack('C1',$_[0]); }
+	return pack('C1',oct($_[0]));
 }
 
