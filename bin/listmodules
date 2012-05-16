@@ -1,0 +1,26 @@
+#!/usr/bin/perl
+#
+# A perl script to list all perl modules installed.
+#
+$name = $0; $name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name";
+
+print 'perl -MFile::Find=find -MFile::Spec::Functions -Tlwe \\' . "\n";
+print "'find { wanted => sub { print canonpath \$_ if /\\.pm\\z/ }, no_chdir => 1 }, \@INC'\n";
+
+exit 0;
+
+__END__
+I recently found it necessary to list all installed Perl modules on one of my linux servers.
+I wouldn't have thought that it would be as big a deal as it turned out to be.
+After two hours or so of testing 20 or so methods google found for me, I settled
+on the following 2.
+
+From the command line:
+
+perl -MFile::Find=find -MFile::Spec::Functions -Tlwe \
+'find { wanted => sub { print canonpath $_ if /\.pm\z/ }, no_chdir => 1 }, @INC'
+
+From a web page (CGI or Modperl/Mason):
+
+list_modules.pl

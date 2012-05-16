@@ -1,0 +1,12 @@
+#!/bin/sh
+if   [ `basename $0` = "findhere" ] ; then
+# echo "I am Steve Parker's FABULOUS 'FINDHERE' command!"
+  search_path=`pwd`
+elif [ `basename $0` = "findhome" ] ; then
+# echo "I am Steve Parker's FABULOUS 'FINDHOME' command (I start from ~)!"
+  search_path='~'
+elif [ `basename $0` = "findname" ] ; then
+# echo "I am Steve Parker's FABULOUS 'FINDNAME' command (I start from /)!"
+  search_path='/'
+fi
+/usr/bin/find $search_path -path '*.svn' -prune -o -name $1 -print

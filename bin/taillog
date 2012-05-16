@@ -1,0 +1,24 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+my $date = `date -u "+%Y%m%d%H"`; chomp $date;
+my $hostname = `/bin/hostname`; chomp $hostname;
+my $basename = "/var/log/apache2/" . $hostname . "_manta_error.";
+my $logname = '';
+
+for (my $back = 0; $back <= 24; $back++) {
+  my $possible_log = sprintf("${basename}%10d", $date--);
+  if ( ($date%100) == 99 ) { $date -= 76; }
+  if ( -f $possible_log ) {
+    $logname = $possible_log;
+    last;
+  } else {
+    print "Not '$possible_log'...\n";
+  }
+}
+
+die ("could find no log file, $basename\n") unless $logname;
+print "\n\nfound it: '$logname' -->\n\n";
+system("/usr/bin/tail -40 $logname");
+print "\n";

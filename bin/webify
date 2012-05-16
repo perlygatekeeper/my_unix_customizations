@@ -1,0 +1,22 @@
+#!/usr/bin/perl
+#
+# A perl-5 script to convert certain strings to www links.
+#
+# \S+@[a-z.]+		will be made into mailto:'s 
+# http://@[a-z.]+/?	will be made into http:'s 
+#
+$name = $0; $name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name";
+
+while (<>) {
+  s|([-a-z_A-Z0-9.]+\@[-a-zA-Z0-9.]+[-a-zA-Z0-9])|<a href="mailto:\1">\1</a>|g;
+  s|(http://?[-a-zA-Z_./~0-9:]+[-a-zA-Z_/~0-9])|<a href="\1" target=_new>\1</a>|ig;
+  print;
+}
+
+exit 0;
+
+__END__
+# if (m|([-a-z_A-Z0-9.]+\@[-a-zA-Z0-9.]+[-a-zA-Z0-9])|) {
+#   print "OH YEAH!\007\n"
+# }

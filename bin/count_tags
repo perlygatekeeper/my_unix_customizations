@@ -1,0 +1,64 @@
+#!/usr/bin/perl
+#-----------------------------------------------------------------------------
+# cs2 is a perl script to count certain 'html tags'
+# counts all occurances of ' " ` ( ) [ ] { } / and \
+# as well as blank lines
+#-----------------------------------------------------------------------------
+
+#   ***   Define Default Strings, Values & Flags   ***
+$name = $0;
+$usage = "usage:\n$name [file_name|environment_variable]\n";
+if ( $ARGV[0] eq '-?' || $ARGV[0] eq '-i' ) { do help($usage); }
+push(@reg_exp,"\<table");	push(@target_name,"table");
+push(@reg_exp,"\</table"); 	push(@target_name,"table closing");
+push(@reg_exp,"\<tr"); 		push(@target_name," row");
+push(@reg_exp,"\</tr"); 	push(@target_name," row closing");
+push(@reg_exp,"\<th"); 		push(@target_name," header");
+push(@reg_exp,"\</th"); 	push(@target_name," header closing");
+push(@reg_exp,"\<td"); 		push(@target_name," cell");
+push(@reg_exp,"\</td"); 	push(@target_name," cell closing");
+push(@reg_exp,"\<span"); 	push(@target_name,"span");
+push(@reg_exp,"\</span");	push(@target_name,"span closing");
+push(@reg_exp,"\<div"); 	push(@target_name,"div");
+push(@reg_exp,"\</div");	push(@target_name,"div closing");
+
+@files=@ARGV;
+$file=0;
+for($i=0;$i<=$#reg_exp;$i++) { $count[$i]=0; }
+while (<>) {
+  $line=$_;
+  $line=~s,\<!--[^-]+?--\>,,g; # eliminate HTML comments
+# if ($line=~/$reg_exp[0]/) { print $line; }
+  if ($line!~/^\s*#/) {
+    for($i=0;$i<=$#reg_exp;$i++) { $count[$i]+=($line=~s,$reg_exp[$i],,ig); }
+  }
+  if ( eof ) {
+    if (@files) {
+      print "Report for file ($files[$file]):\n";
+    } else {
+      print "Report for STDIN:\n";
+    }
+    for($i=0;$i<=$#reg_exp;$i++)
+      { printf "count for %-21s \t>%8s<\t%s\n",
+                $target_name[$i], $reg_exp[$i], $count[$i];
+        $count[$i]=0; }
+    $file++;
+    print "\n";
+  } # end eof test
+} # end main while loop
+
+#---------------------------------------------------------------
+
+exit 0;
+
+####   SUBROUTINES   ####
+sub help {
+print "@_[0]\n";
+print "This command 'Counts Stuff'.\n";
+print "Where Stuff is any of the following characters:\n";
+print " ' \" ` ( ) [ ] { } / and \\ \n";
+print "as well as blank lines.\n";
+exit 1;
+}
+
+__END__

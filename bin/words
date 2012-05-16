@@ -1,0 +1,27 @@
+#!/bin/sh
+# a shell script to search /usr/dict/words
+if [ "`tty`" = "not a tty" ] ; then
+  P=cat
+else
+  P=${PAGER:-less}
+fi
+if [ $# -eq 0 ] ; then
+  $P /usr/dict/words
+elif [ \( $1 = '-?' \) -o \( $1 = '?' \) ] ; then
+  echo "usage: $0 [-c (for contains option)] [target_word|as much as you know]"
+  exit 0
+elif [ $1 = '-c' ] ; then
+# part of word option
+  shift
+  for i in "$@"
+    do
+      echo "FOR >>>$i<<< I FOUND THE FOLLOWING:"
+      grep "$i" /usr/dict/words
+    done | $P
+else
+  for i in "$@"
+    do
+      echo "FOR >>>$i<<< I FOUND THE FOLLOWING:"
+      grep "^$i" /usr/dict/words
+    done | $P
+fi

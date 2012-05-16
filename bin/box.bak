@@ -1,0 +1,195 @@
+#!/usr/bin/perl
+#
+# A perl filter to put a box around text.
+#
+#
+$name = $0;
+$name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name [-corners|-clipped] [-starting starting_string]";
+$usage.= "[[-vertical] vertical ]";
+$usage.= "[[-horizontal] horizontal ]";
+
+use Debug;
+&debug('lengths');
+
+$char='_';
+$starting='';
+
+&parse_args;
+
+@text=<>;
+
+$lws=1024;
+# find leading-white-space and longest line;
+foreach $line (@text) {
+  chomp $line;
+&debug_print('lengths',":");
+  next if ($blank and $line=~/^\s*$/);
+&debug_print('lengths',".");
+  ($ws,$rol)=($line=~/^(\s*)(.*)$/);
+  if ($lws) {
+    $ws=length($ws);
+    $lws=( $lws < $ws) ? $lws : $ws ;
+  }
+  $line_length=length($line);
+  $max_length=($max_length>$line_length) ? $max_length : $line_length ;
+}
+&debug_print('lengths',"\n");
+&debug_print('lengths',"$max_length -> ");
+$max_length-=$lws;
+&debug_print('lengths',"$max_length\n");
+$lws= " " x $lws;
+
+# print first line of box
+&horizontal_line($starting,$lws,$corners,$ul,$ur,$horizontal,$max_length);
+# print   content  of box
+foreach $line (@text) {
+  chomp $line;
+  if ($blank and $tracking_blank_lines) { # we have found a blank line in the past and
+					  # are now looking for the first non-blank line.
+    if ($line=~/^\s*$/) {
+      print $last_blank_line . "\n";
+      $last_blank_line=$line;
+    } else {
+    # found a non-blank line, while tracking blanks, we are done tracking
+      $tracking_blank_lines=0; $last_blank_line='';
+    # the last blank line is replaced with an opening horizontal line
+      &horizontal_line($starting,$lws,$corners,$ul,$ur,$horizontal,$max_length);
+      &print_line($lws,$line,$max_length);
+    }
+  } else {
+    if ($blank and $line=/^\s*$/) {
+      $tracking_blank_lines=1;
+    # first blank line is replaced with a closing horizontal line.
+      &horizontal_line($starting,$lws,$corners,$ll,$lr,$horizontal,$max_length);
+      next;
+    }
+  # print non-blank lines normally.
+    &print_line($lws,$line,$max_length);
+  }
+}
+# print  last line of box
+&horizontal_line($starting,$lws,$corners,$ll,$lr,$horizontal,$max_length);
+
+exit 0;
+
+sub print_line {
+# expects global variable '$vertical' to be set.
+  my($lws,$line,$max_length)=@_;
+  my($ws,$rol);
+  if (($ws,$rol)=($line=~/^($lws)(.*)/) ) {
+    $rol=$rol . " " x ($max_length-length($rol));
+  } else {
+    $ws=$lws;
+    $rol=$rol . " " x ($max_length);
+  }
+  print $starting . $ws . $vertical . $rol . $vertical . "\n";
+}
+
+sub horizontal_line {
+  my($starting,$lws,$corners,$c1,$c2,$horizontal,$length)=@_;
+  print $starting . $lws;
+  if ($corners) {
+    print $ll . $horizontal x ($length+$lines_width-2) . $lr . "\n";
+  } else {
+    print       $horizontal x ($length+$lines_width) . "\n";
+  }
+}
+
+
+sub parse_args {
+
+  local(%abbrev)=();
+  local($true,$false)=(1,0);
+
+  @args=('?','help');
+  @help=('print this message','print this message');
+
+  push(@args,'clipped','corners','blank','backspaces','vertical','horizontal','starting');
+  push(@help,'use / and \ as corners for characters - and |',
+             'use + corners for characters - and |',
+             'treat all blank lines as end of box lines, ie horizontal lines and corners',
+             'use backspaces to make the underline character',
+             'define vertical character',
+             'define horizontal character',
+	     'define string that will start each line');
+
+  grep(s/^([^-])/-\1/,@args);
+
+  push(@INC,'/usr/common/lib/perl',"$HOME/perllib");
+  require("abbrev.pl");
+  &abbrev(*abbrev, @args);
+
+  # defaults
+  $vertical='|';
+  $horizontal='-';
+
+      $blank=$true;
+      $corners=$true;
+      $ur=$ll='\\';
+      $ul=$lr='/';
+  while ( @ARGV >= 1 ) {
+    if      ( ($abbrev{$ARGV[0]} eq '-help' )
+           || ($abbrev{$ARGV[0]} eq '-?' ) ) {
+      do help($usage);
+      shift(@ARGV);
+    } elsif ( $abbrev{$ARGV[0]} eq '-backspaces' ) {
+      $backspaces=1;
+      shift(@ARGV);
+    } elsif ( $abbrev{$ARGV[0]} eq '-vertical' ) {
+      $vertical=$ARGV[1];
+      shift(@ARGV); shift(@ARGV);
+    } elsif ( $abbrev{$ARGV[0]} eq '-horizontal' ) {
+      $horizontal=$ARGV[1];
+      shift(@ARGV); shift(@ARGV);
+    } elsif ( $abbrev{$ARGV[0]} eq '-starting' ) {
+      $starting=$ARGV[1];
+      shift(@ARGV); shift(@ARGV);
+    } elsif ( $abbrev{$ARGV[0]} eq '-corners' ) {
+      $corners=$true;
+      $ur=$ll=$ul=$lr='+';
+      shift(@ARGV);
+    } elsif ( $abbrev{$ARGV[0]} eq '-blank' ) {
+      $blank=$true;
+      shift(@ARGV);
+    } elsif ( $abbrev{$ARGV[0]} eq '-clipped' ) {
+      $corners=$true;
+      $ur=$ll='\\';
+      $ul=$lr='/';
+      shift(@ARGV);
+    } else {
+      $vertical=$horizontal=$ARGV[0];
+      shift(@ARGV);
+    }
+    print "$debug";
+  }  # end while
+  $lines_width= (2 * length($vertical));
+}  # end parse_args
+
+sub help {
+  select(STDOUT); $|=1; $\=''; 
+  print "@_[0]\n";
+  if (@help) {
+    for ($arg=$[; $arg<=$#args; $arg++) {
+      printf "%-16s\t%s\n", $args[$arg], $help[$arg];
+    }
+  } else {
+    for ($arg=$[; $arg<=$#args; $arg++) {
+      print "$args[$arg]\t";
+    }
+    print "\n";
+  }
+  exit 1;
+}
+__END__
+
+ 1 (1) This is some test text.
+ 2 (2) With multiple lines, some short and some long.
+ 3 (3) See.
+
+ 4 (5) This is a single short line.
+
+
+ 5 (8) This is a single short line.
+ 6 (9) This is some test text.
+ 7 (10) With multiple lines, some short and some long.

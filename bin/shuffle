@@ -1,0 +1,30 @@
+#!/usr/bin/perl
+#
+# A perl script to print line 1 from first  half
+#                 line 1 from second half
+#                 line 2 from first  half
+#                 line 2 from second half, etc...
+#
+# ie. lines thus:       	# will be rearranged to:	
+# 1                     	# 1                     	
+# 2                     	# 3                     	
+# 3                     	# 2                     	
+# 4                     	# 4                     	
+# for the reverse functionality see oe & eo.
+
+@lines=<>;
+
+# 0 1 2 3 4 5  offset should be 3 	-> 0 (3) 1 (4) 2 (5)
+# 0 1 2 3 4    offset should be 3 	-> 0 (3) 1 (4) 2
+
+#$offset=($#lines%2)?int($#lines/2)+1:int($#lines/2);
+$last=int($#lines/2);
+$offset=$last+1;
+
+for ($i=0; $i<$last; $i++) {
+  print $lines[$i];
+  print $lines[$i+$offset];
+}
+  print $lines[$last];
+  print $lines[$#lines] if ( ! ($#lines%2));  # print last line if even number
+					      # of lines ($#lines will be odd)

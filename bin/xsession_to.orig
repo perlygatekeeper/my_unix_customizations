@@ -1,0 +1,31 @@
+#!/bin/sh
+# 
+# Usage: /usr/global/bin/xsession_to HOSTNAME
+# 
+# Will create an xsession on HOSTNAME displaying on
+# the most recent setting of DISPLAY, typically
+# through a tunnel set up via ssh to chemistry.
+# We assume that HOSTNAME doesn't share chemistry's
+# /home/.Xauthority.
+#
+# Requirements:
+# - need .rhosts access to destination HOSTNAME
+# - need /usr/local/bin/exec_xsession on HOSTNAME
+#   that contains everything to start xsession; this
+#   script will need to use the file $HOME/.latest_display
+#   to set the display appropriately
+# - need the following in $HOME/.login.personal:  
+# ---------------------------------------------------
+#    # Record the latest $DISPLAY setting, to be
+#    # used in $ugb/xterm_to and xsession_to scripts.
+#    if ($?DISPLAY) then
+#      echo $DISPLAY >! ~/.latest_display
+#    endif
+# ---------------------------------------------------
+#
+remote_host="$1"
+name=`basename $0`
+DISPLAY=`cat $HOME/.latest_display`
+rcp $HOME/.Xauthority ${remote_host}:
+rcp $HOME/.latest_display ${remote_host}:
+rsh $remote_host "/usr/local/bin/exec_xsession"

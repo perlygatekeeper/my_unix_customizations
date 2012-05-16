@@ -1,0 +1,15 @@
+#!/usr/bin/perl -l
+#
+# A perl script to print files with each line having it's characters reversed
+#
+$name = $0; $name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name [FILENAME ...]";
+
+while (<>) {
+  chomp;
+  print scalar reverse;
+}
+
+exit 0;
+
+__END__

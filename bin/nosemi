@@ -1,0 +1,23 @@
+#!/usr/bin/perl
+#
+# A perl script to list only lines from STDIN do not end in a semi colon
+# nor blank or comment lines
+# nor lines that end in { or }
+#
+$name = $0; $name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name REGEXP [ REGEXP ... ]";
+
+LINE: while (<>) {
+  next LINE if (/;(\s+|\s*#.*)?$/);				# skip good lines that end in ;'s
+  next LINE if (/(\{|\})\s*(#.*)?$/);				# skip lines that end in { or }
+  next LINE if (/^\s*$|^\s*#/);					# skip white, blank and commented lines.
+  next LINE if (/^\s*elsif\s*\([^)]+]\)\s*$/);			# skip if & elsif lines
+  next LINE if (/^\s*else\s*$/);				# skip else lines
+  next LINE if (/(.|,)(\s*#.*)?$/);				# skip lines that end in , or .
+  last LINE if (/^__END__$/);					# __END__ and the like
+  print;
+}
+
+exit 0;
+
+__END__

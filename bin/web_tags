@@ -1,0 +1,35 @@
+#!/usr/bin/perl
+#
+# A perl-5 script to add closing web tags
+#
+$name = $0; $name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name";
+$debug=0;
+
+@lines=<>;
+
+printf STDERR "number of lines is %d\n", $#lines+1 if ($debug);
+
+if ($#lines>0)  {
+  foreach $line (@lines) {
+    print $line;
+  }
+  foreach $line (reverse @lines) {
+    next if ($line !~ /^\s*\<.*\>\s*$/);
+    $line=~s,\<([^\>]+)\>,</\1>,;
+    print $line;
+  }
+} else {
+  # first ()	stuff before tag
+  # second ()	whole tag
+  # third ()	guts of tag
+  # four ()	contents of tag
+  $lines[0] =~ s,^([^<]*)(\<([^\>]+)\>)([^<]*),\1\2\4</\3>,g;
+  print $lines[0];
+  printf STDERR "single line: '%s'\n", $lines[0] if ($debug);
+  printf STDERR "pieces: '%s', '%s', '%s', '%s'\n", $1, $2, $3, $4 if ($debug);
+}
+
+exit 0;
+
+__END__

@@ -1,0 +1,242 @@
+#!/usr/bin/perl
+#
+# A perl script to report who is on a group of workstations.
+#
+$name = $0;
+$name =~ s'.*/''; # remove path--like basename
+$usage = 'Usage: drwho [-finger|-who|-w|-do|-c command]' . "\n";
+$usage.= '             [-ignore machine ...]' . "\n";
+$usage.= '             [-machines ...]' . "\n";
+$usage.= '             [-box|tardis]';
+$version="2.0";		# first official version.
+$version="2.1";		# add inteligent ping command 
+			# assignment (see sub ping_frst)
+
+$last_mod_date="Thu Aug 03 1995";
+$author="Dr. Steven Parker";
+select(STDOUT); $|=1;
+
+&initialize;
+&parse_args;
+
+foreach $mach ($[ .. $#MACHINES) {
+  next if ($ignore{$MACHINES[$mach]});
+# print "$command $MACHINES[$mach]\n";
+# get results from the command
+  if ($MACHINES[$mach] eq $hostname) {
+    $fetch="$command |";
+  } else {
+# print STDERR "rsh $MACHINES[$mach] $command |\n";
+    if ( &ping_first($MACHINES[$mach]) ) {
+      $fetch="rsh $MACHINES[$mach] $command |";
+    } else {
+      $fetch="/usr/bin/echo '$MACHINES[$mach] appears to be down, moving on...' |";
+    }
+  }
+
+  open(COMMAND,"$fetch") ||
+  die("$name: Cannot get info from $MACHINES[$mach] with '$fetch': $!.");
+  local(@results)=<COMMAND>;
+  close(COMMAND);
+
+  push(@report,"Results from $MACHINES[$mach]:\n");
+  push(@report,sort @results);
+  push(@report,"\n");
+
+  print @report;
+  undef @report;
+}
+# print @report;
+
+# ENDING SEQUENCE
+
+if ( $tardis ) {
+  while (<DATA>) {
+    print;
+  }
+}
+
+print "The TARDIS fades from view;\n";
+print "AH-WOO, AH-WOO, AH-Woo,\n";
+print "AH-woo, Ah-woo, ah-woo...\n";
+
+exit 0;
+
+#   ***   SUBROUTINES   ***
+
+#   ---   ---   ---
+sub initialize {
+
+  $home=$ENV{'HOME'};
+  push(@INC,'/usr/common/lib/perl',"$home/perllib");
+  require("abbrev.pl");
+
+  $true=1; $false=0;
+  $hostname=`uname -n`; chop $hostname;
+  require("datetime.pl");
+  $day=&day();
+
+# SGI IRIX 5.2
+ $finger=`which finger` || '/usr/bsd/finger';
+ $w=     `which w`      || '/usr/bsd/w';
+ $who=   `which who`    || '/sbin/who';
+ $ping=  `which ping`   || '/usr/etc/ping';
+
+# SUN SunOS 4.1.3 
+# $finger=`which finger` || '/usr/ucb/finger';
+# $w=     `which w`      || '/usr/ucb/w';
+# $who=   `which who`    || '/bin/who';
+# $ping=  `which ping`   || '/usr/etc/ping';
+
+# SUN Solaris 2.x
+# $finger=`which finger` || '/usr/bin/finger';
+# $w=     `which w`      || '/usr/bin/w';
+# $who=   `which who`    || '/usr/bin/who';
+# $ping=  `which ping`   || '/usr/sbin/ping';
+
+# IBM's  AIX		 SunOS/IRIX	    Sol            OSF1
+# $ping=  `which ping`   || 'etc/ping';
+
+# DEC's OSF1 or Digital Unix
+# $ping=  `which ping`   || '/sbin/ping';
+
+  $command = $finger;
+  $header= 'Machine:   	Login       Name              TTY Idle    When    From Where';
+
+  @MACHINES=$ENV{'MACHINES'} || ('chemistry.ohio-state.edu','simon','finally');
+  @NICKS=('chem','sim','fin'); # each machine can have one nickname.
+}
+
+#   ***   Ping a computer before taking an action   ***
+#   ---   ---   ---
+sub ping_first {
+
+  local($name)=@_;
+  local($command)='/usr/sbin/ping';
+  $timeout=1;
+  #        AIX		 SunOS/IRIX	    Sol            OSF1
+  foreach ('/etc/ping','/usr/etc/ping','/usr/sbin/ping','/sbin/ping') {
+    if ( -x $_) { $command=$_; last; }
+  }
+
+  local($responce)=`$command $name $timeout`;
+  if ( ( $? ) || ( $responce =~ /no answer from/ ) ) {
+    return 0;
+  } else {
+    return 1;
+  }
+
+}  # end ping_first
+
+#   ---   ---   ---
+sub parse_args {
+  local(%abbrev)=();
+  @args=('?','help');
+  @help=('print this message','print this message');
+  push(@args,'who','w','finger','do','command',
+	     'box','tardis','machines','ignore');
+  push(@help,"use the 'who'         command",
+             "use the 'w' (or what) command",
+             "use the 'finger'      command",
+             'print the tardis on exiting',
+             'print the tardis on exiting',
+             'send the command to machines',
+             'ignore the specified machines');
+  grep(s/^([^-])/-\1/,@args);
+  push(@INC,'/usr/local/lib/perl');
+  require("abbrev.pl");
+  &abbrev(*abbrev, @args);
+
+  while ( @ARGV >= 1 ) {
+    if      ( ($abbrev{$ARGV[0]} eq '-help' )
+           || ($abbrev{$ARGV[0]} eq '-?' ) ) {
+      do help($usage);
+      shift(@ARGV);
+    } elsif ( $abbrev{$ARGV[0]} eq '-who' ) {
+      $command=$who;
+      $header= 'Machine:	User       tty          When';
+      shift(@ARGV);
+    } elsif ( $abbrev{$ARGV[0]} eq '-w' ) {
+      $command="$w -h";
+      $header=
+      'Machine:	User     tty       login@  idle   JCPU   PCPU  what';
+    } elsif ( $abbrev{$ARGV[0]} eq '-finger' ) {
+      $command=$finger;
+      $header=
+      "Machine:  \tLogin       Name\t\tTTY Idle    When    From Where";
+    } elsif ( $abbrev{$ARGV[0]} eq '-command' ) {
+      $command=$ARGV[1];
+      shift(@ARGV); shift(@ARGV);
+    } elsif ( ( $abbrev{$ARGV[0]} eq '-tardis' )
+           || ( $abbrev{$ARGV[0]} eq '-box' ) ) {
+      $tardis=1;
+      shift(@ARGV);
+    } elsif ( $abbrev{$ARGV[0]} eq '-machines' ) {
+      shift(@ARGV);
+      while ($ARGV[0] !~ /^-/) {
+        push(@MACHINES,$ARGV[0]);
+        shift(@ARGV);
+      }
+    } elsif ( $abbrev{$ARGV[0]} eq '-ignore' ) {
+      $was_a_machine=1;
+      shift(@ARGV);
+      while ($was_a_machine) {
+       $was_a_machine=0;
+        for (local($i)=$[; $i<=$#MACHINES; $i++) {
+	  if ( ( $ARGV[0] =~ /$MACHINES[$i]/i )
+	     ||( $ARGV[0] =~ /$NICKS[$i]/i ) ) {
+	     $ignore{$MACHINES[$i]}++;
+             shift(@ARGV);
+             $was_a_machine=1;
+	  }
+        }
+      }
+    } else {
+      warn("$name: Unknown option '$ARGV[0]'; disregarding...\n");
+      shift(@ARGV);
+    }
+  }  # end while
+}  # end parse_args
+
+#   ---   ---   ---
+sub help {
+  select(STDOUT); $|=1; $\=''; 
+  print "@_[0]\n";
+  if (@help) {
+    for ($arg=$[; $arg<=$#args; $arg++) {
+      printf "%-16s\t%s\n", $args[$arg], $help[$arg];
+    }
+  } else {
+    for ($arg=$[; $arg<=$#args; $arg++) {
+      print "$args[$arg]\t";
+    }
+    print "\n";
+  }
+  exit 1;
+}
+__END__
+           _-_
+           |=|
+          =====
+   |~~~~~~~~~~~~~~~~~|
+  |~~~~~~~~~~~~~~~~~~~|
+ ||  |POLICE~=~BOX|   ||
+  |   ~~~~~~~~~~~~    |
+  | |~|~|~| | |~|~|~| |
+  | |-|-|-| | |-|-|-| |
+  | |_|_|_| | |_|_|_| |
+  |  _____  |  _____  |
+  | | *.* | |o|     | |
+  | |",",]| |]|     | |
+  | |_____| | |_____| |
+  |  _____  |  _____  |
+  | |     | | |     | |
+  | |     | | |     | |
+  | |_____| | |_____| |
+  |  _____  |  _____  |
+  | |     | | |     | |
+  | |     | | |     | |
+  | |_____| | |_____| |
+  |___________________|
+|~~~~~~~~~~~~~~~~~~~~~~~| 
+~~~~~~~~~~~~~~~~~~~~~~~~~

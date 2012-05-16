@@ -1,0 +1,91 @@
+#!/usr/bin/perl
+#
+# A perl script to copy all files FILE1.* to FILE2.*
+# 
+#
+$name = $0; $name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name [-internal] (search/replace file name references in files)\n" .
+	 "        [-force] (do not ask before overwriting) FILEBASE1 FILEBASE2";
+
+if ($ARGV[0]=~/-i(nt(ernal)?)?/) {
+  $internal++;
+  shift;
+}
+if ($ARGV[0]=~/-f(orce)?/) {
+  $force++;
+  shift;
+}
+if ($ARGV[0] =~ /^--?h(elp)?/ or scalar(@ARGV) != 2) {
+  print "$usage\n";
+  if (@ARGV) { print join(", ", @ARGV) . "\n"; }
+  exit 0;
+} else {
+  $from_file_base=$ARGV[0];
+  $to_file_base=$ARGV[1];
+}
+
+use File::Copy;
+
+$dir=".";
+opendir(DIR,$dir) || die "Can't open dir $dir: $!\n";
+@files=readdir(DIR);
+closedir(DIR);
+shift(@files);shift(@files); # for . and .. entries
+@files=grep(/^$from_file_base/,@files);
+
+if (not @files) {
+  print "nothing to do since:\n";
+  print "no target files match '$from_file_base' in '$dir'\n";
+  print "$usage\n"
+} else {
+  foreach $file (@files) {
+    ($base,$ext)=($file=~m,($from_file_base)\.?(.*),);
+    $to_file =$to_file_base;
+    $to_file.=".$ext" if $ext;
+    if (not $force and -f $to_file) {
+      if (not &response("File '$to_file' exits, overright? [y/N/q]", "^y", "q(uit)?|e(xit)?")) {
+        printf "will NOT copy %20s -> %20s\n", $file, $to_file;
+	next;
+      }
+    }
+    if ($internal) {
+      printf "will transform %20s -> %20s", $file, $to_file;
+      open(INFILE,"<$file")
+        || die("$name: Cannot read from '$file': $!\n");
+      open(OUTFILE,">$to_file")
+        || die("$name: Cannot write to '$to_file': $!\n");
+      while (<INFILE>) {
+	s/$from_file_base/$to_file_base/g;
+        print OUTFILE;
+      }
+      close(OUTFILE);
+      close(INFILE);
+    } else {
+      printf "will copy %20s -> %20s", $file, $to_file;
+      copy($file,$to_file);
+    }
+    print "\n";
+  }
+}
+
+exit 0;
+
+sub response {
+  local($string,$regexp,$exit_regexp)=(@_);
+  if ($string) {
+    print $string;
+  } else {
+    print "yes|no";
+  }
+  $response=<STDIN>;
+  if ($regexp) {
+    return ($response=~/$regexp/i);
+  } elsif ($exit_regexp and $response=~/$exit_regexp/i) {
+    print "Quitting $name in response to user input '$response'\n";
+    exit;
+  } else {
+    return ($response=~/^y/i);
+  }
+}
+
+__END__

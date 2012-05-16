@@ -1,0 +1,75 @@
+#!/usr/bin/perl
+#
+# A perl script to take the output of an ls -l command and
+# extract and sum the sizes
+#
+$name = $0; $name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name [-sort]";
+
+if ( $ARGV[0] =~ /^-s/i ) {
+  $sort=1; shift;
+}
+
+use Math::BigInt;
+my($sum)=Math::BigInt->bzero();
+my($size)=Math::BigInt->bzero();
+$sum->precision(0);  $sum->accuracy(15);
+$size->precision(0); $size->accuracy(15);
+my($kilo)=Math::BigInt->new('1024');          #  printf "kilo: %16s\n", $kilo->bstr();
+my($mega)=$kilo->copy(); $mega->bpow(2);      #  printf "mega: %16s\n", $mega->bstr();
+my($giga)=$kilo->copy(); $giga->bpow(3);      #  printf "giga: %16s\n", $giga->bstr();
+my($tera)=$kilo->copy(); $tera->bpow(4);      #  printf "tera: %16s\n", $tera->bstr();
+
+# printf "%16s,%16s: '%s'\n", 'size', 'cum sum', 'str';
+while (<>) {
+  chomp;
+  my($size,$str);
+  next if /^d|^total/;
+  if ($_ =~ m/^l/) {
+    $_ =~ s/^l[-rwxstST]+\s+\d+\s+\S+\s+\S+\s+(\d+)/sprintf "%11s", $1/e;
+    printf "%13s: %15s, %s\n", $sum->bstr(), '-', $_;
+    next;
+  }
+  ($str) = ( $_ =~ m/^-[-rwxstST]+\s+\d+\s+\S+\s+\S+(\s+\d+)/);
+# $_ =~ s/^-[-rwxstST]+\s+\d+\s+\S+\s+\S+\s+(\d+) [JFMASOND][a-z][a-z] \d\d \d\d:\d\d/sprintf "%11s", $1/e;
+  $_ =~ s/^-[-rwxstST]+\s+\d+\s+\S+\s+\S+\s+(\d+)/sprintf "%11s", $1/e;
+  next if ($'=~/\b[A-Z]\S+$/);
+  $size1=Math::BigInt->new("$str");
+  if ($sort) {
+    $sizes{$_}=$size1;
+  } else {
+    $sum->badd($size1) if (not $size1->is_nan());
+    my($size2, $name)=( $_ =~ m/(\S+)\s+(\S+)/ );
+#   my($size_in_megs) = $size->copy();
+#   $size_in_megs->bdiv($mega);
+    printf "%13s: %15s, %s\n", $sum->bstr(), $size1->bstr(), $_;
+#   printf "%11s: %13s, %sMB %s\n", $sum->bstr(), $size1->bstr(), $size_in_megs->bstr(), $name;
+#   $sum->badd($size) if (not $size->is_nan());
+#   printf "%11s: %sMB %s", $sum->bstr(), $_;
+  }
+}
+
+sub asc_by_value { $sizes{$a} <=> $sizes{$b}; }
+if ($sort) {
+  foreach $line (sort asc_by_value keys %sizes) {
+    $size = $sizes{$line};
+    $sum->badd($size) if (not $size->is_nan());
+    printf "%11s: %s", $sum->bstr(), $line;
+  }
+}
+
+$sum->bdiv($kilo); printf "total: %sKB\n", $sum->bstr();
+$sum->bdiv($kilo); printf "total: %sMB\n", $sum->bstr();
+$sum->bdiv($kilo); printf "total: %sGB\n", $sum->bstr();
+
+exit 0;
+
+__END__
+
+total 126
+-rw-rw-r--   1 nsadmin  mss         3348 Dec  6  2004 README
+drwxrwx---   2 nsadmin  mss        56320 Mar  1 16:27 abstract
+drwxrwxr-x   2 nsadmin  mss         1024 May  9 10:01 archive
+drwxrwxr-x   5 nsadmin  mss          512 May  9 10:01 eas
+drwxrwxr-x   2 nsadmin  mss          512 May 11 13:21 program
+drwxrwxr-x   2 nsadmin  mss          512 May  9 10:01 registration

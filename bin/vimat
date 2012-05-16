@@ -1,0 +1,55 @@
+#!/usr/bin/perl
+#
+# A perl script to start vim on a file at a certain line, input
+# will can either
+# FILENAME LINE#
+# LINE# FILENAME
+# or FILENAME:LINE#
+#
+$name = $0; $name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name [-opt1] [-opt2] [-opt3]";
+
+# find vim
+$vim='/usr/bin/vim';
+if (not -e $vim) {
+  $vim='';
+  foreach $v qw( /usr/sbin/vim /bin/vim /sbin/vim /usr/local/bin/vim ) {
+    if ( -e $v ) {
+      $vim=$v; last;
+    }
+  }
+}
+die("no executable for vim found.\n") unless $vim;
+
+$processing=1;
+while (@ARGV) {
+  $arg=shift @ARGV;
+  if ( $processing and $arg =~ /-f/i ) {
+    $filename=shift @ARGV;
+  } elsif ( $arg eq '--' ) {		# allow the '--' arg so you can have a filename beginning w/ -f
+    $processing=0;
+  } elsif ( $arg =~ /(\d+):(\S+)/ ) {
+    $filename=$2;
+    $at=$1;
+  } elsif ( $arg =~ /(\S+):(\d+)/ ) {
+    $filename=$1;
+    $at=$2;
+  } elsif ( $arg =~ /-?-?(\d+)/ ) {
+    $at=$1;
+  } elsif ( not $filename ) {
+    $filename=$arg;
+  } else {
+    print "unknown argument '$arg'.. disgarding...\n";
+  }
+}
+
+die("no filename found.\n") unless $filename;
+
+$at ||= "1";
+
+system("$vim +$at $filename");
+
+
+exit 0;
+
+__END__

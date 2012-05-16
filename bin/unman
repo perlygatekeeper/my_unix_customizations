@@ -1,0 +1,14 @@
+#!/usr/bin/perl
+#
+# A perl script to remove underline and bold constructions from a man
+# page
+#
+while (<>) {
+  if (/^Reformatting page/) {
+    while(<>) { last if (/^.+$/); }
+  }
+  s/_//g;
+  s/.//g;
+  if (/^.+$/ || $last=~/^.+$/ ) { print; }
+  $last=$_;
+}

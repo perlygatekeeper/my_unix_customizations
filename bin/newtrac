@@ -1,0 +1,50 @@
+#!/usr/bin/perl
+#
+# A perl script to transform the template /home/sparker/etc/htmllib/trac.html
+# into a trac-specific file in the working copy.
+#
+$name = $0; $name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name [TRAC_TITLE]";
+
+chomp ($pwd=`pwd`); ( $trac = $pwd ) =~ s,.*/?trac_(\d{4}).*,$1,;
+print "starting in $pwd, therefore this is $trac\n";
+die if (not $trac);
+$title = shift;
+
+$outfile="./trac_$trac.html";
+# $infile="/home/sparker/etc/htmllib/trac.html";
+open(OUTFILE,">$outfile") || die("$name: Cannot write to '$outfile': $!\n");
+# open(INFILE,"<$infile") || die("$name: Cannot read from '$infile': $!\n");
+while (<DATA>) {
+  s/TRAC_TITLE/$title/g;
+  s/TRAC_NUMBER/$trac/g;
+  print OUTFILE;
+}
+close(INFILE);
+close(OUTFILE);
+
+system( "/usr/bin/svn add trac_$trac.html" );
+
+exit 0;
+
+__END__
+<html> 
+<head>
+<title>Manta Trac #TRAC_NUMBER: TRAC_TITLE</title>
+</head>
+<body> 
+	<h2><a href="http://trac/trac/main/ticket/TRAC_NUMBER">Manta Trac #TRAC_NUMBER: TRAC_TITLE</a></h2>
+	<style>
+			code,p {font-family: "Courier New", "Courier", "Lucidatypewriter", "Fixed", "monospaced";}
+			.red   {color: #990000;}
+			.green {color: #009900;}
+			.blue  {color: #000099;}
+	</style>
+	<code class="blue">
+	<span class="green">prompt&gt;</span> <span class="red">svn diff | grep Index</span></br>
+	<!-- BEGIN SVN DIFF -->
+	Index: trac_TRAC_NUMBER.html</br>
+	<!-- END SVN DIFF -->
+	</code>
+</body>
+</html>

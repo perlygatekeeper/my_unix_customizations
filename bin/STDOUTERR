@@ -1,0 +1,11 @@
+#!/usr/bin/perl
+#
+# A perl script to write identifiers to STDERR and STDOUT
+#
+
+print STDOUT "this is STDOUT\n";
+print STDERR "this is STDERR\n";
+
+exit 0;
+
+__END__

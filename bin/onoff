@@ -1,0 +1,60 @@
+#!/usr/bin/perl
+#
+# A perl script to start on a given regexp and stop on another
+#
+$name = $0; $name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name start_regexp [stop_regexp]";
+
+# later to add options for
+# 1 context = ( lead, linger )
+# 2 no(print starts) default is to print
+# 3 no(print stops) default is to print
+
+$start_regexp = qr($ARGV[0]); shift;
+$stop_regexp =  qr($ARGV[0]); shift;
+$lines->{remembered}=[];
+$linger = 5;
+$lead =   5;
+
+$including_starts = 1;
+$including_stops =  0;
+
+while (<>) {
+  $lines->{total}++;
+  if ($printing) {
+    if ($stop_regexp) {
+      $lines->{stops}++;
+	  $printing--;								# printing needn't be a toggle, if we wanted 5 lines of context around each start
+	  if ( $printing or $including_stops ) {	# either lingering or explicitly printing stop matches
+	    print;
+		$lines->{printed}++;
+	  }
+	} else {
+	  print;
+      $lines->{printed}++;
+	}
+  } else {
+    if ($start_regexp) {
+      $lines->{starts}++;
+	  $printing = $context_length;
+	  if ($lead and @{$lines->{remembered}} ) {
+        $lines->{printed} += ( $#{$lines->{remembered}} + 1 );
+		print foreach ( @{$lines->{remembered}} );
+		print;
+	  } elsif ($including_starts) {
+	    print;
+        $lines->{printed}++;
+	  }
+	} else {
+	  push ( @{$lines->{remembered}}, $_);
+      if ( $#{$lines->{remembered}} > $lead ) {
+	    shift ( @{$lines->{remembered}} );	# maintain remembered lines pipe length
+        $lines->{not_printed}++;
+	  }
+	}
+  }
+}
+
+exit 0;
+
+__END__

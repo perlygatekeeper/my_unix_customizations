@@ -1,0 +1,31 @@
+#!/usr/bin/perl
+#
+# A perl script to count character frequency in documents
+#
+$name = $0; $name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name [filename ... (/usr/dict/words) ]";
+
+if (not @ARGV) { push(@ARGV,'/usr/dict/words'); }
+
+foreach $file (@ARGV) {
+  print "Character statistics for file '$file':\n";
+  open(FILE,"<$file")
+    || die("$name: Cannot read from '$file': $!\n");
+  while (<FILE>) {
+    chomp;
+    @chars=split(//,$_);
+#   print "$_: " . scalar(@chars) . "\n" if ($words<100); $words++;
+    foreach $char (@chars) {
+      $chars{lc $char}++;
+    }
+  }
+  close(FILE);
+  foreach $char (sort {$chars{$b}<=>$chars{$a}} keys %chars) {
+# foreach $char (sort                           keys %chars) {
+    printf "%s: %d\n", $char, $chars{$char};
+  }
+}
+
+exit 0;
+
+__END__

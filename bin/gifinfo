@@ -1,0 +1,104 @@
+#!/usr/bin/perl
+#
+# A perl script to spit info on a gif file
+#
+$name = $0;
+$name =~ s'.*/''; # remove path--like basename
+$usage = "usage: $name ";
+$usage.= "[-size] [-87|89] [-transparent] [-interlaced] ";
+$usage.= "[-colors] [-hist] files...";
+select( (select(STDOUT), $|=1) [ $[ ] );
+
+$debug=0;
+
+$true=1; $false=0;
+
+$GIFTOPNM= (-f '/usr/common/bin/netpbm/giftopnm') ?
+               '/usr/common/bin/netpbm/giftopnm' : `which giftopnm`;
+$PPMTOGIF= (-f '/usr/common/bin/netpbm/ppmtogif') ?
+               '/usr/common/bin/netpbm/ppmtogif' : `which ppmtogif`;
+$PPMHIST = (-f '/usr/common/bin/netpbm/ppmhist' ) ?
+               '/usr/common/bin/netpbm/ppmhist'  : `which ppmhist`;
+$PPMQUANT= (-f '/usr/common/bin/netpbm/ppmquant') ?
+               '/usr/common/bin/netpbm/ppmquant' : `which ppmquant`;
+chomp $GIFTOPNM;
+chomp $PPMTOGIF;
+chomp $PPMHIST;
+chomp $PPMQUANT;
+
+$ENV{'SHELL'}= (-f '/bin/sh' ) ? 'bin/sh' : `which sh`;
+
+if ( $ARGV[0] eq '-colors' ) {
+  $colors=shift;
+}
+
+foreach (@ARGV) {
+  $size=length($_);
+  $maxsize=($size>$maxsize)?$size:$maxsize;
+}
+
+foreach (@ARGV) {
+#system("$GIFTOPNM -verbose -comments $_  2>&1 >/dev/null");
+  # protect the regexp characters ' ^ $ ? * + ( ) { } [ ] < > \ / . '
+  $_=~s/([\$\^*\[\]{}.<>()+?\/\\])/\\\1/g;
+ $command="$GIFTOPNM -verbose -comments $_ 2>&1 >/dev/null |";
+ $command="$GIFTOPNM |$PPMHIST $_ |" if ($colors);
+
+ print "about to run $command\n" if ($debug);
+
+ open(COMMAND,"$command") ||
+   die("$name: Cannot obtain information on GIF image '$_' with '$command': $!.");
+ my(@results)=<COMMAND>;
+ close(COMMAND);
+
+#@results=grep($_!~/writing/i,@results);
+#printf "%-${maxsize}s %s", $_, join("",@results);
+
+ foreach $result (@results) {
+   if (($width,$height,$interlaced) =
+       ($result =~ /reading (\d+) by (\d+) (.*) ?GIF image/i) ) {
+     last;
+   }
+ }
+ printf "%-${maxsize}s  %4d x %4d %s\n", $_, $width,$height,$interlaced;
+}
+
+exit 0;
+
+__END__
+NAME
+     ppmtogif - convert a portable pixmap into a GIF file
+ 
+SYNOPSIS
+     ppmtogif [-interlace] [-sort] [-map mapfile] [ - transparent
+     color] [ppmfile]
+NAME
+     giftopnm - convert a GIF file into a portable anymap
+ 
+SYNOPSIS
+     giftopnm [-verbose] [-comments] [-image N] [GIFfile]
+
+NAME
+     ppmquant - quantize the colors in a portable pixmap down  to
+     a specified number
+ 
+SYNOPSIS
+     ppmquant [-floyd|-fs] ncolors [ppmfile]
+     ppmquant [-floyd|-fs] -map mapfile [ppmfile]
+
+
+NAME
+     ppmhist - print a histogram of a portable pixmap
+ 
+SYNOPSIS
+     ppmhist [ppmfile]
+
+
+giftopnm -verbose lipidat.gif > /dev/null
+giftopnm: reading 467 by 136 GIF image
+giftopnm: writing a PPM file
+
+giftopnm -verbose $htdocs/../icons/OSU.171x171.gif >/dev/null
+giftopnm: reading 171 by 171 interlaced GIF image
+giftopnm: writing a PPM file
+

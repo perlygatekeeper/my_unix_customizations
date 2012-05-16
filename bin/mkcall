@@ -1,0 +1,35 @@
+#!/usr/bin/perl
+#
+# A perl-5 script to make a perl subroutine call from
+# lines containing a sub and the subsequent my(VAR LIST)=@_; or my(VAR LIST)=shift;
+#
+$name = $0; $name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name";
+$debug=0;
+
+while (<>) {
+  if ( /^\s*sub\s*(\S+)/ ) {  # subroutine definition
+    $subroutine=$1;
+  }
+  if ( /^\s*(my|local)\s*\((\S+)\)\s*=\s*(\@\_|shift)\s*;/ ) {  # arguments
+    $args=$2;
+    @args=split(/[,\s]+/,$2);
+  }
+  push(@lines,$_)
+}
+
+printf "&%s(%s);\n", $subroutine, $args;
+foreach $line (@lines) {
+  print $line;
+}
+
+exit 0;
+
+__END__
+#   ***   SUBROUTINES   ***
+#   ---   ---   ---
+sub xxx {
+  local($arg1,$arg2)=@_;
+
+}
+

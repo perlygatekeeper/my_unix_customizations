@@ -1,0 +1,119 @@
+#!/usr/bin/perl
+#-----------------------------------------------------------------------------
+
+#   ***   Define Default Strings, Values & Flags   ***
+$name = $0;
+$usage = "usage:\n$name [-t target_string] [-r target_string] [-m modifier_char]";
+
+$newline="\n";
+$backslash="\\";
+$tab="\t";
+$backspace="\010";
+$formfeed="\014";
+$escape="\033";
+$return="\015";
+$true=1; $false=0;
+$all="g";
+
+#   ***   Parse Command Line Argument(s)   ***
+while ( @ARGV >= 1 ) {
+  if    ( ( $ARGV[0] eq '-r' ) || ( $ARGV[0] eq '-replacestring' ) ) {
+    $replacestring = $ARGV[1];
+    &replacement_widgets;
+    shift; shift; }
+  elsif ( ( $ARGV[0] eq '-t' ) || ( $ARGV[0] eq '-targetstring' ) ) {
+    $crackstring = "$ARGV[1]";
+    shift; shift; }
+  elsif ( ( $ARGV[0] eq '-m' ) || ( $ARGV[0] eq '-modifier' ) ) {
+    $all = "$ARGV[1]";
+    shift; shift; }
+  elsif ( ( $ARGV[0] eq '-?' ) || ( $ARGV[0] eq '-usage' ) ) {
+    help($usage); }
+  elsif ( ( $ARGV[0] eq '-d' ) || ( $ARGV[0] eq '-default' ) ) {
+    $crackstring=$tab;
+    $replacestring=$newline;
+    $all="g";
+    shift; }
+  elsif ( ( $ARGV[0] eq '-v' ) || ( $ARGV[0] eq '-verbose' ) ) {
+    $verbose++;
+    shift; }
+  else {
+    if ( !$crackstring ) {
+      $crackstring = "$ARGV[0]";
+      shift;
+    } elsif ( !$replacestring ) {
+      $replacestring = "$ARGV[0]";
+      &replacement_widgets;
+      shift;
+    } else {
+      last;
+    }
+  }
+}  # end while
+
+select(STDOUT); $|=1;
+
+$crackstring  =~s/([\/])/\\\1/g;
+$replacestring=~s/([\/])/\\\1/g;
+if ($verbose) {
+  print "crackstring: '$crackstring' replacestring: '$replacestring'\n";
+}
+while (<>)  { $line=$_;
+
+#		$line =~ s/${crackstring}/${replacestring}/eog ;
+
+  eval  "\$line =~ s/${crackstring}/${replacestring}/${all};" ;
+  if ($verbose >=2) {
+    print "\$line =~ s/${crackstring}/${replacestring}/${all};\n" ;
+  }
+   if ($occurance) {
+     $line =~ s/__UNIQUE_STRING__/$occurance++/eg;
+   }
+  print $line;
+}
+
+
+#   ***   EXIT GRACEFULLY   ***
+exit 0;
+
+####   SUBROUTINES   ####
+sub help {
+print "@_[0]\n";
+print "Valid replacement string expressions are:\n";
+print "\\t for tabs, \\n for newlines, \\f for formfeeds, \\b for backspaces\n";
+print "\\o for occurance, \\l for line, \\r for returns, \\e for escapes\n";
+print "\\i|\\I for roman numeral, \\a|\\A for alphabetic\n";
+print "and \### for octal ascii codes\n";
+exit 1;
+}
+
+sub ascii {
+# returns character whos
+# ascii value equals argument 0 as
+#    octal or hex number if only one arg 
+# OR    decimal   number if argument 2 = "d" or "D"
+   if ($_[1] eq "d") { return pack('C1',$_[0]); }
+elsif ($_[1] eq "D") { return pack('C1',$_[0]); }
+return pack('C1',oct($_[0]));
+}
+
+sub replacement_widgets {
+# deals with replacement widgets and special flags.
+    if ($replacestring =~ s/([^\\]?)\\o/\1__UNIQUE_STRING__/g)
+      { $occurance=$true; }
+    $replacestring =~ s/([^\\]?)\\\\/\1\\$backslash/g;
+    $replacestring =~ s/([^\\]?)\\n/\1\\$newline/g;
+    $replacestring =~ s/([^\\]?)\\t/\1$tab/g;
+    $replacestring =~ s/([^\\]?)\\b/\1$backspace/g;
+    $replacestring =~ s/([^\\]?)\\f/\1$formfeed/g;
+    $replacestring =~ s/([^\\]?)\\r/\1$return/g;
+    $replacestring =~ s/([^\\]?)\\e/\1$escape/g;
+    $replacestring =~ s/([^\\]?)\\l/\1\$\./g;
+    $replacestring =~ /([^\\]?)\\([0-7][0-7][0-7])/;
+    while ($2) {
+     $octal=&ascii($2);
+     $replacestring =~ s/(\\[0-7][0-7][0-7])/$octal/eg;
+     $replacestring =~ /([^\\]?)\\([0-7][0-7][0-7])/;
+    }
+#   print $replacestring;
+}

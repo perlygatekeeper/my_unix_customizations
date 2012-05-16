@@ -1,0 +1,43 @@
+#!/usr/bin/perl
+#
+# A perl script to RESTore from backup's made with the bak command
+#
+$name = $0; $name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name [-verbose] [-move] bak_file [...]";
+
+use File::Copy;
+
+while (@ARGV) {
+  if ($ARGV[0]=~/-m(ove)?/i)    { $move++;	shift @ARGV; next; }
+  if ($ARGV[0]=~/-v(erbose)?/i) { $verbose++;	shift @ARGV; next; }
+  push(@files,$ARGV[0]) if (-f $ARGV[0]);
+  shift @ARGV;
+}
+
+if (not @ARGV) {
+  $dir=".";
+  opendir(DIR,$dir) || die "Can't open dir $dir: $!\n";
+  @files=readdir(DIR);
+  closedir(DIR);
+  @files=grep(/\.(bak|\d{6})$/,@files);
+}
+
+foreach $bak_file (@files) {
+  next if (not -f $bak_file);
+  ($file=$bak_file)=~s/\.(bak|\d{6})$//;
+  if ($move) {
+    if ($verbose) {
+      printf "Moving %-20s back to %s\n", $bak_file, $file;
+    }
+    rename($bak_file,$file);
+  } else {
+    if ($verbose) {
+      printf "Copying %-20s to %s\n", $bak_file, $file;
+    }
+    copy($bak_file,$file);
+  }
+}
+
+exit 0;
+
+__END__

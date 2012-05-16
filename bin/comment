@@ -1,0 +1,90 @@
+#!/usr/bin/perl
+#
+# A perl script that will filter lines adding or removing comment marks
+#
+$name = $0; $name =~ s'.*/''; # remove path--like basename
+
+exit 0;
+
+sub parse_args {
+
+  local(%abbrev)=(); # must be local, not my otherwise, *abbrev don't work in
+		     # call to &abbrev, I don't understand fully why at this time, 9/27/00 SP.
+
+  @args=('?','help');
+  @help=('print this message','print this message');
+
+  push(@args,'arg1','arg2','arg3','arg4');
+  push(@help,'help for arg1',
+             'help for arg2',
+             'help for arg3',
+             'help for arg4');
+
+  grep(s/^([^-])/-\1/,@args);
+
+  require("abbrev.pl");
+  &abbrev(*abbrev, @args);
+
+
+  while ( @ARGV >= 1 ) {
+    if      ( ($abbrev{$ARGV[0]} eq '-help' )
+           || ($abbrev{$ARGV[0]} eq '-?' ) ) {
+      do help($usage);
+      shift(@ARGV);
+
+    } elsif ( $abbrev{$ARGV[0]} eq '-arg1' ) {
+      print "user specified arg1\n";
+      $flag1=$true;
+      shift(@ARGV);
+
+    } elsif ( $abbrev{$ARGV[0]} eq '-arg2' ) {
+      print "user specified arg2\n";
+      shift(@ARGV);
+
+    } elsif ( $abbrev{$ARGV[0]} eq '-arg3' ) {
+      print "user specified arg3\n";
+      shift(@ARGV);
+
+    } elsif ( $abbrev{$ARGV[0]} eq '-arg4' ) {
+      print "user specified arg4\n";
+      print "with argument @ARGV[1]\n";
+      $flag=$ARGV[1];
+      shift(@ARGV); shift(@ARGV);
+
+    } else {
+#     warn("$name: Unknown option '$ARGV[0]'; disregarding...\n");
+#     unshift(@ARGV);
+      warn("$name: Unknown option '$ARGV[0]'; assuming title...\n");
+      unshift(@ARGV,'-title');
+    }
+    print "$debug";
+  }  # end while
+}  # end parse_args
+
+sub help {
+  select(STDOUT); $|=1; $\=''; 
+  print "@_[0]\n";
+  if (@help) {
+    for ($arg=$[; $arg<=$#args; $arg++) {
+      printf "%-16s\t%s\n", $args[$arg], $help[$arg];
+    }
+  } else {
+    for ($arg=$[; $arg<=$#args; $arg++) {
+      print "$args[$arg]\t";
+    }
+    print "\n";
+  }
+  exit 1;
+}
+
+__END__
+
+
+#		comments:
+//		comments:
+/* ..  */	comments:
+%		comments:
+!		comments:
+"		comments: .vimrc files
+dnl		comments: delete to newline, m4 macro processor macro
+rem		comments: remark, dos batch (.bat) files

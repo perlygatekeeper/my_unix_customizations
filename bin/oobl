@@ -1,0 +1,143 @@
+#!/usr/bin/perl
+# A perl script to output 'Only One Blank Line' or 'No Blank Lines'
+use strict;
+use warnings;
+
+my $name = $0;
+   $name =~ s'.*/''; # remove path--like basename
+my $usage = "usage:\n$name [-white] [-comment]";
+my $white=0;
+my $comment=0;
+my (@help,@args, $nbl);
+
+parse_args();
+
+my $blank_check;
+my $comment_check;
+
+if ($white) {
+  if ($comment) {
+    $blank_check   = qr(^\s*$);			# hash- or double-slash- style comment lines
+    $comment_check = qr(^\s*(#|//)?);	# white or blank
+  } else {
+    $blank_check   = qr(^\s*$);			# white-space-only or blank lines
+    $comment_check = '';				# comment lines ignored
+  }
+} else {
+  if ($comment) {
+    $blank_check   = qr(^$);			# blank-only lines
+    $comment_check = qr(^\s*(#|//)?);	# white or blank
+  } else {
+    $blank_check   = qr(^$);			# blank-only lines
+    $comment_check = '';				# comment lines ignored
+  }
+}
+
+if ($name eq 'nbl') { $nbl=1; }
+
+my ($cskip, $bskip);
+while (<>) {
+  next if ( $nbl and ( ( $comment_check and ($_ =~ $comment_check) ) or ($_ =~ $blank_check) ) );
+  next if ( $comment_check and $cskip and ($_ =~ $comment_check) );
+  next if ( $bskip and ($_ =~ $blank_check) );
+  print;
+  # if no-blank-lines, we needn't track either blank_skip nor comment_skip
+  $nbl or $bskip = ( $_ =~ $blank_check ); # short-circuit if we are not printing blank lines
+  $nbl or $cskip = ( $comment_check and ($_ =~ $comment_check)); # short-circuit if we are not printing blank lines
+}
+
+exit 0;
+
+sub parse_args {
+
+  my(%abbrev)=(); # must be local, not my otherwise, *abbrev don't work in
+		     # call to &abbrev, I don't understand fully why at this time, 9/27/00 SP.
+
+  my $debug;
+  my @args=('?','help');
+  my @help=('print this message','print this message');
+
+  push(@args,'whitespace','comments');
+  push(@help,'skip all white-space lines as well as blank lines',
+             'add either hash or double-slash style comments to the lines skipped');
+
+  grep(s/^([^-])/-$1/,@args);
+
+  # push(@INC,'/usr/common/lib/perl',"$HOME/perllib");
+  require("abbrev.pl");
+  &abbrev(*abbrev, @args);
+
+  while ( @ARGV >= 1 ) {
+    if      ( ($abbrev{$ARGV[0]} eq '-help' )
+           || ($abbrev{$ARGV[0]} eq '-?' ) ) {
+      help($usage,\@args);
+      shift(@ARGV);
+
+    } elsif ( $abbrev{$ARGV[0]} eq '-whitespace' ) {
+      $white=1;
+      shift(@ARGV);
+	  print "whitespace flag set: $white\n";
+
+    } elsif ( $abbrev{$ARGV[0]} eq '-comments' ) {
+      $comment=1;
+      shift(@ARGV);
+	  print "comments flag set: $comment\n";
+
+    } else {
+      warn("$name: Unknown option '$ARGV[0]'; disregarding...\n");
+      shift(@ARGV);
+    }
+    print "$debug";
+  }  # end while
+}  # end parse_args
+
+sub help {
+  my ($usage,$args) = @_;
+  my $arg;
+  select(STDOUT); $|=1; $\=''; 
+  print "$_[0]\n";
+  if (@help) {
+    for ($arg=$[; $arg<=$#args; $arg++) {
+      printf "%-16s\t%s\n", $args[$arg], $help[$arg];
+    }
+  } else {
+    for ($arg=$[; $arg<=$#args; $arg++) {
+      print "$args[$arg]\t";
+    }
+    print "\n";
+  }
+  exit 1;
+}
+__END__
+
+
+
+
+#while (<>) {
+#  if (/^$/) {$blank++;}
+#  else      {$blank=0;}
+#  print if ($blank<2);
+#}
+# original awk script is below for conparison.
+#
+# awk script to output 'Only One BLank Line'
+# see uniq for a more general command
+# unlike uniq will not print a blank line until
+# it finds a nonblank line, i.e. strips all blank
+# lines from end of a file.
+# awk ' BEGIN { oldline="" ; blank=0 }
+#       { newline=$0;
+#         if ( blank == 0 )
+#         { if ( newline ~ /^$/ )
+#           { blank=1; }
+#           else
+#           { print newline; }
+#         }
+#         else
+#         { if ( newline !~ /^$/ )
+#           { blank=0;
+#             printf "\n";
+#             print newline;
+#           }
+#         }
+#       }
