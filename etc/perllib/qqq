@@ -1,10 +1,10 @@
-#!/usr/local/bin/perl
+#!/usr/bin/perl
 #
 # A perl script to replace widget (default widget is an '~')
 # with a linenumber
-$name = $0;
+my $name = $0;
 $name =~ s'.*/''; # remove path--like basename
-$usage = "usage:\n$name [-g] [-widget|-w # (~)] [-from|-f # (1)] [-by|-b #(1)]";
+my $usage = "usage:\n$name [-g] [-widget|-w # (~)] [-from|-f # (1)] [-by|-b #(1)]";
 
 #   ***   Parse Command Line Argument(s)   ***
 while ( @ARGV >= 1 ) {
@@ -23,9 +23,9 @@ while ( @ARGV >= 1 ) {
 }  # end while
 
 #   ***   Set defaults   ***
-$by=1       if (!$by || $by !~/\d*/);
-$from=1     if (!$from || $from !~/\d*/);
-$widget='~' if (!$widget);
+my $by     = 1   if (!$by || $by !~/\d*/);
+my $from   = 1   if (!$from || $from !~/\d*/);
+my $widget = '~' if (!$widget);
 
 while (<>) {
   if 

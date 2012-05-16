@@ -1,9 +1,9 @@
 sub get_ip_name {
   my($ip_number)=@_;
-  my($ip_name)='';
+  my $ip_name = '';
 # Get results from a unix command.
   $ENV{SHELL}="/bin/sh";
-  $command="/usr/local/bin/host $ip_number 2>&1 |";
+  my $command="/usr/local/bin/host $ip_number 2>&1 |";
   open(COMMAND,"$command") || die("$ip_name: Cannot find IP ip_name with '$command': $!.");
   my(@results)=<COMMAND>;
   close(COMMAND);

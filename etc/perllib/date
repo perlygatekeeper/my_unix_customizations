@@ -1,15 +1,14 @@
-# all date related formats I routinely use.
-# Y2K compliant ($year+1900 for 4 digits, $year%100 for 2 digits, since $year>=100 for $Year>=2000)
-($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst)=localtime(time);
-@mo = qw(Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec);
-#@mo_full = qw(January February March April May June July August September October November December);
+my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst)=localtime(time);
+my @mo = qw(Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec);
+# my @mo_full = qw(January February March April May June July August September October November December);
 # following line will load $mo_byname hash key by abbreviations (and full month names if defined).
-#foreach $mo (0 .. $#mo) { $mo_byname{$mo[$mo]}=$mo; $mo_byname{$mo_full[$mo]}=$mo if (@mo_full); }
-@day = qw(Sun Mon Tue Wed Thu Fri Sat);
-#@day_full = qw(Sunday Monday Tuesday Wednesday Thursday Friday Saturday);
+# foreach $mo (0 .. $#mo) { $mo_byname{$mo[$mo]}=$mo; $mo_byname{$mo_full[$mo]}=$mo if (@mo_full); }
+my @day = qw(Sun Mon Tue Wed Thu Fri Sat);
+# my @day_full = qw(Sunday Monday Tuesday Wednesday Thursday Friday Saturday);
 # following line will load $day_byname hash key by abbreviations (and full names of days of the week if defined).
-#foreach $day (0 .. $#day) { $day_byname{$day[$day]}=$day; $day_byname{$day_full[$day]}=$day if (@day_full); }
-$ds=  sprintf("%02d%02d%02d",$mon+1,$mday,$year%100);
-$day= sprintf("%s, %s %s, %d", $day[$wday], $mo[$mon], $mday, $year+1900);
-$date_full=sprintf("%s %d, %d", $mo[$mon], $mday, $year+1900);
-#$date_full=sprintf("%s %d, %d", $mo_full[$mon], $mday, $year+1900);
+# foreach $day (0 .. $#day) { $day_byname{$day[$day]}=$day; $day_byname{$day_full[$day]}=$day if (@day_full); }
+my $ds        = sprintf("%02d%02d%02d",$mon+1,$mday,$year%100);
+my $ds8       = sprintf("%4d%02d%02d",($year+1900),$mon+1,$mday);
+my $day       = sprintf("%s, %s %s, %d", $day[$wday], $mo[$mon], $mday, $year+1900);
+my $date_full = sprintf("%s %d, %d", $mo[$mon], $mday, $year+1900);
+# my $date_full=sprintf("%s %d, %d", $mo_full[$mon], $mday, $year+1900);

@@ -1,6 +1,6 @@
 #from $uge/perllib/perl.ans:
 
-        foreach $key (sort by_value keys %ary) {
+        foreach my $key (sort by_value keys %ary) {
             print $key, '=', $ary{$key}, "\n";
         }
         sub by_value { $ary{$a} cmp $ary{$b}; }

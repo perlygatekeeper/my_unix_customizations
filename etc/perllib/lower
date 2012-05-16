@@ -1,1 +1,1 @@
-    $var =~ y/A-Z/a-z/;		# lower case it
+    my $var =~ y/A-Z/a-z/;		# lower case it

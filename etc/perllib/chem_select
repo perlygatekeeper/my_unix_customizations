@@ -1,13 +1,13 @@
   my($results,$table,$what,$where,$group,$order,$debug);
 # require("CHEM_DBI.pl");
 # $dbh=&connect_readonly($database);
-  $table="users";
-  $what="username";
-  $where= "username=parker";
-  $group= $order= '';
+  my $table = "users";
+  my $what  = "username";
+  my $where = "username=parker";
+  my $group = $order= '';
 # $debug='result';
-  $debug='select';
-  $results= &select($dbh,
+  my $debug='select';
+  my $results= &select($dbh,
                     {'table'    =>$table,
                      'where'    =>$where,
                      'what'     =>$what,

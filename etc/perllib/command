@@ -1,11 +1,10 @@
 # get results from a unix command
-  $command="UNIX_COMMAND |";
+  my $command="UNIX_COMMAND |";
 # put results to   a unix command
 # $command="| UNIX_COMMAND";
 
-  open(COMMAND,"$command") ||
-  die("$name: Cannot COMMAND_DISCRIPTION with '$command': $!.");
-  local(@results)=<COMMAND>;
+  open(COMMAND,"$command") || die("$name: Cannot COMMAND_DISCRIPTION with '$command': $!.");
+  my(@results)=<COMMAND>;
   close(COMMAND);
 
 # push(@report,"Results from COMMAND_DISCRIPTION :\n");

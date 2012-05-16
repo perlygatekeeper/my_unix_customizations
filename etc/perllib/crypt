@@ -1,1 +1,1 @@
-$crypted_passwd=crypt($passwd,$SALT);
+my $crypted_passwd = crypt($passwd,$SALT);

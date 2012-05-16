@@ -1,8 +1,5 @@
 
 srand(time*$$); # set random number seed with the time * the process id
-
-$roll=int(rand(6))+1; # int between 1 and 6
-
-$roll=int(rand($max-$min+1))+$min; # int between min and max inclusively; range is (max-min)+1
-
-$element=int(rand(@array))+$[; # int between $[ and last element
+my $roll = int(rand(6))+1; # int between 1 and 6
+# my $roll = int(rand($max-$min+1))+$min; # int between min and max inclusively; range is (max-min)+1
+my $element = int(rand(@array))+$[; # int between $[ and last element

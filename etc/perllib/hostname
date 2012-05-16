@@ -1,3 +1,3 @@
-$user= $ENV{HOST} || $ENV{Hostname} || (chop ($junk=`hostname`),$junk);
+my $user= $ENV{HOST} || $ENV{Hostname} || (chop ($junk=`hostname`),$junk);
 #$hostname=`hostname`; chop $hostname;
 #print "$hostname\n";

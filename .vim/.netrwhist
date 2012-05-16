@@ -1,10 +1,8 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =8
-let g:netrw_dirhist_1='/home/sparker/sbx-mgr-prod/Ecnext/Sandbox/WcCli'
-let g:netrw_dirhist_2='/home/sparker/bin'
-let g:netrw_dirhist_3='/home/sparker/by-server'
-let g:netrw_dirhist_4='/home/sparker/.vim/after'
-let g:netrw_dirhist_5='/svn/branches/webinars_trac_4964/templates/member/webinars/inc'
-let g:netrw_dirhist_6='/home/sparker/.vim'
-let g:netrw_dirhist_7='/home/sparker/.vim/snippets/html'
-let g:netrw_dirhist_8='/svn/configuration/trunk/puppet/modules/nginx/files/mantaproxy'
+let g:netrw_dirhist_cnt =6
+let g:netrw_dirhist_1='/svn/comsite5-trac-5533/Manta/ConfiguredComponentFactory'
+let g:netrw_dirhist_2='/home/sparker/states/libremap.org'
+let g:netrw_dirhist_3='/svn/comsite5-trac-5533/Manta/ConfiguredComponentFactory'
+let g:netrw_dirhist_4='/media/sf_Downloads'
+let g:netrw_dirhist_5='/etc/fstab.d'
+let g:netrw_dirhist_6='/usr/share/kerberos-configs'

@@ -5,10 +5,10 @@ sub first_second_third {
   #           0    1    2    3    4    5    6    7    8    9
   @endings=("th","st","nd","rd","th","th","th","th","th","th");
   $test = ($num % 10);
-  if ( ($stndrd=$endings[$test]) !~ /th/ ) {
+  if ( ($stndrd = $endings[$test]) !~ /th/ ) {
     $test= ($num % 100);
-    if ( ($test<14) && ($test>10) ) {
-      $stndrd=$endings[0];
+    if ( ($test<14) && ($test>10) ) { # handle 11, 12, 13
+      $stndrd = $endings[0];
     }
   }
   return $stndrd;

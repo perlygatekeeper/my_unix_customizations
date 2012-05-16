@@ -1,6 +1,5 @@
-  $outfile="$name.out";
-  open(OUTFILE,">>$outfile")
-    || die("$name: Cannot append to '$outfile': $!\n");
+  my $outfile="$name.out";
+  open(OUTFILE,">>$outfile") || die("$name: Cannot append to '$outfile': $!\n");
   print OUTFILE "stuff\n";
   close(OUTFILE);
 

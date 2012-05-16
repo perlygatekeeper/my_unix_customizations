@@ -1,2 +1,2 @@
 sub numerically { $a <=> $b; }
-sub numerically { $a <=> $b; }
+sub alphabetically { $a cmp $b; }

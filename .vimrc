@@ -60,6 +60,7 @@ nnoremap =b :e#<Cr>
 " template stuff for HTML(h), make(m), perl(p), tcsh(t) and python(y)
 " lowercase character prompts to read in a template
 " uppercase character prompts to read in a directory listing
+nnoremap =# :set number!<Cr>
 nnoremap =? :help<Cr>:only<Cr>
 nnoremap =h :r ~/etc/htmllib/
 nnoremap =H :r! ls -C ~/etc/htmllib/
@@ -72,6 +73,9 @@ nnoremap =T :r! ls -C ~/etc/tcshlib/
 nnoremap =y :r ~/etc/pylib/
 nnoremap =Y :r! ls -C ~/etc/pylib/
 
+nnoremap =f f{f(f[f<zf%
+"nnoremap =F 
+
 nnoremap =u 1G!Gdos2unix<Cr>
 nnoremap =d 1G!Gunix2dos<Cr>
 
@@ -79,8 +83,8 @@ nnoremap =q !}crk QQQ '\o'<Cr>
 nnoremap =Q !Gcrk QQQ '\o'<Cr>
 nnoremap =r !Gcrk '^(\s*)\d+' '\1\o'<Cr>
 
-nnoremap =s !} sort -t, +1<Cr>
-nnoremap =S !} sort -n
+"nnoremap =s !} sort -t, +1<Cr>
+"nnoremap =S !} sort -n
 
 " url_decode
 nnoremap =U !} perl -pe "tr/+/ /; s/\%([a-fA-F0-9][a-fA-F0-9])/pack('C', hex($1))/eg;"
@@ -90,7 +94,6 @@ nnoremap =x :e!
 nnoremap =X :.!sh
 nnoremap =w :w!
 
-nnoremap =# :set number!<Cr>
 nnoremap =<C-A> :%s/|
 nnoremap =<C-K> i <Esc>|
 nnoremap =<C-O> :. s/|
