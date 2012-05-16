@@ -1,0 +1,322 @@
+#!/usr/bin/perl
+# A perl script to to record ftp site and date to end of .where file.
+$name = $0;
+$name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name [-verbose] [-pull] [-host] \n";
+$usage.= "[-directory] [-user] [-passwd] [-help] (host dir|host:dir)";
+$version="2.0"; # try to close connection on quit
+$version="2.1"; # add host dir and full name passwd?
+$version="2.2"; # fix `which ftp` having an newline  and added debug option
+$version="2.3"; # fixed history and [re]connect functions
+                # added multiple history entries, with multiple recall
+		# added default ftp names for many architures
+		# need to connect to ftp socket directly, but this is easy
+$version="2.4"; # add URL-type host/directory designation
+$version="2.5"; # corrected URL-type finding with -pull option
+$version="2.6"; # linked to datetime.pl (Y2K fixed!)
+$last_mod_date="Tue, Jan 4, 2000";
+$author="Dr. Steven Parker";
+
+$max_hist=9; @history=(); $history[$hist_max]="";
+$directory='/pub';
+#$host="prep.ai.mit.edu";
+# Solaris 2.3 & NeXTStep 3.2 & Ultrix 4.3
+  $ftp_command=`which ftp` || "/usr/ucb/ftp "; chop $ftp_command;
+  $ftp_flags='-n -i -d -v';
+#
+# Irix 4.x & 5.x 
+# $ftp_command=`which ftp` || "/usr/bsd/ftp "; chop $ftp_command;
+# $ftp_flags='-n -i -d -v';
+#
+# AIX 3.2.x
+# $ftp_command=`which ftp` || "/usr/bin/ftp "; chop $ftp_command;
+# $ftp_flags='-n -i -d -v';
+#
+# Linux
+# $ftp_command=`which ftp` || "/bin/ftp "; chop $ftp_command;
+# $ftp_flags='-n -i -d -v';
+
+$USER= $ENV{USER} || $ENV{LOGNAME} || (chop ($junk=`whoami`),$junk);
+$user='anonymous'; # $user='ftp';
+$HOST= $ENV{HOST} || $ENV{Hostname} || (chop ($junk=`uname -n`),$junk);
+#$passwd="$USER\@";
+$HOST=~s/\..*$//;
+$passwd="$USER\@$HOST.mps.ohio-state.edu";
+
+$dot_where=".where";
+
+&parse_args;
+
+if ( ! $host ) {
+  die "$name: All dressed up and no where to go. :(";
+} else {
+  print "$name: It's off to '$host' we go, looking for '$directory'.\n";
+}
+
+open(DOT_WHERE,">>$dot_where") || die("$name: Cannot open '$dot_where': $!\n");
+select( (select(DOT_WHERE), $|=1) [ $[ ] );
+
+
+require("datetime.pl");
+$day=&day();
+
+print DOT_WHERE "$day\n";
+if ($url_type) {
+  print DOT_WHERE "ftp://$host$directory\n";
+} else {
+  print DOT_WHERE "$host:$directory\n";
+}
+
+# '-i' option of ftp precludes need for 'prompt' command here.
+$outfile="/tmp/$name.$$";
+open(OUTFILE,">$outfile") || die("$name: Cannot write to '$outfile': $!\n");
+print OUTFILE <<EOF;
+user ${user} ${passwd}
+bin
+cd $directory
+hash
+bell
+EOF
+close(OUTFILE);
+#open $host
+#cd $directory
+
+#---------------------------------
+# directives to ftp command
+$command="| $ftp_command $ftp_flags $host";
+if ($debug) {
+  print STDERR "Ftp command: '$command'\n";
+}
+
+open(COMMAND,"$command") ||
+die("$name: Cannot COMMAND_DISCRIPTION with '$command': $!.");
+select( (select(COMMAND), $|=1) [ $[ ] );
+
+# push(@report,"Results from COMMAND_DISCRIPTION :\n");
+# push(@report,@results);
+
+
+@FILES=("/tmp/$name.$$","-"); $files=2;
+select(STDOUT); $|=1;
+while ( $FILE=shift(@FILES) ) {
+  if ($FILE eq '-') {
+    print STDERR "Waiting for STDIN as file: '$fileno'\n";
+  }
+  open(FILE,"$FILE") || die("$name: Cannot open '$FILE': $!\n");
+  while ( <FILE> ) {
+    if ($debug) {
+      print STDERR;
+    }
+    if (/^\+|^\>/) {
+      print DOT_WHERE;
+      next if (/^\>/);
+      s/^\+//;
+    } else {
+      print DOT_WHERE $_ if ($verbose);
+    }
+
+    chop; # from here out and in $history command has no newline.
+
+    if (/^%[h]/i) {
+      print " history:\n";
+      for (local($entry)=$#history;
+           ($entry >= $[) && ($history[$entry]!~/^$/);
+	   $entry--) {
+        printf " %3d. %s\n", $entry, $history[$entry];
+      }
+      next;
+    }
+    if ( ($hist) = ($_=~/^\s*!(\d+)/) ) {
+      if ( ($hist <= $#max_hist) && ( $hist >= ($#history-$max_hist) ) ) {
+	$recall=$history[$hist];
+	s/.*/$recall/;
+        print "\nrecall command \#$hist... $recall\n";
+      }
+    }
+    if ($back=($_=~s/!!||%[p]\s*(\d+)//ig)) {
+	if ($1) { $back = $1; }
+	if ( ($back <= $max_hist) && ($#history >= $back) ) {
+	  $recall=$history[$#history-$back];
+	  s/.*/$recall/;
+          print "\nback $back to... $recall\n";
+	} else {
+          print "\nI can't remember that far back '$back'.\n";
+	}
+    }
+    if (/^\s*%[rc]\s*(\S*)[:\s]*(\S*)/i) {
+      local($newhost) = $1 || $host;
+      local($newdir) =  $2 || $directory;
+      print "Attempting to close and reconnect to ";
+      print "$newhost for directory $newdirectory\n";
+      if ($url_type) {
+        print DOT_WHERE "ftp://$host$directory\n";
+      } else {
+        print DOT_WHERE "$host:$directory\n";
+      }
+
+      $outfile="/tmp/$name.$$";
+      open(OUTFILE,">$outfile")
+        || die("$name: Cannot write to '$outfile': $!\n");
+      print OUTFILE "close\n";
+      print OUTFILE "open $newhost\n";
+      print OUTFILE "user ${user} ${passwd}\n";
+      print OUTFILE "cd $newdirectory\n";
+      close(OUTFILE);
+
+      unshift(@FILES,"$outfile","-");
+      close(FILE);
+    }
+    s/^exit$/bye/;
+    s/^quit$/bye/;
+    s/^ls$/ls -FC/;
+    print COMMAND "$_\n";
+    if ($debug && ($_ =~ /status/i) ) {
+      sleep(10);
+    }
+    if ($_ =~ /bye/) {
+      close(COMMAND);
+      unlink("/tmp/netget.$$");
+      exit 0;
+    }
+    $previous=$_;
+    unshift(@history, $previous);
+    if ($#history > $max_hist) {
+      $history[$#history-$max_hist]='';
+    }
+  }
+  $fileno++;
+}
+
+# local(@results)=<COMMAND>;
+  close(COMMAND);
+  if (! $debug) {
+    unlink("/tmp/netget.$$");
+  } else {
+    print STDERR "Remember to clean up '/tmp/netget.$$' when you are done.\n";
+  }
+
+exit 0;
+
+#   ***   Parse Command Line Argument(s)   ***
+sub parse_args {
+
+  local(%abbrev)=();
+
+
+  @args=('?','help');
+  @help=('print this message','print this message');
+  push(@args,'verbose','pull','host','directory','user','passwd','debug');
+  push(@help,"get the host and directory from the '.where' file",
+             "record EVERTHING in the '.where' file",
+             "specify the hostname",
+             "specify the remote directory (/pub)",
+             "specify the username (ftp || \$USER)",
+             "specify the passwd (username\@local.host.name)",
+             "debug");
+  grep(s/^([^-])/-\1/,@args);
+
+  push(@INC,'/usr/local/lib/perl',"$HOME/perllib");
+  require("abbrev.pl");
+  &abbrev(*abbrev, @args);
+
+  if (!@ARGV) { push(@ARGV,'-pull'); }
+  while ( @ARGV >= 1 ) {
+    if      ( ($abbrev{$ARGV[0]} eq '-help' )
+           || ($abbrev{$ARGV[0]} eq '-?' ) ) {
+      do help($usage);
+      shift(@ARGV);
+    } elsif   ( $abbrev{$ARGV[0]} eq '-verbose' ) {
+      $verbose=1;
+      shift(@ARGV);
+    } elsif ( $abbrev{$ARGV[0]} eq '-pull' ) {
+      open(INFILE,"<$dot_where")
+        || die("$name: Cannot read from '$dot_where': $!\n");
+      while (<INFILE>) {
+        next if (/^$|^\s*#/); #skip blank and commented lines.
+	local($found);
+	chop;
+	if ( $_ =~ m"ftp://([^/]+)(/?.*)"i ) {
+	  ($host,$directory)=($1,$2);
+	  $url_type++;
+	  $found++;
+        } elsif ( $_ =~ /^\s*([^: ]+):(\S+)/) {
+	  ($host,$directory)=($1,$2);
+	  $url_type=0;
+	  $found++;
+	}
+      }
+      if ($found) {
+        print "From '.where' using host '$host' directory '$directory'.\n";
+      }
+      close(INFILE);
+      shift(@ARGV);
+    } elsif ( $abbrev{$ARGV[0]} eq '-host' ) {
+      $host=$ARGV[1];
+      shift(@ARGV); shift(@ARGV);
+    } elsif ( $abbrev{$ARGV[0]} eq '-directory' ) {
+      $directory=$ARGV[1];
+      shift(@ARGV); shift(@ARGV);
+    } elsif ( $abbrev{$ARGV[0]} eq '-user' ) {
+      if ( $ARGV[1] && ( $ARGV[1] !~ /^-/ ) ) {
+	$user=$ARGV[1];
+        shift(@ARGV); shift(@ARGV);
+      } else {
+	$user=$USER;
+        shift(@ARGV);
+      }
+    } elsif ( $abbrev{$ARGV[0]} eq '-debug' ) {
+	$debug=1;
+        shift(@ARGV);
+    } elsif ( $abbrev{$ARGV[0]} eq '-passwd' ) {
+      $passwd=$ARGV[1];
+      shift(@ARGV); shift(@ARGV);
+    } else {
+      if      ( $ARGV[0] =~ m"ftp://([^/]+)(/?.*)"i ) {
+	($host,$directory)=($1,$2);
+#	print "URL-type host-dir pair '$host' '$directory'\n";
+        shift(@ARGV);
+	$url_type++;
+      } elsif ( $ARGV[0] =~ /([^:]+):([^:]+)/) {
+	($host,$directory)=($1,$2);
+        shift(@ARGV);
+	$url_type=0;
+      } else {
+        if ( ! $host ) {
+	  $host=$ARGV[0];
+        } else {
+	  $directory=$ARGV[0];
+        }
+        shift(@ARGV);
+      }
+    } # end main if
+  }  # end while
+}  # end parse_args
+
+sub help {
+  select(STDOUT); $|=1; $\=''; 
+  print "@_[0]\n";
+  if (@help) {
+    for ($arg=$[; $arg<=$#args; $arg++) {
+      printf "%-16s\t%s\n", $args[$arg], $help[$arg];
+    }
+  } else {
+    for ($arg=$[; $arg<=$#args; $arg++) {
+      print "$args[$arg]\t";
+    }
+    print "\n";
+  }
+  print "NOTE: any line starting with a '+' character will be echoed to the\n";
+  print "      '.where' file, and the '+' char striped before being passed\n";
+  print "      to the ftp host.  Whereas lines begining with a '>' symbol\n";
+  print "      will only go to the .where.\n";
+  exit 1;
+}
+
+__END__
+# SYNOPSIS
+#      ftp [ -dgintv ] [ hostname ]
+# -g   Disable filename "globbing."
+# -d   Enable debugging.
+# -i   Turn off interactive  prompting  during  multiple  file transfers.
+# -n   Do not attempt "auto-login"  upon  initial  connection.
+# -v   Show all responses from the remote server.

@@ -1,0 +1,96 @@
+#!/usr/bin/perl
+# From ssd@nevets.oau.org Tue Apr 27 15:44:26 1993
+# From: ssd@nevets.oau.org (Steven S. Dick)
+
+@opts=("grep");
+undef $search;
+@std_ccinc=(
+".",
+"/usr/include",
+"/usr/include/sys",
+"/usr/ucbinclude",
+"/usr/ucbinclude/sys",
+"/usr/openwin/include",
+"/opt/local/include",
+"/sugd/sunos5/X11R5/include"
+);
+
+@ccinc=split(/[\s,;:]*/,$ENV{'CCINC'});
+if (!@ccinc) {
+  @ccinc=@std_ccinc;
+} elsif (@ccinc[0] eq '+') {
+  push(@ccinc,@std_ccinc);
+}
+grep(s:([^/])$:\1/:g , @ccinc);
+#print join(":",@ccinc),"\n"; exit 1;
+
+foreach (@ARGV) {
+  if (/^-/){
+    push(@opts,$_);
+    next;
+  }
+  if (!defined($search)){
+    $search=$_;
+    push(@opts,$_);
+    next;
+  }
+  &addfile($_,0);
+}
+
+if (!@Files) {
+  die "No files to scan.  Sorry.\n";
+}
+
+$all_found = 1;
+
+# scan files 
+while (@Files){
+  $file=pop(@Files);
+  print "  "x$usedfile{$file},$file,"\n";
+  open(FILE,$file) || warn "Couldn't open $file: $!";
+  while ( <FILE> ) {
+    if (/^\s*#\s*include\s*<(\S+)>/){
+	$newi=$1;
+#	print "$file includes $newi\n";
+        &addfile($newi,$usedfile{$file}+1);
+        $all_found &= $found;
+      }
+  }
+}
+
+if (! $all_found) {
+  $,=' '; $|=1;
+  print "Include path: @ccinc \n";
+}
+
+$,=' '; $|=1;
+print @opts,"\n";
+exec @opts;
+
+exit 0;
+
+# --- SUBROUTINES ---
+  
+sub addfile
+{
+  local($file,$level)=@_;
+  if ($file !~ m,^/,){
+    foreach $dir (@ccinc){
+      if (-f $dir.$file){
+	$file = $dir.$file;
+	last;
+      }
+    }
+  }
+  if (!defined($usedfile{$file})){
+    $usedfile{$file} = $level;
+    if (! -f $file){
+      warn "Couldn't find $file in include path.\n";
+      $found=0;
+      return;
+    }
+    $found=1;
+    push(@Files,$file);
+    push(@opts,$file);
+  }
+}

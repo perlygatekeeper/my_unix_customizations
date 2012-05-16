@@ -1,0 +1,70 @@
+#!/usr/bin/perl
+
+# MAKELINE is a
+# script to make a vertical line down a file
+
+$0 =~ s'.*/'';
+$usage = "usage: $0 [ [-]position ] [ <seperator> ... (-) ] \n";
+
+#if (@ARGV>2) { die("$usage"); }
+#$position=$ARGV[0];
+#shift;
+#$seperator=(@ARGV>0) ? "$ARGV[0]" : "-";
+#shift;
+
+#   ***   Parse Command Line Argument(s)   ***
+while ( @ARGV >= 1 ) {
+  if ($ARGV[0] =~ /^-?\d{1,3}/ ) {
+    $position_given++;
+    $position=$ARGV[0];
+    $position=~s/^-?//;
+    shift;
+  } else {
+    push(@seperator,$ARGV[0]);
+    shift;
+  }
+}  # end while
+
+while ($line=<>) {
+chop($line);
+if (! $position_given) { $position=length($line); $position_given++; }
+$seperator++;
+$seperator=($seperator>$#seperator)?$[:$seperator;
+
+# QUESTION? pad with spaces.
+     $len=length($line);
+if ( $len <  ($position-1) ) { $line .= " "x($position-1-$len); $len=$position-1; }
+
+# NOTE: line will now be $position-1 long or greater.
+if ( $len == ($position-1) )
+  { print $line,@seperator[$seperator]."\n";
+  }
+else 
+  { print substr($line,0,($position-1)), @seperator[$seperator],
+          substr($line,($position-1),($len-$position+1))."\n";
+  }
+}
+
+exit 0;
+__END__
+
+                                                           
+    1 (1) This is some test text.                          
+    2 (2) With multiple lines, some short and some long.   
+    3 (3) See. (followed by one blank line)                
+                                                           
+    4 (5) This is a single short line.                     
+                                                           
+                                                           
+    5 (8) This is a single short line.                     
+    6 (9) This is some test text.                          
+    7 (10) With multiple lines, some short and some long.  
+                                                           
+                                                           
+                                                           
+    8 (14) This is a single short line.                    
+    9 (15) This is some test text.                         
+   10 (16) With multiple lines, some short and some long.  
+                                                           
+                                                           
+                                                           

@@ -1,0 +1,61 @@
+#!/bin/sh
+#
+# script to renumber outlines 
+#
+# usage: numeric renumbering: renum                                         
+#                          OR renum [ 1 | -1 | -numeric ] [start_val] [inc]
+#        default start_value is 1
+#        default increment   is 1
+#  roman numeral renumbering: 
+#            lower case       renum [ i | -i | -roman ] [start_val] [inc]
+#            UPPER CASE       renum [ I | -I | -ROMAN ] [start_val] [inc]
+#        default start_value is 1 (i or I)
+#        default increment   is 1
+#   alphabetical renumbering: 
+#            lower case       renum [ a | -a | -alphabetic |-alpha ] [start_val]
+#            UPPER CASE       renum [ A | -A | -ALPHABETIC |-ALPHA ] [start_val]
+#        default start_value is 'a'
+#        only    increment   is by '++'
+#
+if   [ \( $# -eq 0 \) -o \
+       \( ${1:-NOARG} = "1" \) -o \
+       \( ${1:-NOARG} = "-1" \) -o \
+       \( ${1:-NOARG} = "-numeric" \) ] ; then
+  crk+  '^([\*\#\-\+\s]*)\d+([\. 	\)].*)$' '\1\o\2' ${2:+-s} ${2} ${3:+-i} ${3}
+elif [ \( ${1:-NOARG} = "-roman" \) -o \
+       \( ${1:-NOARG} = "i" \) -o \
+       \( ${1:-NOARG} = "-i" \) ] ; then
+  crk+ \
+  '^([\*\#\-\+\s]*)[iIvVxX]+[ iIvVxX]?[ iIvVxX]?[ iIvVxX]?[ iIvVxX]?([\.\s\)].*)$' \
+  '\1\i\2' ${2:+-s} ${2} ${3:+-i} ${3}
+elif [ \( ${1:-NOARG} = "I" \) -o \
+       \( ${1:-NOARG} = "-I" \) -o \
+       \( ${1:-NOARG} = "-ROMAN" \) ] ; then
+  crk+ \
+  '^([\*\#\-\+\s]*)[iIvVxX]+[ iIvVxX]?[ iIvVxX]?[ iIvVxX]?[ iIvVxX]?([\.\s\)].*)$' \
+  '\1\I\2' ${2:+-s} ${2} ${3:+-i} ${3}
+elif [ \( ${1:-NOARG} = "-roman_right" \) -o \
+       \( ${1:-NOARG} = "i+" \) -o \
+       \( ${1:-NOARG} = "-i+" \) ] ; then
+  crk+ \
+  '^([\*\#\-\+\s]*)[ iIvVxX]?[ iIvVxX]?[ iIvVxX]+[ iIvVxX]+[iIvVxX]+([\.\s\)].*)$' \
+  '\1\i\2' -roman_right ${2:+-s} ${2} ${3:+-i} ${3}
+elif [ \( ${1:-NOARG} = "I+" \) -o \
+       \( ${1:-NOARG} = "-I+" \) -o \
+       \( ${1:-NOARG} = "-ROMAN_RIGHT" \) ] ; then
+  crk+ \
+  '^([\*\#\-\+\s]*)[ iIvVxX]?[ iIvVxX]?[ iIvVxX]+[ iIvVxX]+[iIvVxX]+([\.\s\)].*)$' \
+  '\1\I\2' -roman_right ${2:+-s} ${2} ${3:+-i} ${3}
+elif [ \( ${1:-NOARG} = "-alphabetic" \) -o \
+       \( ${1:-NOARG} = "-alpha" \) -o \
+       \( ${1:-NOARG} = "a" \) -o \
+       \( ${1:-NOARG} = "-a" \) ] ; then
+# avoid  the characters i,v,x because of conflicts with roman numerals
+  crk+ '^([\*\#\-\+\s]*)[a-hj-uwy-z]([\. 	\)].*)$' '\1\a\2' ${2:+-s} ${2}
+elif [ \( ${1:-NOARG} = "A" \) -o \
+       \( ${1:-NOARG} = "-ALPHA" \) -o \
+       \( ${1:-NOARG} = "-A" \) -o \
+       \( ${1:-NOARG} = "-ALPHABETIC" \) ] ; then
+# avoid  the characters I,V,X because of conflicts with ROMAN NUMERALS
+  crk+ '^([\*\#\-\+\s]*)[A-HJ-UWY-Z]([\. 	\)].*)$' '\1\A\2' ${2:+-s} ${2}
+fi

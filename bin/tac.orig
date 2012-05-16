@@ -1,0 +1,22 @@
+#!/usr/bin/perl
+#
+# A perl script to print files with lines in reverse order
+#
+$name = $0; $name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name [FILENAME ...]";
+
+if (@ARGV) {
+  use File::Tie;
+  @ARGV=reverse @ARGV;
+  foreach $file (@ARGV) {
+    tie @lines, 'Tie::File', $file
+      || die ("cant' tie file '$file' to an array using Tie::File: $!\n");
+    print for (reverse @lines);
+  }
+}
+
+print reverse <>;
+
+exit 0;
+
+__END__

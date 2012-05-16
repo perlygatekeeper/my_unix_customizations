@@ -1,0 +1,74 @@
+#!/usr/bin/perl
+#
+# A perl-5 script to indent code a certain number of spaces
+# (by default 2; can be negative);
+#
+$name = $0; $name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name [[-]number_of_spaces_to_indent]";
+
+$indent=2;
+foreach $arg (@ARGV) {
+  if ($arg=~/^-?\s*[0-9]+$/) {
+    $indent=$arg;
+#   print $indent . "\n";
+    shift;
+  }
+}
+
+if (not $indent) { while (<>) { print; } exit 0; }
+if ($indent<0) {
+  $tab_into_spaces= " " x (8+$indent);
+  $spaces_to_remove= " " . (" ?" x (-1* $indent - 1));
+}
+
+$last_line='';
+while ($line=<>) {
+  if ($last_line) {
+    if ($indent<0) {	# indent is negative, remove white space if possible
+      $last_line=~/^(\s*)/; $ws=$1;
+      if ($ws eq '') {		# no white space to remove
+	1;
+      } elsif ($ws=~/\t$/) {	# white space ends with a tab
+	$last_line=~s/\t$/$tab_into_spaces/;
+      } elsif ($ws=~/  ?$/) {	# white space ends with at least one space
+	$last_line=~s/$spaces_to_remove//;
+      }
+    } else {
+      $last_line=~s/^(\s*)(\S)/\1  \2/;
+    }
+    print $last_line;
+  } else {
+    print $line;
+    exit 0 if (not $line=<>);
+  }
+  $last_line=$line;
+}
+print $last_line;
+
+exit 0;
+
+__END__
+
+$last_line='';
+while ($line=<>) {
+  if ($last_line) {
+      if ($indent<0) {	# indent is negative, remove white space if possible
+        $last_line=~/^(\s*)/;
+        if ($1 eq '') {		# no white space to remove
+	  1;
+        } elsif ($1=~/\t$/) {	# white space ends with a tab
+	  $last_line=~s/\t$/$tab_into_spaces/;
+        } elsif ($1=~/  ?$/) {	# white space ends with at least one space
+	  $last_line=~s/  ?$//;
+        }
+      } else {
+        $last_line=~s/^(\s*)(\S)/\1  \2/;
+      }
+      print $last_line;
+  } else {
+    print $line;
+    exit 0 if (not $line=<>);
+  }
+  $last_line=$line;
+}
+print $last_line;

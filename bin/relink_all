@@ -1,0 +1,17 @@
+relink GET HEAD
+relink GET POST
+relink GET lwp-request
+relink X_to direct_xsession_to
+relink X_to xsession_to
+relink X_to xterm_to
+relink crank crk+
+relink crack crk
+relink upper cap
+relink upper lower
+relink upper rot13
+relink upper rot661
+relink words wds
+relink odd-even oe
+relink even-odd eo
+relink web_tags wt
+relink printpath pp

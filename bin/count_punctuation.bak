@@ -1,0 +1,63 @@
+#!/usr/bin/perl
+#-----------------------------------------------------------------------------
+# cs2 is a perl script to count 'stuff'
+# counts all occurances of ' " ` ( ) [ ] { } / and \
+# as well as blank lines
+#-----------------------------------------------------------------------------
+
+#   ***   Define Default Strings, Values & Flags   ***
+$name = $0;
+$usage = "usage:\n$name [file_name|environment_variable]\n";
+if ( $ARGV[0] eq '-?' || $ARGV[0] eq '-i' ) { do help($usage); }
+$number=11;
+$reg_exp[ 0]="\^\$"; $target_name[ 0]="blank lines";
+$reg_exp[ 1]="\\'"; $target_name[ 1]="single quotes";
+$reg_exp[ 2]='\\"'; $target_name[ 2]="double quotes";
+$reg_exp[ 3]="\\`"; $target_name[ 3]="back   quotes";
+$reg_exp[ 4]="\\("; $target_name[ 4]="open  parentheses";
+$reg_exp[ 5]="\\)"; $target_name[ 5]="close parentheses";
+$reg_exp[ 6]="\\["; $target_name[ 6]="open  square brackets";
+$reg_exp[ 7]="\\]"; $target_name[ 7]="close square brackets";
+$reg_exp[ 8]="\\{"; $target_name[ 8]="open  curly  brackets";
+$reg_exp[ 9]="\\}"; $target_name[ 9]="close curly  brackets";
+$reg_exp[10]="\\\\";$target_name[10]="back slashs";
+$reg_exp[11]="\\/"; $target_name[11]="     slashs";
+$reg_exp[11]="\\\$"; $target_name[11]="dollar signs";
+
+@files=@ARGV;
+$file=0;
+for($i=0;$i<=$number;$i++) { $count[$i]=0; }
+while (<>) {
+  $line=$_;
+  if ($line=~/^$/)	     { $count[0]++; }
+  if ($line!~/^\s*#/) {
+    for($i=1;$i<=$number;$i++) { $count[$i]+=($line=~s/$reg_exp[$i]//g); }
+  }
+  if ( eof ) {
+    if (@files) {
+      print "Report for file ($files[$file]):\n";
+    } else {
+      print "Report for STDIN:\n";
+    }
+    for($i=0;$i<=$number;$i++)
+      { printf "count for %-21s \t>%2s<\t%s\n",
+           $target_name[$i], $reg_exp[$i], $count[$i];
+        $count[$i]=0; }
+    $file++;
+    print "\n";
+  } # end eof test
+} # end main while loop
+
+#---------------------------------------------------------------
+
+exit 0;
+
+####   SUBROUTINES   ####
+sub help {
+print "@_[0]\n";
+print "This command 'Counts Stuff'.\n";
+print "Where Stuff is any of the following characters:\n";
+print " ' \" ` ( ) [ ] { } / and \\ \n";
+print "as well as blank lines.\n";
+exit 1;
+}

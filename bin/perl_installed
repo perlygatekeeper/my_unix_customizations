@@ -1,0 +1,14 @@
+#!/usr/bin/perl
+
+use ExtUtils::Installed;
+use English;
+$search=$ARGV[0];
+print "$PERL_VERSION\n";
+my $instmod = ExtUtils::Installed->new();
+foreach my $module ($instmod->modules()) {
+  my $version = $instmod->version($module) || "???";
+  if ($search and $module!~/$search/i) {
+    next;
+  }
+  printf "%-45s -- %s\n", $module, $version;
+}

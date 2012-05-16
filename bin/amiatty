@@ -1,0 +1,15 @@
+#!/usr/bin/perl
+#
+# A perl script to determine 'am I a tty'
+#
+
+if (-t) {
+  print "I am a tty\n";
+} else {
+  print "I am NOT a tty\n";
+}
+
+
+exit 0;
+
+__END__

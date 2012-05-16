@@ -1,0 +1,107 @@
+#!/usr/bin/perl
+
+# A perl-5 script to make intelligent choices while attempting
+# to make a simple backup of a given file
+
+# Will use *.bak unless that exists, or the the '-date' argument
+# is given
+
+# If *.bak exists and the '-date'  is not given then four simple
+# options will be given:
+# 1) overwrite the existing *.bak file
+# 2) use date format, ie. *.MMDDYY
+# 3) user input extention
+# 4) skip this file
+
+$name = $0; $name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name [-date] FILES_TO_BE_BACKED_UP";
+
+if (! @ARGV) {
+ echo $usage;
+ die ("Bad usage");
+}
+
+if ($ARGV[0] =~ /-date/i ) {
+  $use_date=1;
+  shift;
+} 
+require("datetime.pl");
+$ds=&ds();
+
+use File::Copy;
+
+
+foreach $file (@ARGV) {
+  if ( -f $file ) {
+    if ($use_date) {
+      $backup="$file.$ds";
+    } else {
+      if ( -f "$file.bak" ) {
+        print "$file.bak exists, please choose one of the following:\n";
+        $prompt="\tO)verwrite\n\tU)se $file.MMDDYY\n\tI)nput other backup ext.\n\t"
+               ."A)bort (skip this file)\n or \tE)xit ";
+        ($response)=&response($prompt,'^(.)','^E');
+        if      ( $response =~ /O/i ) {
+          $backup="$file.bak";
+        } elsif ( $response =~ /U/i ) {
+          $backup="$file.$ds";
+        } elsif ( $response =~ /I/i ) {
+          select( (select(STDOUT), $|=1) [ $[ ] );
+#  print "Please input an alternate backup extention" . ($ext) ? " [$ext]: " : ": ";
+	  if ($ext) {
+	    $oldext=$ext;
+            print "Please input an alternate backup extention [$ext]: ";
+	    $ext=<STDIN>; chomp $ext;
+	    if (! $ext) { $ext = $oldext; }
+	  } else {
+            print "Please input an alternate backup extention: ";
+	    $ext=<STDIN>; chomp $ext;
+	  }
+          $backup="$file.$ext";
+        } elsif ( $response =~ /A/i ) {
+	  print "User abort, skipping file $file.\n";
+        } else {
+	  print "Unknown choice, skipping file $file.\n";
+	  next;
+        }
+      } else { # backup file exists?
+        $backup="$file.bak";
+      }
+    }
+    print "$name: backing up $file to $backup.\n";
+    copy($file,$backup);
+#   system("cp $file $backup");
+  } else {
+    print "$name: file $file not found.\n";
+  } ; # file to backup exists?
+}
+
+exit 0;
+
+sub response {
+  my($prompt,$regexp,$exit_regexp)=(@_);
+  my(@junk);
+  if ($prompt) {
+    print $prompt;
+  } else {
+    print "yes|no";
+  }
+  $response=<STDIN>;
+  if ($exit_regexp and $response=~/$exit_regexp/i) {
+    chomp $response;
+    print "Quitting $name in response to user input '$response'\n";
+    exit;
+  } elsif ($regexp) {
+    if ($regexp =~ /\(.*\)/) {
+#     print "$name:response returning with an array\n";
+      return (@junk)=($response=~/$regexp/i);
+    } else {
+#     print "$name:response returning with a regexp\n";
+      return ($response=~/$regexp/i);
+    }
+  } else {
+    return ($response=~/^y/i);
+  }
+}
+
+__END__

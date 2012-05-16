@@ -1,0 +1,165 @@
+#!/usr/bin/perl
+#
+# A perl filter to input a block of text and output that same block
+# surrounded with a nice pretty "text box"
+#
+$name = $0; $name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name";
+
+# TO DO:   options?   -style style_by_name -styles (will list them) -trim -ltrim -rtrim
+
+#  BSG or Linear with clipped corners
+$left		= '|';	#  /-----------\
+$right		= '|';	#  |           |
+$top		= '-';	#  |           |
+$bottom		= '-';	#  |           |
+$upper_right	= '\\';	#  |           |
+$upper_left	= '/';	#  |           |
+$lower_right	= '/';	#  |           |
+$lower_left	= '\\';	#  \-----------/
+
+#  Linear
+$left		= '|';	#  +-----------+
+$right		= '|';	#  |           |
+$top		= '-';	#  |           |
+$bottom		= '-';	#  |           |
+$upper_right	= '+';	#  |           |
+$upper_left	= '+';	#  |           |
+$lower_right	= '+';	#  |           |
+$lower_left	= '+';	#  +-----------+
+
+$horizontal_padding	= 2;
+$vertical_padding	= 1;
+
+my $max_length;
+my $shortest_left = 1000;
+while (<>) {
+  chomp;  push(@lines,$_);
+  next if (/^\s*$/); # skip white and blank lines.
+  my $length = length($_);
+  $max_length = ( ( $length > $max_length ) ? $length : $max_length );
+  ( $left_margin ) = ( $_ =~ /^(\s*)/ );
+  my $left_length = length($left_margin);
+  $shortest_left = ( ( $left_length < $shortest_left ) ? $left_length : $shortest_left );
+# printf "%5d: %5d/%5d  %5d/%5d '%5s'\n",
+#        $.,
+# 	 $left_length, $shortest_left,
+# 	 $length, $max_length,
+# 	 $left_margin;
+}
+
+$left_margin = " " x $shortest_left;
+$blank_line	= $left_margin . $left . ( " " x $horizontal_padding ) .
+                  " " x ( $max_length - $shortest_left ) . 
+                  ( " " x $horizontal_padding ) . $right . "\n";
+$top_line	= $left_margin . $upper_left .
+                  ( $top    x ($max_length - $shortest_left + 2*$horizontal_padding) ) . $upper_right . "\n";
+$bottom_line	= $left_margin . $lower_left .
+                  ( $bottom x ($max_length - $shortest_left + 2*$horizontal_padding) ) . $lower_right . "\n";
+
+
+print $top_line;
+print $blank_line for ( 1 .. $vertical_padding);
+foreach $line (@lines) {
+  $line =~ s/^$left_margin// if $left_margin; # trim left margin
+  $right_padding = $max_length - $shortest_left - length($line);
+  print $left_margin . $left .     ( " " x $horizontal_padding ) .
+        $line .  ( " " x $right_padding ) .
+ 	( " " x $horizontal_padding ) . $right . "\n";
+#	( " " x $horizontal_padding ) . $right . "'$right_padding'" . "\n";
+}
+print $blank_line for ( 1 .. $vertical_padding);
+print $bottom_line;
+
+exit 0;
+
+__END__
+#  BSG or Linear with clipped corners
+$left		= '|';	#  /-----------\
+$right		= '|';	#  |           |
+$top		= '-';	#  |           |
+$bottom		= '-';	#  |           |
+$upper_right	= '\\';	#  |           |
+$upper_left	= '/';	#  |           |
+$lower_right	= '/';	#  |           |
+$lower_left	= '\\';	#  \-----------/
+
+#  Linear
+$left		= '|';	#  +-----------+
+$right		= '|';	#  |           |
+$top		= '-';	#  |           |
+$bottom		= '-';	#  |           |
+$upper_right	= '+';	#  |           |
+$upper_left	= '+';	#  |           |
+$lower_right	= '+';	#  |           |
+$lower_left	= '+';	#  +-----------+
+
+#  Light
+$left		= '.';	#  .............
+$right		= '.';	#  .           .
+$top		= '.';	#  .           .
+$bottom		= '.';	#  .           .
+$upper_right	= '.';	#  .           .
+$upper_left	= '.';	#  .           .
+$lower_right	= '.';	#  .           .
+$lower_left	= '.';	#  .............
+
+#  Medium
+$left		= '*';	#  *************
+$right		= '*';	#  *           *
+$top		= '*';	#  *           *
+$bottom		= '*';	#  *           *
+$upper_right	= '*';	#  *           *
+$upper_left	= '*';	#  *           *
+$lower_right	= '*';	#  *           *
+$lower_left	= '*';	#  *************
+
+#  Heavy
+$left		= '@';	#  @@@@@@@@@@@@@
+$right		= '@';	#  @           @
+$top		= '@';	#  @           @
+$bottom		= '@';	#  @           @
+$upper_right	= '@';	#  @           @
+$upper_left	= '@';	#  @           @
+$lower_right	= '@';	#  @           @
+$lower_left	= '@';	#  @@@@@@@@@@@@@
+
+#  Comment1
+$left		= '#';	#  #############
+$right		= '#';	#  #           #
+$top		= '#';	#  #           #
+$bottom		= '#';	#  #           #
+$upper_right	= '#';	#  #           #
+$upper_left	= '#';	#  #           #
+$lower_right	= '#';	#  #           #
+$lower_left	= '#';	#  #############
+
+#  Comment2
+$left		= '*';	#  /***********\
+$right		= '*';	#  *           *
+$top		= '*';	#  *           *
+$bottom		= '*';	#  *           *
+$upper_right	= '\\';	#  *           *
+$upper_left	= '/';	#  *           *
+$lower_right	= '/';	#  *           *
+$lower_left	= '\\';	#  \***********/
+
+#  Comment3
+$left		= '//';	#  /////////////
+$right		= '/';	#  //          /
+$top		= '/';	#  //          /
+$bottom		= '/';	#  //          /
+$upper_right	= '/';	#  //          /
+$upper_left	= '//';	#  //          /
+$lower_right	= '/';	#  //          /
+$lower_left	= '//';	#  /////////////
+
+#  Bold
+$left		= 'H';	#  @===========@
+$right		= 'H';	#  H           H
+$top		= '=';	#  H           H
+$bottom		= '=';	#  H           H
+$upper_right	= '@';	#  H           H
+$upper_left	= '@';	#  H           H
+$lower_right	= '@';	#  H           H
+$lower_left	= '@';	#  @===========@

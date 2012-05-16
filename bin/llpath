@@ -1,0 +1,16 @@
+#!/usr/bin/perl
+$maxdepth=25;
+$pwd=`pwd`; chomp $pwd;
+push(@ARGV,$pwd) if (not @ARGV);
+
+while ($path=shift) {
+  if ($path !~ m,/,) { $path = $pwd . '/' . $path }
+  $depth=0;
+  until ($path eq "/" or not $path) {
+    last if (++$depth>=$maxdepth);
+    system("ls -dl $path");
+    $path =~ s,/[^/]*$,,;
+  }
+}
+exit 0;
+__END__

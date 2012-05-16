@@ -1,0 +1,46 @@
+#!/bin/bash
+
+USAGE="Usage: swc ACTION [-s MODULE] [-h HOST]\n
+\tParameters:\n
+\t\tACTION\t- action to perform (sync, init, rm RESPOSITORY, etc), Required\n
+\t\t-s\t- Sandbox module to perform ACTION on, default is 'comsite5'\n
+\t\t-h\t- Host on which to perform action, default is 'sandbox'\n\n
+\tExample:\n
+\t\t$ swc sync -s comsite5 -h ecnext15"
+
+PWD=`pwd`
+SB_NAME=`basename $PWD`
+HOST=$SBXIP
+VERBOSE=0
+
+if [ "$1" ]
+then
+        ACTION=$1
+        shift
+else
+        echo -e $USAGE
+        exit
+fi
+
+while getopts "s:h:v" OPTION
+do
+        case ${OPTION} in
+                s) SB_NAME=${OPTARG};;
+                h) HOST=${OPTARG};;
+				v) VERBOSE=1;;
+        esac
+done
+
+
+CMD="perl -I/home/sparker/sbx-mgr-prod /home/sparker/sbx-mgr-prod/tools/sandbox/swc.pl \
+--name=$SB_NAME --sandbox-uri-base=http://${HOST}:8888/ $ACTION"
+
+if [ $VERBOSE != 0 ] ; then
+  echo "Executing: $CMD"
+fi
+
+`$CMD`
+
+if [ $VERBOSE ] ; then
+  echo "$ACTION Completed:" `date`
+fi

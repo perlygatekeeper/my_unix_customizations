@@ -1,0 +1,69 @@
+#!/usr/bin/perl
+#
+# A perl script to print every 1st line of N
+#                     then the 2nd line
+#						.
+#						.
+#						.
+#						.
+#                     then the Nth line
+
+$N=shift;
+@lines=<>;
+for ($n=0; $n<$N; $n++) {
+  for ($i=$n; $i<=$#lines; $i+=$N) { print $lines[$i]; }
+}
+__END__
+
+test, filter non-white lines below through 'nth 10'
+
+First   of Ten
+Second  of Ten
+Third   of Ten
+Fourth  of Ten
+Fifth   of Ten
+Sixth   of Ten
+Seventh of Ten
+Eighth  of Ten
+Nineth  of Ten
+Tenth   of Ten
+First   of Ten
+Second  of Ten
+Third   of Ten
+Fourth  of Ten
+Fifth   of Ten
+Sixth   of Ten
+Seventh of Ten
+Eighth  of Ten
+Nineth  of Ten
+Tenth   of Ten
+First   of Ten
+Second  of Ten
+Third   of Ten
+Fourth  of Ten
+Fifth   of Ten
+Sixth   of Ten
+Seventh of Ten
+Eighth  of Ten
+Nineth  of Ten
+Tenth   of Ten
+First   of Ten
+Second  of Ten
+Third   of Ten
+Fourth  of Ten
+Fifth   of Ten
+Sixth   of Ten
+Seventh of Ten
+Eighth  of Ten
+Nineth  of Ten
+Tenth   of Ten
+First   of Ten
+Second  of Ten
+Third   of Ten
+Fourth  of Ten
+Fifth   of Ten
+Sixth   of Ten
+Seventh of Ten
+Eighth  of Ten
+Nineth  of Ten
+Tenth   of Ten

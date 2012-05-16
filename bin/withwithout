@@ -1,0 +1,77 @@
+#!/usr/bin/perl
+# An extention of the 'not' command
+# allows regexp's that must match, and regexp's
+# that must'nt.  Default is that they must, those
+# that start with '-' must NOT match
+
+# modified to maintain order of arguments for matching or 
+# not matching to give user greater control
+
+$name = $0; $name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name REGEXP [ REGEXP ... ] [-f REGEXP-FILE] [--] [FILENAME ...]";
+$debug=0;
+
+while (@ARGV) {
+  if ($ARGV[0]=~/^--$/) {
+    shift @ARGV;
+    last;
+  }
+  $regexp=shift @ARGV;
+  if ($regexp=~/^-f$/) {
+    $regexpfile= shift @ARGV;
+    open(REGEXPFILE,"<$regexpfile") || die("$name: Cannot read from '$regexpfile': $!\n");
+    while (<REGEXPFILE>) {
+      $regexp=$_; chomp $regexp;
+      if ($regexp=~/^-/) {
+        $regexp=~s/^-//;
+        push(@search, { 'match'=>'',    'regexp'=>$regexp } );
+        print STDERR "Will look for lines NOT matching '$regexp'\n" if ($debug);
+      } else {
+        push(@search, { 'match'=>'yes', 'regexp'=>$regexp });
+        print STDERR "Will look for lines     matching '$regexp'\n" if ($debug);
+      }
+    }
+    close(REGEXPFILE);
+  } elsif ($regexp=~/^-/) {
+    $regexp=~s/^-//;
+    push(@search, { 'match'=>'',    'regexp'=>$regexp } );
+    print STDERR "Will look for lines NOT matching '$regexp'\n" if ($debug);
+  } else {
+    push(@search, { 'match'=>'yes', 'regexp'=>$regexp });
+    print STDERR "Will look for lines     matching '$regexp'\n" if ($debug);
+  }
+}
+
+#check to make sure we're looking for something, all negative regexp's isn't very interesting.
+$something=0;
+foreach $search (@search) {
+  $something ||= $search->{match};
+  if ($something) {
+    print STDERR " $something we will be look for '" . $search->{'regexp'} . "' at least\n." if ($debug);
+  }
+}
+if ( not $something ) {  # if nothing, look for non-blank lines (even white space will do)
+  push(@search, { 'match'=>'yes', 'regexp'=>'.' });
+}
+
+LINE: while (<>) {
+  $targets=$print=0;
+TARGET: foreach $target (@search) {
+      $targets++;
+      if ( not $target->{'match'} and $_=~/$target->{'regexp'}/ ) { # if we don't want it and it matches
+        next LINE;
+      }
+      if ( $target->{'match'} and $_=~/$target->{'regexp'}/ ) { # if we want it and it matches
+	$print=$targets; last TARGET;
+      }
+  }
+  if ($debug) {
+    print "$print: $_" if $print;
+  } else {
+    print if $print;
+  }
+}
+
+exit 0;
+
+__END__

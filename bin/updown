@@ -1,0 +1,31 @@
+#!/usr/bin/perl
+#
+# A perl-5 script to count up and down the number of opening
+# and closing curley brackets
+#
+$name = $0; $name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name";
+
+#$open = '`';	$close="'";
+#$open = '<';	$close='>';
+#$open = '(';	$close=')';
+#$open = '[';	$close=']';
+$open = '{';	$close='}';
+#$open = '<div';	$close='</div';
+
+printf "%5s %5s %5s %5s %5s %4s %s\n", 'line', 'opens', 'total', 'clses', 'total', 'count', 'line';
+while (<>) {
+  next if (/^$|^\s*#/); #skip blank and commented lines.
+  chomp;
+  $opens	=(($junk=$_)=~s,$open,,g);
+  $closes	=(($junk=$_)=~s,$close,,g);
+  $open_total	+=$opens;
+  $close_total	+=$closes;
+  $count	+=$opens;
+  $count	-=$closes;
+  ($line=$_)=~s/^(.{60}).*/\1/;
+  printf "%5d %5d %5d %5d %5d %4d %s\n", $., $opens, $open_total, $closes, $close_total, $count, $line ;
+}
+exit 0;
+
+__END__

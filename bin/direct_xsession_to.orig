@@ -1,0 +1,30 @@
+#!/bin/sh
+# 
+# Usage: /usr/global/bin/direct_xsession_to HOSTNAME
+# 
+# Will create an xsession on HOSTNAME displaying on
+# the host from which the user is logged on. If the connection
+# to chemistry was created via ssh, this will bypass the
+# ssh X11 forwarding tunnel and direct X from HOSTNAME right back 
+# to your (home) computer.
+#
+# Requirements:
+# - need .rhosts access to destination HOSTNAME
+# - need /usr/local/bin/exec_xsession on HOSTNAME
+#   that contains everything to start xsession; this
+#   script will need to use the file $HOME/.latest_display
+#   to set the display appropriately
+# - need the following in $HOME/.login.personal:  
+# ---------------------------------------------------
+#    # Record the latest REMOTEHOST setting, to be
+#    # used in the $ugb/direct_xsession_to script.
+#    if ($?REMOTEHOST) then
+#      echo "${REMOTEHOST}:0" >! ~/.remote_display
+#    endif
+# ---------------------------------------------------
+# - X client startup needs to invoke this script via rexec, 
+#   not telnet; otherwise REMOTEHOST would be overwritten
+
+xserver_host="$1"
+rcp $HOME/.remote_display ${xserver_host}:.latest_display
+rsh $xserver_host "/usr/local/bin/exec_xsession"

@@ -1,0 +1,6 @@
+#!/bin/bash
+if [ `hostname|grep sbx` ] ; then
+sudo /usr/sbin/puppetd --test
+else
+echo "run me only on sandboxes"
+fi

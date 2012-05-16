@@ -1,0 +1,9 @@
+#!/usr/bin/perl
+# find the biggest numerical value of the first field.
+# in all the files on the command line
+
+while(<>) {
+  @F = split(/\s+/);
+  $l = length($F[0])<$l ? $l : length($F[0]);
+}
+END {print $l . "\n";}

@@ -1,0 +1,696 @@
+#!/usr/bin/perl
+#
+# A perl script to 'unwrap' *.tar files from the net.
+#
+
+$last_mod_date='Mon, Mar 12, 2001';
+#version="1.0"; # extensions .tar .z .Z .tar.z and .tar.Z unwrapped
+#version="1.1"; # fancy directory chooser
+#version="1.2"; # fancy directory chooser bug fix.
+#version="1.3"; # add help, usage...
+#version="1.4"; # add remove&preserve options
+#version="1.5"; # add not_really option
+#version="1.6"; # put command names in front like  $TAR="tar";
+#version="2.0"; # add 'choose directory' option, cleaned logic up.
+#version="2.1"; # add uudecode stuff
+#version="2.2"; # add unshar and UNSHAR (Larry walls perl code, too paranoid)
+#version="2.3"; # add pieces||aa option
+#version="2.4"; # added fix to the filenames-with-regexp-chars bug
+#version="2.5"; # added this version stuff (here you go Scott!)
+#version="2.6"; # fixed bug that caused removal of simply uncompressed files.
+#version="2.7"; # already catches "../'s" and file names that start with '/'
+		# in tar files, add chroot(`pwd`) for additional security.
+		# didn't work (couldn't find commands like tar,
+		# could get around but not worth it.
+#version="2.8"; # add -safe option and use parse options
+#version="2.9"; # Re-add *.tgz handling
+#version="3.0"; # safe option was there but didn't set the $safe flag, does now
+$version="4.0"; # total rewrite with many more subroutines and a major logic cleanup
+
+$todo="finish, locate and use tar-ball and uncompression routines"; 
+$author="Steven Parker";
+$copyright="$last_mod_date. All rights reserved.";
+
+&initialize;
+&parse_args;
+
+# all extraction or unwrapping routines look for and honor the following global
+# flags/switches; $not_really, $safe, $preserve, $verbose
+
+# DESIGNATED == as defined by the contents of the tar file.
+# DETERMINED == as defined by the basename of tar file's name
+#               ie. with the '.tar' extention (if any) removed
+# CHOSEN     == as input by the user at execution time.
+
+
+foreach $file (@files) {
+  if ($pieces) { 
+    &pieces($file);
+  } elsif ( ! -f $file ) {
+    if ($file=&search_for_file($file)) { next; }
+  }
+  if ( $file =~ /\.uu$/ ) {
+    $file=&uudecode_file($file);
+  }
+
+# TAR-balls
+  if ( $GTAR && ( $file =~ /\.tar$|\.tar.gz$|\.tgz$|\.tar\.z$|\.tar\.Z$/ ) ) {
+    &tar_ball($file);
+
+sub tar_ball {
+  my($file)=shift;
+  my($MKDIR,$DIR,$chioces);
+  print "Extracting contents of TAR-ball in '$file'...\n" if ($verbose);
+  # if not flagged explicitly as 'safe' 
+  #   check for common subdirectory
+  # determine extraction location (make it if necessary)
+  # extract TAR-ball contents
+  if (not $safe and not ($CSD=&check_for_CSD($file)) ) {
+    next;
+  }
+  ($DETERMINED=$file) =~ =~ s/\.tar$|\.tar.gz$|\.tgz$|\.tar\.z$|\.tar\.Z$//;
+
+  if ($safe) {
+        $command="$GTAR -spzxvf $file";
+        open(COMMAND,"$command |") ||
+         die("$name: Cannot extract '$file' with '$command': $!.");
+        local(@results)=<COMMAND>;
+        close(COMMAND);
+        print @results;
+	&remove_files($file);
+      } else {
+	print "Safe option not chosen, will use gunzip and tar with safety checking.\n"
+      }
+    }
+    next;
+  }
+
+  if ( $file =~ /\.tar$/ ) {
+# check for 'Comman SubDirectory'
+    print "Extracting '$file'...\n";
+    $CSD=&check_for_CSD;
+
+    if      ( $CSD && ( ! -d $CSD ) && ( ! -f $CSD ) ) {
+      $DIR=$CSD;
+      print "into the to-be-made DESIGNATED directory '$DIR'.\n";
+      $chioces='';
+    } elsif ( $CSD && ( -d $CSD ) ) {
+      $chioces="[Yes|No|";
+      print "Alert! directory '$CSD' already exists!\n";
+    } elsif ( ( $CSD ) && ( -f $CSD ) ) {
+      if ( ( $CSD eq $CSD2 ) ) {
+        print "Error! '$CSD' already exists as a file,\n";
+        die "remedy this and rerun.";
+      } else {
+        print "Warning! '$CSD' already exists as a file";
+        $chioces="[No|";
+      }
+    } elsif ( ! $CSD ) {
+        print "Warning! No designated common subdirectory.\n";
+        $chioces="[No|";
+    }
+    
+    if ($chioces && ($chioces=~/\|$/) ) {		# determine choices.
+      if  ( ( ! -d $CSD2 ) && ( ! -f $CSD2 ) ) {
+        $chioces.="Make and use '$CSD2'|Choose a directory|Quit]";
+      } elsif ( -d $CSD2 ) {
+        $chioces.="Use existing '$CSD2'|Choose a directory|Quit]";
+      } elsif ( -f $CSD2 ) {
+        if  ( $choices eq '[No|' ) {
+          print "Neither '$CSD' nor '$CSD2' is appropriate ";
+          print "for extraction of '$file'\n";
+          die ", remedy this and rerun.";
+        } else {
+          $chioces.="Quit]";
+	}
+      }
+    }
+    
+    $command="(          $TAR xvf    $file ) |";
+    if ($chioces) {		# choose.
+      if ($chioces=~/Y/) {
+        print "Shall I still extract '$file' into '$CSD'\n$chioces? ";
+      } else {
+        print "Shall I still extract '$file' into '$CSD2'\n$chioces? ";
+      }
+      $responce=<>;
+      if      ( $responce =~ /^n/i ) {
+        die("User abort.");
+      } elsif ( $responce =~ /^m/i ) {
+        $DIR=$CSD2;
+        $MKDIR="mkdir $DIR |";
+        $command="( cd $DIR; $TAR xvf $PWD/$file ) |";
+        print "Extracting into the to-be-made DETERMINED directory '$DIR'.\n";
+      } elsif ( $responce =~ /^u/i ) {
+        $DIR=$CSD2;
+        $command="( cd $DIR; $TAR xvf $PWD/$file ) |";
+        print "Extracting into the pre-existing DETERMINED directory '$DIR'.\n";
+      } elsif ( $responce =~ /^c/i ) {
+	print "Directory to use (if it doesn't yet exist it will be made)? ";
+        $DIR=<>; chop $DIR;
+	if      (   -d $DIR) {
+          $command="( cd $DIR; $TAR xvf $PWD/$file ) |";
+          print "Extracting into the pre-existing CHOSEN directory '$DIR'.\n";
+	} elsif ( ! -f $DIR) {
+          $MKDIR="mkdir $DIR |";
+          $command="( cd $DIR; $TAR xvf $PWD/$file ) |";
+          print "Extracting into the to-be-made CHOSEN directory '$DIR'.\n";
+	} else {
+	  die "ERROR! Chosen directory existed as a file!\n";
+	}
+      } elsif ( $responce !~ /^y/i ) {
+        die("User abort.");
+      } else {	#responce will match /^y/i if we get here.
+	$DIR=$CSD;
+        print "Extracting into the pre-existing DESIGNATED directory '$DIR'.\n";
+      }
+    }
+
+    if ($MKDIR) {
+      if ($not_really) {
+        print "Would have made directory '$DIR' with '$MKDIR'.\n";
+      } else {
+        open(COMMAND,"$MKDIR") ||
+         die("$name: Cannot make directory '$DIR' with '$MKDIR': $!.");
+        local(@results)=<COMMAND>;
+        close(COMMAND);
+      }
+    }
+    if ($not_really) {
+      print "Would have extracted '$file' with '$command'.\n";
+    } else {
+      open(COMMAND,"$command") ||
+       die("$name: Cannot extract '$file' with '$command': $!.");
+      local(@results)=<COMMAND>;
+      close(COMMAND);
+    }
+    &remove_files($file);
+  }
+
+# ---
+# Uncompression/Unzipping routines
+  if ( $file =~ /\.gz$/ ) {
+    local($oldfile)=$file;
+    $file=~s/\.gz$/.z/;
+    if ($not_really) {
+      print "Would have renamed file '$oldfile' to '$file'...\n";
+    } else {
+      print "Renaming file '$oldfile' to '$file'...\n";
+      rename($oldfile,$file);
+    }
+  }
+  if ( $file =~ /\.z$/ ) {
+    print "Unzipping $file...\n";
+    $command="$UNZIP $file |";
+    if ($not_really) {
+      print "Would have unzipped '$file' with '$command'.\n";
+    } else {
+     open(COMMAND,"$command") ||
+       die("$name: Cannot unzip '$file' with '$command': $!.");
+      local(@results)=<COMMAND>;
+      close(COMMAND);
+      print @results;
+    }
+    &remove_files($file);
+    $file=~s/\.z$//;
+  }
+  if ( $file =~ /\.Z$/ ) {
+    print "Uncompressing $file...\n";
+    $command="$UNCOMPRESS $file |";
+    if ($not_really) {
+      print "Would have uncompressed '$file' with '$command'.\n";
+    } else {
+      open(COMMAND,"$command") ||
+       die("$name: Cannot uncompress '$file' with '$command': $!.");
+      local(@results)=<COMMAND>;
+      close(COMMAND);
+      print @results;
+    }
+    &remove_files($file);
+    $file=~s/\.Z$//;
+  }
+
+# Unshar (un-SHell ARchive)
+  } elsif ( $unshar ) {
+    if ($not_really) {
+      print "Would have attempted an unshar of '$file'.\n";
+    } else {
+      print "Attempting an unshar of '$file'.\n";
+      if ($UNSHAR) {
+        $command="$UNSHAR $file |";
+        open(COMMAND,"$command") ||
+         die("$name: Cannot unshar '$file' with '$command': $!.");
+        local(@results)=<COMMAND>;
+        close(COMMAND);
+        print @results;
+      } else {
+        open(UNSHAR,"$file") || die("$name: Cannot open '$file': $!\n");
+        do unshar(*UNSHAR);
+      }
+      &remove_files($file);
+    }
+  } 
+  print "---Done processing file '$file'\007---\n";
+}
+
+#   ***   SUBROUTINES   ***
+#   ---   ---   ---
+sub pieces {
+  my($file)=shift;
+  print "Recombobulating pieces/parts into file '$file'...\n" if ($verbose);
+  my($aa,$command,$files);
+  if ( -f $file ) {
+    warn("pieces flag set but '$file' exists, therefore will try to work with '$file' itself.");
+  } else {
+    if      (-f $file.aa) {
+      $aa='aa';
+    } elsif (-f $file.AA) {
+      $aa='AA';
+    } elsif (-f $file.01) {
+      $aa='01';
+    }
+    until (! -f "$file$aa") { 
+      $files.=" $file$aa";
+      if ($aa =~ /[A-Za-z]/ ) {
+        $aa++;
+      } else {
+        $aa++;
+        $aa=sprintf("%02d",$aa);
+      }
+    }
+    $command="$CAT $files > $file";
+    system($command);
+    if ( $? ) {
+      die("$name: can not cat '$file??' together with\n'$command'\n: $?;$!.");
+    }
+      &remove_files(split(/\s+/,$files));
+    }
+  }
+}
+
+#   ---   ---   ---
+sub search_for_file {
+  my($file)=shift;
+  my($found,$ext);
+  $found=$false;
+  foreach $ext (@extensions) {
+    if ( -f "${file}${ext}" ) { $file .= $ext;  $found=$true; last; }
+  }
+  if ( ! $found ) {
+    print "Couldn't find $file\n";
+    print "or $file.ext where ext=(@extensions).\n";
+    return undef;
+  }
+}
+
+#   ---   ---   ---
+sub remove_files {
+  my(@files)=@_;
+  foreach $file (@files) {
+    if ($remove && (! $preserve) ) {
+      if ($not_really) {
+        print "Would have removed '$file'.\n" if ($verbose);
+      } else {
+        print "Removing file '$file'...\n" if ($verbose);
+        unlink "$file";
+      }
+    }
+  }
+}
+
+#   ---   ---   ---
+sub uudecode_file {
+  my($file)=shift;
+  print "UUdecoding file '$file'...\n" if ($verbose);
+  if ($not_really) {
+    print "Would have uudecoded '$file' with '&uudecode($file)'.\n";
+  } else {
+    my($newfile)=&uudecode($file);
+    &remove_files($file);
+    return $newfile;
+  }
+}
+
+#   ---   ---   ---
+#   ---   ---   ---
+#   ---   ---   ---
+
+#   ***   Parse Command Line Argument(s)   ***
+sub parse_args {
+
+  local(%abbrev)=();
+  local($true,$false)=(1,0);
+
+  @args=('?','help');
+  @help=('print this message','print this message');
+
+  push(@args,'not_really','remove','preserve','UNSHAR','unshar','safe','file');
+  push(@help,"Don't really do anything, but say what would have done",
+             'change remove files if no errors',
+             'change preserve uncompressed files',
+             'change use perl UNSHAR',
+	     'change use unshar program',
+	     'next arg a file (useful if -aa is to have argument)',
+	     'treat this file as safe (use gtar)');
+
+  grep(s/^([^-])/-\1/,@args);
+
+  push(@INC,'/usr/local/lib/perl',"$HOME/perllib");
+  require("abbrev.pl");
+  &abbrev(*abbrev, @args);
+
+  while ( @ARGV >= 1 ) {
+    if      ( ($abbrev{$ARGV[0]} eq '-help' )
+           || ($abbrev{$ARGV[0]} eq '-?' ) ) {
+      do help($usage);
+      shift(@ARGV);
+
+    } elsif ( $abbrev{$ARGV[0]} eq '-not_really' ) {
+      print "No can do boss, gotchya!\n";
+      $not_really=$true;
+      shift(@ARGV);
+
+    } elsif ( $abbrev{$ARGV[0]} eq '-remove' ) {
+      print "will remove files as I am finished with them.\n";
+      $preserve=$false; 
+      $remove=$true;
+      shift(@ARGV);
+
+    } elsif ( $abbrev{$ARGV[0]} eq '-preserve' ) {
+      $preserve=$true;
+      $remove=$false;
+      shift(@ARGV);
+
+    } elsif ( $abbrev{$ARGV[0]} eq '-UNSHAR' ) {
+      $unshar=$true;
+      undef $UNSHAR;
+      shift(@ARGV);
+
+    } elsif ( $abbrev{$ARGV[0]} eq '-unshar' ) {
+      $UNSHAR=$true;
+      undef $unshar;
+      shift(@ARGV);
+
+    } elsif ( $abbrev{$ARGV[0]} eq '-safe' ) {
+      print "Warning: file considered safe.\n";
+      $safe=$true;
+      shift(@ARGV);
+
+    } elsif ( $abbrev{$ARGV[0]} eq '-aa' ) {
+      $pieces=$true;
+      shift(@ARGV);
+      if ( @ARGV[0] && (! -f @ARGV[0]) && ( @ARGV[0] !~ /^-/ ) ) {
+	$aa=$ARGV[0];
+        shift(@ARGV);
+      }
+
+    } else {
+      push(@files,$ARGV[0]);
+      print "Adding $ARGV[0] to file list.\n";
+      shift(@ARGV);
+    } 
+  }  # end while
+}  # end parse_args
+
+#   ---   ---   ---
+sub initialize {
+  $name = $0;
+  $name =~ s'.*/''; # remove path--like basename
+  $usage = "usage: $name [-help] [-n] [-r|p] ";
+  $usage.= "[-aa|pieces] [-u|U] [-safe] [-f] filename ...";
+
+  $true=1; $false=0;
+  select(STDOUT); $|=1;
+
+  $PWD=`pwd`; chomp $PWD;
+  $UNZIP="/usr/bin/gunzip";
+    if (not -f $UNZIP) { $UNZIP=`which gunzip`; chomp $UNZIP; }
+  $UNCOMPRESS="/usr/bin/uncompress";
+    if (not -f $UNCOMPRESS) { $UNCOMPRESS=`which uncompress`; chomp $UNCOMPRESS; }
+  $CAT="/usr/bin/cat";
+    if (not -f $CAT) { $CAT=`which cat`; chomp $CAT; }
+  $UUDECODE="/usr/bin/uudecode"
+    if (not -f $UUDECODE) { $UUDECODE=`which uudecode`; chomp $UUDECODE; }
+  $UNSHAR="/usr/bin/unshar";
+  $GTAR="gtar";
+    open (GTAR_TEST, "$GTAR --help |") || eval "\$GTAR=''";
+  $preserve=$false; 	$remove=$true;
+  @extensions=('.tar','.tar.z','.tar.gz','.tgz','.tar.Z','.z','.gz','.Z');
+  @a=@extensions; foreach (@a) { push(@extensions,$_.".uu"); } undef @a;
+  push(@extensions,'.uu');
+}  # end initialize
+
+#   ---   ---   ---
+sub help {
+  print "@_[0]\n";
+  print " -help:\tprints this help message\n"; 
+  print " -n:\tNot really option, $name will just tell you what it would have done\n"; 
+  print " -r|p:\tremove or preserve files after they are unwrapped (preserve is default)\n"; 
+  print " -aa|pieces:\t look for pieces filename.aa, etc. for each target filename.\n"; 
+  print " -u|U:\tattempt to use either 'unshar' command or\n";
+  print "\tan internal perl subroutine\n"; 
+  print "\tmany shar files come without a '.shar' extension\n"; 
+  print "\tThe unshar command works better then the internal subroutine, but\n"; 
+  print "\tnot all sites have it, thus the internal routine.\n"; 
+  print " -f:\tfigure out what to do, will examine the file use the unix 'file' command\n";
+  print "\tand possibly other methods to determine how to 'unwrap' this file.\n"; 
+  print "\tThis option will be useful for files that do not have descriptive\n"; 
+  print "\tiextentions.  (THIS OPTION IS CURRENTLY UNIMPLEMENTED)\n"; 
+  print "Finally you must supply a list of filenames to unwrap (or stdin).\n";
+  exit 1;
+}
+
+#   ---   ---   ---
+sub check_for_CSD {
+  my($command)=shift;
+  print "Checking for 'Comman SubDirectory'\n" if ($verbose);
+  if (not $command) {$command="$TAR tf $file |"; }
+  open(COMMAND,"$command")
+    || die("$name: Cannot obtain tar listing with '$command': $!.");
+  local(@results)=<COMMAND>;
+  close(COMMAND);
+  print "ARG!" if (!@results);
+  if ($results[0]!~m'/') { return ''; }
+  $common_sd=$results[0]; chop $common_sd;
+  $common_sd=~s|^([^/]+).*|\1|; #keep only up to the first '/';
+  $search=$common_sd;
+  # protect the regexp characters ' ^ $ ? * + ( ) { } [ ] < > \ / . '
+  $search=~s/([\$\^*\[\]{}.<>()+?\/\\])/\\\1/g;
+  for($i=1; $i<=$#results; $i++) {
+    next if ($results[$i]=~/^\s*$/);
+    if ($results[$i]!~/^$search/) {
+      print "${i}th entry in $file, was '$results[$i]'\n";
+      print "and didn't match '$common_sd'\n";
+      return '';
+    }
+    if ($results[$i]=~/\.\./) {
+      print "${i}th entry in $file, was '$results[$i]'\n";
+      print "and contained a suspicous relative directory reference.\n";
+      return '';
+    }
+  }
+  if ($common_sd =~ /\./ ) { # check for all ./common_sd/files
+    $common_sd2=$results[0]; chop $common_sd2;
+    $common_sd2=~s|^\./([^/]+).*|\1|; # keep only between the first two "/"'s
+    $search=$common_sd;
+    # protect the regexp characters ' ^ $ ? * + ( ) { } [ ] < > \ / . '
+    $search=~s/([\$\^*\[\]{}.<>()+?\/\\])/\\\1/g;
+    for($i=1; $i<=$#results; $i++) {
+      next if ($results[$i]=~/^\s*$/);
+      if ($results[$i]!~/^\.\/$search/) {
+        return $common_sd;
+      }
+      $common_sd=$common_sd2;
+    }
+  }
+  return $common_sd;
+}
+
+#   ---   ---   ---
+sub uudecode {
+  local($name,$uuencoded_file)=(sub_uudecode,@_);
+  open(UUDECODE,"$uuencoded_file")
+    || die("$name: Cannot open '$uuencoded_file': $!\n");
+  while (<UUDECODE>) {
+    last if ($mode,$uudecoded_file)=($_=~/^begin ([0-7]{3}) (\S+)$/); 
+  }
+  if ( ! $uudecoded_file) {
+     die ("no destination file found in file '$uuencoded_file': '$line'");
+  } else {
+     print "($uudecoded_file [$mod]) ";
+  }
+  open(FILE,">$uudecoded_file")
+    || die("$name: Cannot write '$uudecoded_file': $!\n");
+  #  array composed of previous file handle and 1
+  select( ( select(FILE), $|=1 ) [$[] );
+  
+  while (<UUDECODE>) {
+    last if /^end/;
+#   print 'u';
+    next if /^[ a-z]/;
+  #  next unless int((((ord() - 32) & 007) + 2) / 3) == int(length() / 4);
+    print FILE unpack("u",$_);
+  # ($count,$code)=($_=~/(.)(.*)$/); 
+  #  print "$.: count '$count'\tcode '$code'\n" if ($.<=10);
+  }
+# $line=<UUDECODE>; $line=<UUDECODE>; die "'$line'\n";
+  close(FILE);
+  chmod oct($mode), $uudecoded_file;
+  print "created uudecoded_file '$uudecoded_file' with mode '$mode'\n";
+  return $uudecoded_file; 
+}
+
+#   ---   ---   ---
+#!/usr/bin/perl
+#
+# $Header: unshar,v 1.1 90/08/12 00:23:29 lwall Locked $
+#
+# $Log:	unshar,v $
+# Revision 1.1  90/08/12  00:23:29  lwall
+# Initial revision
+# 
+# modified to be a sub by steve parker on Wed May 19 1993
+# I tried to write my own but larry did such a nice job.
+#     $piece=0;
+#     while (<UNSHAR>) {
+#       if ( m|^#!\s*/bin/sh$|) {
+#	  close(SHAR); $end=$.-1;
+#	  print "ending at $end.\n";
+#	  chmod(oct('777'),$sharfile);
+#	  #
+#	  # CODE TO EXECUTE AND REMOVE PIECE
+#	  # 
+#	  $piece++;
+#	  $sharfile = $file.$piece;
+#         open(SHAR,">$sharfile")
+#	    || die("$name: Cannot write to '$sharfile': $!\n");
+#	  print "  file: '$sharfile'\tstarting at line $. ... ";
+#	  print SHAR;
+#	}
+#        if ($piece) { print SHAR; }
+#	else { print STDERR "$. "; }
+#      }
+
+sub unshar {
+  local(*fh)=@_;
+# foreach $fh (@fh) { # for an array of filehandles (not tested)
+    while (<fh>) {
+	print STDERR;
+        last if /^[#:]/;
+    }
+    
+    die "No script found.\n" unless $_;
+    
+    while (<fh>) {
+        next if /^[#:]/;
+        $endmark = $1 if s/<<\s*(\S+)//;
+        if ($endmark) {
+    	$endmark =~ s/^'(.*)'$/$1/ ||
+    	$endmark =~ s/^"(.*)"$/$1/ ||
+    	$endmark =~ s/\\(.)/$1/;
+    	$endmark .= "\n";
+        }
+        if (s/^echo //) {
+    	s/["']//g;
+    	print $_;
+        }
+        elsif (/^export\s+PATH|^PATH\s*=/) {
+    	next;
+        }
+        elsif (/^mkdir /) {
+    	die "Reference to parent directory" if m|\.\./|;
+    	die "Reference to absolute directory" if m|\s[/~]|;
+    	if (s/;(.*)//) {
+    	    $rem = $1;
+    	}
+    	else {
+    	    $rem = '';
+    	}
+    	system $_;
+    	$_ = $rem;
+    	redo if $rem;
+        }
+        elsif (/^cat\s+(>+)\s*(\S+)\s*$/) {
+    	$redir = $1;
+    	$filename = $2;
+    	$filename =~ s/^'(.*)'$/$1/ ||
+    	$filename =~ s/^"(.*)"$/$1/ ||
+    	$filename =~ s/\\(.)/$1/;
+    	die "Reference to parent directory" if $filename =~ m|\.\./|;
+    	die "Reference to absolute directory" if $filename =~ m|^[/~]|;
+    	open(FILE,"$redir$filename") || die "Can't create $filename";
+    	while (<fh>) {
+    	    last if $_ eq $endmark;
+    	    print FILE $_;
+    	}
+    	close FILE;
+        }
+        elsif (/^sed\s+(.*\S)\s+(>+)\s*(\S+)\s*$/ ||
+          /^sed\s+(>+)\s*(\S+)\s+(.*\S)\s*$/) {
+    	if (substr($1,0,1) eq '>') {
+    	    $redir = $1;
+    	    $filename = $2;
+    	    $sedcmd = $3;
+    	}
+    	else {
+    	    $sedcmd = $1;
+    	    $redir = $2;
+    	    $filename = $3;
+    	}
+    	$filename =~ s/^'(.*)'$/$1/ ||
+    	$filename =~ s/^"(.*)"$/$1/ ||
+    	$filename =~ s/\\(.)/$1/;
+    	die "Reference to parent directory" if $filename =~ m|\.\./|;
+    	die "Reference to absolute directory" if $filename =~ m|^\s*[/~]|;
+    	die "Illegal sed command" if $sedcmd =~ /[|;`<\$]/;
+    	$sedcmd =~ s/^-e\s*//;
+    	$sedcmd =~ s/^'(.*)'$/$1/ ||
+    	$sedcmd =~ s/^"(.*)"$/$1/ ||
+    	$sedcmd =~ s/\\(.)/$1/;
+    	die "Can only do s command in sed" unless $sedcmd =~ /^s/;
+    	die "Can't do multiple commands" if $sedcmd =~ /;/;
+    	$loop = "while (\$_ = <ARGV>) { print \$_;last if \$_ eq \$endmark; $sedcmd; print FILE;}";
+    	print "$redir$filename\n";
+    	open(FILE,"$redir$filename") || die "Can't create $filename";
+    	eval $loop;
+    	close FILE;
+        }
+        elsif (/^exit/) {
+    	$_ = <fh> until $_ eq '' || /^[#:]/;
+    	exit unless $_;
+        }
+        else {
+    	$r = $_;
+    	$lines = 1;
+    	while (<fh>) {
+    	    ++$lines;
+    	    $r .= $_;
+    	    last if /^exit/;
+    	}
+    	if ($_) {
+    	    $_ = <fh> until $_ eq '' || /^[#:]/;
+    	}
+    	open(REM,">.r") || die "Can't create .r";
+    	print REM $r;
+    	close REM;
+    	chmod 0700, '.r';
+    	if ($lines > 21 || !open(TTY,'/dev/tty')) {
+#   	    print "Could not run remainder of kit.  Inspect .r and run it\n";
+# unparanoiod this
+    	    print "Running remainder of kit.  Leaving .r (hope this is ok?)\n";
+    	    exit;
+    	}
+    	else {
+    	    print "Could not run remainder of kit.  Inspect this.\n$r";
+    	    print "Run it? [y] ";
+    	    $ans = <TTY>;
+    	    system '.r' if $ans =~ /^y/i;
+    	}
+    	exit unless $_;
+        }
+    }
+# }
+}
+1; # true return value so that require won't puke.
+
+  &remove_files($file);

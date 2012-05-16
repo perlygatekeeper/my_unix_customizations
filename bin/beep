@@ -1,0 +1,31 @@
+#!/usr/bin/perl
+#
+# A perl-5 script to beep the screen
+#
+$name = $0; $name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name [seconds to sleep] [message to print]";
+
+if (@ARGV[0]) {
+  $nap_time= shift;
+} else {
+  $nap_time= 0;
+}
+if (@ARGV) {
+  while (@ARGV) {
+    chomp $_;
+    push(@messages,$_);
+    shift;
+  }
+} else {
+  push(@messages,"That's all folks!\007");
+}
+
+sleep($nap_time);
+
+foreach $message (@messages) {
+  print "$message\n";
+}
+
+exit 0;
+
+__END__

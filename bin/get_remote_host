@@ -1,0 +1,101 @@
+#!/usr/bin/perl
+require "getopt.pl";
+&Getopt();
+
+$debug=1;
+$file=">>/tmp/$name.out";
+open(FILE,"$file") || die("$name: Cannot open '$file': $!\n");
+
+
+$user= $ENV{USER} || $ENV{LOGNAME} || (chop ($junk=`whoami`),$junk);
+# example of how NOT to get the USERNAME
+# ($user) = &run_command('/bin/sh -c "/bin/echo $LOGNAME"');
+# chop $user;
+print FILE "USER=",$user,"\n" if ($debug);
+
+($login) = &run_command("who -m");
+print FILE "LOGIN:\n",$login,"\n" if ($debug);
+# one of the following as output.
+# raimann    pts/4        Aug 25 14:53	(shiva.mps.ohio-state.edu)
+# Must be attached to terminal for 'am I' option
+
+$rname = $login; chomp $rname;
+print FILE "pre-rname: $rname\n" if ($debug);
+
+if ($rname =~ /Must be attached to terminal/i ) {
+  @who_results=&run_command("who");
+  @me=grep(/$USER/,@who_results);
+  if ($#me==0) {
+    $rname = $me[0]; chomp $rname;
+    print FILE "pre-rname: $rname\n" if ($debug);
+  } else {
+    print FILE "More than one (actually: '$#me') who results.\n" if ($debug);
+# add code to select a single line of who output from
+# which to determine the remote hostname
+  }
+} 
+$rname =~ s/^.*\(([^)]+)\).*/\1/;
+print FILE "post-rname: $rname\n" if ($debug);
+
+if ($opt_x) {
+  print "export RNAME=",$rname,"\n";
+} else {
+  print $rname,"\n";
+}
+
+close(FILE);
+exit 0;
+
+#   ***   END OF MAIN PROGRAM  ***
+#========================================================================
+
+#   ***       SUBROUTIN(S)      ***
+
+sub run_command {
+  $ENV{"SHELL"}="/bin/sh";
+  open(COMMAND,"$_[0] 2>&1 |") || die("$name: Cannot run '$_[0]': $!.\n");
+  local(@results)=<COMMAND>;
+  close COMMAND;
+  return @results;
+}
+
+__END__
+mcerro-l   pts/5        Aug 25 14:59	(acid.mps.ohio-state.edu)
+raimann    pts/3        Aug  7 16:26	(shiva.mps.ohio-state.edu)
+zalub      pts/15       Aug 25 15:00	(ionjocks.mps.ohio-state.edu)
+raimann    pts/4        Aug 25 14:53	(shiva.mps.ohio-state.edu)
+raimann    pts/6        Aug  7 16:27	(shiva.mps.ohio-state.edu)
+raimann    pts/7        Aug  7 16:27	(shiva.mps.ohio-state.edu)
+wambold    pts/2        Aug 24 13:49	(slacker.cygnus.com)
+fchen      pts/34       Aug 20 11:38	(sinfonia.mps.ohio-state.edu)
+rfeierta   pts/13       Aug 25 15:21	(feiertag.mps.ohio-state.edu)
+zzhang     pts/35       Aug 25 13:40	(grayhawk.emsl.pnl.gov)
+ccarter    pts/32       Aug 25 13:10	(hires.mps.ohio-state.edu)
+jblaudea   pts/18       Aug 25 13:54	(paladin.wright.edu)
+rzellmer   dtremote     Aug  8 15:59	(phosphorus:0)
+dar        dtremote     Aug  8 09:32	(arroz:0)
+dar        pts/12       Aug  8 09:32
+pbarnes    pts/31       Aug 25 15:07	(ferrocene.mps.ohio-state.edu)
+judi       pts/11       Aug 25 13:38	(user2.infinet.com)
+jtatz      pts/17       Aug 25 13:38	(gateway1.westbelt.calltech.com)
+mporter    pts/30       Aug 25 08:34	(hexane.mps.ohio-state.edu)
+pitzer     pts/33       Aug 25 15:05	(osu-ts28.net.ohio-state.edu)
+zalub      pts/36       Aug 25 14:56	(diamond.mps.ohio-state.edu)
+rzellmer   pts/23       Aug  8 16:00	(phosphorus)
+rzellmer   pts/24       Aug  8 16:00	(phosphorus)
+mmendlik   pts/38       Aug 25 15:18	(indicator.mps.ohio-state.edu)
+rzellmer   pts/21       Aug  8 16:31	(phosphorus)
+dar        pts/22       Aug 25 14:37	(arroz)
+zzhang     pts/8        Aug 25 13:41	(grayhawk.emsl.pnl.gov)
+sbrozell   pts/51       Aug 10 13:20	(curium.mps.ohio-state.edu)
+osokolov   pts/39       Aug 25 15:09	(romulus.mps.ohio-state.edu)
+parker     pts/26       Aug 16 09:10	(later:S.1)
+hlee       pts/25       Aug 25 15:18	(calcium.mps.ohio-state.edu)
+twu        pts/29       Aug 25 13:55	(134.243.50.206)
+zzhang     pts/1        Aug 25 13:33	(grayhawk.emsl.pnl.gov)
+twu        pts/41       Aug 25 14:06	(134.243.50.206)
+parker     pts/10       Aug 18 22:10	(later:S.0)
+dheister   pts/37       Aug 25 10:30	(oscar.scott.ohiou.edu)
+twu        pts/42       Aug 25 14:06	(134.243.50.206)
+parker     pts/28       Aug 16 09:10	(later:S.2)
+twu        pts/43       Aug 25 14:07	(134.243.50.206)

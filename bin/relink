@@ -1,0 +1,9 @@
+#!/usr/bin/perl
+
+$real_file = $ARGV[0];
+$link      = $ARGV[1];
+
+if (-l $link) { print "$link is already a link.\n"; exit 0; }
+if (! -f $real_file) { print "couldn't find $real_file.\n"; exit 0; }
+if (-f $link) { unlink $link;}
+symlink($real_file,$link);

@@ -1,0 +1,31 @@
+#!/usr/bin/perl
+# $/=''; $*=1; #enable paragraph mode & mulitline pattern matching.
+#-----------------------------------------------------------------------------
+#   ***   Define Default Strings, Values & Flags   ***
+$name = $0; $name=~s'.*/'';
+$false=0; $true=1;
+$usage = "usage: $name [-m (for MANPATH)]\n";
+$newline="\n"; 
+$tab="\t"; 
+$backspace="\010"; 
+$formfeed="\014"; 
+
+#   ***   Parse Command Line Argument(s)   ***
+while ( @ARGV >= 1 ) {
+   if ( $ARGV[0] eq '-m' ) { $man=$true; shift; }
+   else { shift; print $usage; }
+}  # end while
+
+if ($man) { $path=$ENV{'MANPATH'}; }
+else      { $path=$ENV{'PATH'}; };
+
+# print "$path";
+
+$path=~s'[  \t\n]+''ge;
+$path=~s':?$'$newline'e;
+$path=~s':'$newline'ge;
+$path=~s'\n\n+'$newline'ge;
+
+print $path;
+#   ***   EXIT GRACEFULLY   ***
+exit 0;

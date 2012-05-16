@@ -1,0 +1,2 @@
+#!/bin/sh
+/usr/global/bin/us2.perl >usage.`/usr/global/bin/ds`

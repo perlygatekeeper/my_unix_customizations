@@ -1,0 +1,18 @@
+#!/usr/bin/perl
+#
+# tth latex to HTML script to call /usr/common/bin/tth.
+#
+
+if ( $#ARGV lt 0 ) {
+	print "Usage: l2h file [option [option ...]]\n"; 
+	print "\nor\n";
+	system "/usr/common/bin/tth '-?'";
+	exit 1;
+} else {
+	$file=$ARGV[0];
+	shift;
+	system "/usr/common/bin/tth <$file.tex >$file.html -L$file @ARGV";
+}
+exit 0;
+
+__END__

@@ -1,0 +1,24 @@
+#!/usr/bin/perl
+#
+# A perl script to SCRIPT_DESCRIPTION
+#
+  $name = $0;
+  $name =~ s'.*/''; # remove path--like basename
+  $usage = "usage:\n$name FILENAME.conf";
+
+  $true=1; $false=0;
+
+  output_conf_file($ARGV[0]);
+
+  sub output_conf_file {
+    $infile=shift;
+    open(INFILE,"<$infile")
+      || die("$name: Cannot read from '$infile': $!\n");
+    while (<INFILE>) {
+      print $_;
+    }
+    close(INFILE);
+  }
+
+exit 0;
+__END__

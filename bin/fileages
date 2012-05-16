@@ -1,0 +1,52 @@
+#!/usr/bin/perl
+#
+# A perl script to display information on the ages of files in the specified/current directory
+#
+$name = $0; $name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name [DIRECTORY|.]";
+
+use Math::BigInt;
+my($seconds_in_a_day)=Math::BigInt->new('86400');         #  printf "seconds_in_a_day: %16s\n", $seconds_in_a_day->bstr();
+my($days_old)=Math::BigInt->bzero();
+$days_old->precision(0);		$days_old->accuracy(15);
+$seconds_in_a_day->precision(0);	$seconds_in_a_day->accuracy(15);
+
+if (@ARGV) {
+  if (-d $ARGV[0]) {
+    push(@dirs,$ARGV[0]);
+    shift @ARGV;
+  }
+} else {
+  push (@dirs,".");
+}
+
+foreach $dir (@dirs) {
+  opendir(DIR,$dir) || die "Can't open dir $dir: $!\n";
+  @files=readdir(DIR);
+  closedir(DIR);
+  shift(@files);shift(@files); # for . and .. entries
+  print STDERR "operating on directory '$dir', found " . scalar(@files) . " files.\n";
+  foreach $file (@files) {
+    $stats->{"$dir/$file"}=[ @a=stat("$dir/$file") ];
+    push(@{$stats->{"$dir/$file"}},"$dir/$file");
+  }
+}
+
+sub by_mtime { $stats->{$a}[9] <=> $stats->{$b}[9]; }
+
+$time=time;
+foreach $file (sort by_mtime keys %$stats) {
+  $days_old = Math::BigInt->new($time);  
+# printf "time, mtime: %s, %s\n", $days_old->bstr, Math::BigInt->new($stats->{$file}[9])->bstr;
+  $days_old->bsub($stats->{$file}[9]);  
+# printf "time-mtime: %s\n", $days_old->bstr;
+  $days_old->bdiv($seconds_in_a_day);  
+# printf "(time-mtime)/seconds_in_a_day: %s\n", $days_old->bstr;
+  print "file '$file' is " . $days_old->bstr . " days old\n";
+# printf "%d %d %d\n", $time, $stats->{$file}[9], ($time+0-$stat->{$file}[9]);
+  }
+
+exit 0;
+__END__
+
+

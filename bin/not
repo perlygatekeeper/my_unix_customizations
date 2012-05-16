@@ -1,0 +1,20 @@
+#!/usr/bin/perl
+#
+# A perl script to list only lines from STDIN  that do not contain
+# ANY of the reg exp's given as arguments
+#
+#  IE print lines NOT matching these words
+#
+$name = $0; $name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name REGEXP [ REGEXP ... ]";
+
+LINE: while (<STDIN>) {
+  foreach $regexp (@ARGV) {
+    next LINE if ($_=~/$regexp/);
+  }
+  print;
+}
+
+exit 0;
+
+__END__

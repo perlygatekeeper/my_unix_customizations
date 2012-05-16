@@ -1,0 +1,47 @@
+#!/usr/bin/perl
+#
+# A perl-5 script to 'un-include references to /www/pages/include in the 
+# new web pages.
+#
+$name = $0; $name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name [-opt1] [-opt2] [-opt3]";
+
+$pages='/www/pages';
+while (<>) {
+  if ($_=~m~<!--(#include virtual="(/include/[^"]+)") -->~) {
+    $file="$pages/$2";
+    $stuff=$1;
+    s/^.*$/<!--  $stuff  -->/;
+    print $_;
+
+    open(FILE,"<$file") || die("$name: Cannot open '$file': $!\n");
+    while (<FILE>) {
+      print;
+    }
+    close(FILE);
+
+  } else {
+    print $_;
+  }
+}
+
+exit 0;
+
+__END__
+
+Search Chemistry
+<!--#include virtual="/include/head-sup-post.htm" -->
+
+<center>
+
+<IMG SRC="/NS/Asset/searchform.gif">
+
+</center>
+
+<!--#include virtual="/include/trailer-sup-pre.htm" -->
+<!--#include virtual="/include/trailer.htm" -->
+<!--#include virtual="/include/trailer-post.htm" -->
+
+</b>
+</body>
+</html>

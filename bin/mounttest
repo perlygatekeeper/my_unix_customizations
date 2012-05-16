@@ -1,0 +1,66 @@
+#!/usr/bin/perl
+#
+# A perl script to check /etc/smb.conf using the command testparm
+# from the samba suite, against the IP address of the person running
+# this script.
+#
+$name = $0; $name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name";
+
+$remote_host=$ARGV[0] || $ENV{'REMOTEHOST'};
+
+($ip_name,$ip_address)=&get_ip_name_and_number($remote_host);
+print "Checking samba access premissions from\n$ip_name:$ip_address\n";
+system("testparm /etc/smb.conf $ip_address");
+
+# envoke me using X_to command with
+# X_to specstroscopy tamiller /usr/global/bin/mounttest $REMOTEHOST
+
+exit 0;
+
+#   ***   SUBROUTINES   ***
+sub get_ip_name_and_number {
+  my($ip_name_or_number)=@_;
+# my($debug)=1;
+  my($HOST,$command);
+  print STDERR "get_ip_name_and_number: called with '$ip_name_or_number'\n"
+    if ($debug);
+# get results from a unix command
+  if (-f '/usr/local/bin/host') {
+    $HOST='/usr/local/bin/host';
+  } elsif (-f '/usr/bin/host') {
+    $HOST='/usr/bin/host';
+  } else {
+    $HOST=(chop ($junk=`which host`),$junk);
+  }
+  warn ('no host command found') if (not $HOST);
+  $command="$HOST $ip_name_or_number |";
+  open(COMMAND,"$command") ||
+    die("$name: Cannot find IP ip_name or ip_number with '$command': $!.");
+  my(@results)=<COMMAND>;
+  close(COMMAND);
+  print STDERR "get_ip_name_and_number: @results\n"
+    if ($debug);
+  ($has_address)=grep(/ has address /, @results);
+  ($ip_name,$ip_number)=($has_address=~/(\S+) has address (\S+)/);
+  if (!$ip_name) {
+    ($A)=grep(/\s+A\s+/, @results);
+    ($ip_name,$ip_number)=($A=~/(\S+)\s+A\s+(\S+)/);
+  }
+  if (!$ip_name) {
+    ($ip_name)=grep(/^Name: /, @results);
+    $ip_name=~s/^Name: //;
+  }
+  chomp($ip_name);
+  chomp($ip_number);
+  if (!$ip_number) {
+    ($ip_number)=grep(/^Address: /, @results);
+    $ip_number=~s/^Address: //;
+  }
+  if (wantarray) {
+    return ($ip_name,$ip_number);
+  } else {
+    return $ip_name;
+  }
+}
+__END__

@@ -1,0 +1,37 @@
+#!/usr/bin/perl
+#
+# A perl script to printout all fractions of an inch XX/64
+# as a decimal as well as all the millimeter values 1..25
+# as decimal factions of an inch as well.
+#
+$name = $0; $name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name [-opt1] [-opt2] [-opt3]";
+
+$debug=0;
+
+sub by_value { $f->{$a} <=> $f->{$b} }
+print "1\n" if ($debug);
+for $num ( 1 .. 64 ) { $f->{sprintf("%02d/64", $num)} = $num/64; }
+print "1 - \$f hash has " . scalar(keys %$f) . " keys now\n" if ($debug);
+print "2\n" if ($debug);
+for( $n = 2; $n <= 63; $n += 2 ) { 
+  print "2 - $n\n" if ($debug);
+  $num = $n; $dem = 64;  $count=0;
+  until ($num%2 or $count > 10) { # until numerator is odd, keep dividing num and dem by 2
+    $count++;
+    $num /=2; $dem /= 2;
+  }
+  $reduced->{sprintf("%02d/64", $n)} = "$num/$dem";
+}
+print "3\n" if ($debug);
+$reduced->{"64/64"} = '1';
+print "4\n" if ($debug);
+for $mm  ( 1 .. 25 ) { $f->{"${mm}mm"} = $mm*0.03937 }
+print "5\n" if ($debug);
+foreach (sort by_value keys %$f) {
+  printf "%5s: %7.5f %s\n", $_, $f->{$_}, $reduced->{$_};
+}
+
+exit 0;
+
+__END__

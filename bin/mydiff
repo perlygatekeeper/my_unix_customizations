@@ -1,0 +1,2 @@
+#!/bin/bash
+echo /usr/bin/diff -w -B $*

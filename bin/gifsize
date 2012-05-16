@@ -1,0 +1,27 @@
+#!/usr/bin/perl
+# Program name: gifsize
+# Author: Rajiv Pant (Betul)
+# Version: 1.0. October 1994.
+
+foreach $gif (@ARGV)
+{
+($width, $height, $type) = &gifsize ($gif) ;
+($type =~ m/GIF/i)
+? print "<img src=\"$gif\" width=$width height=$height border=0>\n"
+: print "$gif is not a GIF.\n" ;
+}
+
+
+sub gifsize
+{
+local ($gif) = @_ ;
+local ($w, $w2, $h, $h2, $gifwidth, $gifsize, $type) = () ;
+open (GIF, $gif) ; read (GIF, $type, 3) ;
+seek (GIF, 6, 0) ; read (GIF, $w, 1) ;
+read (GIF, $w2, 1) ;
+$width = ord ($w) + ord ($w2) * 256 ;
+read (GIF, $h, 1) ; read (GIF, $h2, 1) ;
+$height = ord ($h) + ord ($h2) * 256 ;
+close (GIF) ;
+return ($width, $height, $type) ;
+} # end of sub gifsize

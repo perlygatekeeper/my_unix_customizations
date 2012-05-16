@@ -1,0 +1,1001 @@
+#!/usr/bin/perl
+#
+# A perl-5 script to implement a reverse polish notation calculator
+# simple numeric calc, no strings, code, complex numbers on stack.
+$version=2.0;		# transfer input control to Term::ReadLine
+$version=2.1;		# extended help routine to allow INDENT in help messages
+$version=2.2;		# reverse stack, 0 is now top
+			# pop's  -> shift's
+			# push's -> unshift's
+			# prompt now has top value of stack
+			# fixed log10 (had to come before log in search)
+$version=2.3;		# add boolian functions
+			# add saved stacks and history
+			# add readin of customized functions and constants
+$version=2.4;		# added, min, max and ave functions
+			# fixed double newlines in histsave file,
+			# Term::ReadLine's GetHistory method returns NULLs!!!
+$version=2.5;		# fixed square function, command was editted for cube function not duplicated
+			# added concatenate function
+			# added ifelse function
+			# switched subroutine names as with numeric_n to n_arguments
+#
+$name = $0; $name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name [--version]";
+$last_mod_date='Tue, Sep 10, 2002';
+$todo ="make language independent";
+$todo.="loop, for, variables";
+$author="Dr. Steven Parker";
+$copyright="$last_mod_date. All rights reserved.";
+
+if ($ARGV[0] =~ /^--v(ersion)?/i) {
+  printf "$name written by $author, version $version, last modified $last_mod_date.\n";
+  exit 0;
+}
+
+&initialize();
+$debug=0;
+
+# print STDERR "Ready for input...\n" if (-t);
+
+
+$prompt = "Input [" . ((defined $stack_ref->[0])? $stack_ref->[0] : $empty) . "] ";
+while ( defined ($input = $term->readline($prompt)) ) {
+  if ($input!~/\S/) {
+    next;
+  }
+  chomp($_); $term->addhistory($_);
+  if ($input=~m/^\s*(([-+]?\d+)\s*\.\.\s*([-+]?\d+))/) { # line with a 'string or "string
+    if ($2==$3) {
+      unshift (@{$stack_ref},$2);
+    } elsif ($2<$3) {
+      unshift (@{$stack_ref},reverse eval "$2 .. $3");
+    } elsif ($2>$3) {
+      unshift (@{$stack_ref},eval "$3 .. $2");
+    }
+  } elsif (&isanumber($input)) { # a line of numbers
+    foreach $item (split(/[\s,;]+/,$input)) {
+      if (&isanumber($item)) {		# this seems redundant but it isn't, now I am looking at a single item on the line
+        unshift (@{$stack_ref},$item);
+      } else {
+        if (not &execute($item)) {
+          print STDERR "unknown input type '$item'\n";
+        }
+      }
+    }
+    $prompt = "Input [" . ((defined $stack_ref->[0])? $stack_ref->[0] : $empty) . "] ";
+    next;
+  } elsif ($input=~s/^\s*(['"])(.*?)\1?\s*$/\2/) { # line with a 'string or "string
+    unshift (@{$stack_ref},$input);
+  } else {
+    &execute($input);
+  }
+  $prompt = "Input [" . ((defined $stack_ref->[0])? $stack_ref->[0] : $empty) . "] ";
+}
+
+exit 0;
+
+sub execute {
+  # given an input line from user or from stack
+  # will see if it's a command and if so will execute it
+  my($input)=@_;
+  my($command,$arguments)=($input=~/^\s*(\S+)\s*(.*)$/);
+  my(@arguments)=split(/\s+/,$arguments);
+  if ($commands{$abbrevs{$command}}) {
+    if ($debug) {
+      print STDERR "command and expanded command are '$command', '$abbrevs{$command}'\n";
+      print STDERR "argument string is '$arguments'\n";
+      print STDERR "argument array  has " . scalar(@arguments) . " long.\n"; 
+    }
+    if (not $commands{$abbrevs{$command}}->{'code'}
+       or ref($commands{$abbrevs{$command}}->{'code'}) ne "CODE") {
+      print STDERR "code for '$command' not defined.\n";
+      return 0;
+    }
+    &{ $commands{$abbrevs{$command}}->{'code'} }($stack_ref,$abbrevs{$command},$arguments,\@arguments);
+    return 1;
+  } else {
+    print STDERR "unknown input type '$input', command would be '$command'\n";
+    return 0;
+  }
+}
+
+sub help {
+  my($s,$cmd,$arg_str,$arg_array)=@_;
+  my($command,$type,$help,$abbrev,$possible);
+  my($command_space)=18;
+  my($type_space)=10;
+  my($indent_spaces)=" " x ($command_space + $type_space + 4); # + 4, since we have _()_ characters
+  my($header)=sprintf "%${command_space}s  %${type_space}s  %s\n", "Command", "Type", "Help Message";
+  my($command_format)="%${command_space}s (%${type_space}s) %s\n";
+  $/=''; $*=1; #enable paragraph mode & mulitline pattern matching.
+  if ($abbrev=$arg_array->[0]) {
+    if ($command=$abbrevs{$abbrev}) {
+        ($help=$commands{$command}->{'help'})=~s/INDENT/$indent_spaces/g;
+        $type=$commands{$command}->{'type'};
+      print $header;
+      printf $command_format, $command, $type, $help;
+    } elsif ($arg_array->[0] =~ /type/i) {
+      foreach $possible (sort by_type keys %commands) {
+        next if ($commands{$possible}->{'type'} !~ m,$arg_array->[1],);
+        if ($header) {
+          print $header; $header='';
+        }
+        ($help=$commands{$possible}->{'help'})=~s/INDENT/$indent_spaces/g;
+        $type=$commands{$possible}->{'type'};
+        printf $command_format, $possible, $type, $help;
+      }
+    } else {
+      if ($abbrev=$arg_array->[0]) {
+        printf "No command '$abbrev' was found.\n";
+        printf "Possible matches are:\n\n";
+        print $header;
+        foreach $possible (keys %commands)  {
+          next if ($possible !~ /^$abbrev/);
+          ($help=$commands{$possible}->{'help'})=~s/INDENT/$indent_spaces/g;
+          $type=$commands{$possible}->{'type'};
+          printf $command_format, $possible, $type, $help;
+        }
+      }
+    }
+  } else {
+    print $header;
+    foreach $command (sort by_type keys %commands) {
+        ($help=$commands{$command}->{'help'})=~s/INDENT/$indent_spaces/g;
+        $type=$commands{$command}->{'type'};
+        printf $command_format, $command, $type, $help;
+    }
+  }
+}
+
+sub by_type {
+  if ( $commands{$a}->{'type'} eq $commands{$b}->{'type'} ) {
+    return $a cmp $b;
+  } else {
+    return $commands{$a}->{'type'} cmp $commands{$b}->{'type'};
+  }
+}
+
+sub isanumber {
+  my($query)=@_;
+  if ($query=~/^\s*[-+]?[0-9]+[0-9.]*|[-+]?\.[0-9]+/) {
+    return 1;
+  }
+  return 0;
+}
+
+sub initialize {
+# $\="\n";
+  $number_format="%s";
+  $constants->{'pi'}->{'value'}=	2 * atan2(1,0);
+  $constants->{'pi'}->{'discription'}=	'ratio of the circumference to the diameter of a circle';
+  $constants->{'e'}->{'value'}=		exp(1);
+  $constants->{'e'}->{'discription'}=	'base of the natural logarithm';
+  $constants->{'av'}->{'value'}=	6.022 * 10**23;
+  $constants->{'av'}->{'discription'}=	"Avogadro's number, # atoms/mole";
+  $constants->{'r2'}->{'value'}=	sqrt(2.00);
+  $constants->{'r2'}->{'discription'}=	'square root of 2';
+  $constants->{'r3'}->{'value'}=	sqrt(3.00);
+  $constants->{'r3'}->{'discription'}=	'square root of 3';
+  $constants->{'r5'}->{'value'}=	sqrt(5.00);
+  $constants->{'r5'}->{'discription'}=	'square root of 5';
+  $constants->{'r7'}->{'value'}=	sqrt(7.00);
+  $constants->{'r7'}->{'discription'}=	'square root of 7';
+  $commands{'noop'}=
+    {'type'=>'flow',
+     'help'=>"no operation",
+     'code'=>sub { my($s,$cmd,$args,$args_array)=@_;
+                   return;
+	         },
+    };
+  $commands{'if'}=
+    {'type'=>'flow',
+     'aliases'=>['ifthen'],
+     'help'=>"top two elements of stack are popped,".
+	     "INDENTthe top value is a boolean and second is a RPN function".
+	     "INDENTRPN function is executed if the boolean was true",
+     'code'=>sub { my($s,$cmd,$args,$args_array)=@_;
+		   my($test)=shift(@{$s});
+		   my($input)=shift(@{$s});
+                   if ( $test and not &execute($input) ) {
+                     print STDERR "unknown input type '$input', command would be '$command'\n";
+                   }
+	         },
+    };
+  $commands{'ifelse'}=
+    {'type'=>'flow',
+     'aliases'=>['ifthen'],
+     'help'=>"top 3 elements of stack are popped,".
+	     "INDENTthe top value is a boolean and second and third are a RPN functions".
+	     "INDENTfirst RPN function is executed if the boolean was true",
+	     "INDENTsecond RPN function is executed if the boolean was false",
+     'code'=>sub { my($s,$cmd,$args,$args_array)=@_;
+		   my($test)=shift(@{$s});
+		   my($input1)=shift(@{$s});
+		   my($input2)=shift(@{$s});
+                   if ( ($test and not &execute($input2)) or (not &execute($input2)) ) {
+                     print STDERR "unknown input type '$input', command would be '$command'\n";
+                   }
+	         },
+    };
+  $commands{'execute'}=
+    {'type'=>'utility',
+     'help'=>"treats top element of the stack as an RPN function and executes it",
+     'code'=>sub { my($s,$cmd,$args,$args_array)=@_;
+                   if ( not &execute(shift @{$s}) ) {
+                     print STDERR "unknown input type '$input', command would be '$command'\n";
+                   }
+	         },
+    };
+  $commands{'function'}=
+    {'type'=>'utility',
+     'help'=>"treats first argument as a perl funcation and applies to top element of the stack\n" .
+	     "INDENTie, 'function oct' would replace top value of the stack with perl's oct(value)",
+     'code'=>\&one_argument
+    };
+  $commands{'operator'}=
+    {'type'=>'utility',
+     'help'=>"treats first argument as a perl operator and applies to top element of the stack\n" .
+	     "INDENTie, 'operator +=2' would replace top value of the stack with value+2",
+     'code'=>\&one_argument
+    };
+  $commands{'help'}=
+    {'type'=>'utility',
+     'aliases'=>['?'],
+     'help'=>'prints help on given command or all commands if none is specified',
+     'code'=>\&help
+    };
+  $commands{'constant'}=
+    {'type'=>'contant',
+     'help'=>'pushes a constant on the stack',
+     'code'=>sub { my($s,$cmd,$args,$args_array)=@_;
+		   if (@{$args_array}) {
+		     foreach (@{$args_array}) {
+		       if ($constants->{lc $_}->{'value'}) { unshift (@{$s},$constants->{lc $_}->{'value'}); }
+		     }
+		   } else {
+		     foreach (sort keys %{$constants}) {
+		       printf STDERR "%10s:\t%14g\t%s\n", $_,
+		                                    $constants->{$_}->{'value'},
+		                                    $constants->{$_}->{'discription'};
+		     }
+		   }
+                 }
+    };
+  $commands{'quit'}=
+    {'type'=>'utility',
+     'aliases'=>['exit', 'lo', 'logout', 'bye'],
+     'help'=>'exits the program',
+     'code'=>\&save_exit
+    };
+  $commands{'stack'}=
+    {'type'=>'stack',
+     'help'=>'moves to a different stack, or reports present stack, name and depth',
+     'code'=>sub { my($s,$cmd,$args,$args_array)=@_;
+		   my($stack,$regexp);
+		   my($header)="Stack   	Depth";
+		   if ($args_array->[0] =~ /^[a-zA-Z]/) {  # new stack
+                     $stack_name=$args_array->[0];
+		     if (ref($stacks{$stack_name}) eq 'ARRAY') { # point stack_ref to that array
+                       $stack_ref=$stacks{$stack_name};
+		     } else { # point stack_ref to new array
+                       $stacks{$stack_name}=$stack_ref=[];
+		     }
+		     print STDERR "Switching to stack '$stack_name', which is " .
+		                   scalar(@{$stack_ref}) . " deep.\n";
+		   } elsif ($args_array->[0]) { # list all stacks matching first arg
+		     if ($args_array->[0] !~ /^\?|\*$/) { # list all stacks
+		       $regexp=$args_array->[0];
+		     }
+		     print STDERR "$header\n";
+		     foreach $stack (sort keys %stacks) {
+		       printf STDERR "%s\t%d\n", $stack, scalar(@{$stacks{$stack}})
+			 if (not $regexp or $stack =~ m,$regexp,);
+		     }
+		   } else {
+		     print STDERR "Stack '$stack_name' is in use, and presently has " .
+		                   scalar(@{$s}) . " elements.\n";
+		   }
+                 }
+    };
+  $commands{'depth'}=
+    {'type'=>'utility',
+     'help'=>'pushes depth of the stack unto stack',
+     'code'=>sub { my($s)=shift; unshift(@{$s},scalar(@{$s})); }
+    };
+  $commands{'peekall'}=
+    {'type'=>'utility',
+     'aliases'=>[':'],
+     'help'=>'prints entire stack (does not effect stack)',
+     'code'=>\&display
+    };
+  $commands{'peek'}=
+    {'type'=>'utility',
+     'aliases'=>['.'],
+     'help'=>'prints top value on stack (does not pop it)',
+     'code'=>\&display
+    };
+  $commands{'print'}=
+    {'type'=>'utility',
+     'help'=>'pops and prints top value on stack',
+     'code'=>\&display
+    };
+  $commands{'binary'}=
+    {'type'=>'utility',
+     'help'=>"prints top value on stack (does not pop it) in binary format(doesn't work)",
+     'code'=>\&display
+    };
+  $commands{'octal'}=
+    {'type'=>'utility',
+     'help'=>'prints top value on stack (does not pop it) in octal format',
+     'code'=>\&display
+    };
+  $commands{'decimal'}=
+    {'type'=>'utility',
+     'help'=>'prints top value on stack (does not pop it) in decimal format',
+     'code'=>\&display
+    };
+  $commands{'hexadecimal'}=
+    {'type'=>'utility',
+     'help'=>'prints top value on stack (does not pop it) in hexadecimal format',
+     'code'=>\&display
+    };
+  $commands{'peekf'}=
+    {'type'=>'utility',
+     'help'=>"prints top value on stack (does not pop it) with first arg as a format\n" .
+             "INDENTformats like printf.",
+     'code'=>\&display
+    };
+  $commands{'printf'}=
+    {'type'=>'utility',
+     'help'=>"pops and prints top value on stack with first arg as a format\n" .
+             "INDENTsome useful formats (letter must follow a '%' character):\n" .
+             "INDENTd,i - decimal\n" .
+             "INDENTx,X - hexadecimal with (abcdef) or (ABCDEF) respectively\n" .
+             "INDENTo   - octal\n" .
+             "INDENTf   - floating point\n" .
+             "INDENTe,E - exponential format with (e00) or (E00) respectively\n" .
+             "INDENTg,G - floating point or exponential format with (e00) or (E00) respectively\n" .
+             "INDENTc,C - character format , C would print 3 as ^C\n",
+     'code'=>\&display
+    };
+  $commands{'slide'}=
+    {'type'=>'stack',
+     'help'=>'pops value off present stack and pushes it onto new stack N times',
+     'code'=>\&n_arguments
+    };
+  $commands{'transfer'}=
+    {'type'=>'stack',
+     'help'=>'moves top N values (defaults to entire stack) on present stack to new stack',
+     'code'=>\&n_arguments
+    };
+  $commands{'copy'}=
+    {'type'=>'stack',
+     'help'=>'replaces top value of the stack with n copies of itself',
+     'code'=>\&one_argument
+    };
+  $commands{'exchange'}=
+    {'aliases'=>['x'],
+     'type'=>'stack',
+     'help'=>'swaps top two values on the stack',
+     'code'=>\&two_arguments
+    };
+  $commands{'minimum'}=
+    {'type'=>'numeric',
+     'help'=>'replace the first n values of the stack with the smallest of these values',
+     'code'=>\&n_arguments
+    };
+  $commands{'maximum'}=
+    {'type'=>'numeric',
+     'help'=>'replace the first n values of the stack with the largest of these values',
+     'code'=>\&n_arguments
+    };
+  $commands{'average'}=
+    {'type'=>'numeric',
+     'help'=>'replace the first n values of the stack with the average of these values',
+     'code'=>\&n_arguments
+    };
+  $commands{'sum'}=
+    {'type'=>'numeric',
+     'help'=>'replace the first n values of the stack with the sum of these values',
+     'code'=>\&n_arguments
+    };
+  $commands{'rotate'}=
+    {'type'=>'stack',
+     'help'=>"rotate range movement,\n" .
+             'INDENTrotates top "range" elements of the stack by "movement" steps deeper',
+     'code'=>\&n_arguments
+    };
+  $commands{'pop'}=
+    {'type'=>'stack',
+     'help'=>'pop the top element of the stack',
+     'code'=>sub { my($s)=shift; shift(@{$s}); }
+    };
+  $commands{'duplicate'}=
+    {'type'=>'stack',
+     'help'=>"duplicates number on top of stack",
+     'code'=> \&one_argument
+    };
+  $commands{'clear'}=
+    {'aliases'=>['clr'],
+     'type'=>'stack',
+     'help'=>'empties stack',
+     'code'=>sub { my($s)=shift; @{$s}=(); }
+    };
+  $commands{'eval'}=
+    {'type'=>'debug',
+     'help'=>'meant for debugging, will eval argument string',
+     'code'=> sub { my($s,$cmd,$args,$args_array)=@_;
+		    eval($args);
+		  }
+    };
+  $commands{'num2'}=
+    {'type'=>'debug',
+     'help'=>'meant for debugging, there is no num2 function',
+     'code'=> \&two_arguments
+    };
+  $commands{'subtract'}=
+    {'aliases'=>['-'],
+     'type'=>'numeric',
+     'help'=>'pops two numbers off the stack and pushes their difference',
+     'code'=> \&two_arguments
+    };
+  $commands{'add'}=
+    {'aliases'=>['+'],
+     'type'=>'numeric',
+     'help'=>'shifts two numbers off the stack and pushes their sum',
+     'code'=> \&two_arguments
+    };
+  $commands{'modulo'}=
+    {'aliases'=>['%'],
+     'type'=>'numeric',
+     'help'=>'shifts two numbers off the stack and pushes the modulus',
+     'code'=> \&two_arguments
+    };
+  $commands{'multiply'}=
+    {'aliases'=>['*'],
+     'type'=>'numeric',
+     'help'=>'shifts two numbers off the stack and pushes their product',
+     'code'=> \&two_arguments
+    };
+  $commands{'log10'}=
+    {'type'=>'numeric',
+     'help'=>"replaces number on top of stack with it's logaritm base 10",
+     'code'=> \&one_argument
+    };
+  $commands{'log'}=
+    {'aliases'=>['ln'],
+     'type'=>'numeric',
+     'help'=>"replaces number on top of stack with it's natural logaritm",
+     'code'=> \&one_argument
+    };
+  $commands{'exp'}=
+    {'aliases'=>['e^x'],
+     'type'=>'numeric',
+     'help'=>"replaces number on top of stack with E raised to that number",
+     'code'=> \&one_argument
+    };
+  $commands{'exponentiate'}=
+    {'aliases'=>['**','^'],
+     'type'=>'numeric',
+     'help'=>'shifts two numbers off the stack and pushes their quotient',
+     'code'=> \&two_arguments
+    };
+  $commands{'divide'}=
+    {'type'=>'numeric',
+     'help'=>'shifts two numbers off the stack and pushes their quotient',
+     'code'=> \&two_arguments
+    };
+  $commands{'/'}=
+    {'type'=>'numeric',
+     'help'=>'shifts two numbers off the stack and pushes their integer quotient and modulus',
+     'code'=> \&two_arguments
+    };
+  foreach $QQ ( '<',  '>',  '<=', '>=', '<=>', '==', '!=',
+		'lt', 'gt', 'le', 'ge', 'cmp', 'eq', 'ne') {
+    $commands{$QQ}=
+      {'type'=>'boolian',
+       'help'=>sprintf("pops two numbers off the stack, pushes the result of a %-3s b",$QQ),
+       'code'=> \&two_arguments
+      };
+  }
+  $commands{'cube'}=
+    {'type'=>'numeric',
+     'help'=>'cube number on top of the stack',
+     'code'=> \&one_argument
+    };
+  $commands{'square'}=
+    {'type'=>'numeric',
+     'help'=>'square number on top of the stack',
+     'code'=> \&one_argument
+    };
+  $commands{'squareroot'}=
+    {'type'=>'numeric',
+     'aliases'=>['sqr', 'sqrt'],
+     'help'=>"replaces number on top of stack with it's square root",
+     'code'=> \&one_argument
+    };
+  $commands{'negate'}=
+    {'type'=>'numeric',
+     'help'=>'negates  number on top of stack',
+     'code'=> \&one_argument
+    };
+  $commands{'increment'}=
+    {'type'=>'numeric',
+     'help'=>"increment number on top of stack",
+     'code'=> \&one_argument
+    };
+  $commands{'decrement'}=
+    {'type'=>'numeric',
+     'help'=>"decrement number on top of stack",
+     'code'=> \&one_argument
+    };
+  $commands{'sine'}=
+    {'type'=>'trig',
+     'help'=>"replace number on top of stack with that number's sine",
+     'code'=> \&one_argument
+    };
+  $commands{'cosine'}=
+    {'type'=>'trig',
+     'help'=>"replace number on top of stack with that number's cosine",
+     'code'=> \&one_argument
+    };
+  $commands{'tangent'}=
+    {'type'=>'trig',
+     'help'=>"replace number on top of stack with that number's tangent",
+     'code'=> \&one_argument
+    };
+  $commands{'fahrenheit_celsius'}=
+    {'aliases'=>['ftoc'],
+     'type'=>'conversion',
+     'help'=>"treat number on top of stack as a fahrenheit temperature and convert it to celsius",
+     'code'=> \&convert
+    };
+  $commands{'celsius_fahrenheit'}=
+    {'aliases'=>['ctof'],
+     'type'=>'conversion',
+     'help'=>"treat number on top of stack as a celsius temperature and convert it to fahrenheit",
+     'code'=> \&convert
+    };
+  $commands{'kilometer_mile'}=
+    {'aliases'=>['ktom'],
+     'type'=>'conversion',
+     'help'=>"treat number on top of stack as a distance in kilometers and convert it to miles",
+     'code'=> \&convert
+    };
+  $commands{'mile_kilometer'}=
+    {'aliases'=>['mtok'],
+     'type'=>'conversion',
+     'help'=>"treat number on top of stack as a distance in miles and convert it to kilometers",
+     'code'=> \&convert
+    };
+  $commands{'centimeter_inch'}=
+    {'aliases'=>['ctoi'],
+     'type'=>'conversion',
+     'help'=>"treat number on top of stack as a distance in centimeters and convert it to inches",
+     'code'=> \&convert
+    };
+  $commands{'inch_centimeter'}=
+    {'aliases'=>['itoc'],
+     'type'=>'conversion',
+     'help'=>"treat number on top of stack as a distance in inches and convert it to centimeters",
+     'code'=> \&convert
+    };
+  $commands{'gram_ounce'}=
+    {'aliases'=>['gtoo'],
+     'type'=>'conversion',
+     'help'=>"treat number on top of stack as a weight in grams and convert it to ounces",
+     'code'=> \&convert
+    };
+  $commands{'ounce_gram'}=
+    {'aliases'=>['otog'],
+     'type'=>'conversion',
+     'help'=>"treat number on top of stack as a weight in ounces and convert it to grams",
+     'code'=> \&convert
+    };
+  $commands{'kilogram_pound'}=
+    {'aliases'=>['ktop'],
+     'type'=>'conversion',
+     'help'=>"treat number on top of stack as a weight in kilograms and convert it to pounds",
+     'code'=> \&convert
+    };
+  $commands{'pound_kilogram'}=
+    {'aliases'=>['ptok'],
+     'type'=>'conversion',
+     'help'=>"treat number on top of stack as a weight in pounds and convert it to kilograms",
+     'code'=> \&convert
+    };
+  $commands{'concatenate'}=
+    {'aliases'=>['cat'],
+     'type'=>'string',
+     'help'=>"replaces top two values on the stack with the string concatenation of them",
+     'code'=> \&two_arguments
+    };
+  use Text::Abbrev;
+  &abbrev(\%abbrevs,keys %commands);
+  foreach $command (keys %commands) {
+    if ($aliases=$commands{$command}->{'aliases'}) {
+      foreach $alias (@{$aliases}) {
+        $abbrevs{$alias}=$command;
+      }
+    }
+  }
+  $stack_name='s';
+  $stack_ref=$stacks{$stack_name}=[];
+  $empty = "-EMPTY-";
+  use Term::ReadLine;
+  $term = new Term::ReadLine 'Reverse Polish Notation Perl Calc';
+  $OUT = $term->OUT || STDOUT;
+  my($HOME)=$ENV{'HOME'};
+  $stack_save= 	$ENV{RPN_STACKS} ||	"$HOME/.rpn_stacks";
+  $hist_save=	$ENV{RPN_HISTORY} ||	"$HOME/.rpn_history";
+  if (-s $hist_save) {
+    open(HIST,"<$hist_save")
+      || warn("$name: Cannot read from '$hist_save': $!\n");
+    my(@hist)=<HIST>;
+    @hist=grep((chomp($_),$_),@hist);
+    close(HIST);
+    $term->SetHistory(@hist)
+  }
+  $functions=	$ENV{RPN_FUNCTIONS} ||	"$HOME/.rpn_functions";
+  $constants=	$ENV{RPN_CONSTANTS} ||	"$HOME/.rpn_constants";
+  foreach $file ($stack_save, $functions, $constants) {
+    if (-s $file) {
+      require($file);
+    }
+  }
+}
+
+sub save_exit {
+  my($s,$cmd,$arg_str,$arg_array)=@_;
+  my($stack,$something_to_write);
+  use Data::Dumper;
+  print STDERR "looking for '$stack_save'\n";
+  if (-f $stack_save) {
+    print STDERR "writing to '$stack_save'\n";
+    open(FILE,">$stack_save") || die("$name: Cannot write to '$stack_save': $!\n");
+    print STDERR "opened '$stack_save'\n";
+    foreach $stack (sort keys %stacks) {
+      if (($stack ne $stack_name) and not scalar(@{$stacks{$stack}})) {
+        print STDERR "deleting stack '$stack'\n";
+	undef  $stacks{$stack};
+	delete $stacks{$stack};
+        next;
+      }
+      $something_to_write=1;
+      last;
+    }
+    if ($something_to_write) {
+      print STDERR "dumping stacks hash and stack_name\n";
+      print FILE Data::Dumper->Dump([\%stacks, $stack_name], [qw(*stacks stack_name)]);
+      print FILE '$stack_ref=$stacks{$stack_name};' . "\n";
+      print FILE "1;\n";
+    } else {
+        print STDERR "nothing to write\n";
+    }
+    close(FILE);
+  }
+  # apparently Term::ReadLine's GetHistory method returns an array poisoned with nulls
+  my(@hist)= grep(/\S/,$term->GetHistory());
+# $max_save=10;
+# @hist=splice(@hist,-1*$max_save,$max_save);
+  if (@hist) {
+    open(HIST,">$hist_save")
+      || warn("$name: Cannot write to '$hist_save': $!\n");
+    foreach $hist (@hist) {
+      chomp($hist); next if not $hist;
+      printf HIST "%s\n", $hist;
+    }
+    close(HIST);
+  }
+  exit 0;
+}
+
+sub display {
+  my($s,$cmd,$arg_str,$arg_array)=@_;
+  # I will handle, print, printf, peek
+  # peek prints the top of stack but doesn't shift it off
+  if      ($cmd =~ /printf/i) {
+    printf "$arg_str\n", shift(@{$s});
+  } elsif ($cmd =~ /print$/i) {
+    print STDERR shift(@{$s}) . "\n";
+  } elsif ($cmd =~ /peekall$/i) {
+    for (local($i)=0;$i<=$#{$s};$i++) {
+      printf "%3d:\t$number_format\n", $i, $s->[$i];
+    }
+  } elsif ($cmd =~ /peekf$/i) {
+    printf "$arg_str\n", $s->[0];
+  } elsif ($cmd =~ /peek$/i) {
+    print STDERR $s->[0] . "\n";
+  } elsif ($cmd =~ /hexadecimal/i) {
+    if (abs($s->[0])<=255) {
+      printf STDERR "0x%02x\n", $s->[0];
+    } else {
+      printf STDERR "0x%x\n", $s->[0];
+    }
+  } elsif ($cmd =~ /decimal/i) {
+    printf STDERR "%d\n", $s->[0];
+  } elsif ($cmd =~ /octal/i) {
+    printf STDERR "\\0%o\n", $s->[0];
+  } elsif ($cmd =~ /binary/i) {
+    printf STDERR "%s\n", unpack("b16",$s->[0]);
+  } else {
+    printf STDERR "unknown cmd '%s' given to %s routine.\n", $cmd, 'display';
+    return;
+  }
+}
+
+sub convert {
+  my($s,$cmd,$arg_str,$arg_array)=@_;
+  # I will handle single argument conversions
+  # cm <-> in
+  # kg <-> lbs
+  # gr <-> oz
+  # m  <-> km
+  # f  <-> c
+  my($val,$depth);
+  my(@results)=();
+  if ( ($depth=scalar(@{$s})) < 1 ) {
+    printf STDERR "stack underflow, needed %d argument, stack was only %d deep", '1', $depth;
+    return;
+  } else {
+    $val=shift(@{$s});
+  }
+  if      ($cmd =~ m,fahrenheit_celsius,i) {
+    push(@results,($val-32)/1.8);
+  } elsif ($cmd =~ m,celsius_fahrenheit,i) {
+    push(@results,($val*1.8)+32);
+  } elsif ($cmd =~ m,kilometer_mile,i) {
+    push(@results,$val/1.609);
+  } elsif ($cmd =~ m,mile_kilometer,i) {
+    push(@results,$val*1.609);
+  } elsif ($cmd =~ m,centimeter_inch,i) {
+    push(@results,$val/2.54);
+  } elsif ($cmd =~ m,inch_centimeter,i) {
+    push(@results,$val*2.54);
+  } elsif ($cmd =~ m,gram_ounce,i) {
+    push(@results,$val*28.35);
+  } elsif ($cmd =~ m,ounce_gram,i) {
+    push(@results,$val/28.35);
+  } elsif ($cmd =~ m,kilogram_pound,i) {
+    push(@results,$val*2.20458553791875);
+  } elsif ($cmd =~ m,pound_kilogram,i) {
+    push(@results,$val/2.20458553791875);
+  } else {
+    printf STDERR "unknown cmd '%s' given to %s routine.\n", $cmd, 'one argument numeric';
+    return;
+  }
+  unshift(@{$s},@results);
+}
+
+sub one_argument {
+  my($s,$cmd,$arg_str,$arg_array)=@_;
+  # I will handle single argument arthematic or functions
+  # negate, increment, decrement, sqrt, log, log10, exp
+  # sin, cos, tan
+  # and via the 'op' command +=, -=, *=, /=, etc.
+  my($val,$depth);
+  my(@results)=();
+  if ( ($depth=scalar(@{$s})) < 1 ) {
+    printf STDERR "stack underflow, needed %d argument, stack was only %d deep", '1', $depth;
+    return;
+  } else {
+    $val=shift(@{$s});
+  }
+  if      ($cmd =~ m,negate,i) {
+    unshift(@results,-1 * $val );
+  } elsif ($cmd =~ m,increment,i) {
+    unshift(@results, ++$val );
+  } elsif ($cmd =~ m,decrement,i) {
+    unshift(@results, --$val );
+  } elsif ($cmd =~ m,duplicate,i) {
+    unshift(@results, $val, $val );
+  } elsif ($cmd =~ m,copy,i) {
+    if ($arg_array->[0]=~/^\d+$/) {
+      unshift(@results, ($val) x $arg_array->[0]);
+    } else {
+      print STDERR "argument to the copy command must be a non-negative integer.\n";
+    }
+  } elsif ($cmd =~ m,^squareroot$,i) {
+    if ($val < 0) {
+      printf STDERR "sqrt of negative number";
+      return;
+    } else {
+      unshift(@results,sqrt($val) );
+    }
+  } elsif ($cmd =~ m,^square$,i) {
+      unshift(@results,($val*$val) );
+  } elsif ($cmd =~ m,^cube$,i) {
+      unshift(@results,($val*$val*$val) );
+  } elsif ($cmd =~ m,log10$,i) {
+    unshift(@results, log($val)/log(10) );
+  } elsif ($cmd =~ m,log$,i) {
+    unshift(@results, log($val) );
+  } elsif ($cmd =~ m,exp,i) {
+    unshift(@results, exp($val) );
+  } elsif ($cmd =~ m,cosine,i) {
+    unshift(@results, cos($val) );
+  } elsif ($cmd =~ m,tangent,i) {
+    unshift(@results, tan($val) );
+  } elsif ($cmd =~ m,function,i) {
+    local($func)=$arg_array->[0];
+    if ($func) {
+      unshift(@results, eval "$func(\$val);" );
+    } else {
+      print STDERR "the func command requires an argument.\n";
+    }
+  } elsif ($cmd =~ m,operator,i) {
+    local($op)=$arg_array->[0];
+    if ($op) {
+      unshift(@results, eval "\$val$op;" );
+    } else {
+      print STDERR "the operator command requires an argument.\n";
+    }
+  } else {
+    printf STDERR "unknown cmd '%s' given to %s routine.\n", $cmd, 'one argument numeric';
+    return;
+  }
+  unshift(@{$s},@results);
+}
+
+sub n_arguments {
+  my($s,$cmd,$arg_str,$arg_array)=@_;
+  # I will handle n argument operations
+  # so far, I will handle sum and rotate
+  my($debug)=1;
+  print STDERR "called routing 'n_arguments'\n" if ($debug);
+  my($range)=($arg_array->[0]=~/\d+/) ? shift(@{$arg_array}) : shift(@{$s});
+  my($movement);
+  if ($cmd=~m'rotate'i) { # this has to be set since it may change the depth
+			  # of the stack, if rotates arguments were on the stack.
+    $movement=($arg_array->[0]=~/\d+/) ? shift(@{$arg_array}) : shift(@{$s});
+  }
+  my($depth)=scalar(@{$s});
+  printf STDERR "stack needs %d arguments, stack has %d\n", $range, $depth if ($debug);
+  if ( $depth < $range ) {
+    printf STDERR "stack underflow, needed %d arguments, stack was only %d deep\n", $range, $depth;
+    return;
+  }
+  my(@results)=();
+  if      ($cmd =~ m,sum,i) {
+    local($sum)=0;
+    local($i)=0;
+    foreach $i ( 1 .. $range ) {
+      $sum += shift(@{$s});
+    }
+    unshift(@{$s},$sum);
+    return;
+  } elsif ($cmd =~ m,rotate,i) {
+    printf "rotating '%d' elements '%d' deeper\n", $range, $movement if ($debug);
+    if (not $movement=$movement%$range) {
+      printf STDERR "cmd '%s' given range, movement of %d, %d which does not array stack.\n",
+      $cmd, 'two argument numeric';
+      return;
+    }
+    unshift(@{$s},splice(@{$s},($range-($movement%$range)),$movement%$range));
+  } elsif ($cmd =~ m,average|maximum|minimum,i) {
+    my($entry,$result);
+    if ($cmd =~ m,ave,) {
+      foreach $entry ( splice(@{$s},0,$range) ) {
+        $result += $entry;
+      }
+      $result /= $range;
+    } elsif ($cmd =~ m,min,) {
+      foreach $entry ( splice(@{$s},0,$range) ) {
+        if (not $result or ($entry < $result)) {
+	  $result=$entry;
+	}
+      }
+    } elsif ($cmd =~ m,max,) {
+      foreach $entry ( splice(@{$s},0,$range) ) {
+        if (not $result or ($entry > $result)) {
+	  $result=$entry;
+	}
+      }
+    }
+    unshift(@{$s},$result);
+  } elsif ($cmd=~m'transfer|slide'i) {
+    my($new_stack)=shift(@{$arg_array});
+    if (not $new_stack) {
+      printf STDERR "you must supply a destination stack designation.\n";
+      return;
+    }
+    if (not $stacks{$new_stack} ) {
+      $stacks{$new_stack}=[];
+    }
+    if ($cmd=~m'transfer'i) {
+      unshift(@{$stacks{$new_stack}}, splice(@{$s}, 0, $range));
+    } elsif ($cmd=~m'slide'i) {
+      unshift(@{$stacks{$new_stack}}, reverse splice(@{$s}, 0, $range));
+    }
+  } else {
+    printf STDERR "unknown cmd '%s' given to %s routine.\n", $cmd, 'two argument numeric';
+    return;
+  }
+}
+
+sub two_arguments {
+  my($s,$cmd,$arg_str,$arg_array)=@_;
+  # I will handle two argument arthematic
+  # add, subtract, multiply, divide, exponentiate, modulo
+  # + - * / ** or ^ % 
+  my($val1,$val2,$depth);
+  my(@results)=();
+  if ( ($depth=scalar(@{$s})) < 2 ) {
+    printf STDERR "stack underflow, needed %d arguments, stack was only %d deep", '2', $depth;
+    return;
+  }
+  $val1=shift(@{$s});
+  $val2=shift(@{$s});
+# printf STDERR "will $cmd these two numbers '%d' & '%d'\n", $val1, $val2;
+  if      ($cmd =~ m,add|\+,i) {
+    unshift(@results,($val2 + $val1) );
+  } elsif ($cmd =~ m,subtract|\-,i) {
+    unshift(@results,($val2 - $val1) );
+  } elsif ($cmd =~ m,multiply|\*,i) {
+    unshift(@results,($val2 * $val1) );
+  } elsif ($cmd =~ m,divide,i) {
+    if ($val1 == 0) {
+      printf STDERR "divide by zero";
+      return;
+    } else {
+      unshift(@results,($val2 / $val1) );
+    }
+  } elsif ($cmd =~ m,/,i) {	 		# integer divide
+    unshift(@results,int($val2 / $val1), ($val2 % $val1) );
+  } elsif ($cmd =~ m,exponentiate|\*\*|\^,i) {
+    unshift(@results,($val1 ** $val2) );
+  } elsif ($cmd =~ m,modulo|\%,i) {
+    unshift(@results,($val2 % $val1) );
+  } elsif ($cmd =~ m,^(<=?|>=?|==|<=>|!=)$,i) {
+    unshift(@results,eval("($val2 $cmd $val1) + 0"));
+  } elsif ($cmd =~ m,^([lg][te]|eq|cmp|ne)$,i) {
+    unshift(@results,eval("($val2 $cmd $val1) . ''"));
+  } elsif ($cmd =~ m,concatenate,i) {
+    unshift(@results,sprintf("%s%s",$val2,$val1));
+  } elsif ($cmd =~ m,exchange,i) {
+    unshift(@results,$val2,$val1 );
+  } else {
+    printf STDERR "unknown cmd '%s' given to %s routine.\n", $cmd, 'two argument numeric';
+    unshift(@{$s},$val1,$val2);
+    return;
+  }
+# printf STDERR "result was '%d'\n", $results[0];
+  unshift(@{$s},@results);
+}
+
+__END__
+commands:
+
+STACK:
+mark
+shift
+clear
+unshift_size
+print
+printf
+transfer_to_new_stack
+
+NUMERICAL:
+add
+sub
+mult
+div
+mod
+squr
+exp
+sin	asin
+cos	acos
+tan	atan
+sum
+
+CONST (e pi sr2 sr3)
+
+EXECUTION:
+exec
+if_then
+if_then_else
+if_then_elsif_else
+loop
+
+

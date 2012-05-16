@@ -1,0 +1,51 @@
+#! /usr/bin/perl
+# Countdown script (03/16/91)
+# By Steve Parker
+ 
+#   ***   Define Usage String   ***
+$name =~ s'.*/'';
+$usage = "usage: $name  [ start(10) ] [ end(1) ] [ by(1*sign(end-start)) ]\n";
+
+#   ***   Define Values & Flags   ***
+# DEFAULT is countdown from 10 to 0
+$start=10;
+$end  = 0;
+$by   =-1;
+
+#   ***   Parse Command Line Argument(s)   ***
+if ( @ARGV >  3 ) { die("$usage"); }
+if ( @ARGV == 1 ) { # one   arg,  so assume ARG to 0.
+  $start=$ARGV[0];
+  $end  = 0;	
+  $by   =-1; }
+
+if ( @ARGV == 2 ) { # two   args, so assume ARG1 to ARG2.
+  $start=$ARGV[0];
+  $end  =$ARGV[1];
+  $by   =&sgn($end-$start); }
+
+if ( @ARGV == 3 ) { # three args, so assume ARG1 to ARG2 by ARG3.
+  $start=$ARGV[0];
+  $end  =$ARGV[1];
+  $by   =$ARGV[2];
+  if ( &sgn($by) != &sgn($end-$start) ) {
+    die("countdown: 'by' option must be of the correct sign!\n"); }
+}
+
+if ( $by == 0 ) { die("countdown: 'by' option must be nonzero!\n"); }
+if ( $start == $end ) { die("countdown: 'start' & 'end' must be different!\n"); }
+
+#   ***   MAIN LOOP   ***
+
+$test=&sgn($by);
+for($i=$start; $test*$i <= $test*$end; $i+=$by) { print $i."\n"; }
+
+exit 0;
+
+#---- SUBROUTINES ----
+sub sgn
+{
+if    ($_[0] < 0 ) { return -1; }
+elsif ($_[0] > 0 ) { return +1; }
+else               { return  0; }
+}

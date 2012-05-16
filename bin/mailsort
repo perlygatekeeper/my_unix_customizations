@@ -1,0 +1,199 @@
+#!/usr/bin/perl
+#
+# A perl script to sort mail
+# Version 2.0    Wed Dec  8 12:03:06 EDT 1993
+#
+$name = $0;
+$name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name [-opt1] [-opt2] [-opt3]";
+
+  require("datetime.pl");
+  $day=&day();
+  $date=&date();
+  ($sec,$min,$hour,$mday,$this_month,$this_year,$wday,$yday,$isdst)=&Y2K_localtime();
+
+$bad=	$false=0;
+$good=	$true=1;
+$\=""; $|=1;
+
+$debug=$true;
+@message=();
+$tempfile='/tmp/mail';
+
+while (<DATA>) {
+  chop;
+  push(@explaination,$_);
+}
+
+$filehandle=FILE;
+# loop over mail files
+unshift (@ARGV, '-') unless @ARGV;
+while ($ARGV=shift) {
+  open(OUTFILE,">$tempfile") || warn("$name: Cannot open '$tempfile': $!\n");
+
+  $total_length=$messages=0;
+  $new_length=$saved_messages=0;
+  $messages_resent=0;
+
+# loop over mail messages
+# open(FILE,"$tempfile") || warn("$name: Cannot open '$tempfile': $!\n");
+# print "	>>> $ARGV <<<\n";
+  open(FILE,"$ARGV") || warn("$name: Cannot open '$ARGV': $!\n");
+  while (@message=&snarf_message($filehandle)) {
+    $messages++;
+    $total_length+=$#message;
+    if ( $true ) {
+      print "This message is valid to resend:\n";
+      print "-------\n";
+      print "$from\n";
+      print "$to\n";
+      print "$date\n";
+      print "$subject\n";
+      print "back to '$readdressee'\n";
+      print "Message length is '$#message'\n";
+#     print "$header\n";
+      print "-------\n";
+      while ($true || &responce("Shall I resend this message?","([ynl])") ne "n") {
+        if ($responce =~ "l" ) {
+	  print STDERR "Here are the first 20 lines of message:\n";
+	  for ($i=0; $i<20; $i++) {
+	    print STDERR "$message[$i]\n";
+	  }
+	  print STDERR "\n";
+	  next;
+	}
+#	local(@new_message)=grep(!/^Received:/,@message);
+        $messages_resent++;
+        $command="| mail -s 'misdelivered mail' $readdressee";
+        open(MAIL,"$command") ||
+        die("$name: Cannot resend mail message with '$command': $!.");
+	print MAIL join("\n", @explaination);
+	print MAIL join("\n", @message);
+        close(MAIL);
+	last;
+      }
+    } else {
+#     local(@new_message)=grep(!/^Received:/,@message);
+#     $saved_messages++;
+#     $new_length+=$#new_message;
+#     print OUTFILE join("\n", @new_message);
+    }
+  }
+  print "Resent $mail_resent out of $messages messages.\n";
+}
+
+exit 0;
+
+#   ***   SUBROUTINES   ***
+#   ---   ---   ---
+sub responce {
+  local($string,$regexp)=(@_);
+  if ($string) {
+    print STDERR "$string";
+  } else {
+    print STDERR "yes|no";
+  }
+  $responce=<STDIN>;
+   if ($regexp) {
+     return (($responce)=~/$regexp/i);
+   } else {
+     return ($responce=~/^y/i);
+   }
+}
+
+sub snarf_message {
+  local($filehandle)=@_;
+  local($message);
+
+  if (eof($filehandle)) {
+    if (wantarray) {
+      return ();
+    } else {
+      return 0;
+    }
+  }
+# OK let's get to work and extract the information.
+
+# First the header.
+# Will probably not use most of this, but what_the_hell, it's there.
+
+  undef @message;
+  $header= $subject= $date= $from= $to= $cc= $bcc=
+  $weekday= $day= $month= $year= $time= $tz ='';
+  push(@message,$first) if ($first);
+# while (<$filehandle>) {
+#   chop;
+#   push(@message,$_);
+#   if (/^[A-Z]\w+:/) { $header.=("\n" . $_);}
+#   else              { $header.=" $_"; }
+#   last if /^$/;			#last if blank (null) line
+# }
+  while ($line=<$filehandle>) {
+#   print STDERR ">>> $line";
+    chop $line;
+    push(@message,$line);
+    if ($line=~/^[A-Z]\w+:/) { $header.=("\n" . $line);}
+    else                     { $header.=" $line"; }
+    last if ($line=~/^$/);	#last if blank (null) line
+  }
+  push(@message,"\n");
+# if (! $first) { print "---\n", join("\n",@message), "---\n"; }
+  $*=1; #enable paragraph mode & mulitline pattern matching.
+  ($first)=	($header=~/\n(From\s+.*)\n/) if (!$first);
+  ($subject)=	($header=~/\n(Subject:\s+.*)\n/);
+  ($date)=	($header=~/\n(Date:.*)\n/);
+  ($from)=	($header=~/\n(From:\s+.*)\n/);
+  ($to)=	($header=~/\n(To:\s+.*)\n/);
+  ($cc)=	($header=~/\n(Cc:\s+.*)\n/);
+  ($bcc)=	($header=~/\n(Bcc:\s+.*)\n/);
+
+  if ( $date ) {
+#print STDERR "D>> $date\n";
+    ($weekday, $day, $month, $year, $time, $tz) =
+    ($date=~/(\w+),\s+(\d+)\s+(\w+)\s+(\d+)\s+(\d+:\d+[.:]?\d*)\s+(.*)/);
+  } else {
+#print STDERR "F>> $first\n";
+#From parker Tue Oct  5 17:41:24 1993
+    ($weekday, $month, $day, $time, $year) =
+    ($first=~/^From\s+\w+\s+(\w+)\s+(\w+)\s+(\d+)\s+(\d+:\d+:?\d*)\s+(\d+)/);
+#print STDERR "F>> weekday '$weekday'\n";
+#print STDERR "F>> month   '$month'\n";
+#print STDERR "F>> day     '$day'\n";
+#print STDERR "F>> time    '$time'\n";
+#print STDERR "F>> year    '$year'\n";
+  }
+  $year=~s/^19//;
+
+  $readdressee='';
+  ($return_address)=($from=~/\<([^>]*)\>/);
+  while ($line=<$filehandle>) {
+    chop $line;
+    last if (($first)=($line=~/^(From\s+.*)/));
+    push(@message,$line);
+    if (! $readdressee) {
+      ($readdressee)=	($line=~/^\<(\S+)\>\s+\(unrecoverable error\)/);
+    }
+    if ( $line =~ /----- Message body suppressed -----/ ) {
+      $readdressee.='       ';
+    }
+  }
+
+# print "'$first'";
+  if (wantarray) {
+    return @message;
+  } else {
+    return ($#message+1-$[);
+  }
+}
+__END__
+User,
+
+This message is being redelivered to you via an automated script.  Mail
+that this message was undelivered was sent to the original sender of this
+message, but since some of you are receiving mail from automated maillists
+I thought I would send back those messages that got directed to POSTMASTER.
+
+-Steve
+
+Here is the message as sent to POSTMASTER:
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-

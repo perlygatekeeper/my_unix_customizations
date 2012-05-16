@@ -1,0 +1,32 @@
+#!/usr/bin/perl
+#
+# Script to obtain my primary group name from my netgroup
+# membership(s).  This is to allow my primary gid to be overriden
+# in a 'compat' mode password entry like:
+# +@support::151::::
+# which will set primary gid of any member of the netgroup 'support'
+# to be overwritten with 151 (the guassian pseudo gid)
+#
+$name = $0; $name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name [USERNAME]";
+
+$username = $ARGV[0] || $ENV{'USER'}  || $ENV{'LOGIN'}  || 'No username found nor specified';
+
+# get results from a unix command
+  $command="/usr/bin/ypmatch '$username.*' netgroup.byuser |";
+  open(COMMAND,"$command") || die("$name: Cannot get reverse netgroup data for\n'$username' with '$command': $!.");
+  @results=<COMMAND>;
+  close(COMMAND);
+  $result = join('',@results);
+  if ($result=~/support/) {
+    print "support\n";
+  } elsif ($result=~/\b([^_]+)_group/) {
+    print "$1\n";
+  } else {
+    exit 1;
+  }
+
+
+exit 0;
+
+__END__

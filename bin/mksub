@@ -1,0 +1,41 @@
+#!/usr/bin/perl
+#
+# A perl-5 script to make a perl subroutine skeleton from a sub call
+# with lines containing a sub statement and the
+# subsequent my(VAR LIST)=@_; or my(VAR LIST)=shift; line.
+#
+$name = $0; $name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name";
+$debug=0;
+
+if ($ARGV[0]=~/-d/i) { shift; $delete_lines=1; }
+
+while (<>) {
+  if ( not $subroutine and $_=~/&([^ (]+)\s*\(([^)]+)\)/ ) {
+    ($subroutine,$args)=($1,$2);
+    push(@subs,$subroutine);
+    push(@args,$args);
+  }
+  push(@lines,$_)
+}
+
+if (not $delete_lines) {
+  foreach $line (@lines) {
+    print $line;
+  }
+}
+for (local($i)=$[; $i<=$#subs; $i++) {
+    printf "sub %s {\n  my(%s)=\@_;\n}\n",
+           $subs[$i], $args[$i];
+  }
+
+exit 0;
+
+__END__
+#   ***   SUBROUTINES   ***
+#   ---   ---   ---
+sub xxx {
+  local($arg1,$arg2)=@_;
+
+}
+
