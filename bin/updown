@@ -10,8 +10,8 @@ $usage = "usage:\n$name";
 #$open = '<';	$close='>';
 #$open = '(';	$close=')';
 #$open = '[';	$close=']';
-$open = '{';	$close='}';
-#$open = '<div';	$close='</div';
+#$open = '{';	$close='}';
+$open = '<div';	$close='</div';
 
 printf "%5s %5s %5s %5s %5s %4s %s\n", 'line', 'opens', 'total', 'clses', 'total', 'count', 'line';
 while (<>) {

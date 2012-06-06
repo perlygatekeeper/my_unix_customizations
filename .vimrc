@@ -1,9 +1,13 @@
 " @(#)Vimrc 2.0 Steve Parker Mon Sep 12, 2011
 set nocompatible   		     	" Use Vim defaults (much better!)
 set backspace=indent,eol,start	" allow backspacing over everything in insert mode
-set viminfo='20,\"50			" read/write a .viminfo file, don't store more
+"
+" or <-lines/register '-prev-files-marks, /-searches, :-command-lines, @-input-lines???
+" c-vim-info-encoding, f-marks
+"
+set viminfo='128,f1			" read/write a .viminfo file, don't store more
 								" than 50 lines of registers
-set history=128          		" keep 50 lines of command line history
+set history=1024          		" keep XX lines of command line history
 set ht=4						" horizontal tab set at 8
 set ts=4						" tab stop at 8
 set mps=(:),{:},[:],<:>			" match pairs for % command
@@ -29,6 +33,15 @@ set smartcase					" unless I explicitly use an UPPER CASE character
 set autoindent					" autoindent by default
 nnoremap << :set noautoindent<Cr>
 nnoremap >> :set   autoindent<Cr>
+
+if has("autocmd")
+  " When editing a file, always jump to the last cursor position
+    autocmd BufReadPost *
+	\ if line("'\"") > 0 && line ("'\"") <= line("$") |
+	\   exe "normal! g'\"" |
+	\ endif
+endif
+
 
 " Colorscheme stuff
 colorscheme vibrantink
