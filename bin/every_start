@@ -40,6 +40,13 @@ sub install {
 
 __END__
 
+echo use:    find . -type f -exec grep '^ln' {} \; | sh
+echo every_start is the 'real' file
+ln -fs every_start	oe
+ln -fs every_start	odd_even
+ln -fs every_start	eo
+ln -fs every_start	even_odd
+
 # ie. lines thus:       	# will be rearranged to:	
 # original line			odd-even  or 	even-odd
 # 1                     	 1		2                     	

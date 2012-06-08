@@ -24,6 +24,11 @@ if ($name=~/dos2unix/i) {
 exit 0;
 
 __END__
+
+echo use:    find . -type f -exec grep '^ln' {} \; | sh
+echo dos2unix is the 'real' file
+ln -fs dos2unix unix2dos
+
 DESCRIPTION
      The  dos2unix   utility  converts  characters  in  the   DOS
      extended  character  set  to the corresponding  ISO standard

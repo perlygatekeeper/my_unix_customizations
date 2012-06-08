@@ -75,3 +75,7 @@ TARGET: foreach $target (@search) {
 exit 0;
 
 __END__
+
+echo use:    find . -type f -exec grep '^ln' {} \; | sh
+echo withwithout is the 'real' file
+ln -fs withwithout wwo

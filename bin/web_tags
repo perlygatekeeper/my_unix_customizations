@@ -33,3 +33,7 @@ if ($#lines>0)  {
 exit 0;
 
 __END__
+
+echo use:    find . -type f -exec grep '^ln' {} \; | sh
+echo web_tags is the 'real' file
+ln -fs web_tags wts

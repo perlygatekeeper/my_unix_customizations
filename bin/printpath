@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $/=''; $*=1; #enable paragraph mode & mulitline pattern matching.
+$/=''; $*=1; #enable paragraph mode & mulitline pattern matching.
 #-----------------------------------------------------------------------------
 #   ***   Define Default Strings, Values & Flags   ***
 $name = $0; $name=~s'.*/'';
@@ -29,3 +29,9 @@ $path=~s'\n\n+'$newline'ge;
 print $path;
 #   ***   EXIT GRACEFULLY   ***
 exit 0;
+
+__END__
+
+echo use:    find . -type f -exec grep '^ln' {} \; | sh
+echo printpath is the 'real' file
+ln -fs printpath pp

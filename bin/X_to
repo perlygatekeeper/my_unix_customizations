@@ -7,8 +7,9 @@
 # 
 
 $name = $0; $name =~ s'.*/''; # remove path--like basename
-$usage = "usage:\n$name HOSTNAME [REMOTE_USERNAME] [REMOTE_COMMAND]";
+$usage = "usage:\n$name HOSTNAME [REMOTE_USERNAME] [REMOTE_COMMAND] [ARGS_TO_RCMD]";
 $debug=0;
+$execute=1;
 
 $remote_host  = "$ARGV[0]"; shift;
 $rcp_username =
@@ -16,7 +17,7 @@ $rsh_username = "$ARGV[0]"; shift; # this will be null string if only 1 argument
 $rsh_username =~ s/^(.)/-l \1/;	   # change first char, x, to '-l x'
 				   # only works if there IS a first char
 $rcp_username =~ s/(.)$/\1@/;	   # change last char, x, to 'x@'
-$remote_command="$ARGV[0]";	   # this will be null string if only 2 arguments
+$remote_command="$ARGV[0]"; shift; # this will be null string if only 2 arguments
 
 # DISPLAY needed only if display not determined on remote host
 $DISPLAY=`cat $ENV{HOME}/.latest_display`; chomp $DISPLAY;
@@ -65,7 +66,7 @@ if ($name !~ /direct/i) {
   }
 }
 
-&system("rsh $rsh_username $remote_host $remote_command");
+&system("rsh $rsh_username $remote_host $remote_command @ARGV");
 
 if ($debug) {
   close(DEBUG);
@@ -75,15 +76,25 @@ exit 0;
 
 sub system {
   my($command)=shift;
-  if ($debug) {
-    print STDERR "$command\n";
-  } else {
+  if ($execute) {
+    if ($debug) {
+      print DEBUG "system routine: '$command'\n";
+    }
     system "$command";
+  } else {
+    print STDERR "$command\n";
   }
 }
 
 
 __END__
+
+echo use:    find . -type f -exec grep '^ln' {} \; | sh
+echo X_to is the 'real' file
+ln -fs X_to direct_xsession_to
+ln -fs X_to xsession_to
+ln -fs X_to xterm_to
+
 # INVOCATION: /usr/global/bin/xterm_to HOSTNAME [REMOTE_USERNAME]
 # 
 # Will run an xterm on HOSTNAME displaying on
