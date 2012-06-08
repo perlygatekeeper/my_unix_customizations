@@ -11,22 +11,35 @@
 # 1) overwrite the existing *.bak file
 # 2) use date format, ie. *.MMDDYY
 # 3) user input extention
-# 4) skip this file
+# 4) attempt to find a version # in the file
+# 5) skip this file
 
 $name = $0; $name =~ s'.*/''; # remove path--like basename
-$usage = "usage:\n$name [-date] FILES_TO_BE_BACKED_UP";
+$usage = "usage:\n$name [-date|-version|-overwrite] FILES_TO_BE_BACKED_UP";
+$last_mod_date='Thu, Sep 18, 2003';# added version option
 
-if (! @ARGV) {
- echo $usage;
- die ("Bad usage");
+if (not @ARGV or $ARGV[0] =~ /^--?h(elp)?/i ) {
+ print "$usage\n";
+ print "Your argument list was " . join("\n",@ARGV) . "\n";
+ exit 0;
 }
 
-if ($ARGV[0] =~ /-date/i ) {
+if ($ARGV[0] =~ /-v(ersion)?/i ) {
+  $use_version=1;
+  shift;
+} 
+if ($ARGV[0] =~ /-o(verwrite)?/i ) {
+  $overwrite=1;
+  shift;
+} 
+if ($ARGV[0] =~ /-d(ate)?/i ) {
   $use_date=1;
   shift;
 } 
-require("datetime.pl");
-$ds=&ds();
+# require("datetime.pl");
+# $ds=&ds();
+($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst)=localtime(time);
+$ds=  sprintf("%02d%02d%02d",$mon+1,$mday,$year%100);
 
 use File::Copy;
 
@@ -35,16 +48,24 @@ foreach $file (@ARGV) {
   if ( -f $file ) {
     if ($use_date) {
       $backup="$file.$ds";
+    } elsif ($overwrite) {
+      $backup="$file.bak";
+    } elsif ($use_version) {
+      $backup= &obtain_version($file);
     } else {
       if ( -f "$file.bak" ) {
         print "$file.bak exists, please choose one of the following:\n";
-        $prompt="\tO)verwrite\n\tU)se $file.MMDDYY\n\tI)nput other backup ext.\n\t"
-               ."A)bort (skip this file)\n or \tE)xit ";
+        $prompt="\tO)verwrite\n\tU)se $file.MMDDYY\n\tI)nput other backup ext."
+               ."\n\tV)ersion number\n\tA)bort (skip this file)\n or \tE)xit ";
         ($response)=&response($prompt,'^(.)','^E');
         if      ( $response =~ /O/i ) {
           $backup="$file.bak";
         } elsif ( $response =~ /U/i ) {
           $backup="$file.$ds";
+        } elsif ( $response =~ /V/i ) {
+          if (not $backup= &obtain_version($file) ) {
+	    warn("version of '$file' could not be determined.\n");
+	  }
         } elsif ( $response =~ /I/i ) {
           select( (select(STDOUT), $|=1) [ $[ ] );
 #  print "Please input an alternate backup extention" . ($ext) ? " [$ext]: " : ": ";
@@ -68,8 +89,12 @@ foreach $file (@ARGV) {
         $backup="$file.bak";
       }
     }
-    print "$name: backing up $file to $backup.\n";
-    copy($file,$backup);
+    if ($backup) {
+      print "$name: backing up $file to $backup.\n";
+      copy($file,$backup);
+    } else {
+      print "$name: could not determine a backup filename for '$file', no action taken.\n";
+    }
 #   system("cp $file $backup");
   } else {
     print "$name: file $file not found.\n";
@@ -102,6 +127,21 @@ sub response {
   } else {
     return ($response=~/^y/i);
   }
+}
+
+sub obtain_version {
+  my($file)=@_;
+  my($version,$backup);
+  if (open(V,"<$file")) {
+    while(<V>) {
+      if ($_=/^\s*\$version\s*=\s*(\S+)/i) {
+	$version=$1;
+	$version=~s/['";]//g;
+        $backup="$file.$version";
+      }
+    }
+  }
+  return $backup;
 }
 
 __END__

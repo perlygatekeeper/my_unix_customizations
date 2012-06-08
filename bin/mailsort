@@ -53,8 +53,8 @@ while ($ARGV=shift) {
       print "Message length is '$#message'\n";
 #     print "$header\n";
       print "-------\n";
-      while ($true || &responce("Shall I resend this message?","([ynl])") ne "n") {
-        if ($responce =~ "l" ) {
+      while ($true || &response("Shall I resend this message?","([ynl])") ne "n") {
+        if ($response =~ "l" ) {
 	  print STDERR "Here are the first 20 lines of message:\n";
 	  for ($i=0; $i<20; $i++) {
 	    print STDERR "$message[$i]\n";
@@ -86,18 +86,18 @@ exit 0;
 
 #   ***   SUBROUTINES   ***
 #   ---   ---   ---
-sub responce {
+sub response {
   local($string,$regexp)=(@_);
   if ($string) {
     print STDERR "$string";
   } else {
     print STDERR "yes|no";
   }
-  $responce=<STDIN>;
+  $response=<STDIN>;
    if ($regexp) {
-     return (($responce)=~/$regexp/i);
+     return (($response)=~/$regexp/i);
    } else {
-     return ($responce=~/^y/i);
+     return ($response=~/^y/i);
    }
 }
 

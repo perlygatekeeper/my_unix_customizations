@@ -1,6 +1,8 @@
 #!/usr/bin/perl
 #
-# A perl script to manipulate xterms
+# A perl script to manipulate/explain terminals
+# one of my first perl scripts, written under perl 4
+# in 1994/5 and it really shows :)
 #
 $name = $0;
 $name =~ s'.*/''; # remove path--like basename
@@ -77,8 +79,6 @@ sub parse_args {
 
   grep(s/^([^-])/-\1/,@args);
 
-  push(@INC,'/usr/common/lib/perl5','/usr/common/lib/perl');
-  push(@INC,'/usr/global/lib/perl5','/usr/global/lib/perl');
   require("abbrev.pl");
   &abbrev(*abbrev, @args);
 
@@ -86,7 +86,7 @@ sub parse_args {
   while ( @ARGV >= 1 ) {
     if      ( ($abbrev{$ARGV[0]} eq '-help' )
            || ($abbrev{$ARGV[0]} eq '-?' ) ) {
-      help($usage);
+      do help($usage);
       print "$abbrev{$ARGV[0]} $abbrev{$ARGV[0]}'\n" if ($verbose);
       shift(@ARGV); next;
 
@@ -247,7 +247,7 @@ sub parse_args {
       }
       if ( ($ARGV[0] =~ /\d+/ ) && ( $ARGV[0] >= 0 ) && ( $ARGV[0] <= 23 ) ) {
 	$y=$ARGV[0];
-        shift(@ARGV); next;
+        shift(@ARGV);
       }
       if ( ($ARGV[0] =~ /^.$/ ) ) {
 	$star=$ARGV[0];

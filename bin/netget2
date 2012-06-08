@@ -201,7 +201,7 @@ sub parse_args {
              "specify the passwd [username\@local.host.name]",
              "debug");
   grep(s/^([^-])/-\1/,@args);
-  push(@INC,'/usr/lib/perl',"$HOME/perllib");
+  push(@INC,"$HOME/etc/perllib");
   require("abbrev.pl");
   &abbrev(*abbrev, @args);
   if (!@ARGV) { push(@ARGV,'-pull'); }		# DEFAULT ACTION IS TO PULL URL FROM .WHERE FILE

@@ -4,28 +4,120 @@
 # and closing curley brackets
 #
 $name = $0; $name =~ s'.*/''; # remove path--like basename
-$usage = "usage:\n$name";
+$usage = "usage:\n$name [-open C] [-close C] [--] FILENAME\n"
+       . "  OR\n$name [-open C] [-close C] < FILENAME\n";
 
 #$open = '`';	$close="'";
 #$open = '<';	$close='>';
-#$open = '(';	$close=')';
 #$open = '[';	$close=']';
+#$open = '\(';	$close='\)';
 #$open = '{';	$close='}';
-$open = '<div';	$close='</div';
+
+$open = '{';	$close='}';
+$open = '\(';	$close='\)';
+
+&parse_args();
+# print "arguments left on the command line are (" . join(', ',@ARGV) . ")\n";
+
+#print "counting $open's \& $close's\n"; # this doesn't work!   WHY?
+print "counting ${open}'s \& ${close}'s\n";
 
 printf "%5s %5s %5s %5s %5s %4s %s\n", 'line', 'opens', 'total', 'clses', 'total', 'count', 'line';
 while (<>) {
-  next if (/^$|^\s*#/); #skip blank and commented lines.
+  next if (/^\s*$/); # skip blank or white lines
+  next if (/^\s*#/ and not $ignore_comments); # skip commented lines unless otherwise directed.
   chomp;
-  $opens	=(($junk=$_)=~s,$open,,g);
-  $closes	=(($junk=$_)=~s,$close,,g);
+  $opens	=(($junk=$_)=~s,${open},,g);
+  $closes	=(($junk=$_)=~s,${close},,g);
   $open_total	+=$opens;
   $close_total	+=$closes;
   $count	+=$opens;
   $count	-=$closes;
   ($line=$_)=~s/^(.{60}).*/\1/;
-  printf "%5d %5d %5d %5d %5d %4d %s\n", $., $opens, $open_total, $closes, $close_total, $count, $line ;
+  printf "%3d %3d %3d %3d %3d %2d %s\n", $., $opens, $open_total, $closes, $close_total, $count, $line ;
 }
 exit 0;
 
+sub parse_args {
+
+  my $abbrev;        # )=(); # must be local, not my otherwise, *abbrev don't work in
+		     # call to &abbrev, I don't understand fully why at this time, 9/27/00 SP.
+  my($count);
+
+  @args=('?','help');
+  @help=('print this message','print this message');
+
+  push(@args,'open','close','ignore_comments','-');
+  push(@help,'open character to count',
+             'close character to count',
+	     'ignore_comments',
+             'end comandline arguments',
+             );
+
+  grep(s/^(.)/-$1/,@args);
+
+  use Text::Abbrev;
+  $abbrev = abbrev(@args);
+# foreach (keys %$abbrev) {
+#   print "abbrev{$_}: '$abbrev{$_}'\n";
+# }
+# exit;
+
+  while ( @ARGV >= 1 and $count<1000) {
+    $count++;
+    if      ( ($abbrev->{$ARGV[0]} eq '-help' )
+           || ($abbrev->{$ARGV[0]} eq '-?' ) ) {
+      do help($usage);
+      shift(@ARGV);
+
+    } elsif ( $abbrev->{$ARGV[0]} eq '-open' ) {
+      $open=$ARGV[1];
+      if ($open eq '{') { $close='}'; }
+      if ($open eq '<') { $close='>'; }
+      if ($open eq '\(') { $close='\)'; }
+      if ($open eq '[') { $close=']'; }
+      shift(@ARGV); shift(@ARGV);
+
+    } elsif ( $abbrev->{$ARGV[0]} eq '-ignore_comments' ) {
+      $ignore_comments=1;
+      shift(@ARGV);
+
+    } elsif ( $abbrev->{$ARGV[0]} eq '-close' ) {
+      $close=$ARGV[1];
+      if ($close eq '}') { $open='{'; }
+      if ($close eq '>') { $open='<'; }
+      if ($close eq '\)') { $open='\('; }
+      if ($close eq ']') { $open='['; }
+      shift(@ARGV); shift(@ARGV);
+
+    } elsif ( $abbrev->{$ARGV[0]} eq '--') {
+      shift(@ARGV);
+      last;
+
+    } elsif ( $ARGV[0]!~/^-/ ) {
+      last;
+
+    } else {
+      warn("$name: Unknown option '$ARGV[0]'; disregarding...\n");
+      shift(@ARGV);
+    }
+    print "$debug";
+  }  # end while
+}  # end parse_args
+
+sub help {
+  select(STDOUT); $|=1; $\=''; 
+  print "@_[0]\n";
+  if (@help) {
+    for ($arg=$[; $arg<=$#args; $arg++) {
+      printf "%-16s\t%s\n", $args[$arg], $help[$arg];
+    }
+  } else {
+    for ($arg=$[; $arg<=$#args; $arg++) {
+      print "$args[$arg]\t";
+    }
+    print "\n";
+  }
+  exit 1;
+}
 __END__

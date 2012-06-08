@@ -1,4 +1,6 @@
 #!/usr/bin/perl
+# simple script to parse the output of the who command to obtain
+# the remote host from which a given user has connected.
 require "getopt.pl";
 &Getopt();
 

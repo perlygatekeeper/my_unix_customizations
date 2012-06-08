@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 #
-# A perl script to check hash elements in various ways.
+# A perl script to check hash elements in various ways,
+# demonstrating the differences.
 #
 $name = $0; $name =~ s'.*/''; # remove path--like basename
 $usage = "usage:\n$name [-opt1] [-opt2] [-opt3]";

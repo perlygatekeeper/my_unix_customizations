@@ -28,22 +28,32 @@ exit 0;
 
 sub ascii_numbers {
   my(@ascii_numbers)=@_;
+  my $number, $special, $character, $number_in_hex;
   foreach $number (@ascii_numbers) {
-    $special=$specials{sprintf("%02x",$number)};
-    printf "%s; '%s'\n",$number, $special;
+    if ($number =~ /^\d+$/) {
+      $character=chr $number;
+      $number_in_hex = sprintf("%02x",$number);
+      $number_in_dec = $number;
+    } elsif ($number =~ /^0x[\da-f]{2}$/i) {
+      $character=chr $number;
+      $number_in_hex = $number;
+      $number_in_dec = hex $number; # change number to decimal 
+    }
+    $special=$specials{$number_in_hex = sprintf("%02x",$number)};
+    printf "%s DEC(%03d); '%s'\n", $number, $number, $special || $character;
   }
   $output++;
 }
 
 sub characters {
   my(@characters)=@_;
-  printf "    'Dec' 'Oct' 'Hex'\n";
+  printf "    'Dec' 'Oct' 'Hex' 'Binary'\n";
   foreach $character (@characters) {
     $special=$specials{$character};
     $name=$names{$special};
     $long_name=$long_names{$special};
     $ascii=unpack('C',$character);
-    printf "%3s: '%3d' '%03o' '%02x'\n",$special || $character, $ascii, $ascii, $ascii;
+    printf "%3s: '%3d' '%03o' '%02x' '%8s'\n",$special || $character, $ascii, $ascii, $ascii, &binary($ascii);
     if ($special or $name or $long_name) {
       printf "%3s: '%s' '%s' \n",$special || $character, $name, $long_name;
     }
@@ -54,7 +64,7 @@ sub characters {
 sub output {
 # elsif ($type =~ /hexadecimal/i)	{ $format='0x%02x'; $spaces=" " x 4; }
   $type=shift;
-     if ($type =~ /octal/i)	 		{ $format='%03o';   $spaces=" " x 3; }
+     if ($type =~ /octal/i)	 	{ $format='%03o';   $spaces=" " x 3; }
   elsif ($type =~ /hexadecimal/i)	{ $format='%02x';   $spaces=" " x 2; }
   elsif ($type =~ /decimal/i)		{ $format='%3d';    $spaces=" " x 3; }
   elsif ($type =~ /binary/i)		{ $format='%8s';    $spaces=" " x 8; }
@@ -131,7 +141,7 @@ sub parse_args {
              'output numerical values in binary',
              'tabular output (the default) (#columns may be specified)',
              'single column output');
-  push(@args,'start','end');
+  push(@args,'start','end','specials');
   push(@help,'starting numerical value for table',
              '  ending numerical value for table');
   push(@args,'specials');
@@ -176,7 +186,7 @@ sub parse_args {
 
     } elsif ( $abbrev{$ARGV[0]} eq '-start' ) {
       shift(@ARGV);
-      if ( $ARGV[0] =~ /^[1-9]\d*$/ ) { # decimal number
+      if ( $ARGV[0] =~ /^[1-9]\d*$|^0$/ ) { # decimal number
         $start=$ARGV[0]; shift(@ARGV);
       } elsif ( $ARGV[0] =~ /^0[xX][\dA-Fa-f]+$/ ) { # hexadecimal number
         $start=unpack("h",$ARGV[0]); shift(@ARGV);
@@ -194,15 +204,16 @@ sub parse_args {
       shift(@ARGV);
 
     } elsif ( $ARGV[0] =~ /^[1-9]\d*$/ ) { # decimal number
-      push(@ascii_numbers,$ARGV[0]);
+      push(@ascii_numbers,"$ARGV[0]");
       shift(@ARGV);
 
-    } elsif ( $ARGV[0] =~ /^0[xX][\dA-Fa-f]+$/ ) { # hexadecimal number
-      push(@ascii_numbers,hex($ARGV[0]) );
+    } elsif ( $ARGV[0] =~ /^(0[xX]|%)[\dA-Fa-f]+$/ ) { # hexadecimal number
+      $ARGV[0] =~ s/^%/0x/;
+      push(@ascii_numbers,"$ARGV[0]");
       shift(@ARGV);
 
     } elsif ( $ARGV[0] =~ /^0[0-7]+$/ ) { # octal number
-      push(@ascii_numbers,oct($ARGV[0]) );
+      push(@ascii_numbers,"$ARGV[0]");
       shift(@ARGV);
 
     } elsif ( $abbrev{$ARGV[0]} eq '-character' ) {
@@ -248,7 +259,7 @@ sub specials {
 # $special{0}=
 # $specials{sprintf("%03o",0)}=
   $specials{sprintf("%02x",0)}=
-  $specials{chr $_}='^@';
+  $specials{"\000"}='^@';
   $names{'^@'}="NUL"; $long_names{'^@'}= $long_names{$names{'^@'}}="Null";
   foreach ( 1 .. 26) {
 #   $specials{$_}=
