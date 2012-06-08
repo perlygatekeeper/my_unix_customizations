@@ -20,3 +20,6 @@ relink printpath pp
 relink dos2unix unix2dos
 relink subs func
 relink withwithout wwo
+relink unlink notags
+relink findhere findhome
+relink findhere findname

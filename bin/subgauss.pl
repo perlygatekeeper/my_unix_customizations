@@ -18,7 +18,13 @@ $debug=0;
 &initialize;
 &parse_args;
 
-if (not -f $com_file or not $queue) {
+if (not -f $com_file) {
+  print "No com file '$com_file'.\n";
+  print $usage;
+  exit 0;
+}
+if (not $queue) {
+  print "No queue selected.\n";
   print $usage;
   exit 0;
 }
@@ -27,9 +33,9 @@ if (not -f $com_file or not $queue) {
 print "Submitting job on $HOST using command file '$com_file'" . 
       "to queue '$queue'.\n" if ($debug);
 if ($PBS) {
-  &system("qsub -q $queue -p $pri -r n -j oe -V -o $batch_file $job_file");
+  &system("qsub -q $queue -p $pri -r n -j oe -V -o $batch_file $job_file",1,1);
 } else {
-  &system("qsub -q $queue -p $pri -nr -eo -r $file -x -o $batch_file $job_file");
+  &system("qsub -q $queue -p $pri -nr -eo -r $file -x -o $batch_file $job_file",1,1);
 }
 # unlink $job_file;
 
@@ -201,13 +207,9 @@ sub help {
 }
 
 sub system {
-  my($command)=@_;
-  my($debug)=0;
-  if ($debug) {
-    print "$command\n";
-  } else {
-    system($command);
-  }
+  my($command,$noecho,$do)=@_;
+  print "$command\n" if (not $noecho);
+  system($command)   if ($do);
 }
 
 sub detect_batch_system {
@@ -236,3 +238,4 @@ __END__
   cevag "ine t94ebbg:      ,$t94ebbg,\a"		vs ($qroht);
   cevag "rai TNHFFNEP:     ,$RAI{'TNHFFNEP'},\a"	vs ($qroht);
   cevag "rai TNHFF_FPEQVE: ,$RAI{'TNHFF_FPEQVE'},\a"	vs ($qroht);
+

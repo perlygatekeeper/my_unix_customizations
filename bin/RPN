@@ -2,27 +2,29 @@
 #
 # A perl-5 script to implement a reverse polish notation calculator
 # simple numeric calc, no strings, code, complex numbers on stack.
-$version=2.0;		# transfer input control to Term::ReadLine
-$version=2.1;		# extended help routine to allow INDENT in help messages
-$version=2.2;		# reverse stack, 0 is now top
+#version=2.0;		# transfer input control to Term::ReadLine
+#version=2.1;		# extended help routine to allow INDENT in help messages
+#version=2.2;		# reverse stack, 0 is now top
 			# pop's  -> shift's
 			# push's -> unshift's
 			# prompt now has top value of stack
 			# fixed log10 (had to come before log in search)
-$version=2.3;		# add boolian functions
+#version=2.3;		# add boolian functions
 			# add saved stacks and history
 			# add readin of customized functions and constants
-$version=2.4;		# added, min, max and ave functions
+#version=2.4;		# added, min, max and ave functions
 			# fixed double newlines in histsave file,
 			# Term::ReadLine's GetHistory method returns NULLs!!!
-$version=2.5;		# fixed square function, command was editted for cube function not duplicated
+#version=2.5;		# fixed square function, command was editted for cube function not duplicated
 			# added concatenate function
 			# added ifelse function
 			# switched subroutine names as with numeric_n to n_arguments
+#version=2.6;		# fixed constant function
+$version=2.7;		# binary now does NOT use unpack
 #
 $name = $0; $name =~ s'.*/''; # remove path--like basename
 $usage = "usage:\n$name [--version]";
-$last_mod_date='Tue, Sep 10, 2002';
+$last_mod_date='Fri, Jun 27, 2003';
 $todo ="make language independent";
 $todo.="loop, for, variables";
 $author="Dr. Steven Parker";
@@ -92,6 +94,7 @@ sub execute {
       print STDERR "code for '$command' not defined.\n";
       return 0;
     }
+    print "about to execute code for '$abbrevs{$command}'\n" if ($debug);
     &{ $commands{$abbrevs{$command}}->{'code'} }($stack_ref,$abbrevs{$command},$arguments,\@arguments);
     return 1;
   } else {
@@ -108,7 +111,7 @@ sub help {
   my($indent_spaces)=" " x ($command_space + $type_space + 4); # + 4, since we have _()_ characters
   my($header)=sprintf "%${command_space}s  %${type_space}s  %s\n", "Command", "Type", "Help Message";
   my($command_format)="%${command_space}s (%${type_space}s) %s\n";
-  $/=''; $*=1; #enable paragraph mode & mulitline pattern matching.
+  $/=''; # $*=1; # enable paragraph mode & mulitline pattern matching.
   if ($abbrev=$arg_array->[0]) {
     if ($command=$abbrevs{$abbrev}) {
         ($help=$commands{$command}->{'help'})=~s/INDENT/$indent_spaces/g;
@@ -191,8 +194,8 @@ sub initialize {
   $commands{'if'}=
     {'type'=>'flow',
      'aliases'=>['ifthen'],
-     'help'=>"top two elements of stack are popped,".
-	     "INDENTthe top value is a boolean and second is a RPN function".
+     'help'=>"top two elements of stack are popped,\n".
+	     "INDENTthe top value is a boolean and second is a RPN function\n".
 	     "INDENTRPN function is executed if the boolean was true",
      'code'=>sub { my($s,$cmd,$args,$args_array)=@_;
 		   my($test)=shift(@{$s});
@@ -205,9 +208,9 @@ sub initialize {
   $commands{'ifelse'}=
     {'type'=>'flow',
      'aliases'=>['ifthen'],
-     'help'=>"top 3 elements of stack are popped,".
-	     "INDENTthe top value is a boolean and second and third are a RPN functions".
-	     "INDENTfirst RPN function is executed if the boolean was true",
+     'help'=>"top 3 elements of stack are popped,\n".
+	     "INDENTthe top value is a boolean and second and third are a RPN functions\n".
+	     "INDENTfirst RPN function is executed if the boolean was true\n".
 	     "INDENTsecond RPN function is executed if the boolean was false",
      'code'=>sub { my($s,$cmd,$args,$args_array)=@_;
 		   my($test)=shift(@{$s});
@@ -254,10 +257,14 @@ sub initialize {
 		       if ($constants->{lc $_}->{'value'}) { unshift (@{$s},$constants->{lc $_}->{'value'}); }
 		     }
 		   } else {
-		     foreach (sort keys %{$constants}) {
-		       printf STDERR "%10s:\t%14g\t%s\n", $_,
-		                                    $constants->{$_}->{'value'},
-		                                    $constants->{$_}->{'discription'};
+		     if (%{$constants}) {
+		       foreach (sort keys %{$constants}) {
+		         printf STDERR "%10s:\t%14g\t%s\n", $_,
+		                                      $constants->{$_}->{'value'},
+		                                      $constants->{$_}->{'discription'};
+		       }
+		     } else {
+		       print STDERR "There are no constants defined.\n";
 		     }
 		   }
                  }
@@ -478,7 +485,7 @@ sub initialize {
   $commands{'exponentiate'}=
     {'aliases'=>['**','^'],
      'type'=>'numeric',
-     'help'=>'shifts two numbers off the stack and pushes their quotient',
+     'help'=>'shifts two numbers off the stack and pushes X ^ Y',
      'code'=> \&two_arguments
     };
   $commands{'divide'}=
@@ -637,9 +644,9 @@ sub initialize {
     close(HIST);
     $term->SetHistory(@hist)
   }
-  $functions=	$ENV{RPN_FUNCTIONS} ||	"$HOME/.rpn_functions";
-  $constants=	$ENV{RPN_CONSTANTS} ||	"$HOME/.rpn_constants";
-  foreach $file ($stack_save, $functions, $constants) {
+  $functions_file=	$ENV{RPN_FUNCTIONS} ||	"$HOME/.rpn_functions";
+  $constants_file=	$ENV{RPN_CONSTANTS} ||	"$HOME/.rpn_constants";
+  foreach $file ($stack_save, $functions_file, $constants_file) {
     if (-s $file) {
       require($file);
     }
@@ -709,7 +716,7 @@ sub display {
     print STDERR $s->[0] . "\n";
   } elsif ($cmd =~ /hexadecimal/i) {
     if (abs($s->[0])<=255) {
-      printf STDERR "0x%02x\n", $s->[0];
+      printf STDERR '0x%02x'."\n", $s->[0];
     } else {
       printf STDERR "0x%x\n", $s->[0];
     }
@@ -718,7 +725,29 @@ sub display {
   } elsif ($cmd =~ /octal/i) {
     printf STDERR "\\0%o\n", $s->[0];
   } elsif ($cmd =~ /binary/i) {
-    printf STDERR "%s\n", unpack("b16",$s->[0]);
+    if ($s->[0]=~/^\d+/) {
+      local($number)=$s->[0];
+      local($place)=0;
+      local($binary)='';
+      while ($number) {
+#	printf STDERR "place is         %s\n", $place;
+	local($check)=1<<$place++;
+	last if ($place>9);
+#	printf STDERR "number starts at %s\n", $number;
+#	printf STDERR "checking with    %s\n", $check;
+	if ($number&$check) {
+	  $number-=$check;
+	  $binary='1'.$binary;
+	} else {
+	  $binary='0'.$binary;
+	} 
+#	printf STDERR "number ends as   %s\n\n", $number;
+      }
+      printf STDERR " %s\n", $binary;
+#     printf STDERR "%s\n", unpack("b16",($s->[0]+0));
+    } else {
+      printf STDERR "%s is not an non-negative integer\n", $s->[0];
+    }
   } else {
     printf STDERR "unknown cmd '%s' given to %s routine.\n", $cmd, 'display';
     return;
@@ -842,7 +871,7 @@ sub n_arguments {
   my($s,$cmd,$arg_str,$arg_array)=@_;
   # I will handle n argument operations
   # so far, I will handle sum and rotate
-  my($debug)=1;
+  my($debug)=0;
   print STDERR "called routing 'n_arguments'\n" if ($debug);
   my($range)=($arg_array->[0]=~/\d+/) ? shift(@{$arg_array}) : shift(@{$s});
   my($movement);
@@ -944,7 +973,7 @@ sub two_arguments {
   } elsif ($cmd =~ m,/,i) {	 		# integer divide
     unshift(@results,int($val2 / $val1), ($val2 % $val1) );
   } elsif ($cmd =~ m,exponentiate|\*\*|\^,i) {
-    unshift(@results,($val1 ** $val2) );
+    unshift(@results,($val2 ** $val1) );
   } elsif ($cmd =~ m,modulo|\%,i) {
     unshift(@results,($val2 % $val1) );
   } elsif ($cmd =~ m,^(<=?|>=?|==|<=>|!=)$,i) {

@@ -29,3 +29,6 @@ while (<>) {
 exit 0;
 
 __END__
+
+echo unlink is the 'real' file
+ln -fs unlink notags

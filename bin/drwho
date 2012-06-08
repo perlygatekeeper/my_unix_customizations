@@ -68,7 +68,6 @@ exit 0;
 sub initialize {
 
   $home=$ENV{'HOME'};
-  push(@INC,'/usr/common/lib/perl',"$home/perllib");
   require("abbrev.pl");
 
   $true=1; $false=0;
@@ -77,10 +76,10 @@ sub initialize {
   $day=&day();
 
 # SGI IRIX 5.2
- $finger=`which finger` || '/usr/bsd/finger';
- $w=     `which w`      || '/usr/bsd/w';
- $who=   `which who`    || '/sbin/who';
- $ping=  `which ping`   || '/usr/etc/ping';
+#$finger=`which finger` || '/usr/bsd/finger';
+#$w=     `which w`      || '/usr/bsd/w';
+#$who=   `which who`    || '/sbin/who';
+#$ping=  `which ping`   || '/usr/etc/ping';
 
 # SUN SunOS 4.1.3 
 # $finger=`which finger` || '/usr/ucb/finger';
@@ -89,10 +88,10 @@ sub initialize {
 # $ping=  `which ping`   || '/usr/etc/ping';
 
 # SUN Solaris 2.x
-# $finger=`which finger` || '/usr/bin/finger';
-# $w=     `which w`      || '/usr/bin/w';
-# $who=   `which who`    || '/usr/bin/who';
-# $ping=  `which ping`   || '/usr/sbin/ping';
+  $finger=`which finger` || '/usr/bin/finger';
+  $w=     `which w`      || '/usr/bin/w';
+  $who=   `which who`    || '/usr/bin/who';
+  $ping=  `which ping`   || '/usr/sbin/ping';
 
 # IBM's  AIX		 SunOS/IRIX	    Sol            OSF1
 # $ping=  `which ping`   || 'etc/ping';

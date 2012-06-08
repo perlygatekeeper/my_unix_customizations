@@ -1,1 +1,50 @@
-upper
+#!/usr/bin/perl
+#
+# A perl filter to UPPER-, lower-case, Capitalize, rot13.
+#
+$name = $0;
+$name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name";
+
+$true=1; $false=0;
+
+if      ( $name =~ /upper/ ) {
+  while (<>) {
+    tr/a-z/A-Z/;
+    print $_;
+  }
+} elsif ( $name =~ /lower/ ) {
+  while (<>) {
+    tr/A-Z/a-z/;
+    print $_;
+  }
+} elsif ( $name =~ /cap/ ) {
+  while (<>) {
+    s/\b(.)/\u\1/g;
+    print $_;
+  }
+} elsif ( $name =~ /rot13/ ) {
+  while (<>) {
+    tr/a-mA-Mn-zN-Z/n-zN-Za-mA-M/;
+    print $_;
+  }
+} elsif ( $name =~ /rot661/ ) {
+  while (<>) {
+    tr/a-fg-lmn-st-yzA-FG-LMN-ST-YZ1234567890/T-Yn-sZg-lA-FMt-yN-SzG-La-fm3210785694/;
+    print $_;
+  }
+} else {
+  print STDERR "what?";
+  exit 1;
+}
+
+exit 0;
+
+__END__
+
+echo use:    find . -type f -exec grep '^ln' {} \; | sh
+echo lower is the 'real' file
+ln -fs lower upper
+ln -fs lower rot13
+ln -fs lower rot661
+ln -fs lower cap

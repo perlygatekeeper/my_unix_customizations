@@ -181,7 +181,6 @@ sub parse_args {
              'define horizontal character',
 	     'define string that will start each line');
   grep(s/^([^-])/-\1/,@args);
-  push(@INC,'/usr/common/lib/perl',"$HOME/perllib");
   require("abbrev.pl");
   &abbrev(*abbrev, @args);
   # defaults
