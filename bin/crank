@@ -235,6 +235,10 @@ sub roman_numerals {
 }
 __END__
 
+echo use:    find . -type f -exec grep '^ln' {} \; | sh
+echo crank is the 'real' file
+ln -fs crank crk+
+
 tests:
 
 roman

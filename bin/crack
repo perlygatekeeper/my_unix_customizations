@@ -28,7 +28,7 @@ while ( @ARGV >= 1 ) {
     $all = "$ARGV[1]";
     shift; shift; }
   elsif ( ( $ARGV[0] eq '-?' ) || ( $ARGV[0] eq '-usage' ) ) {
-    help($usage); }
+    do help($usage); }
   elsif ( ( $ARGV[0] eq '-d' ) || ( $ARGV[0] eq '-default' ) ) {
     $crackstring=$tab;
     $replacestring=$newline;
@@ -117,3 +117,8 @@ sub replacement_widgets {
     }
 #   print $replacestring;
 }
+__END__
+
+echo use:    find . -type f -exec grep '^ln' {} \; | sh
+echo crack is the 'real' file
+ln -fs crack crk

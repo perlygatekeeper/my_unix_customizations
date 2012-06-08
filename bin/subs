@@ -28,3 +28,7 @@ if ($name=~/sub/) {
 exit 0;
 
 __END__
+
+echo use:    find . -type f -exec grep '^ln' {} \; | sh
+echo subs is the 'real' file
+ln -fs subs func
