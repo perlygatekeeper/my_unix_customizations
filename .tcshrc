@@ -4,10 +4,10 @@
 # Only execute this block if this an interactive shell (behave like .login)
 if ( $?prompt ) then
 
-
+setenv LSCOLORS "Gxfxcxdxbxegedabagacad"
 setenv PAGER	/usr/bin/less
-setenv EDITOR	/usr/bin/vi
-setenv VISUAL	/usr/bin/vi
+setenv EDITOR	/usr/bin/vim
+setenv VISUAL	/usr/bin/vim
 
 # SHELL-RELATED ALIASES
 alias a		alias
@@ -19,17 +19,18 @@ a po		popd
 a pu		pushd
 a rot		pushd +1
 
+# a fox		ssh -X -Y -L 8080:128.146.39.23:80 -L 4443:128.146.39.23:443 -l tmonnett fox.mps.ohio-state.edu
+a home		ssh parker@192.168.0.101
+a hafh		ssh parker@71.79.242.190
+
 # host specific commands
-# OIA
-# set web = /srv/www/htdocs/oiaweb
-# set cdpath = ( / ~ /srv/www/htdocs/oiaweb/ )
-# a oia	ssh -l root 140.254.17.250
-# a gphp	'grep \!* *.php */*.php'
-
-# if ( $path matches '~/bin')
 set path = ( $path ~/bin )
-# endif
-
+a procs		"ps -elf | cut -c76- | sort | crk '/\d' | uniq -c | sort -n"
+a pid		"ps axu  | grep \!* | grep -v grep"
+a pidw		"ps axuww| grep \!* | grep -v grep"
+a slay		'(set j=`ps -ax|grep \!*|head -1`;kill -9  $j[1]) >& /dev/null'
+a zap		'(set j=`ps -ax|grep \!*|head -1`;kill -1  $j[1]) >& /dev/null'
+a term		'(set j=`ps -ax|grep \!*|head -1`;kill -15 $j[1]) >& /dev/null'
 
 # prompt before rm *
 set rmstar on
@@ -51,12 +52,6 @@ a src		'source ~/.tcshrc'
 a bye		exit
 a logout	exit
 a lo		exit
-a procs		"ps -elf | cut -c76- | sort | crk '/\d' | uniq -c | sort -n"
-a pid		"ps axu  | grep \!* | grep -v grep"
-a pidw		"ps axuww| grep \!* | grep -v grep"
-a slay		'(set j=`ps -ax|grep \!*|head -1`;kill -9  $j[1]) >& /dev/null'
-a zap		'(set j=`ps -ax|grep \!*|head -1`;kill -1  $j[1]) >& /dev/null'
-a term		'(set j=`ps -ax|grep \!*|head -1`;kill -15 $j[1]) >& /dev/null'
 a rp		'set path=($path)'
 a prepath	'set path=(\!* $path)'
 a postpath	'set path=($path \!*)'
@@ -72,9 +67,9 @@ a vvrc		'vi ~/.vimrc'
 if ( $uid == 0 ) then
   set prompt = ": %S%m%s@%.03 [%h]; "
 else
-  set prompt = "%S%m%s@%c03 <%h> "
+  set prompt = "%S%m%s@%~ <%h> "
 endif
-set history=2048 savehist=(2048 merge)
+set history=4096 savehist=(4096 merge)
 # set histdup='prev'
 # set histdup='all'
 set histdup='erase'

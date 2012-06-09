@@ -1,3 +1,4 @@
+.gitignore
 20120305.diff
 4733.patch
 .bash_history
@@ -21,7 +22,6 @@ files_from_2012-01-09
 .fontconfig/
 .gconf/
 .gegl-0.0/
-.gitignore
 .gnome2/
 GNUstep/
 .gtk-bookmarks
@@ -69,3 +69,15 @@ Videos/
 vim_plugins.tgz
 .Xauthority
 .xsession-errors
+.dropbox-dist/
+.dropbox/
+.goutputstream-0XROEW
+.goutputstream-RMD1DW
+.gstreamer-0.10/
+.pki/
+.thumbnails/
+.xsession-errors.old
+Slider-webform.js
+VBoxLinuxAdditions.run
+personalizations.tgz
+1-100.pl
