@@ -1,5 +1,0 @@
-doc/stakeholders.txt
-plugin/stakeholders.vim
-autoload/stakeholders.vim
-autoload/stakeholders/delayed.vim
-autoload/stakeholders/immediate.vim
