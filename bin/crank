@@ -4,12 +4,12 @@
 # *** Define Default Strings, Values & Flags ***
 $name = $0;
 $usage = "usage: $name [-t|-targetstring target_str] [-r|replacestring replace_str]\n";
-$usage.= " [-?|-usage] [-d|default (replaces all tabs with newlines)]\n";
-$usage.= " [-m|modifier modifier_char(s)]\n";
-$usage.= " (added for crk+)...\n";
-$usage.= " [-s|start_value X] [-i|increment X] [-roman|roman_length I]\n";
-$usage.= " [-roman_left|-roman_right]\n";
-$usage.= " [-printf|-format]\n";
+$usage.= "       [-?|-usage] [-d|default (replaces all tabs with newlines)]\n";
+$usage.= "       [-m|modifier modifier_char(s)]\n";
+$usage.= "       (added for crk+)...\n";
+$usage.= "       [-s|start_value X] [-i|increment X] [-roman|roman_length I]\n";
+$usage.= "       [-roman_left|-roman_right]\n";
+$usage.= "       [-printf|-format]\n";
 
 $newline="\n";
 $backslash="\\";
@@ -85,17 +85,29 @@ while (<>) { $line=$_;
 # print "crackstring: '$crackstring' replacestring: '$replacestring'\n";
 # $line =~ s/${crackstring}/${replacestring}/eog ;
 
+<<<<<<< HEAD
 # eval "\$line =~ s/${crackstring}/${replacestring}/g;" ;
 # print "\$line =~ s/${crackstring}/${replacestring}/${modifiers};\n" ;
   eval "\$line =~ s/${crackstring}/${replacestring}/${modifiers};" ;
+=======
+# eval  "\$line =~ s/${crackstring}/${replacestring}/g;" ;
+# print "\$line =~ s/${crackstring}/${replacestring}/${modifiers};\n" ;
+  eval  "\$line =~ s/${crackstring}/${replacestring}/${modifiers};" ;
+>>>>>>> d11b92fefb342e30cc9524d1226f796d36807ab3
 # print "\$line =~ s/${crackstring}/${replacestring}/${modifiers};\n" ;
   if ($replacestring =~ /__LINE__/) {
     $line =~ s/__LINE__/sprintf($format,$.)/eg;
   }
   if ( ! $increment ) {
+<<<<<<< HEAD
     if (defined($occurance)) {
       $line =~ s/__UNIQUE_STRING__/sprintf($format,$occurance++)/eg; }
     if ($ROMAN) {
+=======
+    if (defined($occurance))  {
+      $line =~ s/__UNIQUE_STRING__/sprintf($format,$occurance++)/eg; }
+    if ($ROMAN)      {
+>>>>>>> d11b92fefb342e30cc9524d1226f796d36807ab3
        $line =~ s/__ROMAN__/&roman_numerals($ROMAN++,$roman_length,$true)/eg; }
     if ($roman) {
        $line =~ s/__roman__/&roman_numerals($roman++,$roman_length,$false)/eg; }
@@ -104,9 +116,15 @@ while (<>) { $line=$_;
     if ($alphabetic) {
        $line =~ s/__alphabetic__/$alphabetic++/eg; }
   } else {
+<<<<<<< HEAD
     if (defined($occurance)) {
       $line =~ s/__UNIQUE_STRING__/sprintf($format,$occurance+=$increment)/eg; }
     if ($ROMAN) {
+=======
+    if (defined($occurance))  {
+      $line =~ s/__UNIQUE_STRING__/sprintf($format,$occurance+=$increment)/eg; }
+    if ($ROMAN)      {
+>>>>>>> d11b92fefb342e30cc9524d1226f796d36807ab3
        $line =~
       s/__ROMAN__/&roman_numerals($ROMAN+=$increment,$roman_length,$true)/eg; }
     if ($roman) {
