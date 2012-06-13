@@ -78,6 +78,7 @@ set histdup=prev                # don't push dup entries oh history
 set echo_style=both             # honor both SYSV and BSD style echo conventions
 set fignore='.o'                # suffixes to ignore during filename completion
 set showdots='-A'               # show dot files in completions
+set listmax=150 listmaxrows=10
 if ( -f ~/.completion) then
   source ~/.completion
 endif
