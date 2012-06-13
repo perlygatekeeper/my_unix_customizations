@@ -4,10 +4,12 @@
 #   ***   Define Default Strings, Values & Flags   ***
 $name = $0;
 $usage = "usage: $name [-t|-targetstring target_str] [-r|replacestring replace_str]\n";
-$usage.= "       [-m|modifier modifier_char(s)] [-?|-usage] [-d|default]\n";
+$usage.= "       [-?|-usage] [-d|default (replaces all tabs with newlines)]\n";
+$usage.= "       [-m|modifier modifier_char(s)]\n";
 $usage.= "       (added for crk+)...\n";
 $usage.= "       [-s|start_value X] [-i|increment X] [-roman|roman_length I]\n";
 $usage.= "       [-roman_left|-roman_right]\n";
+$usage.= "       [-printf|-format]\n";
 
 $newline="\n";
 $backslash="\\";
@@ -18,7 +20,8 @@ $escape="\033";
 $return="\015";
 $true=1; $false=0;
 $roman_length=4;
-$all="g";
+$modifiers="g";
+$format = "%d";
 $roman_justification= "left";
 
 #   ***   Parse Command Line Argument(s)   ***
@@ -39,6 +42,9 @@ while ( @ARGV >= 1 ) {
     $replacestring=$newline;
     $all="g";
     shift; }
+  elsif ( ( $ARGV[0] eq '-printf' ) || ( $ARGV[0] eq '-format' ) ) {
+    $format= $ARGV[1];
+    shift; shift; }
   elsif ( $ARGV[0] eq '-roman_left' ) {
     $roman_justification= "left";
     shift; }
@@ -79,13 +85,16 @@ while (<>)  { $line=$_;
 # print "crackstring: '$crackstring' replacestring: '$replacestring'\n";
 #		$line =~ s/${crackstring}/${replacestring}/eog ;
 
-  eval  "\$line =~ s/${crackstring}/${replacestring}/g;" ;
-# print "\$line =~ s/${crackstring}/${replacestring}/${all};\n" ;
-# eval  "\$line =~ s/${crackstring}/${replacestring}/${all};" ;
-# print "\$line =~ s/${crackstring}/${replacestring}/${all};\n" ;
+# eval  "\$line =~ s/${crackstring}/${replacestring}/g;" ;
+# print "\$line =~ s/${crackstring}/${replacestring}/${modifiers};\n" ;
+  eval  "\$line =~ s/${crackstring}/${replacestring}/${modifiers};" ;
+# print "\$line =~ s/${crackstring}/${replacestring}/${modifiers};\n" ;
+  if ($replacestring =~ /__LINE__/) {
+    $line =~ s/__LINE__/sprintf($format,$.)/eg;
+  }
   if ( ! $increment ) {
     if (defined($occurance))  {
-      $line =~ s/__UNIQUE_STRING__/$occurance++/eg; }
+      $line =~ s/__UNIQUE_STRING__/sprintf($format,$occurance++)/eg; }
     if ($ROMAN)      {
        $line =~ s/__ROMAN__/&roman_numerals($ROMAN++,$roman_length,$true)/eg; }
     if ($roman)      {
@@ -96,7 +105,7 @@ while (<>)  { $line=$_;
        $line =~ s/__alphabetic__/$alphabetic++/eg; }
   } else {
     if (defined($occurance))  {
-      $line =~ s/__UNIQUE_STRING__/$occurance+=$increment/eg; }
+      $line =~ s/__UNIQUE_STRING__/sprintf($format,$occurance+=$increment)/eg; }
     if ($ROMAN)      {
        $line =~
       s/__ROMAN__/&roman_numerals($ROMAN+=$increment,$roman_length,$true)/eg; }
@@ -125,6 +134,8 @@ print "\\o for occurance, \\l for line, \\r for returns, \\e for escapes\n";
 print "\\i|\\I for lower|upper case roman numeral,\n";
 print "\\a|\\A for lower|upper case alphabetic\n";
 print "and \### for octal ascii codes.\n";
+print "\n";
+print "Useful modifiers are:";
 exit 1;
 }
 
@@ -164,7 +175,7 @@ sub replacement_widgets {
     $replacestring =~ s/([^\\]?)\\f/\1$formfeed/g;
     $replacestring =~ s/([^\\]?)\\r/\1$return/g;
     $replacestring =~ s/([^\\]?)\\e/\1$escape/g;
-    $replacestring =~ s/([^\\]?)\\l/\1\$\./g;
+    $replacestring =~ s/([^\\]?)\\l/\1__LINE__/g;
     $replacestring =~ /([^\\]?)\\([0-7][0-7][0-7])/;
     while ($2) {
      $octal=&ascii($2);
