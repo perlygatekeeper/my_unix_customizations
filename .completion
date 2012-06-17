@@ -11,7 +11,7 @@ com rmdir       'p/1/d/'
 # also note that the initial - can be created with the first completion
 # but without appending a space (note the extra slash with no
 # append character specified)
-comp kill       'c/-/S/' 'p/1/(-)//'
+com kill       'c/-/S/' 'p/1/(-)//'
 # com kill        "p/1/S/" "n/`ps -elf   | perl -lane 'print [2];'`/"
 
 # aliases
@@ -70,12 +70,12 @@ com uncomplete  'p/*/X/'
 # But if you complete without typing anything you get this:
 #   first argument:           adds "-s"
 #   arguments that follow -s: reminds you of which argument is expected
-complete ln     'C/?/f/' 'p/1/(-s)/' 'n/-s/x:[first arg is path to original file]/' 'N/-s/x:[second arg is new link]/'
+com ln     'C/?/f/' 'p/1/(-s)/' 'n/-s/x:[first arg is path to original file]/' 'N/-s/x:[second arg is new link]/'
 
 # set a list of hosts, for use with rlogin
 set hostlist=(foo bar baz)
-# complete rlogin 'p/1/$hostlist/'
-# complete rsh 'p/1/$hostlist/' 'p/2/c/'
+# com rlogin 'p/1/$hostlist/'
+# com rsh 'p/1/$hostlist/' 'p/2/c/'
 com ssh         'p/1/$hostlist/' 'p/2/c/'
 
 # rcp and scp allow arguments to be references to either local or remote
@@ -85,7 +85,7 @@ com ssh         'p/1/$hostlist/' 'p/2/c/'
 # when you first start typing, it could be any of a username, hostname,
 # or filename.  But filename is probably the most useful case, so:
 #
-# complete arguments as regular filenames, with following exceptions
+# com arguments as regular filenames, with following exceptions
 # if "@" has been typed, complete with a hostname, and append a colon (:)
 # if ":" has been typed, complete with a filename relative to home directory
 # if ":/" has been typed, complete with a filename relative to root directory
@@ -93,27 +93,25 @@ com ssh         'p/1/$hostlist/' 'p/2/c/'
 com scp         "c,*:/,F:/," "c,*:,F:$HOME," 'c/*@/$hostlist/:/'
 com sftp        "c,*:/,F:/," "c,*:,F:$HOME," 'c/*@/$hostlist/:/'
 
-
-
-com tar			c/-[Acru]*/"(b B C f F g G h i l L M N o P R S T v V w W X z Z)"/ \
-		c/-[dtx]*/"( B C f F g G i k K m M O p P R s S T v w x X z Z)"/ \
-		p/1/"(A c d r t u x -A -c -d -r -t -u -x --catenate --concatenate --create --diff --compare --delete --append --list --update --extract --get --help --version)"/ \
-		c/--/"(catenate concatenate create diff compare delete append list update extract get atime-preserve block-size read-full-blocks directory checkpoint file \
+com tar	'c/-[Acru]*/"(b B C f F g G h i l L M N o P R S T v V w W X z Z)"/' \
+		'c/-[dtx]*/"( B C f F g G i k K m M O p P R s S T v w x X z Z)"/' \
+		'p/1/"(A c d r t u x -A -c -d -r -t -u -x --catenate --concatenate --create --diff --compare --delete --append --list --update --extract --get --help --version)"/' \
+		'c/--/"(catenate concatenate create diff compare delete append list update extract get atime-preserve block-size read-full-blocks directory checkpoint file \
 		force-local info-script new-volume-script incremental listed-incremental dereference ignore-zeros ignore-failed-read keep-old-files starting-file \
 		one-file-system tape-length modification-time multi-volume after-date newer old-archive portability to-stdout same-permissions preserve-permissions \
 		absolute-paths preserve record-number remove-files same-order preserve-order same-owner sparse files-from null totals verbose label version \
-		interactive confirmation verify exclude exclude-from compress uncompress gzip ungzip use-compress-program block-compress help version)"/ \
-		c/-/"(b B C f F g G h i k K l L m M N o O p P R s S T v V w W X z Z 0 1 2 3 4 5 6 7 -)"/ \
-		C@[/dev]@f@ \
-		n/-c*f/x:'<new_tar_file, device_file, or "-">'/ \
-		n/{-[Adrtux]*f,--file}/f:*.{tar,taz,tgz}/ \
-		N/{-x*f,--file}/'`tar -tf $:-1`'/ \
-		n/--use-compress-program/c/ \
-		n/{-b,--block-size}/x:'<block_size>'/ \
-		n/{-V,--label}/x:'<volume_label>'/ \
-		n/{-N,--{after-date,newer}}/x:'<date>'/ \
-		n/{-L,--tape-length}/x:'<tape_length_in_kB>'/ \
-		n/{-C,--directory}/d/ \
-		N/{-C,--directory}/'`\ls $:-1`'/ \
-		n/-[0-7]/"(l m h)"/
-alias com
+		interactive confirmation verify exclude exclude-from compress uncompress gzip ungzip use-compress-program block-compress help version)"/' \
+		'c/-/"(b B C f F g G h i k K l L m M N o O p P R s S T v V w W X z Z 0 1 2 3 4 5 6 7 -)"/' \
+		'C@[/dev]@f@' \
+		"n/-c*f/x:'<new_tar_file, device_file, or ->'/" \
+		'n/{-[Adrtux]*f,--file}/f:*.{tar,taz,tgz}/' \
+		'N/{-x*f,--file}/'\''`tar -tf $:-1`'\''/' \
+		'N/{-C,--directory}/'\''`\ls $:-1`'\''/' \
+		'n/--use-compress-program/c/' \
+		"n/{-b,--block-size}/x:'<block_size>'/" \
+		"n/{-V,--label}/x:'<volume_label>'/" \
+		"n/{-N,--{after-date,newer}}/x:'<date>'/" \
+		"n/{-L,--tape-length}/x:'<tape_length_in_kB>'/" \
+		"n/{-C,--directory}/d/" \
+		'n/-[0-7]/"(l m h)"/'
+unalias com
