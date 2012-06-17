@@ -24,7 +24,7 @@ a home		ssh parker@192.168.0.101
 a hafh		ssh parker@71.79.242.190
 
 # host specific commands
-set path = ( $path ~/bin /opt/local/bin /opt/local/sbin )
+set path = ( $path ~/bin /opt/local/bin /opt/local/sbin /usr/local/git/bin )
 a procs		"ps -elf | cut -c76- | sort | crk '/\d' | uniq -c | sort -n"
 a pid		"ps -elf | grep \!* | grep -v grep"
 a pidw		"ps -elfww | grep \!* | grep -v grep"
