@@ -1,7 +1,7 @@
 #!/bin/sh
 # a shell script to search a words file
 # available via RH-RPM words-3.0-9.1
-WORDSFILE="/usr/share/dict/linux.words";
+WORDSFILE="/usr/share/dict/words";
 if [ "`tty`" = "not a tty" ] ; then
   P=cat
 else

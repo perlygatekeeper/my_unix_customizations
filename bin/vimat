@@ -6,14 +6,19 @@
 # LINE# FILENAME
 # or FILENAME:LINE#
 #
-$name = $0; $name =~ s'.*/''; # remove path--like basename
-$usage = "usage:\n$name [-opt1] [-opt2] [-opt3]";
+my $name = $0; $name =~ s'.*/''; # remove path--like basename
+my $usage = "usage:\n$name [-opt1] [-opt2] [-opt3]";
+
+use strict;
+use warnings;
+
+my $files = [ ];
 
 # find vim
-$vim='/usr/bin/vim';
+my $vim = '/usr/bin/vim';
 if (not -e $vim) {
   $vim='';
-  foreach $v qw( /usr/sbin/vim /bin/vim /sbin/vim /usr/local/bin/vim ) {
+  foreach my $v ( qw(/usr/sbin/vim /bin/vim /sbin/vim /usr/local/bin/vim)) {
     if ( -e $v ) {
       $vim=$v; last;
     }
@@ -21,34 +26,49 @@ if (not -e $vim) {
 }
 die("no executable for vim found.\n") unless $vim;
 
-$processing=1;
+my $processing=1;
 while (@ARGV) {
-  $arg=shift @ARGV;
-  if ( $processing and $arg =~ /-f/i ) {
-    $filename=shift @ARGV;
+  my $arg=shift @ARGV;
+  if ( $processing and $arg =~ /^-?-?f/i ) {
+    push(@$files,{ name => shift @ARGV} );
   } elsif ( $arg eq '--' ) {		# allow the '--' arg so you can have a filename beginning w/ -f
     $processing=0;
   } elsif ( $arg =~ /(\d+):(\S+)/ ) {
-    $filename=$2;
-    $at=$1;
+    push(@$files,{ position => $1, name => $2 } );
   } elsif ( $arg =~ /(\S+):(\d+)/ ) {
-    $filename=$1;
-    $at=$2;
-  } elsif ( $arg =~ /-?-?(\d+)/ ) {
-    $at=$1;
-  } elsif ( not $filename ) {
-    $filename=$arg;
+    push(@$files,{ position => $2, name => $1 } );
+  } elsif ( $arg =~ /^-?-?(\d+)/ ) {
+    $files->[$#{$files}]{position} = shift @ARGV;
+  # } elsif ( not @$files and -e $arg ) {
+  } elsif ( -e $arg ) {
+    push(@$files,{ name => $arg } );
   } else {
-    print "unknown argument '$arg'.. disgarding...\n";
+    if ( $arg =~ /::/ ) {
+      $arg =~ s,::,/,g;
+      $arg .= ".pm" if ( $arg !~ /\.pm$/ );
+	  my $dir; ($dir = $arg) =~ s,/[^/]+$,,;
+      push(@$files,{ name => $arg } ) if ( -e $arg or -d $dir );
+    } else {
+      print "unknown argument '$arg'.. disgarding...\n";
+	}
   }
 }
 
-die("no filename found.\n") unless $filename;
+# die("no filename found.\n") unless $filename;
 
-$at ||= "1";
+my $command = $vim;
+map {
+  my $at = $_->{position}; my $name = $_->{name};
+  $command .= ( ($at) ? " +$at" : " " )  . " $name";
+} (@$files);
 
-system("$vim +$at $filename");
+# print STDERR $files->[0]{position} . "\n";
+# print STDERR $files->[0]{name} . "\n";
+# print STDERR $files->[1]{position} . "\n";
+# print STDERR $files->[1]{name} . "\n";
+# print STDERR $command . "\n";
 
+system($command);
 
 exit 0;
 
