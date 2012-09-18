@@ -1,7 +1,7 @@
 set path=(${path} ~/mbin)
 setenv SBXROOT /home/sparker/sbx-mgr-prod
 if ( ! ${?SBXIP} ) then
-  setenv SBXIP   "192.168.241.94"
+  setenv SBXIP   "192.168.241.171"
 endif
 setenv md      "~/MantaDev"
 
@@ -25,14 +25,16 @@ alias svn-revlog	'svn log --stop-on-copy'
 alias untrace		"crk '\\n' '\n' | crk '\\t' '    ' | crk 'called at(.*)"'$'"' '\n\tcalled at "'$'"1\n'"
 alias puptest		'sudo /usr/sbin/puppetd --test'
 
-alias sbx           'setenv SBXIP   "192.168.241.94";       echo now interacting with sparker-sbx: $SBXIP;          source ~/.manta'
+alias sbx           'setenv SBXIP   "192.168.241.171";      echo now interacting with sparker-sbx: $SBXIP;          source ~/.manta'
 alias sbx2          'setenv SBXIP   "192.168.241.181";      echo now interacting with sparker2-sbx: $SBXIP;         source ~/.manta'
-alias faz2          'setenv SBXIP   "192.168.241.152";      echo now interacting with sfazekas2-sbx: $SBXIP;        source ~/.manta'
 alias sbx2012       'setenv SBXIP   "192.168.241.79";       echo now interacting with sparker2012-sbx: $SBXIP;      source ~/.manta'
 alias sbx3          'setenv SBXIP   "192.168.241.57";       echo now interacting with sparker3-sbx: $SBXIP;         source ~/.manta'
+alias sara          'setenv SBXIP   "192.168.241.86";       echo now interacting with sbraumiller2-sbx: $SBXIP;     source ~/.manta'
 alias ecnext30      'setenv SBXIP   "10.28.16.211";         echo now interacting with ecnext30: $SBXIP;             source ~/.manta'
 alias ecnext15      'setenv SBXIP   "10.28.16.166";         echo now interacting with ecnext15: $SBXIP;             source ~/.manta'
+alias staging       'setenv SBXIP   "10.28.161.205";        echo now interacting with staging: $SBXIP;              source ~/.manta'
 alias mrc           'vi ~/.manta; source ~/.manta'
 
 setenv PERL5LIB "/svn/core:/svn/comsite5:/svn/community:/svn/image-service:/svn/manta-app-base:/svn/web-platform"
 
+: svn copy http://subversion/svn/main/comsite5/trunk http://subversion/svn/main/comsite5/branches/trac_####_DESCRIPTION
