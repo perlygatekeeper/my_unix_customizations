@@ -2,7 +2,7 @@
 
 SBXIP="${SBXIP:-192.168.241.35}"
 
-for i in 'community' 'core' 'comsite5' 'manta-app-base' 'web-platform' 'image-service' 'kwtool-rules' 'opencms-export'
+for i in 'common-lib' 'community' 'core' 'comsite5' 'manta-app-base' 'web-platform' 'image-service' 'kwtool-rules' 'opencms-export'
 do 
   echo $i
   cd /svn/$i
