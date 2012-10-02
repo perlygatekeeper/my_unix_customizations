@@ -15,10 +15,10 @@ set noslowopen
 set hidden						" Hide other buffers instead of abandoning them.
 set number						" display line numbers
 
-"syntax on						" turn on syntax detection
-"filetype on           			" Enable filetype detection
-"filetype indent on    			" Enable filetype-specific indenting
-"filetype plugin on    			" Enable filetype-specific plugins
+syntax on						" turn on syntax detection
+filetype on           			" Enable filetype detection
+filetype indent on    			" Enable filetype-specific indenting
+filetype plugin on    			" Enable filetype-specific plugins
 
 set report=2					" report yanks/deletes of 2 or more lines
 set showcmd						" Status bar stuff.
@@ -59,6 +59,7 @@ nnoremap =.. :!swc sync<Cr>
 nnoremap =} !} perl -pe 's///g;'
 nnoremap =% !% perl -pe 's///g;'
 nnoremap =3 !G rot13
+nnoremap => !} crk '^(.)' '\t$1'<Cr>
 " edit alternate file.
 nnoremap =b :e#<Cr>
 " nnoremap =c !} cut -c
@@ -67,7 +68,6 @@ nnoremap =b :e#<Cr>
 " nnoremap =g !2} glue -b
 " nnoremap =G !G glue -b
 "" add '> ' to beginning of rest of the lines in the buffer
-" nnoremap => :.,$ s/^\(.\)/> \1/<Cr>''
 " nnoremap =n :.,$ s/^> >/>> /<Cr>
 
 " template stuff for HTML(h), make(m), perl(p), tcsh(t) and python(y)
