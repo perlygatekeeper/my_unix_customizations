@@ -1,15 +1,13 @@
 #!/usr/bin/perl
 #
 # A perl script that will filter lines adding or removing comment marks
+# uncompleted as of Tue Oct 02, 2012
 #
 $name = $0; $name =~ s'.*/''; # remove path--like basename
 
 exit 0;
 
 sub parse_args {
-
-  local(%abbrev)=(); # must be local, not my otherwise, *abbrev don't work in
-		     # call to &abbrev, I don't understand fully why at this time, 9/27/00 SP.
 
   @args=('?','help');
   @help=('print this message','print this message');
@@ -22,14 +20,14 @@ sub parse_args {
 
   grep(s/^([^-])/-\1/,@args);
 
-  require("abbrev.pl");
-  &abbrev(*abbrev, @args);
+  use Text::Abbrev;
+  %abbrev = abbrev @args;
 
 
   while ( @ARGV >= 1 ) {
     if      ( ($abbrev{$ARGV[0]} eq '-help' )
            || ($abbrev{$ARGV[0]} eq '-?' ) ) {
-      do help($usage);
+      help($usage);
       shift(@ARGV);
 
     } elsif ( $abbrev{$ARGV[0]} eq '-arg1' ) {
@@ -79,12 +77,60 @@ sub help {
 
 __END__
 
+Compiled with help from: 
+http://en.wikipedia.org/wiki/HTML_comment_tag#Comments
+http://en.wikipedia.org/wiki/Comment_(computer_programming)#Comparison
+http://en.wikipedia.org/wiki/Comparison_of_programming_languages_(syntax)#Comments
 
-#		comments:
-//		comments:
-/* ..  */	comments:
-%		comments:
-!		comments:
-"		comments: .vimrc files
-dnl		comments: delete to newline, m4 macro processor macro
-rem		comments: remark, dos batch (.bat) files
+#			comments: Bash, Tcsh, perl, PHP, Ruby, Python, Cobra, Maple, Windows PowerShell
+
+<#
+.
+.
+#>			comments: Windows PowerShell
+
+//			comments: C++, java, PHP
+
+/*
+.
+.
+ */			comments: ActionScript, AutoHotkey, C, C++, C#, D, Go, Java, JavaScript, Objective-C, PHP, PL/I, Scala (can be nested), SASS, SQL, Visual Prolog, CSS
+
+=begin 
+.
+.
+=end		comments: Ruby
+=cut		comments: perl's POD
+
+[%
+.
+.# (inside)	comments: Template::Toolkit
+%]		
+
+<!-- XXX >
+.
+.
+<XXX -->*/	comments: HTML, XML, ColdFusion
+
+--			comments: SQL, Haskel, Euphoria, Ada, AppleScript, Eiffel, Lua, VHDL, SGML
+{-
+.
+.
+ -}			comments: Haskel (multiline)
+
+%			comments: TeX, LaTeX, Prolog, MATLAB,[7] Erlang, S-Lang, Visual Prolog
+'			comments: Visual Basic, VBScript, RealBasic
+;			comments: AutoHotkey, AutoIt, Lisp, Common Lisp, Clojure, Rebol, Scheme, many assemblers, Bind zone files
+C			comments: Fortran IV, Fortran 77
+!			comments: Fortran 90, Basic Plus, Inform
+*			comments: Fortran 2000 (any character in 1st column)
+
+"			comments: Vimscript (ie.  .vimrc files)
+||			comments: Curl
+\			comments: Forth
+
+dnl			comments: delete to newline, m4 macro processor macro (sendmail.mc -> sendmail.cf)
+
+rem			comments: remark, dos batch (.bat) files and BASIC CLASSIC
+::			comments: Batch file
+:			comments: Linux /etc/inittab file, Bourne and Tcsh Shell Scripts, from tcsh.1 (: Does nothing, successfully)

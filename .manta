@@ -1,7 +1,7 @@
 set path=(${path} ~/mbin)
 setenv SBXROOT /home/sparker/sbx-mgr-prod
 if ( ! ${?SBXIP} ) then
-  setenv SBXIP   "192.168.241.171"
+  setenv SBXIP   "192.168.240.105"
 endif
 setenv md      "~/MantaDev"
 
@@ -25,7 +25,7 @@ alias svn-revlog	'svn log --stop-on-copy'
 alias untrace		"crk '\\n' '\n' | crk '\\t' '    ' | crk 'called at(.*)"'$'"' '\n\tcalled at "'$'"1\n'"
 alias puptest		'sudo /usr/sbin/puppetd --test'
 
-alias sbx           'setenv SBXIP   "192.168.241.171";      echo now interacting with sparker-sbx: $SBXIP;          source ~/.manta'
+alias sbx           'setenv SBXIP   "192.168.240.105";      echo now interacting with sparker-sbx: $SBXIP;          source ~/.manta'
 alias sbx2          'setenv SBXIP   "192.168.241.181";      echo now interacting with sparker2-sbx: $SBXIP;         source ~/.manta'
 alias sbx2012       'setenv SBXIP   "192.168.241.79";       echo now interacting with sparker2012-sbx: $SBXIP;      source ~/.manta'
 alias sbx3          'setenv SBXIP   "192.168.241.57";       echo now interacting with sparker3-sbx: $SBXIP;         source ~/.manta'
