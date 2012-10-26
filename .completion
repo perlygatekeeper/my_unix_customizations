@@ -63,32 +63,34 @@ com gnuzip      'n/-9/f:^*.gz|^*.tgz/'
 # like find.  
 # Please check your version before using these completions, as some
 # differences may exist.
-#com find        'n/-name/f/' 'n/-newer/f/' 'n/-{,n}cpio/f/' 'n/-user/u/' \
-                #'n/-fstype/(nfs 4.2)/' 'n/-type/(b c d f | p s)/' \
-                #'c/-/(name newer cpio ncpio exec ok user group fstype type \
-                #atime ctime mtime depth inum ls nogroup nouser perm print \
-                #prune size xdev mount follow a o local)/' \
-                #'n/-exec/c/{} \\;' 'n/-ok/c/{} \\;' 'n/-group/g/' \
-                #'n/*/d/'
+
+com find        'n/-name/f/' 'n/-newer/f/' 'n/-{,n}cpio/f/' 'n/-user/u/' \
+                'n/-fstype/(nfs 4.2)/' 'n/-type/(b c d f | p s)/' \
+                'c/-/(name newer cpio ncpio exec ok user group fstype type \
+                atime ctime mtime depth inum ls nogroup nouser perm print \
+                prune size xdev mount follow a o local)/' \
+                'n/-exec/c/{} \\;' 'n/-ok/c/{} \\;' 'n/-group/g/' \
+                'n/*/d/'
 
 # set up cc to complete only with files ending in .c, .a, and .o
-#com cc          'p/*/f:*.[cao]/'
+com cc          'p/*/f:*.[cao]/'
 
 # of course, this completes with all current completions
-#com uncomplete  'p/*/X/'
+com uncomplete  'p/*/X/'
 
 # complex completion for ln
 # In all cases, if you start typing, it completes with a filename
 # But if you complete without typing anything you get this:
 #   first argument:           adds "-s"
 #   arguments that follow -s: reminds you of which argument is expected
-# com ln     'C/?/f/' 'p/1/(-s)/' 'n/-s/x:[first arg is path to original file]/' 'N/-s/x:[second arg is new link]/'
+
+complete ln     'C/?/f/' 'p/1/(-s)/' 'n/-s/x:[first arg is path to original file]/' 'N/-s/x:[second arg is new link]/'
 
 # set a list of hosts, for use with rlogin
-# set hostlist=(foo bar baz)
+set hostlist=(foo bar baz)
 # complete rlogin 'p/1/$hostlist/'
 # complete rsh 'p/1/$hostlist/' 'p/2/c/'
-# com ssh         'p/1/$hostlist/' 'p/2/c/'
+com ssh         'p/1/$hostlist/' 'p/2/c/'
 
 # rcp and scp allow arguments to be references to either local or remote
 # files.  It's impossible to complete remote files, but its useful to assume

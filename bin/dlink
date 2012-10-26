@@ -1,0 +1,5 @@
+#!/bin/bash
+
+   perl -e "print qw(Tskmptp!)" | \
+   shasum -a 256 | \
+   perl -lne 'print; foreach $c (split(//,$_)) { $i.=$c; if (length($i)==4) {print $i; $i=""}}'

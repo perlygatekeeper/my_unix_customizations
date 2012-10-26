@@ -4,12 +4,12 @@
 # *** Define Default Strings, Values & Flags ***
 $name = $0;
 $usage = "usage: $name [-t|-targetstring target_str] [-r|replacestring replace_str]\n";
-$usage.= " [-?|-usage] [-d|default (replaces all tabs with newlines)]\n";
-$usage.= " [-m|modifier modifier_char(s)]\n";
-$usage.= " (added for crk+)...\n";
-$usage.= " [-s|start_value X] [-i|increment X] [-roman|roman_length I]\n";
-$usage.= " [-roman_left|-roman_right]\n";
-$usage.= " [-printf|-format]\n";
+$usage.= "       [-?|-usage] [-d|default (replaces all tabs with newlines)]\n";
+$usage.= "       [-m|modifier modifier_char(s)]\n";
+$usage.= "       (added for crk+)...\n";
+$usage.= "       [-s|start_value X] [-i|increment X] [-roman|roman_length I]\n";
+$usage.= "       [-roman_left|-roman_right]\n";
+$usage.= "       [-printf|-format]\n";
 
 $newline="\n";
 $backslash="\\";
