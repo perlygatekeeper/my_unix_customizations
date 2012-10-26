@@ -7,7 +7,7 @@ $name =~ s'.*/''; # remove path--like basename
 $usage = "usage:\n$name [-opt1] [-opt2] [-opt3]";
 $last_mod_date='Thu, Jan 25, 2001';
 
-require("datetime.pl");
+#require("datetime.pl");
 $day=&day();
 
 while (<>) {

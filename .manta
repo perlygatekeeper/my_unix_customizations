@@ -25,6 +25,7 @@ alias svn-revlog	'svn log --stop-on-copy'
 alias untrace		"crk '\\n' '\n' | crk '\\t' '    ' | crk 'called at(.*)"'$'"' '\n\tcalled at "'$'"1\n'"
 alias puptest		'sudo /usr/sbin/puppetd --test'
 
+alias amber         'setenv SBXIP   "192.168.241.72";       echo now interacting with aschwartz3-sbx: $SBXIP;       source ~/.manta'
 alias sbx           'setenv SBXIP   "192.168.241.64";       echo now interacting with sparker-sbx: $SBXIP;          source ~/.manta'
 alias sbx2          'setenv SBXIP   "192.168.241.181";      echo now interacting with sparker2-sbx: $SBXIP;         source ~/.manta'
 alias sbx2012       'setenv SBXIP   "192.168.241.79";       echo now interacting with sparker2012-sbx: $SBXIP;      source ~/.manta'
