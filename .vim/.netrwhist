@@ -1,10 +1,3 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =8
-let g:netrw_dirhist_1='/svn/comsite5-pegasus/Manta/TermPage/DAO'
-let g:netrw_dirhist_2='/svn/comsite5-pegasus/Manta/RequestDispatcher'
-let g:netrw_dirhist_3='/svn/comsite5-pegasus/templates/termpage'
-let g:netrw_dirhist_4='/svn/comsite5-pegasus/Manta/Megabrowse/Parsed'
-let g:netrw_dirhist_5='/svn/core/Manta'
-let g:netrw_dirhist_6='/svn/comsite5-pegasus/Manta/Megabrowse'
-let g:netrw_dirhist_7='/svn/comsite5-pegasus/Manta/ConfiguredComponentFactory'
-let g:netrw_dirhist_8='/svn/comsite5-pegasus/conf/manta'
+let g:netrw_dirhist_cnt =1
+let g:netrw_dirhist_1='/etc/apt/preferences.d'

@@ -31,8 +31,8 @@ set ignorecase					" usually ignore case when searching
 set smartcase					" unless I explicitly use an UPPER CASE character
 
 set autoindent					" autoindent by default
-nnoremap << :set noautoindent<Cr>
-nnoremap >> :set   autoindent<Cr>
+nnoremap << :set noautoindent<Cr>:filetype indent off<Cr>
+nnoremap >> :set   autoindent<Cr>:filetype indent on<Cr>
 
 if has("autocmd")
   " When editing a file, always jump to the last cursor position
