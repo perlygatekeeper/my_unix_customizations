@@ -44,7 +44,7 @@ endif
 
 
 " Colorscheme stuff
-colorscheme vibrantink
+colorscheme tibet
 set background=dark
 nnoremap =0 :set background=dark<Cr>
 nnoremap =1 :set background=light<Cr>
@@ -75,6 +75,8 @@ nnoremap =b :e#<Cr>
 " uppercase character prompts to read in a directory listing
 nnoremap =# :set number!<Cr>
 nnoremap =? :help<Cr>:only<Cr>
+nnoremap =c :colorscheme 
+nnoremap =C :r! ls -C ~/.vim/colors/
 nnoremap =h :r ~/etc/htmllib/
 nnoremap =H :r! ls -C ~/etc/htmllib/
 nnoremap =m :r ~/etc/makelib/
