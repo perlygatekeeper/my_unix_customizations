@@ -5,6 +5,9 @@ set backspace=indent,eol,start	" allow backspacing over everything in insert mod
 " or <-lines/register '-prev-files-marks, /-searches, :-command-lines, @-input-lines???
 " c-vim-info-encoding, f-marks
 "
+" NOTE this may be useful: !'mcrk '(\S *)\t' '$1    '
+" replaces (X____)\t  with $1 . _ x 4
+"
 set viminfo='128,f1			" read/write a .viminfo file, don't store more
 								" than 50 lines of registers
 set history=1024          		" keep XX lines of command line history
@@ -55,7 +58,7 @@ nnoremap =+ :colorscheme tibet<Cr>
 
 nnoremap q :q!|
 " nnoremap v ~
-nnoremap =.. :!swc sync<Cr>
+nnoremap =.. :!swc --name comsite5 sync<Cr>
 nnoremap =} !} perl -pe 's///g;'
 nnoremap =% !% perl -pe 's///g;'
 nnoremap =3 !G rot13
@@ -87,6 +90,8 @@ nnoremap =t :r ~/etc/tcshlib/
 nnoremap =T :r! ls -C ~/etc/tcshlib/
 nnoremap =y :r ~/etc/pylib/
 nnoremap =Y :r! ls -C ~/etc/pylib/
+
+nnoremap =l !!crk '\\t' '\t' \| crk '\\n' '\n' \| crk 'called at(.*)\$' '\n\tcalled at \$1\n'<Cr>
 
 nnoremap =f f{f(f[f<zf%
 "nnoremap =F 

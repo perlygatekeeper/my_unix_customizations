@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 #
-# A perl-5 script to remove html tags
+# A perl-5 script to remove html tags - OR
+# encoding and split input string after the ? and all &'s
 #
 $name = $0; $name =~ s'.*/''; # remove path--like basename
 $usage = "usage:\n$name";
