@@ -1,13 +1,15 @@
 #!/usr/bin/tcsh
-  set hostfile=hosts.`date '+%Y%m%d'`
+  set hostfile=hosts2.`date '+%Y%m%d'`
   if ( ! -f $hostfile || -z $hostfile ) then
     echo "I find no useful hosts file $hostfile, I'll make one now."
     foreach i ( `countdown 0 255` )
-      host 192.168.240.$i | grep -v 'not found' >> $hostfile
-      host 192.168.241.$i | grep -v 'not found' >> $hostfile
+      host 10.28.160.$i | grep -v 'not found' >> $hostfile
+      host 10.28.16.$i  | grep -v 'not found' >> $hostfile
     end
   endif
 
+:     host 192.168.240.$i | grep -v 'not found' >> $hostfile
+:     host 192.168.241.$i | grep -v 'not found' >> $hostfile
 : 1.240.168.192.in-addr.arpa domain name pointer cmhfw002.ecnext03.local.
 
 cat $hostfile | \
