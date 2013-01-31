@@ -12,6 +12,7 @@ alias mack		ack --pager="'less -R'" --ignore-dir=lost+found --ignore-dir=branche
 alias sd		svn diff -x -wb
 
 alias swc		perl -I"$SBXROOT" "$SBXROOT/tools/sandbox/swc.pl" --sandbox-uri-base="http://${SBXIP}:8888/"
+alias swcc		perl -I"$SBXROOT" "$SBXROOT/tools/sandbox/swc.pl" --sandbox-uri-base="http://${SBXIP}:8888/" --name comsite5
 alias vcm		vi /svn/comsite5/Manta/RequestDispatcher/ContextMaps.pm
 alias vcp		vi /svn/comsite5/Manta/Web/CompanyPage.pm
 alias vmb		vi /svn/comsite5/Manta/Web/Megabrowse.pm
@@ -24,7 +25,9 @@ setenv svnchanges	'svn diff --diff-cmd /usr/bin/diff -x "-uwB" -r`svn log --stop
 alias svn-changes	"$svnchanges"
 alias svn-changelog	"$svnchanges" --summarize
 alias svn-revlog	'svn log --stop-on-copy'
-alias untrace		"crk '\\n' '\n' | crk '\\t' '    ' | crk 'called at(.*)"'$'"' '\n\tcalled at "'$'"1\n'"
+alias svn-diff		'svn diff --diff-cmd /usr/bin/diff -x "-uwB" '
+alias mdiff			'diff -x .svn -I '\''^20.*Z'\'' -I '\''^#\? \?\$URL:'\'
+alias untrace		"crk '\\n' '\n' | crk '\\t' '\t' | crk 'called at(.*)"'$'"' '\n\tcalled at "'$'"1\n'"
 alias puptest		'sudo /usr/sbin/puppetd --test'
 
 alias amber         'setenv SBXIP   "192.168.241.72";       echo now interacting with aschwartz3-sbx: $SBXIP;       source ~/.manta'
