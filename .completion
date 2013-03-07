@@ -91,7 +91,7 @@ set hostlist=(foo bar baz)
 com ssh         'p/1/$hostlist/' 'p/2/c/'
 
 # rcp and scp allow arguments to be references to either local or remote
-# files.  Its impossible to complete remote files, but its useful to assume
+# files.  It's impossible to complete remote files, but its useful to assume
 # that the remote file structure is similar to the local one.
 #
 # when you first start typing, it could be any of a username, hostname,
