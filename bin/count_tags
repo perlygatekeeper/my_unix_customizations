@@ -8,7 +8,7 @@
 #   ***   Define Default Strings, Values & Flags   ***
 $name = $0;
 $usage = "usage:\n$name [file_name|environment_variable]\n";
-if ( $ARGV[0] eq '-?' || $ARGV[0] eq '-i' ) { do help($usage); }
+if ( $ARGV[0] eq '-?' || $ARGV[0] eq '-i' ) { help($usage); }
 push(@reg_exp,"\<table");	push(@target_name,"table");
 push(@reg_exp,"\</table"); 	push(@target_name,"table closing");
 push(@reg_exp,"\<tr"); 		push(@target_name," row");
