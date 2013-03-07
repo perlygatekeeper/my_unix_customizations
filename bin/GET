@@ -524,3 +524,12 @@ Usage: $progname [-options] <url>...
     -x            Extra debugging output
 EOT
 }
+
+__END__
+
+echo use:    find . -type f -exec grep '^ln' {} \; | sh
+echo GET is the 'real' file
+ln -fs GET HEAD
+ln -fs GET lwp-request
+ln -fs GET POST
+
