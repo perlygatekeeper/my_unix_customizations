@@ -5,7 +5,7 @@
 $name = $0; $name =~ s'.*/''; # remove path--like basename
 $usage = "usage:\n$name";
 
-$/=''; #enable paragraph mode & mulitline pattern matching.
+$/=''; #enable paragraph mode
 
 while (<>) {
 # if ( /^\s*$|^$/ ) { print; next; }
