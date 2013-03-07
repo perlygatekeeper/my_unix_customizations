@@ -1,8 +1,8 @@
 #!/bin/sh
-sudo /etc/init.d/varnish  stop
+sudo /etc/init.d/manta-varnish  stop
 sudo /etc/init.d/manta    stop
 sudo /etc/init.d/manta_cp stop
 sleep 1;
 sudo /etc/init.d/manta    start
 sudo /etc/init.d/manta_cp start
-sudo /etc/init.d/varnish  start
+sudo /etc/init.d/manta-varnish  start
