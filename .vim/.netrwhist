@@ -1,3 +1,10 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =1
+let g:netrw_dirhist_cnt =8
 let g:netrw_dirhist_1='/etc/apt/preferences.d'
+let g:netrw_dirhist_2='/svn/comsite5-mercury/Manta/Search'
+let g:netrw_dirhist_3='/svn/comsite5/Manta/Web/World'
+let g:netrw_dirhist_4='/svn/c5-mercury/Manta/WSDataMgr'
+let g:netrw_dirhist_5='/svn/comsite5/Manta/WSDataMgr'
+let g:netrw_dirhist_6='/svn/comsite5/templates/mobile/mb'
+let g:netrw_dirhist_7='/etc/apache2/sites-available'
+let g:netrw_dirhist_8='/svn/Yext/Manta/Web/WebService'
