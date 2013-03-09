@@ -8,9 +8,11 @@ USAGE="Usage: swc ACTION [-s MODULE] [-h HOST]\n
 \tExample:\n
 \t\t$ swc sync -s comsite5 -h ecnext15"
 
+SBXIP="${SBXIP:-192.168.241.181}"
+SBXROOT="${SBXROOT:-/svn/sbx-mgr-prod}"
+
 PWD=`pwd`
 SB_NAME=`basename $PWD`
-HOST=$SBXIP
 VERBOSE=0
 
 if [ "$1" ]
@@ -32,8 +34,7 @@ do
 done
 
 
-CMD="perl -I/home/sparker/sbx-mgr-prod /home/sparker/sbx-mgr-prod/tools/sandbox/swc.pl \
---name=$SB_NAME --sandbox-uri-base=http://${HOST}:8888/ $ACTION"
+CMD="perl -I$SBXROOT $SBXROOT/tools/sandbox/swc.pl --name=$SB_NAME --sandbox-uri-base=http://${SBXIP}:8888/ $ACTION"
 
 if [ $VERBOSE != 0 ] ; then
   echo "Executing: $CMD"
