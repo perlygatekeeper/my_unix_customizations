@@ -5,6 +5,9 @@ set backspace=indent,eol,start	" allow backspacing over everything in insert mod
 " or <-lines/register '-prev-files-marks, /-searches, :-command-lines, @-input-lines???
 " c-vim-info-encoding, f-marks
 "
+" NOTE this may be useful: !'mcrk '(\S *)\t' '$1    '
+" replaces (X____)\t  with $1 . _ x 4
+"
 set viminfo='128,f1			" read/write a .viminfo file, don't store more
 								" than 50 lines of registers
 set history=1024          		" keep XX lines of command line history
@@ -15,10 +18,10 @@ set noslowopen
 set hidden						" Hide other buffers instead of abandoning them.
 set number						" display line numbers
 
-"syntax on						" turn on syntax detection
-"filetype on           			" Enable filetype detection
-"filetype indent on    			" Enable filetype-specific indenting
-"filetype plugin on    			" Enable filetype-specific plugins
+syntax on						" turn on syntax detection
+filetype on           			" Enable filetype detection
+filetype indent on    			" Enable filetype-specific indenting
+filetype plugin on    			" Enable filetype-specific plugins
 
 set report=2					" report yanks/deletes of 2 or more lines
 set showcmd						" Status bar stuff.
@@ -31,8 +34,8 @@ set ignorecase					" usually ignore case when searching
 set smartcase					" unless I explicitly use an UPPER CASE character
 
 set autoindent					" autoindent by default
-nnoremap << :set noautoindent<Cr>
-nnoremap >> :set   autoindent<Cr>
+nnoremap << :set noautoindent<Cr>:filetype indent off<Cr>
+nnoremap >> :set   autoindent<Cr>:filetype indent on<Cr>
 
 if has("autocmd")
   " When editing a file, always jump to the last cursor position
@@ -44,7 +47,7 @@ endif
 
 
 " Colorscheme stuff
-colorscheme vibrantink
+colorscheme tibet
 set background=dark
 nnoremap =0 :set background=dark<Cr>
 nnoremap =1 :set background=light<Cr>
@@ -55,10 +58,11 @@ nnoremap =+ :colorscheme tibet<Cr>
 
 nnoremap q :q!|
 " nnoremap v ~
-nnoremap =.. :!swc sync<Cr>
+nnoremap =.. :!swc --name comsite5 sync<Cr>
 nnoremap =} !} perl -pe 's///g;'
 nnoremap =% !% perl -pe 's///g;'
 nnoremap =3 !G rot13
+nnoremap => !} crk '^(.)' '\t$1'<Cr>
 " edit alternate file.
 nnoremap =b :e#<Cr>
 " nnoremap =c !} cut -c
@@ -67,7 +71,6 @@ nnoremap =b :e#<Cr>
 " nnoremap =g !2} glue -b
 " nnoremap =G !G glue -b
 "" add '> ' to beginning of rest of the lines in the buffer
-" nnoremap => :.,$ s/^\(.\)/> \1/<Cr>''
 " nnoremap =n :.,$ s/^> >/>> /<Cr>
 
 " template stuff for HTML(h), make(m), perl(p), tcsh(t) and python(y)
@@ -75,6 +78,8 @@ nnoremap =b :e#<Cr>
 " uppercase character prompts to read in a directory listing
 nnoremap =# :set number!<Cr>
 nnoremap =? :help<Cr>:only<Cr>
+nnoremap =c :colorscheme 
+nnoremap =C :r! ls -C ~/.vim/colors/
 nnoremap =h :r ~/etc/htmllib/
 nnoremap =H :r! ls -C ~/etc/htmllib/
 nnoremap =m :r ~/etc/makelib/
@@ -85,6 +90,8 @@ nnoremap =t :r ~/etc/tcshlib/
 nnoremap =T :r! ls -C ~/etc/tcshlib/
 nnoremap =y :r ~/etc/pylib/
 nnoremap =Y :r! ls -C ~/etc/pylib/
+
+nnoremap =l !!crk '\\t' '\t' \| crk '\\n' '\n' \| crk 'called at(.*)\$' '\n\tcalled at \$1\n'<Cr>
 
 nnoremap =f f{f(f[f<zf%
 "nnoremap =F 

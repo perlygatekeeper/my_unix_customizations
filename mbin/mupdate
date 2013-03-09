@@ -1,13 +1,14 @@
 #!/bin/bash
 
 SBXIP="${SBXIP:-192.168.241.35}"
+SBXROOT="${SBXROOT:-/svn/sbx-mgr-prod}"
 
-for i in 'community' 'core' 'comsite5' 'manta-app-base' 'web-platform' 'image-service' 'kwtool-rules' 'opencms-export'
+for i in 'common-lib' 'community' 'core' 'comsite5' 'manta-app-base' 'web-platform' 'image-service' 'kwtool-rules' 'opencms-export' 'rabbitmq'
 do 
   echo $i
-  cd ~/MantaDev/$i
+  cd /svn/$i
   /usr/bin/svn up
   echo "syncing with ${SBXIP}"
-  /usr/bin/perl -I/home/sparker/sbx-mgr-prod /home/sparker/sbx-mgr-prod/tools/sandbox/swc.pl --sandbox-uri-base=http://${SBXIP}:8888/ sync
+  /usr/bin/perl -I"$SBXROOT" "$SBXROOT"/tools/sandbox/swc.pl --sandbox-uri-base=http://${SBXIP}:8888/ sync
   echo "--------------------------------------------------------------------------------"
 done

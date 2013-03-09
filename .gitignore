@@ -1,0 +1,7 @@
+.gitignore
+.ssh
+.ssh/known_hosts
+[A-Z]*
+[0-9]*
+[a-z]*
+.??*
