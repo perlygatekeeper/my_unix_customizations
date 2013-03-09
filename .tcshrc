@@ -21,7 +21,9 @@ a rot		pushd +1
 
 # a fox		ssh -X -Y -L 8080:128.146.39.23:80 -L 4443:128.146.39.23:443 -l tmonnett fox.mps.ohio-state.edu
 a home		ssh parker@192.168.0.101
-a hafh		ssh parker@71.79.242.190
+a hafh		ssh -p 23 parker@71.79.242.190
+a ipoodle	ssh steve@192.168.0.102
+a laptop	ssh steve@192.168.0.104
 
 # host specific commands
 set path = ( $path ~/bin )
@@ -74,14 +76,20 @@ set history=4096 savehist=(4096 merge)
 # set histdup='all'
 set histdup='erase'
 set autolist=ambiguous          # autolist on ambiguous
-set histdup=prev                # don't push dup entries oh history
+# set listmax=500 listmaxrows=50      
 set echo_style=both             # honor both SYSV and BSD style echo conventions
 set fignore='.o'                # suffixes to ignore during filename completion
 set showdots='-A'               # show dot files in completions
 if ( -f ~/.completion) then
   source ~/.completion
 endif
-if ( -f ~/.manta) then
-  source ~/.manta
+if ( -f ~/.tcshrc.macosx) then
+  source ~/.tcshrc.macosx
+endif
+if ( -f ~/.tcshrc.ubuntu) then
+  source ~/.tcshrc.ubuntu
+endif
+if ( -f ~/.tcshrc.manta) then
+  source ~/.tcshrc.manta
 endif
 endif

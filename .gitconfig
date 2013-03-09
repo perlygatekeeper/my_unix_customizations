@@ -1,0 +1,5 @@
+[user]
+	email = parker.12@osu.edu
+	name = Steven Parker
+[credential]
+	helper = cache --timeout=3600

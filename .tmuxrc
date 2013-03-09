@@ -1,0 +1,3 @@
+bind-key      Space   next-window
+bind-key      C-Space next-layout
+bind-key      a       send-prefix

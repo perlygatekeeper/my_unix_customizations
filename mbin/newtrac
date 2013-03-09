@@ -4,7 +4,7 @@
 # into a trac-specific file in the working copy.
 #
 $name = $0; $name =~ s'.*/''; # remove path--like basename
-$usage = "usage:\n$name [TRAC_TITLE]";
+$usage = "usage:\n$name [TRAC_TITLE; ProjectX - Make site really awesome]";
 
 chomp ($pwd=`pwd`); ( $trac = $pwd ) =~ s,.*/?trac_(\d{4}).*,$1,;
 print "starting in $pwd, therefore this is $trac\n";
