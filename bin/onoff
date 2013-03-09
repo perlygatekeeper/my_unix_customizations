@@ -4,6 +4,8 @@
 #
 $name = $0; $name =~ s'.*/''; # remove path--like basename
 $usage = "usage:\n$name start_regexp [stop_regexp] etc.";
+use strict;
+use warnings;
 
 # later to add options for
 # 1 context = ( lead, linger )
@@ -22,81 +24,81 @@ $printing = 0;
 &parse_args(@ARGV);
 
 if ($debug) {
-  print "starts\n";
-  print "set start to '$start_regexp'\n";
-  print "set start at: " . join(', ', keys %after) .  "\n";
-  print "\nstops\n";
-  print "set stop to '$stop_regexp'\n";
-  print "set stop at: " . join(', ', keys %until) .  "\n";
-  print "\nfiles?\n";
-  print "$_\n" foreach (@ARGV);
-  $debug = 0;
+	print "starts\n";
+	print "set start to '$start_regexp'\n" if ($start_regexp);
+	print "set start at: " . join(', ', keys %after) .	"\n";
+	print "\nstops\n";
+	print "set stop to '$stop_regexp'\n" if ($stop_regexp);
+	print "set stop at: " . join(', ', keys %until) .	"\n";
+	print "\nfiles?\n";
+	print "$_\n" foreach (@ARGV);
+	$debug = 0;
 }
 
 MAINLOOP:
 while (<>) {
-  $lines->{total}++;
-  if ($printing{$.}) {
-    print;
-    $lines->{printed}++;
-    next;
-  } elsif ($until{$.}) {
-    $printing = 0;
-  } elsif ($after{$.}) {
-    $printing = $linger || 1;
-  }
-  if ($printing) {
-    if ( $_ =~ $stop_regexp ) {
-      $lines->{stops}++;
-      $printing--;                            # printing needn't be a toggle, if we wanted 5 lines of context around each start
-      if ( $printing or $including_stops ) {  # either lingering or explicitly printing stop matches
-        print "(1,$printing,$.): $_" if ($debug);
-        print;
-        $lines->{printed}++;
-	while ( $printing and ( $_ = <> ) ) { # lingering now
-          if ( $_ =~ $start_regexp ) {
-            $printing=$linger || 1;
-	    next MAINLOOP;
-          } else {
-            $printing--;
-          }
-          print "(2,$printing,$.): $_" if ($debug);
-          print;
-          $lines->{printed}++;
+	$lines->{total}++;
+	if ($printing{$.}) {
+		print;
+		$lines->{printed}++;
+		next;
+	} elsif ($until{$.}) {
+		$printing = 0;
+	} elsif ($after{$.}) {
+		$printing = $linger || 1;
 	}
-        print "-" x 60 . "\n";
-      }
-    } else {
-      print "(3,$printing,$.): $_" if ($debug);
-      print;
-      $lines->{printed}++;
-    }
-  } else {
-    if ( $_ =~ $start_regexp ) {
-      $lines->{starts}++;
-      $printing = $linger || 1;
-      if ($lead and @{$lines->{remembered}} ) {
-	if ($debug) {
-          print "(4,$printing,$.): $_" foreach ( @{$lines->{remembered}} );
-          print "(5,$printing,$.): $_";
+	if ($printing) {
+		if ( $_ =~ $stop_regexp ) {
+			$lines->{stops}++;
+			$printing--;														# printing needn't be a toggle, if we wanted 5 lines of context around each start
+			if ( $printing or $including_stops ) {	# either lingering or explicitly printing stop matches
+				print "(1,$printing,$.): $_" if ($debug);
+				print;
+				$lines->{printed}++;
+				while ( $printing and ( $_ = <> ) ) { # lingering now
+					if ( $_ =~ $start_regexp ) {
+						$printing=$linger || 1;
+						next MAINLOOP;
+					} else {
+						$printing--;
+					}
+					print "(2,$printing,$.): $_" if ($debug);
+					print;
+					$lines->{printed}++;
+				}
+				print "-" x 60 . "\n";
+			}
+		} else {
+			print "(3,$printing,$.): $_" if ($debug);
+			print;
+			$lines->{printed}++;
+		}
+	} else {
+		if ( $_ =~ $start_regexp ) {
+			$lines->{starts}++;
+			$printing = $linger || 1;
+			if ($lead and @{$lines->{remembered}} ) {
+				if ($debug) {
+					print "(4,$printing,$.): $_" foreach ( @{$lines->{remembered}} );
+					print "(5,$printing,$.): $_";
+				}
+				print foreach ( @{$lines->{remembered}} );
+				print;
+				$lines->{printed} += ( $#{$lines->{remembered}} + 1 );
+			} elsif ($including_starts) {
+				print "(6,$printing,$.): $_" if ($debug);
+				print;
+				$lines->{printed}++;
+			}
+		} else {
+			print "(7,$printing,$.): $_" if ($debug);
+			push ( @{$lines->{remembered}}, $_);
+			if ( $#{$lines->{remembered}} > $lead ) {
+				shift ( @{$lines->{remembered}} );		# maintain remembered lines pipe length
+				$lines->{not_printed}++;
+			}
+		}
 	}
-        print foreach ( @{$lines->{remembered}} );
-        print;
-        $lines->{printed} += ( $#{$lines->{remembered}} + 1 );
-      } elsif ($including_starts) {
-        print "(6,$printing,$.): $_" if ($debug);
-        print;
-        $lines->{printed}++;
-      }
-    } else {
-      print "(7,$printing,$.): $_" if ($debug);
-      push ( @{$lines->{remembered}}, $_);
-      if ( $#{$lines->{remembered}} > $lead ) {
-        shift ( @{$lines->{remembered}} );    # maintain remembered lines pipe length
-        $lines->{not_printed}++;
-      }
-    }
-  }
 }
 
 exit 0;
@@ -106,117 +108,121 @@ sub parse_args {
   local(%abbrev)=(); # must be local, not my otherwise, *abbrev don't work in
 		     # call to &abbrev, I don't understand fully why at this time, 9/27/00 SP.
 
-  @args=('?','help');
-  @help=('print this message','print this message');
+  @args=('?','help','debug');
+  @help=('print this message','print this message','set debugging flag');
 
   push(@args,'on','start','begin','off','stop','end');
   push(@help,'regexp to trigger printing',
-             'regexp to trigger printing',
-             'regexp to trigger printing',
-             'regexp to terminate printing',
-             'regexp to terminate printing',
-             'regexp to terminate printing');
+		     'regexp to trigger printing',
+		     'regexp to trigger printing',
+		     'regexp to terminate printing',
+		     'regexp to terminate printing',
+		     'regexp to terminate printing');
 
   push(@args,'lead','linger','context','file');
   push(@help,'# of lines to print before each print trigger',
-             '# of lines to print after each terminate trigger',
-             '# of lines to print before and after a trigger',
-             'name of file to add to list of files to scan');
+		     '# of lines to print after each terminate trigger',
+		     '# of lines to print before and after a trigger',
+		     'name of file to add to list of files to scan');
 
   push(@args,'N','N..','..M','N..M');
   push(@help,"will print line N, ignoring start/stop regexp's",
-             "start printing at line N, will continue until something terminates it",
-             "will terminate printing at line M, ignoring start/stop regexp's",
-             "will print all lines between N and M ignoring all all regexp triggers");
+		     "start printing at line N, will continue until something terminates it",
+		     "will terminate printing at line M, ignoring start/stop regexp's",
+		     "will print all lines between N and M ignoring all all regexp triggers");
 
-  grep(s/^([^-])/-\1/,@args);
+	grep(s/^([^-])/-\1/,@args);
 
-  push(@INC,'/usr/bin/perl',"$HOME/perllib");
-  require("abbrev.pl");
-  &abbrev(*abbrev, @args);
+	push(@INC,'/usr/bin/perl',"$HOME/perllib");
+	require("abbrev.pl");
+	&abbrev(*abbrev, @args);
 
 
-  while ( @ARGV >= 1 ) {
-    if      ( ($abbrev{$ARGV[0]} eq '-help' )
-           || ($abbrev{$ARGV[0]} eq '-?' ) ) {
-      &help($usage);
-      shift(@ARGV);
+	while ( @ARGV >= 1 ) {
+		if      ( ( $abbrev{$ARGV[0]} eq '-help' )
+			 || (   $abbrev{$ARGV[0]} eq '-?'    ) ) {
+			&help($usage);
+			shift(@ARGV);
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-on' or  $abbrev{$ARGV[0]} eq '-start' or  $abbrev{$ARGV[0]} eq '-begin' ) {
-      $start_regexp = qr($ARGV[1]);
-      print "user specified '$start_regexp' as regexp to trigger printing\n" if ($debug);
-      shift(@ARGV); shift(@ARGV);
+		} elsif ( $abbrev{$ARGV[0]} eq '-debug' ) {
+			$debug = 1;
+			print "user specified debugging flag set\n";
+			shift(@ARGV);
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-off' or  $abbrev{$ARGV[0]} eq '-stop' or  $abbrev{$ARGV[0]} eq '-end' ) {
-      $stop_regexp = qr($ARGV[1]);
-      print "user specified '$stop_regexp' as regexp to terminate printing\n" if ($debug);
-      shift(@ARGV); shift(@ARGV);
+		} elsif ( $abbrev{$ARGV[0]} eq '-on' or  $abbrev{$ARGV[0]} eq '-start' or  $abbrev{$ARGV[0]} eq '-begin' ) {
+			$start_regexp = qr($ARGV[1]);
+			print "user specified '$start_regexp' as regexp to trigger printing\n" if ($debug);
+			shift(@ARGV); shift(@ARGV);
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-lead' ) {
-      $lead = $ARGV[1];
-      print "user specified '$lead' as number of lines to print before each trigger regexp\n" if ($debug);
-      shift(@ARGV); shift(@ARGV);
+		} elsif ( $abbrev{$ARGV[0]} eq '-off' or  $abbrev{$ARGV[0]} eq '-stop' or  $abbrev{$ARGV[0]} eq '-end' ) {
+			$stop_regexp = qr($ARGV[1]);
+			print "user specified '$stop_regexp' as regexp to terminate printing\n" if ($debug);
+			shift(@ARGV); shift(@ARGV);
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-linger' ) {
-      $linger = $ARGV[1];
-      print "user specified '$linger' as number of lines to print after each terminate regexp\n" if ($debug);
-      shift(@ARGV); shift(@ARGV);
+		} elsif ( $abbrev{$ARGV[0]} eq '-lead' ) {
+			$lead = $ARGV[1];
+			print "user specified '$lead' as number of lines to print before each trigger regexp\n" if ($debug);
+			shift(@ARGV); shift(@ARGV);
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-conext' ) {
-      $lead = $ARGV[1];
-      print "user specified '$lead' as number of lines to print before each trigger regexp\n" if ($debug);
-      print "and alst the as number of lines to print after each terminate regexp\n" if ($debug);
-      shift(@ARGV); shift(@ARGV);
+		} elsif ( $abbrev{$ARGV[0]} eq '-linger' ) {
+			$linger = $ARGV[1];
+			print "user specified '$linger' as number of lines to print after each terminate regexp\n" if ($debug);
+			shift(@ARGV); shift(@ARGV);
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-file' ) {
-      push(@files,"$ARGV[1]");
-      print "add 'ARGV[1]' to list of files to scan\n" if ($debug);
-      shift(@ARGV); shift(@ARGV);
+		} elsif ( $abbrev{$ARGV[0]} eq '-context' ) {
+			$lead = $ARGV[1];
+			print "user specified '$lead' as number of lines to print before each trigger regexp\n" if ($debug);
+			print "and the as number of lines to print after each terminate regexp\n" if ($debug);
+			shift(@ARGV); shift(@ARGV);
 
-    } elsif ( $ARGV[0] =~ m'^-?(\d+)\.\.(\d+)$' ) { # N to M
-      my $start = $1;
-      my $end = $2;
-      $printing{$_}++ foreach ( $start .. $end );
-      print "user has requested printing of lines $start to $end inclusive\n" if ($debug);
-      shift(@ARGV);
+		} elsif ( $abbrev{$ARGV[0]} eq '-file' ) {
+			push(@files,"$ARGV[1]");
+			print "add 'ARGV[1]' to list of files to scan\n" if ($debug);
+			shift(@ARGV); shift(@ARGV);
 
-    } elsif ( $ARGV[0] =~ m'^-?(\d+)\.\.$' ) { # N on
-      $after{$1}++;
-      print "user has requested printing of lines starting at $1\n" if ($debug);
-      shift(@ARGV);
+		} elsif ( $ARGV[0] =~ m'^-?(\d+)\.\.(\d+)$' ) { # N to M
+			push( @$ranges,{ start=>$1, end=>$2 } );
+			print "user has requested printing of lines $1 to $2 inclusive\n" if ($debug);
+			shift(@ARGV); shift(@ARGV);
 
-    } elsif ( $ARGV[0] =~ m'^-?\.\.(\d+)$' ) { #   to M
-      $until{$1}++;
-      print "user has requested printing of lines up to $1\n" if ($debug);
-      shift(@ARGV);
+		} elsif ( $ARGV[0] =~ m'^-?(\d+)\.\.$' ) { # N on
+			push( @$ranges,{ start=>$1, end=>undef } );
+			print "user has requested printing of lines starting at $1\n" if ($debug);
+			shift(@ARGV);
 
-    } elsif ( $ARGV[0] =~ m'^-?(\d+)$' ) {     # just print line N
-      $printing{$1}++;
-      print "user has requested printing of line $1\n" if ($debug);
-      shift(@ARGV);
+		} elsif ( $ARGV[0] =~ m'^-?\.\.(\d+)$' ) { #   to M
+			push( @$ranges,{ start=>undef, end=>$1 } );
+			print "user has requested printing of lines up to $1\n" if ($debug);
+			shift(@ARGV);
 
-    } else {
-      warn("$name: Unknown option '$ARGV[0]'; assuming file to scan...\n") if ($debug);
-      push(@files,shift(@ARGV));
-    }
-  }  # end while
-  @ARGV = @files;
+		} elsif ( $ARGV[0] =~ m'^-?(\d+)$' ) {     # just print line N
+			push( @$ranges,{ start=>$1, end=>$1 } );
+			print "user has requested printing of line $1\n" if ($debug);
+			shift(@ARGV);
+
+		} else {
+			warn("$name: Unknown option '$ARGV[0]'; assuming file to scan...\n") if ($debug);
+			push(@files,shift(@ARGV));
+		}
+	}  # end while
+	@ARGV = @files;
+	if (@$ranges) { @$ranges = sort { ( $ranges->[$a]{start} <=> $ranges->[$b]{start} ) || ( $ranges->[$a]{end} <=> $ranges->[$b]{end} ) } @$ranges }
 }  # end parse_args
 
 sub help {
-  select(STDOUT); $|=1; $\=''; 
-  print "@_[0]\n";
-  if (@help) {
-    for ($arg=$[; $arg<=$#args; $arg++) {
-      printf "%-16s\t%s\n", $args[$arg], $help[$arg];
-    }
-  } else {
-    for ($arg=$[; $arg<=$#args; $arg++) {
-      print "$args[$arg]\t";
-    }
-    print "\n";
-  }
-  exit 1;
+	select(STDOUT); $|=1; $\=''; 
+	print "@_[0]\n";
+	if (@help) {
+		for ($arg=$[; $arg<=$#args; $arg++) {
+			printf "%-16s\t%s\n", $args[$arg], $help[$arg];
+		}
+	} else {
+		for ($arg=$[; $arg<=$#args; $arg++) {
+			print "$args[$arg]\t";
+		}
+		print "\n";
+	}
+	exit 1;
 }
 
 __END__

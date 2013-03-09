@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 #-----------------------------------------------------------------------------
 
-#   ***   Define Default Strings, Values & Flags   ***
+# *** Define Default Strings, Values & Flags ***
 $name = $0;
 $usage = "usage: $name [-t|-targetstring target_str] [-r|replacestring replace_str]\n";
 $usage.= "       [-?|-usage] [-d|default (replaces all tabs with newlines)]\n";
@@ -24,9 +24,9 @@ $modifiers="g";
 $format = "%d";
 $roman_justification= "left";
 
-#   ***   Parse Command Line Argument(s)   ***
+# *** Parse Command Line Argument(s) ***
 while ( @ARGV >= 1 ) {
-  if    ( ( $ARGV[0] eq '-r' ) || ( $ARGV[0] eq '-replacestring' ) ) {
+  if ( ( $ARGV[0] eq '-r' ) || ( $ARGV[0] eq '-replacestring' ) ) {
     $replacestring = $ARGV[1];
     shift; shift; }
   elsif ( ( $ARGV[0] eq '-t' ) || ( $ARGV[0] eq '-targetstring' ) ) {
@@ -36,7 +36,7 @@ while ( @ARGV >= 1 ) {
     $all = "$ARGV[1]";
     shift; shift; }
   elsif ( ( $ARGV[0] eq '-?' ) || ( $ARGV[0] eq '-usage' ) ) {
-    do help($usage); }
+    help($usage); }
   elsif ( ( $ARGV[0] eq '-d' ) || ( $ARGV[0] eq '-default' ) ) {
     $crackstring=$tab;
     $replacestring=$newline;
@@ -73,43 +73,43 @@ while ( @ARGV >= 1 ) {
       last;
     }
   }
-}  # end while
+} # end while
 &replacement_widgets;
 
 select(STDOUT); $|=1;
 
-#     ----->>>>>   MAIN  LOOP  <<<<<-----
+# ----->>>>> MAIN LOOP <<<<<-----
 
-while (<>)  { $line=$_;
+while (<>) { $line=$_;
 
 # print "crackstring: '$crackstring' replacestring: '$replacestring'\n";
-#		$line =~ s/${crackstring}/${replacestring}/eog ;
+# $line =~ s/${crackstring}/${replacestring}/eog ;
 
-# eval  "\$line =~ s/${crackstring}/${replacestring}/g;" ;
+# eval "\$line =~ s/${crackstring}/${replacestring}/g;" ;
 # print "\$line =~ s/${crackstring}/${replacestring}/${modifiers};\n" ;
-  eval  "\$line =~ s/${crackstring}/${replacestring}/${modifiers};" ;
+  eval "\$line =~ s/${crackstring}/${replacestring}/${modifiers};" ;
 # print "\$line =~ s/${crackstring}/${replacestring}/${modifiers};\n" ;
   if ($replacestring =~ /__LINE__/) {
     $line =~ s/__LINE__/sprintf($format,$.)/eg;
   }
   if ( ! $increment ) {
-    if (defined($occurance))  {
+    if (defined($occurance)) {
       $line =~ s/__UNIQUE_STRING__/sprintf($format,$occurance++)/eg; }
-    if ($ROMAN)      {
+    if ($ROMAN) {
        $line =~ s/__ROMAN__/&roman_numerals($ROMAN++,$roman_length,$true)/eg; }
-    if ($roman)      {
+    if ($roman) {
        $line =~ s/__roman__/&roman_numerals($roman++,$roman_length,$false)/eg; }
     if ($ALPHABETIC) {
        $line =~ s/__ALPHABETIC__/$ALPHABETIC++/eg; }
     if ($alphabetic) {
        $line =~ s/__alphabetic__/$alphabetic++/eg; }
   } else {
-    if (defined($occurance))  {
+    if (defined($occurance)) {
       $line =~ s/__UNIQUE_STRING__/sprintf($format,$occurance+=$increment)/eg; }
-    if ($ROMAN)      {
+    if ($ROMAN) {
        $line =~
       s/__ROMAN__/&roman_numerals($ROMAN+=$increment,$roman_length,$true)/eg; }
-    if ($roman)      {
+    if ($roman) {
        $line =~
       s/__roman__/&roman_numerals($roman+=$increment,$roman_length,$false)/eg; }
     if ($ALPHABETIC) {
@@ -122,10 +122,10 @@ while (<>)  { $line=$_;
 }
 
 
-#   ***   EXIT GRACEFULLY   ***
+# *** EXIT GRACEFULLY ***
 exit 0;
 
-####   SUBROUTINES   ####
+#### SUBROUTINES ####
 sub help {
 print "@_[0]\n";
 print "Valid replacement string expressions are:\n";
@@ -140,16 +140,16 @@ exit 1;
 }
 
 sub is_a_number {
-# return  ( ($_[0]!=0) || ($_[0]=~/^\s*[-+]?0\x?\.?0*e?0*$/i) );
+# return ( ($_[0]!=0) || ($_[0]=~/^\s*[-+]?0\x?\.?0*e?0*$/i) );
   return $false if ( ($#_=0) || ($_[0]=~/^$/) );
-  return  ( $_[0]=~/^\s*[-+]?[0-9]*\.?[0-9]*e?[-+]?[0-9]*$/i );
+  return ( $_[0]=~/^\s*[-+]?[0-9]*\.?[0-9]*e?[-+]?[0-9]*$/i );
 }
 
 sub ascii {
 # returns character whos
 # ascii value equals argument 0 as
-#    octal or hex number if only one arg 
-# OR    decimal   number if argument 2 = "d" or "D"
+# octal or hex number if only one arg
+# OR decimal number if argument 2 = "d" or "D"
    if ($_[1] eq "d") { return pack('C1',$_[0]); }
 elsif ($_[1] eq "D") { return pack('C1',$_[0]); }
 return pack('C1',oct($_[0]));
@@ -182,7 +182,7 @@ sub replacement_widgets {
      $replacestring =~ s/(\\[0-7][0-7][0-7])/$octal/eg;
      $replacestring =~ /([^\\]?)\\([0-7][0-7][0-7])/;
     }
-#   print "'$replacestring'\n";
+# print "'$replacestring'\n";
 #print STDERR "Occurance is $occurance\n";
 }
 
@@ -190,14 +190,14 @@ sub roman_numerals {
 # give roman numeral up to '9999'
 ($numeral,$length,$capitals)=@_;
 #print "(\$numeral,\$length,\$capitals)('$numeral','$length','$capitals')\n" ;
-# set maximum lengths		n+1 in roman
-  $maxium_for_length[1]=   1; # 'II'
-  $maxium_for_length[2]=   2; # 'III'
-  $maxium_for_length[3]=   7; # 'VIII'
-  $maxium_for_length[4]=  17; # 'XVIII'
-  $maxium_for_length[5]=  27; # 'XXVIII'
-  $maxium_for_length[6]=  37; # 'XXXVIII'
-  $maxium_for_length[7]=  87; # 'LXXXVIII'
+# set maximum lengths n+1 in roman
+  $maxium_for_length[1]= 1; # 'II'
+  $maxium_for_length[2]= 2; # 'III'
+  $maxium_for_length[3]= 7; # 'VIII'
+  $maxium_for_length[4]= 17; # 'XVIII'
+  $maxium_for_length[5]= 27; # 'XXVIII'
+  $maxium_for_length[6]= 37; # 'XXXVIII'
+  $maxium_for_length[7]= 87; # 'LXXXVIII'
   $maxium_for_length[8]= 187; # 'CLXXXVIII'
   $maxium_for_length[9]= 287; # 'CCLXXXVIII'
   $maxium_for_length[10]=387; # 'CCCLXXXVIII'
@@ -209,21 +209,21 @@ sub roman_numerals {
   if ($numeral > $maxium_for_length[$length]) {
     return("*" x $length);
   }
-  $ones[0]='';     $tens[0]='';     $hundreds[0]='';     $thousands[0]='';
-  $ones[1]='I';    $tens[1]='X';    $hundreds[1]='C';    $thousands[1]='M';
-  $ones[2]='II';   $tens[2]='XX';   $hundreds[2]='CC';   $thousands[2]='MM';
-  $ones[3]='III';  $tens[3]='XXX';  $hundreds[3]='CCC';  $thousands[3]='MMM';
-  $ones[4]='IV';   $tens[4]='XL';   $hundreds[4]='CD';   $thousands[4]='Mv';
-  $ones[5]='V';    $tens[5]='L';    $hundreds[5]='D';    $thousands[5]='v';
-  $ones[6]='VI';   $tens[6]='LX';   $hundreds[6]='DC';   $thousands[6]='vM';
-  $ones[7]='VII';  $tens[7]='LXX';  $hundreds[7]='DCC';  $thousands[7]='vMM';
+  $ones[0]=''; $tens[0]=''; $hundreds[0]=''; $thousands[0]='';
+  $ones[1]='I'; $tens[1]='X'; $hundreds[1]='C'; $thousands[1]='M';
+  $ones[2]='II'; $tens[2]='XX'; $hundreds[2]='CC'; $thousands[2]='MM';
+  $ones[3]='III'; $tens[3]='XXX'; $hundreds[3]='CCC'; $thousands[3]='MMM';
+  $ones[4]='IV'; $tens[4]='XL'; $hundreds[4]='CD'; $thousands[4]='Mv';
+  $ones[5]='V'; $tens[5]='L'; $hundreds[5]='D'; $thousands[5]='v';
+  $ones[6]='VI'; $tens[6]='LX'; $hundreds[6]='DC'; $thousands[6]='vM';
+  $ones[7]='VII'; $tens[7]='LXX'; $hundreds[7]='DCC'; $thousands[7]='vMM';
   $ones[8]='VIII'; $tens[8]='LXXX'; $hundreds[8]='DCCC'; $thousands[8]='vMMM';
-  $ones[9]='IX';   $tens[9]='XC';   $hundreds[9]='CM';   $thousands[9]='Mx';
+  $ones[9]='IX'; $tens[9]='XC'; $hundreds[9]='CM'; $thousands[9]='Mx';
   if ( $numernal < 10000 ) {
-     $thousands=int($numeral/1000);	$thousands%= 10;
-     $hundreds= int($numeral/100);	$hundreds %= 10;
-     $tens=     int($numeral/10);	$tens     %= 10;
-     $ones=     $numeral%10;
+     $thousands=int($numeral/1000);$thousands%= 10;
+     $hundreds= in	t($numeral/100);$hundreds %= 10;
+     $tens= int($numeral/10);$tens %= 10;
+     $ones= $numeral%10;
      $roman_string=
        $thousands[$thousands].$hundreds[$hundreds].$tens[$tens].$ones[$ones];
      $roman_string=
@@ -236,47 +236,47 @@ sub roman_numerals {
      if ( $roman_justification eq "left") {
        $roman_string.=" " x ($length - length($roman_string));
      } else {
-       $roman_string= " " x ($length - length($roman_string)) .  $roman_string;
+       $roman_string= " " x ($length - length($roman_string)) . $roman_string;
      }
   } else {
-    return("*" x $length) if ( $length <  3 );
-    return("RBN")         if ( $length < 17 );
+    return("*" x $length) if ( $length < 3 );
+    return("RBN") if ( $length < 17 );
     return("Really Big Number");
   }
 }
 __END__
 
-echo use:    find . -type f -exec grep '^ln' {} \; | sh
+echo use: find . -type f -exec grep '^ln' {} \; | sh
 echo crank is the 'real' file
 ln -fs crank crk+
 
 tests:
 
 roman
-  i  )
-  iii)
-  iv )
-  ii )
-  v  )
+i )
+iii)
+iv )
+ii )
+v )
 
 roman-right
-    i)
-    v)
-  iii)
-   iv)
-   ii)
+i)
+v)
+iii)
+iv)
+ii)
 
 alpha
-   a)
-   a)
-   a)
-   a)
-   a)
+a)
+a)
+a)
+a)
+a)
 
 numeric
-   1)
-   1)
-   1)
-   1)
-   1)
-   1)
+1)
+1)
+1)
+1)
+1)
+1)
