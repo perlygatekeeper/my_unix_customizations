@@ -23,8 +23,8 @@ use warnings;
     if ( /^[^#]*history\s*=\s*(\d+)/     ) { print OUTFILE "HISTSIZE=$1\n";     $histsize++;}
     if ( /^[^#]*savehist\s*=[\s(]*(\d+)/ ) { print OUTFILE "HISTFILESIZE=$1\n"; $histfilesize++;}
     next unless ( /alias|^a / );
-	s/^a (\S+)\s+(\S.*)/sprintf "a %10s = %s", $1, $2/e;
-	s/^alias\s+(\S+)\s+(\S.*)/sprintf "alias %6s = %s", $1, $2/e;
+	s/^a (\S+)\s+(\S.*)/sprintf "a %10s='%s'", $1, $2/e;
+	s/^alias\s+(\S+)\s+(\S.*)/sprintf "alias %6s='%s'", $1, $2/e;
     print OUTFILE;
   }
 
