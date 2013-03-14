@@ -82,22 +82,22 @@ com uncomplete  'p/*/X/'
 # But if you complete without typing anything you get this:
 #   first argument:           adds "-s"
 #   arguments that follow -s: reminds you of which argument is expected
-complete ln     'C/?/f/' 'p/1/(-s)/' 'n/-s/x:[first arg is path to original file]/' 'N/-s/x:[second arg is new link]/'
+com ln     'C/?/f/' 'p/1/(-s)/' 'n/-s/x:[first arg is path to original file]/' 'N/-s/x:[second arg is new link]/'
 
 # set a list of hosts, for use with rlogin
 set hostlist=(foo bar baz)
-# complete rlogin 'p/1/$hostlist/'
-# complete rsh 'p/1/$hostlist/' 'p/2/c/'
+# com rlogin 'p/1/$hostlist/'
+# com rsh 'p/1/$hostlist/' 'p/2/c/'
 com ssh         'p/1/$hostlist/' 'p/2/c/'
 
 # rcp and scp allow arguments to be references to either local or remote
-# files.  Its impossible to complete remote files, but its useful to assume
+# files.  It's impossible to complete remote files, but its useful to assume
 # that the remote file structure is similar to the local one.
 #
 # when you first start typing, it could be any of a username, hostname,
 # or filename.  But filename is probably the most useful case, so:
 #
-# complete arguments as regular filenames, with following exceptions
+# com arguments as regular filenames, with following exceptions
 # if "@" has been typed, complete with a hostname, and append a colon (:)
 # if ":" has been typed, complete with a filename relative to home directory
 # if ":/" has been typed, complete with a filename relative to root directory
