@@ -21,7 +21,7 @@ a rot		pushd +1
 
 # a fox		ssh -X -Y -L 8080:128.146.39.23:80 -L 4443:128.146.39.23:443 -l tmonnett fox.mps.ohio-state.edu
 a home		ssh parker@192.168.0.101
-a hafh		ssh parker@71.79.242.190
+a hafh		ssh -p 8022 parker@71.79.236.111
 
 # host specific commands
 set path = ( $path ~/bin )
