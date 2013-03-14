@@ -1,4 +1,4 @@
-  $outfile="$name.out";
+  my $outfile="$name.out";
   open(OUTFILE,">$outfile")
     || die("$name: Cannot write to '$outfile': $!\n");
   print OUTFILE "stuff\n";
