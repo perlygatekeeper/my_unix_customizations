@@ -1,6 +1,7 @@
 .gitignore
 .ssh
 .ssh/known_hosts
+.vim/.netrwhist
 [A-Z]*
 [0-9]*
 [a-z]*
