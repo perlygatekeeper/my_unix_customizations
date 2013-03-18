@@ -85,13 +85,13 @@ set showdots='-A'               # show dot files in completions
 if ( -f ~/.completion) then
   source ~/.completion
 endif
-if ( -f ~/.tcshrc.macosx) then
+if ( -f ~/.tcshrc.macosx && -f .macosx ) then
   source ~/.tcshrc.macosx
 endif
-if ( -f ~/.tcshrc.ubuntu) then
+if ( -f ~/.tcshrc.ubuntu && -f .ubuntu ) then
   source ~/.tcshrc.ubuntu
 endif
-if ( -f ~/.tcshrc.manta) then
+if ( -f ~/.tcshrc.manta && -f .manta ) then
   source ~/.tcshrc.manta
 endif
 endif
