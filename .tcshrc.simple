@@ -1,0 +1,14 @@
+alias a	alias
+a ll	ls -l
+a lr	ls -ltr
+a lsd	ls -Fc
+a l.	ls -ld .??*
+a h		history
+a j		jobs
+a po	popd
+a pu	pushd
+a rotd	pushd +1
+a cx	chmod +x
+a u		unalias
+a src	source ~/.tcshrc
+a vrc	vi ~/.tcshrc
