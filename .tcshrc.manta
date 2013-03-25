@@ -34,10 +34,12 @@ alias amber         'setenv SBXIP   "192.168.241.199";      echo now interacting
 alias sbx           'setenv SBXIP   "192.168.241.203";      echo now interacting with sparker-sbx:      $SBXIP;  source ~/.tcshrc.manta'
 alias sbx2          'setenv SBXIP   "192.168.241.44";       echo now interacting with sparker2-sbx:     $SBXIP;  source ~/.tcshrc.manta'
 alias sara          'setenv SBXIP   "192.168.241.XXX";      echo now interacting with sbraumiller2-sbx: $SBXIP;  source ~/.tcshrc.manta'
-alias ecnext30      'setenv SBXIP   "10.28.16.211";         echo now interacting with ecnext30:         $SBXIP;  source ~/.tcshrc.manta'
 alias ecnext15      'setenv SBXIP   "10.28.16.166";         echo now interacting with ecnext15:         $SBXIP;  source ~/.tcshrc.manta'
+alias ecnext30      'setenv SBXIP   "10.28.16.211";         echo now interacting with ecnext30:         $SBXIP;  source ~/.tcshrc.manta'
+alias ecnext152     'setenv SBXIP   "10.28.161.236";        echo now interacting with ecnext152:        $SBXIP;  source ~/.tcshrc.manta'
+alias ecnext151     'setenv SBXIP   "10.28.161.235";        echo now interacting with ecnext151:        $SBXIP;  source ~/.tcshrc.manta'
 alias staging       'setenv SBXIP   "10.28.161.205";        echo now interacting with staging:          $SBXIP;  source ~/.tcshrc.manta'
-alias mrc           'vi ~/.tcshrc.manta; source ~/tcshrc.manta'
+alias mrc           'vi ~/.tcshrc.manta; source ~/.tcshrc.manta'
 
 setenv PERL5LIB "/svn/core:/svn/comsite5:/svn/community:/svn/image-service:/svn/manta-app-base:/svn/web-platform"
 
