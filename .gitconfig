@@ -1,5 +1,7 @@
 [user]
-	email = parker.12@osu.edu
+	email = sparker@manta.com
 	name = Steven Parker
 [credential]
 	helper = cache --timeout=3600
+[push]
+	default = upstream
