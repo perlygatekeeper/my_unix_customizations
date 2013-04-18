@@ -1,44 +1,78 @@
+# Manta specific shell and env variables and aliases
 set path=(${path} ~/mbin)
-setenv SBXROOT /svn/sbx-mgr-prod
-if ( ! ${?SBXIP} ) then
-  setenv SBXIP   "192.168.241.203"
-endif
-setenv md      "~/MantaDev"
+alias a	alias
+setenv 	mc	"/git/mantacode"
+set cdpath=(~ /git/mantacode /git /)
 
-alias installed	dpkg -l
-alias search	apt-cache search
-alias inst		sudo apt-get install
-alias mack		ack --pager="'less -R'" --ignore-dir=lost+found --ignore-dir=branches --ignore-dir=comsite5- --ignore-dir=comsite5_
-alias sd		svn diff -x -wb
+a untrace		"crk '\\n' '\n' | crk '\\t' '\t' | crk 'called at(.*)"'$'"' '\n\tcalled at "'$'"1\n'"
+a puptest		'sudo /usr/sbin/puppetd --test'
+a mrc           'vi ~/.tcshrc.manta; source ~/.tcshrc.manta'
 
-alias swc		perl -I"$SBXROOT" "$SBXROOT/tools/sandbox/swc.pl" --sandbox-uri-base="http://${SBXIP}:8888/"
-alias swcc		perl -I"$SBXROOT" "$SBXROOT/tools/sandbox/swc.pl" --sandbox-uri-base="http://${SBXIP}:8888/" --name comsite5
-alias vcm		vi /svn/comsite5/Manta/RequestDispatcher/ContextMaps.pm
-alias vcp		vi /svn/comsite5/Manta/Web/CompanyPage.pm
-alias vmb		vi /svn/comsite5/Manta/Web/Megabrowse.pm
+a vcm		vi /git/manta-web-app/Manta/RequestDispatcher/ContextMaps.pm
+a vcp		vi /git/manta-web-app/Manta/Web/CompanyPage.pm
+a vmb		vi /git/manta-web-app/Manta/Web/Megabrowse.pm
 
-setenv svn		"http://subversion/svn/main/"
-setenv comsite5	"$svn/comsite5/"
-setenv core		"$svn/core/"
+# common git commands to make into aes, put into .tcshrc.ubuntu when done.
+# git status
+# git branch -v
+# git remote -v
 
-setenv svnchanges	'svn diff --diff-cmd /usr/bin/diff -x "-uwB" -r`svn log --stop-on-copy | grep -P "^r\d+" | sort | head -n 1 | cut -d "|" -f 1 | sed "s/\s//g"`:HEAD .'
-alias svn-changes	"$svnchanges"
-alias svn-changelog	"$svnchanges" --summarize
-alias svn-revlog	'svn log --stop-on-copy'
-alias svn-diff		'svn diff --diff-cmd /usr/bin/diff -x "-uwB" '
-alias mdiff			'diff -x .svn -I '\''^20.*Z'\'' -I '\''^#\? \?\$URL:'\'
-alias untrace		"crk '\\n' '\n' | crk '\\t' '\t' | crk 'called at(.*)"'$'"' '\n\tcalled at "'$'"1\n'"
-alias puptest		'sudo /usr/sbin/puppetd --test'
+a ginfo 'echo "Branches:"; git branch -v; echo "\nRemotes:"; git remote -v; echo "\nStatus:"; git status'
+a gic	'git commit'
+a gib	'git branch'
+a gir	'git remote'
+a gis	'git status'
+a gidi	'git diff'
+a gpush	'git push origin'
+a gpull	'git pull origin'
+a tim	'node /git/mantacode/srcrr-client/srcrr'
 
-alias amber         'setenv SBXIP   "192.168.241.199";      echo now interacting with aschwartz-sbx:    $SBXIP;  source ~/.tcshrc.manta'
-alias sbx           'setenv SBXIP   "192.168.241.203";      echo now interacting with sparker-sbx:      $SBXIP;  source ~/.tcshrc.manta'
-alias sbx2          'setenv SBXIP   "192.168.241.44";       echo now interacting with sparker2-sbx:     $SBXIP;  source ~/.tcshrc.manta'
-alias sara          'setenv SBXIP   "192.168.241.XXX";      echo now interacting with sbraumiller2-sbx: $SBXIP;  source ~/.tcshrc.manta'
-alias ecnext30      'setenv SBXIP   "10.28.16.211";         echo now interacting with ecnext30:         $SBXIP;  source ~/.tcshrc.manta'
-alias ecnext15      'setenv SBXIP   "10.28.16.166";         echo now interacting with ecnext15:         $SBXIP;  source ~/.tcshrc.manta'
-alias staging       'setenv SBXIP   "10.28.161.205";        echo now interacting with staging:          $SBXIP;  source ~/.tcshrc.manta'
-alias mrc           'vi ~/.tcshrc.manta; source ~/tcshrc.manta'
+#setenv svn		"http://subversion/svn/main/"
+#setenv comsite5	"$svn/comsite5/"
+#setenv core		"$svn/core/"
 
-setenv PERL5LIB "/svn/core:/svn/comsite5:/svn/community:/svn/image-service:/svn/manta-app-base:/svn/web-platform"
+#a mack		ack --pager="'less -R'" --ignore-dir=lost+found --ignore-dir=branches --ignore-dir=comsite5- --ignore-dir=comsite5_
+#a sd		svn diff -x -wb
+#a swc		perl -I"$SBXROOT" "$SBXROOT/tools/sandbox/swc.pl" --sandbox-uri-base="http://${SBXIP}:8888/"
+#a swcc		perl -I"$SBXROOT" "$SBXROOT/tools/sandbox/swc.pl" --sandbox-uri-base="http://${SBXIP}:8888/" --name comsite5
+#a vcm		vi /svn/comsite5/Manta/RequestDispatcher/ContextMaps.pm
+#a vcp		vi /svn/comsite5/Manta/Web/CompanyPage.pm
+#a vmb		vi /svn/comsite5/Manta/Web/Megabrowse.pm
 
-: svn copy http://subversion/svn/main/comsite5/trunk http://subversion/svn/main/comsite5/branches/trac_####_DESCRIPTION
+#setenv SBXROOT /svn/sbx-mgr-prod
+#if ( ! ${?SBXIP} ) then
+#  setenv SBXIP   "192.168.241.203"
+#endif
+
+#a mack		ack --pager="'less -R'" --ignore-dir=lost+found --ignore-dir=branches --ignore-dir=comsite5- --ignore-dir=comsite5_
+#a sd		svn diff -x -wb
+#a swc		perl -I"$SBXROOT" "$SBXROOT/tools/sandbox/swc.pl" --sandbox-uri-base="http://${SBXIP}:8888/"
+#a swcc		perl -I"$SBXROOT" "$SBXROOT/tools/sandbox/swc.pl" --sandbox-uri-base="http://${SBXIP}:8888/" --name comsite5
+#a vcm		vi /svn/comsite5/Manta/RequestDispatcher/ContextMaps.pm
+#a vcp		vi /svn/comsite5/Manta/Web/CompanyPage.pm
+#a vmb		vi /svn/comsite5/Manta/Web/Megabrowse.pm
+
+#setenv svn		"http://subversion/svn/main/"
+#setenv comsite5	"$svn/comsite5/"
+#setenv core		"$svn/core/"
+
+#setenv svnchanges	'svn diff --diff-cmd /usr/bin/diff -x "-uwB" -r`svn log --stop-on-copy | grep -P "^r\d+" | sort | head -n 1 | cut -d "|" -f 1 | sed "s/\s//g"`:HEAD .'
+#a svn-changes	"$svnchanges"
+#a svn-changelog	"$svnchanges" --summarize
+#a svn-revlog	'svn log --stop-on-copy'
+#a svn-diff		'svn diff --diff-cmd /usr/bin/diff -x "-uwB" '
+#a mdiff			'diff -x .svn -I '\''^20.*Z'\'' -I '\''^#\? \?\$URL:'\'
+
+#a amber         'setenv SBXIP   "192.168.241.199";      echo now interacting with aschwartz-sbx:    $SBXIP;  source ~/.tcshrc.manta'
+#a sbx           'setenv SBXIP   "192.168.241.203";      echo now interacting with sparker-sbx:      $SBXIP;  source ~/.tcshrc.manta'
+#a sbx2          'setenv SBXIP   "192.168.241.44";       echo now interacting with sparker2-sbx:     $SBXIP;  source ~/.tcshrc.manta'
+#a sara          'setenv SBXIP   "192.168.241.XXX";      echo now interacting with sbraumiller2-sbx: $SBXIP;  source ~/.tcshrc.manta'
+#a ecnext15      'setenv SBXIP   "10.28.16.166";         echo now interacting with ecnext15:         $SBXIP;  source ~/.tcshrc.manta'
+#a ecnext30      'setenv SBXIP   "10.28.16.211";         echo now interacting with ecnext30:         $SBXIP;  source ~/.tcshrc.manta'
+#a ecnext152     'setenv SBXIP   "10.28.161.236";        echo now interacting with ecnext152:        $SBXIP;  source ~/.tcshrc.manta'
+#a ecnext151     'setenv SBXIP   "10.28.161.235";        echo now interacting with ecnext151:        $SBXIP;  source ~/.tcshrc.manta'
+#a staging       'setenv SBXIP   "10.28.161.205";        echo now interacting with staging:          $SBXIP;  source ~/.tcshrc.manta'
+
+#setenv PERL5LIB "/svn/core:/svn/comsite5:/svn/community:/svn/image-service:/svn/manta-app-base:/svn/web-platform"
+
+#: svn copy http://subversion/svn/main/comsite5/trunk http://subversion/svn/main/comsite5/branches/trac_####_DESCRIPTION
