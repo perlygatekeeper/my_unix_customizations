@@ -12,14 +12,14 @@ use warnings;
 # 2 no(print starts) default is to print
 # 3 no(print stops) default is to print
 
-$debug = 0;
+my $debug = 0;
 
-$lines->{remembered}=[];
-$linger = 0;
-$lead =   0;
-$including_starts = 1;
-$including_stops =  1;
-$printing = 0;
+my $lines->{remembered}=[];
+my $linger = 0;
+my $lead =   0;
+my $including_starts = 1;
+my $including_stops =  1;
+my $printing = 0;
 
 &parse_args(@ARGV);
 
@@ -108,8 +108,8 @@ sub parse_args {
   local(%abbrev)=(); # must be local, not my otherwise, *abbrev don't work in
 		     # call to &abbrev, I don't understand fully why at this time, 9/27/00 SP.
 
-  @args=('?','help','debug');
-  @help=('print this message','print this message','set debugging flag');
+  my @args=('?','help','debug');
+  my @help=('print this message','print this message','set debugging flag');
 
   push(@args,'on','start','begin','off','stop','end');
   push(@help,'regexp to trigger printing',
@@ -133,7 +133,7 @@ sub parse_args {
 
 	grep(s/^([^-])/-\1/,@args);
 
-	push(@INC,'/usr/bin/perl',"$HOME/perllib");
+	push(@INC,'/usr/bin/perl',"$ENV{HOME}/perllib");
 	require("abbrev.pl");
 	&abbrev(*abbrev, @args);
 
@@ -145,76 +145,76 @@ sub parse_args {
 			shift(@ARGV);
 
 		} elsif ( $abbrev{$ARGV[0]} eq '-debug' ) {
-			$debug = 1;
+			$MAIN::debug = 1;
 			print "user specified debugging flag set\n";
 			shift(@ARGV);
 
 		} elsif ( $abbrev{$ARGV[0]} eq '-on' or  $abbrev{$ARGV[0]} eq '-start' or  $abbrev{$ARGV[0]} eq '-begin' ) {
-			$start_regexp = qr($ARGV[1]);
+			$MAIN::start_regexp = qr($ARGV[1]);
 			print "user specified '$start_regexp' as regexp to trigger printing\n" if ($debug);
 			shift(@ARGV); shift(@ARGV);
 
 		} elsif ( $abbrev{$ARGV[0]} eq '-off' or  $abbrev{$ARGV[0]} eq '-stop' or  $abbrev{$ARGV[0]} eq '-end' ) {
-			$stop_regexp = qr($ARGV[1]);
+			$MAIN::stop_regexp = qr($ARGV[1]);
 			print "user specified '$stop_regexp' as regexp to terminate printing\n" if ($debug);
 			shift(@ARGV); shift(@ARGV);
 
 		} elsif ( $abbrev{$ARGV[0]} eq '-lead' ) {
-			$lead = $ARGV[1];
+			$MAIN::lead = $ARGV[1];
 			print "user specified '$lead' as number of lines to print before each trigger regexp\n" if ($debug);
 			shift(@ARGV); shift(@ARGV);
 
 		} elsif ( $abbrev{$ARGV[0]} eq '-linger' ) {
-			$linger = $ARGV[1];
+			$MAIN::linger = $ARGV[1];
 			print "user specified '$linger' as number of lines to print after each terminate regexp\n" if ($debug);
 			shift(@ARGV); shift(@ARGV);
 
 		} elsif ( $abbrev{$ARGV[0]} eq '-context' ) {
-			$lead = $ARGV[1];
+			$MAIN::lead = $ARGV[1];
 			print "user specified '$lead' as number of lines to print before each trigger regexp\n" if ($debug);
 			print "and the as number of lines to print after each terminate regexp\n" if ($debug);
 			shift(@ARGV); shift(@ARGV);
 
 		} elsif ( $abbrev{$ARGV[0]} eq '-file' ) {
-			push(@files,"$ARGV[1]");
+			push(@MAIN::files,"$ARGV[1]");
 			print "add 'ARGV[1]' to list of files to scan\n" if ($debug);
 			shift(@ARGV); shift(@ARGV);
 
 		} elsif ( $ARGV[0] =~ m'^-?(\d+)\.\.(\d+)$' ) { # N to M
-			push( @$ranges,{ start=>$1, end=>$2 } );
+			push( @$MAIN::ranges,{ start=>$1, end=>$2 } );
 			print "user has requested printing of lines $1 to $2 inclusive\n" if ($debug);
 			shift(@ARGV); shift(@ARGV);
 
 		} elsif ( $ARGV[0] =~ m'^-?(\d+)\.\.$' ) { # N on
-			push( @$ranges,{ start=>$1, end=>undef } );
+			push( @$MAIN::ranges,{ start=>$1, end=>undef } );
 			print "user has requested printing of lines starting at $1\n" if ($debug);
 			shift(@ARGV);
 
 		} elsif ( $ARGV[0] =~ m'^-?\.\.(\d+)$' ) { #   to M
-			push( @$ranges,{ start=>undef, end=>$1 } );
+			push( @$MAIN::ranges,{ start=>undef, end=>$1 } );
 			print "user has requested printing of lines up to $1\n" if ($debug);
 			shift(@ARGV);
 
 		} elsif ( $ARGV[0] =~ m'^-?(\d+)$' ) {     # just print line N
-			push( @$ranges,{ start=>$1, end=>$1 } );
+			push( @$MAIN::ranges,{ start=>$1, end=>$1 } );
 			print "user has requested printing of line $1\n" if ($debug);
 			shift(@ARGV);
 
 		} else {
-			warn("$name: Unknown option '$ARGV[0]'; assuming file to scan...\n") if ($debug);
+			warn("$MAIN::name: Unknown option '$ARGV[0]'; assuming file to scan...\n") if ($debug);
 			push(@files,shift(@ARGV));
 		}
 	}  # end while
-	@ARGV = @files;
-	if (@$ranges) { @$ranges = sort { ( $ranges->[$a]{start} <=> $ranges->[$b]{start} ) || ( $ranges->[$a]{end} <=> $ranges->[$b]{end} ) } @$ranges }
+	@ARGV = @MAIN::files;
+	if (@$ranges) { @$MAIN::ranges = sort { ( $MAIN::ranges->[$a]{start} <=> $MAIN::ranges->[$b]{start} ) || ( $MAIN::ranges->[$a]{end} <=> $MAIN::ranges->[$b]{end} ) } @$ranges }
 }  # end parse_args
 
 sub help {
 	select(STDOUT); $|=1; $\=''; 
 	print "@_[0]\n";
-	if (@help) {
+	if (@MAIN::help) {
 		for ($arg=$[; $arg<=$#args; $arg++) {
-			printf "%-16s\t%s\n", $args[$arg], $help[$arg];
+			printf "%-16s\t%s\n", $args[$arg], $MAIN::help[$arg];
 		}
 	} else {
 		for ($arg=$[; $arg<=$#args; $arg++) {
