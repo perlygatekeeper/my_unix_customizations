@@ -4,11 +4,6 @@
 # Only execute this block if this an interactive shell (behave like .login)
 if ( $?prompt ) then
 
-setenv LSCOLORS "Gxfxcxdxbxegedabagacad"
-setenv PAGER	/usr/bin/less
-setenv EDITOR	/usr/bin/vim
-setenv VISUAL	/usr/bin/vim
-
 # SHELL-RELATED ALIASES
 alias a		alias
 a u			unalias
@@ -19,27 +14,7 @@ a po		popd
 a pu		pushd
 a rot		pushd +1
 
-# a fox		ssh -X -Y -L 8080:128.146.39.23:80 -L 4443:128.146.39.23:443 -l tmonnett fox.mps.ohio-state.edu
-a home		ssh parker@192.168.0.100
-a ipoodle	ssh steve@192.168.0.102
-a laptop	ssh steve@192.168.0.104
-a work		ssh sparker@192.168.241.51
-
-a hafh		ssh -p 8022 parker@71.79.236.111
-
-
-# host specific commands
-set path = ( $path ~/bin )
-a procs		"ps -elf | cut -c76- | sort | crk '/\d' | uniq -c | sort -n"
-a pid		"ps axu  | grep \!* | grep -v grep"
-a pidw		"ps axuww| grep \!* | grep -v grep"
-a slay		'(set j=`ps -ax|grep \!*|head -1`;kill -9  $j[1]) >& /dev/null'
-a zap		'(set j=`ps -ax|grep \!*|head -1`;kill -1  $j[1]) >& /dev/null'
-a term		'(set j=`ps -ax|grep \!*|head -1`;kill -15 $j[1]) >& /dev/null'
-
-# prompt before rm *
-set rmstar on
-
+# simple, generic utility aliases
 a sv		'vi +"\!{:1}:" \!:2*'
 a lsd		'ls -F'
 a ll		'ls -l'
@@ -48,36 +23,67 @@ a dots		'ls -d .??*'
 a lsdir		'ls -l | grep drw'
 a cx		"chmod +x"
 a mcd		"mkdir \!:1; cd \!:1;"
+a orig 		'cp \!* \!*.orig'
 a ..		"cd .."
 a .			"source"
 a c			'clear'
-a orig 		'cp \!* \!*.orig'
 a day		"date '+%a %h %d %Y'"
-a src		'source ~/.tcshrc'
 a bye		exit
 a logout	exit
 a lo		exit
+
+# path-specific commands/aliases
+set path = ( $path ~/bin )
 a rp		'set path=($path)'
 a prepath	'set path=(\!* $path)'
 a postpath	'set path=($path \!*)'
 a addpath	'set path=($path \!*)'
 a here		'set path=($path .)'
 a pwdpath	'set path=($path `pwd`)'
+
+# process alaises
+a procs		"ps -elf | cut -c76- | sort | crk '/\d' | uniq -c | sort -n"
+a pid		"ps axu  | grep \!* | grep -v grep"
+a pidw		"ps axuww| grep \!* | grep -v grep"
+a slay		'(set j=`ps -ax|grep \!*|head -1`;kill -9  $j[1]) >& /dev/null'
+a zap		'(set j=`ps -ax|grep \!*|head -1`;kill -1  $j[1]) >& /dev/null'
+a term		'(set j=`ps -ax|grep \!*|head -1`;kill -15 $j[1]) >& /dev/null'
+
+# communication aliases
+# a fox		ssh -X -Y -L 8080:128.146.39.23:80 -L 4443:128.146.39.23:443 -l tmonnett fox.mps.ohio-state.edu
 a ssh		'ssh -XY'
+a home		ssh parker@192.168.0.100
+a ipoodle	ssh steve@192.168.0.102
+a laptop	ssh steve@192.168.0.104
+a work		ssh sparker@192.168.241.51
+
+a hafh		ssh -p 8022 parker@71.79.236.111
+
 a ifc		'ifconfig -a'
 a str		'strings - \!* | less'
+
 a vrc		'vi ~/.tcshrc'
 a vvrc		'vi ~/.vimrc'
+a src		'source ~/.tcshrc'
 
+
+setenv LSCOLORS "Gxfxcxdxbxegedabagacad"
+setenv PAGER	/usr/bin/less
+setenv EDITOR	/usr/bin/vim
+setenv VISUAL	/usr/bin/vim
+
+set rmstar on
 if ( $uid == 0 ) then
   set prompt = ": %S%m%s@%.03 [%h]; "
 else
   set prompt = "%S%m%s@%~ <%h> "
 endif
+
 set history=4096 savehist=(4096 merge)
 # set histdup='prev'
 # set histdup='all'
 set histdup='erase'
+
 set autolist=ambiguous
 # set listmax=500 listmaxrows=50      
 set echo_style=both
@@ -101,12 +107,3 @@ if ( -f ~/.tcshrc.manta && -f ~/.manta ) then
 	source ~/.tcshrc.manta
 endif
 endif
-
-##
-# Your previous /Users/Steve/.tcshrc file was backed up as /Users/Steve/.tcshrc.macports-saved_2013-04-24_at_22:33:57
-##
-
-# MacPorts Installer addition on 2013-04-24_at_22:33:57: adding an appropriate PATH variable for use with MacPorts.
-setenv PATH /opt/local/bin:/opt/local/sbin:$PATH
-# Finished adapting your PATH environment variable for use with MacPorts.
-
