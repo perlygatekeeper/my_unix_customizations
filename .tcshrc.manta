@@ -12,8 +12,6 @@ a vcm		vi /git/manta-web-app/Manta/RequestDispatcher/ContextMaps.pm
 a vcp		vi /git/manta-web-app/Manta/Web/CompanyPage.pm
 a vmb		vi /git/manta-web-app/Manta/Web/Megabrowse.pm
 
-a work 'ssh sparker@192.168.241.51'
-
 a ginfo 'echo "Branches:"; git branch -v; echo "\nRemotes:"; git remote -v; echo "\nStatus:"; git status'
 a gic	'git commit'
 a gich	'git checkout'
