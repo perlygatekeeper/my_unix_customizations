@@ -1,4 +1,4 @@
-#!/usr/bin/tcsh
+#!/bin/tcsh
   set hostfile='/tmp/hosts2'.`date '+%Y%m%d'`
   if ( ! -f $hostfile || -z $hostfile ) then
     echo "I find no useful hosts file $hostfile, I'll make one now."
