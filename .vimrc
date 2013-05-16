@@ -8,8 +8,11 @@ set backspace=indent,eol,start	" allow backspacing over everything in insert mod
 " NOTE this may be useful: !'mcrk '(\S *)\t' '$1    '
 " replaces (X____)\t  with $1 . _ x 4
 "
-set viminfo='128,f1			" read/write a .viminfo file, don't store more
-								" than 50 lines of registers
+
+set t_Co=256
+
+set viminfo='128,f1				" read/write a .viminfo file, don't store more
+								" than 128 lines of registers
 set history=1024          		" keep XX lines of command line history
 set ht=4						" horizontal tab set at 8
 set ts=4						" tab stop at 8
