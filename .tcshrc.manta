@@ -23,51 +23,12 @@ a gpush	'git push origin'
 a gpull	'git pull origin'
 a tim	'node /git/mantacode/srcrr-client/srcrr'
 
-#setenv svn		"http://subversion/svn/main/"
-#setenv comsite5	"$svn/comsite5/"
-#setenv core		"$svn/core/"
-
-#a mack		ack --pager="'less -R'" --ignore-dir=lost+found --ignore-dir=branches --ignore-dir=comsite5- --ignore-dir=comsite5_
-#a sd		svn diff -x -wb
-#a swc		perl -I"$SBXROOT" "$SBXROOT/tools/sandbox/swc.pl" --sandbox-uri-base="http://${SBXIP}:8888/"
-#a swcc		perl -I"$SBXROOT" "$SBXROOT/tools/sandbox/swc.pl" --sandbox-uri-base="http://${SBXIP}:8888/" --name comsite5
-#a vcm		vi /svn/comsite5/Manta/RequestDispatcher/ContextMaps.pm
-#a vcp		vi /svn/comsite5/Manta/Web/CompanyPage.pm
-#a vmb		vi /svn/comsite5/Manta/Web/Megabrowse.pm
-
-#setenv SBXROOT /svn/sbx-mgr-prod
-#if ( ! ${?SBXIP} ) then
-#  setenv SBXIP   "192.168.241.203"
-#endif
-
-#a mack		ack --pager="'less -R'" --ignore-dir=lost+found --ignore-dir=branches --ignore-dir=comsite5- --ignore-dir=comsite5_
-#a sd		svn diff -x -wb
-#a swc		perl -I"$SBXROOT" "$SBXROOT/tools/sandbox/swc.pl" --sandbox-uri-base="http://${SBXIP}:8888/"
-#a swcc		perl -I"$SBXROOT" "$SBXROOT/tools/sandbox/swc.pl" --sandbox-uri-base="http://${SBXIP}:8888/" --name comsite5
-#a vcm		vi /svn/comsite5/Manta/RequestDispatcher/ContextMaps.pm
-#a vcp		vi /svn/comsite5/Manta/Web/CompanyPage.pm
-#a vmb		vi /svn/comsite5/Manta/Web/Megabrowse.pm
-
-#setenv svn		"http://subversion/svn/main/"
-#setenv comsite5	"$svn/comsite5/"
-#setenv core		"$svn/core/"
-
-#setenv svnchanges	'svn diff --diff-cmd /usr/bin/diff -x "-uwB" -r`svn log --stop-on-copy | grep -P "^r\d+" | sort | head -n 1 | cut -d "|" -f 1 | sed "s/\s//g"`:HEAD .'
-#a svn-changes	"$svnchanges"
-#a svn-changelog	"$svnchanges" --summarize
-#a svn-revlog	'svn log --stop-on-copy'
-#a svn-diff		'svn diff --diff-cmd /usr/bin/diff -x "-uwB" '
-#a mdiff			'diff -x .svn -I '\''^20.*Z'\'' -I '\''^#\? \?\$URL:'\'
-
-#a amber         'setenv SBXIP   "192.168.241.199";      echo now interacting with aschwartz-sbx:    $SBXIP;  source ~/.tcshrc.manta'
-#a sbx           'setenv SBXIP   "192.168.241.203";      echo now interacting with sparker-sbx:      $SBXIP;  source ~/.tcshrc.manta'
-#a sbx2          'setenv SBXIP   "192.168.241.44";       echo now interacting with sparker2-sbx:     $SBXIP;  source ~/.tcshrc.manta'
-#a sara          'setenv SBXIP   "192.168.241.XXX";      echo now interacting with sbraumiller2-sbx: $SBXIP;  source ~/.tcshrc.manta'
-#a ecnext15      'setenv SBXIP   "10.28.16.166";         echo now interacting with ecnext15:         $SBXIP;  source ~/.tcshrc.manta'
-#a ecnext30      'setenv SBXIP   "10.28.16.211";         echo now interacting with ecnext30:         $SBXIP;  source ~/.tcshrc.manta'
-#a ecnext152     'setenv SBXIP   "10.28.161.236";        echo now interacting with ecnext152:        $SBXIP;  source ~/.tcshrc.manta'
-#a ecnext151     'setenv SBXIP   "10.28.161.235";        echo now interacting with ecnext151:        $SBXIP;  source ~/.tcshrc.manta'
-#a staging       'setenv SBXIP   "10.28.161.205";        echo now interacting with staging:          $SBXIP;  source ~/.tcshrc.manta'
+a amber         tim -s aschwartz4-sbx
+a garth         tim -s gkerr-sbx
+a sara          tim -s sbraumiller-sbx
+a ecnext151     tim -s a4-sbx
+a ecnext152     tim -s 10.28.161.236
+a staging       tim -s a4-sbx
 
 #setenv PERL5LIB "/svn/core:/svn/comsite5:/svn/community:/svn/image-service:/svn/manta-app-base:/svn/web-platform"
 

@@ -2,5 +2,20 @@ a ls       '\ls -GFb'
 a ll       '\ls -GFbalO'
 a la       '\ls -GFbalO@e'
 
+# good way to regenerate MANPATH:
+# locate 'cat' 'man' | \
+# egrep '/(cat|man)/\1' | \
+# grep -v 'whatis' | \
+# perl -pe 's,/(cat|man)[\dnl].*,,' | \
+# uniq | \
+# sort | \
+# uniq | \
+# perl -p -0 -e 's,\n/,:/,smg;'
 setenv MANPATH /usr/share/man:/opt/local/share/man:/usr/local/man:/usr/local/share/man:/usr/local/clamXav/share/man:/usr/X11/share/man:/opt/local/libexec/gnubin/man:/Developer/usr/share/man:/Developer/usr/X11/share/man:/Developer/usr/llvm-gcc-4.2/share/man:/Applications/MAMP/Library/share/man:/Developer/Library/Xcode/PrivatePlugIns/Xcode3Core.ideplugin/Contents/SharedSupport/usr/share/man:/System/Library/Java/Support/VisualVM.bundle/Contents/Home/man:/opt/local/Library/Frameworks/Python.framework/Versions/2.7/share/man:/usr/llvm-gcc-4.2/share/man
+
+# good way to regenerate PATH
+# locate '/bin' '/sbin' | \
+# wwo -'\.cpan' -'Frameworks' -'Platforms' -'DrupalStack'| \
+# grep 'bin$'
 setenv PATH /Users/steve/bin:/sbin:/bin:/opt/local/bin:/usr/bin:/usr/X11/bin:/usr/local/bin:/System/Library/Perl/Extras/bin:/opt/local/lib/mysql5/bin:/opt/local/lib/postgresql90/bin:/opt/local/share/java/apache-ant/bin:/opt/local/apache2/bin:/Developer/usr/bin:/Developer/Makefiles/bin
+setenv PATH /opt/local/bin:/opt/local/sbin:$PATH
