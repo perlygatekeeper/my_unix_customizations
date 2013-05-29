@@ -1,7 +1,7 @@
 sub list_abbrevs {
   local(*abbrev)=@_;
   my($shortest,$longest,$working_value,$additional_characters);
-  my($method);
+  my($method,$return);
   my($delimiter0,$delimiter1);
 
   # given abbrev return array with values equal to the shortest unique values
@@ -14,8 +14,8 @@ sub list_abbrevs {
   $return='associative';
   $return='normal';
 
-  foreach $key ( sort keys %abbrev ) {
-    $value=$abbrev{$key};
+  foreach my $key ( sort keys %abbrev ) {
+    my $value=$abbrev{$key};
     if ($value ne $working_value) {
 
     # clean up the previous key/value
