@@ -1,5 +1,5 @@
   my $outfile="$name.out";
-  open(OUTFILE,">$outfile")
+  open(OUTFILE,">", $outfile)
     || die("$name: Cannot write to '$outfile': $!\n");
   print OUTFILE "stuff\n";
   close(OUTFILE);
