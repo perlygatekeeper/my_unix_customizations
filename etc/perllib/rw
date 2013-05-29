@@ -1,5 +1,5 @@
-  open(FROM,"<$from_file") || die("$name: Cannot read from '$from_file': $!\n");
-  open(TO,   ">>$to_file") || die("$name: Cannot append to '$to_file':   $!\n");
+  open(FROM, "<", $from_file") || die("$name: Cannot read from '$from_file': $!\n");
+  open(TO,   ">>",  $to_file") || die("$name: Cannot append to '$to_file':   $!\n");
   while (<FROM>) {
     print TO $_;
   }
