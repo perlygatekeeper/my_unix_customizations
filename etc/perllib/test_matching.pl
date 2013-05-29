@@ -1,7 +1,6 @@
 #!/usr/local/bin/perl
-#
 # A perl script to test extract_matching subroutine
-#
+
 $name = $0;
 $name =~ s'.*/''; # remove path--like basename
 $usage = "usage:\n$name";
