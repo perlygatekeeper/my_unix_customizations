@@ -8,7 +8,7 @@ sub array_min {
     };
 #   $smallest_element=$arr[$j];
   return $j
-}# given an array reference, return index of smallest element
+} # given an array reference, return index of smallest element
 
 sub array_max {
   my($arr)=shift;

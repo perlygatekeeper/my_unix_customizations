@@ -1,21 +1,23 @@
 #!/usr/bin/perl
-#
 # A perl script to save a ls listing in a direcotry
-#
-$name = $0;
+
+use strict;
+use warnings;
+
+my $name = $0;
 $name =~ s'.*/''; # remove path--like basename
-$usage = "usage:\n$name [directory]";
+my $usage = "usage:\n$name [directory]";
 
 &parse_args;
 
 $directory='/home/parker/perllib' if ( ! $directory);
 
-$outfile="$directory/$name.out";
+my $outfile="$directory/$name.out";
 open(OUTFILE,">$outfile") || die("$name: Cannot write to '$outfile': $!\n");
 
 
 opendir(DIR,$directory) || die "Can't open dir $directory: $!\n";
-@files=readdir(DIR);
+my @files=readdir(DIR);
 closedir(DIR);
 unless ($all) {
   shift(@files);shift(@files); # for . and .. entries

@@ -1,5 +1,5 @@
 # get results from a unix command
-  in $out_of="UNIX_COMMAND |";
+  my $out_of="UNIX_COMMAND |";
 
 # put results to   a unix command
 # $in_to="| UNIX_COMMAND";
@@ -15,6 +15,7 @@
 
 FORK: {
     pipe(OUT_OF,IN_TO);
+	my $pid
 	if ($pid = fork) {
 	  # parent here (READER)
 	  # child process pid is available in $pid

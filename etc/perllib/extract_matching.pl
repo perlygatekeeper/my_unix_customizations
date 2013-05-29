@@ -1,15 +1,13 @@
 #   ---   ---   ---
 sub extract_matching {
-#
 # subroutine to extract text between matching delimiters
 # from a single string, latter also for array, or filehandle
 # while allowing for escaped delimiters and # like comment lines
-#
-#
-  local($debug)=0;
-  local($string,$start_regexp,$delimiter1,$delimiter2,$escape,$comment)
+
+  my($debug)=0;
+  my($string,$start_regexp,$delimiter1,$delimiter2,$escape,$comment)
   =@_;
-  local(@sub_strings,@characters,$matching,@matched);
+  my(@sub_strings,@characters,$matching,@matched);
   $delimiter1 = ($delimiter1) ? $delimiter1 : '{' ;
   $delimiter2 = ($delimiter2) ? $delimiter2 : '}' ;
   $escape     = ($escape)     ? $escape     : '\\' ;

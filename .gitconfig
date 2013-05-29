@@ -1,6 +1,13 @@
 [user]
 	email = sparker@manta.com
 	name = Steven Parker
+[alias]
+    co = checkout
+    ci = commit
+    st = status
+    di = diff
+    br = branch
+    hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
 [credential]
 	helper = cache --timeout=3600
 [push]
