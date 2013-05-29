@@ -1,5 +1,5 @@
-$last_mod_date='DATE';
-#version="1.0"; # Comments
-$todo="Things yet to do.";
-$author="Dr. Steven Parker";
-$copyright="$last_mod_date. All rights reserved.";
+my $last_mod_date = 'DATE';
+my $version       = "1.0"; # Comments
+my $todo          = "Things yet to do.";
+my $author        = "Dr. Steven Parker";
+my $copyright     = "$last_mod_date. All rights reserved.";

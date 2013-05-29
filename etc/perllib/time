@@ -1,12 +1,10 @@
 # all time related formats I routinely use.
 # Y2K compliant ($year+1900 for 4 digits, $year%100 for 2 digits, since $year>=100 for $Year>=2000)
-($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst)=localtime(time);
-@mo = qw(Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec);
-$time= sprintf("%02d:%02d:%02d", $hour, $min, $sec);
-$time_date= sprintf("%02d:%02d:%02d %s %s %d",
-                    $hour, $min, $sec, $mday, $mo[$mon],
-                    $year+1900);
-$ampm= sprintf("%02d:%02d:%02d %s", $hour%12, $min, $sec, ($hour>=12) ? "PM" : "AM" );
-$ampm_date= sprintf("%02d:%02d:%02d %s  %s %s %d",
-                    $hour%12, $min, $sec, ($hour>=12) ? "PM" : "AM",
-		    $mday, $mo[$mon], $year+1900);
+my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst)=localtime(time);
+my @mo = qw(Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec);
+my $time= sprintf("%02d:%02d:%02d", $hour, $min, $sec);
+my $time_date= sprintf("%02d:%02d:%02d %s %s %d",
+                       $hour, $min, $sec, $mday, $mo[$mon], $year+1900);
+my $ampm= sprintf("%02d:%02d:%02d %s", $hour%12, $min, $sec, ($hour>=12) ? "PM" : "AM" );
+my $ampm_date= sprintf("%02d:%02d:%02d %s  %s %s %d",
+                       $hour%12, $min, $sec, ($hour>=12) ? "PM" : "AM", $mday, $mo[$mon], $year+1900);
