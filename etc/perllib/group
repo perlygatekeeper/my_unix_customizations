@@ -1,6 +1,6 @@
 # -- BY FILE --
 my $groupfile="/etc/yp/group";
-open(GROUP,"<$groupfile")
+open(GROUP, "<", $groupfile)
   || die("$name: Cannot read from '$groupfile': $!\n");
 while (<GROUP>) {
   my ($name,$passwd,$gid,$members) = split(/:/,$_);
