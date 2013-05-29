@@ -1,7 +1,7 @@
-  $infile  = "<$name.in";
-  $outfile = ">$name.out";
-  open(INFILE,"$infile")   || die("$name: Cannot read from '$infile': $!\n");
-  open(OUTFILE,"$outfile") || die("$name: Cannot write to '$outfile': $!\n");
+  my $infile  = "<$name.in";
+  my $outfile = ">$name.out";
+  open(INFILE, "<", "$infile")  || die("$name: Cannot read from '$infile': $!\n");
+  open(OUTFILE,">", "$outfile") || die("$name: Cannot write to '$outfile': $!\n");
   while (<INFILE>) {
     print OUTFILE "stuff\n";
   }

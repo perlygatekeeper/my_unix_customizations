@@ -1,8 +1,7 @@
 #!/usr/bin/perl
-#
 # A perl script to test inputs for numbers.
-#
-$\="\n";
+
+local($\)="\n";
 while (<>) {
   chop;
   if ( ($_==0) && ($_!~/^\s*[-+]?0\x?\.?0*e?0*$/i) ) {

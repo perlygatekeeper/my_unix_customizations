@@ -1,5 +1,4 @@
 #!/usr/bin/perl
-#
 # A perl script to replace widget (default widget is an '~')
 # with a linenumber
 my $name = $0;

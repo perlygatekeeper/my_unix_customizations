@@ -1,6 +1,7 @@
 
 my $i=0;
 my $j=0;
+my @partity;
 foreach $i ( 0 .. 255 ) {
   $parity[$i]=$j;
   $j=(1-$j);
