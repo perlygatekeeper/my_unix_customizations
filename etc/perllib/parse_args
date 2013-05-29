@@ -3,8 +3,8 @@ sub parse_args {
   local(%abbrev)=(); # must be local, not my otherwise, *abbrev don't work in
 		     # call to &abbrev, I don't understand fully why at this time, 9/27/00 SP.
 
-  @args=('?','help');
-  @help=('print this message','print this message');
+  my @args=('?','help');
+  my @help=('print this message','print this message');
 
   push(@args,'arg1','arg2','arg3','arg4');
   push(@help,'help for arg1',

@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-#
+
 # Comments.pl
 #
 # Comments submission form parser
@@ -7,12 +7,11 @@
 # based on
 # joke-sub.pl
 # By Brian Exelbierd (bex@ncsu.edu) 1-2-95
-#
 
 push(@INC,"/opt/local/etc/httpd/cgi-bin");
 require("cgi-lib.pl");
 
-$htdocs="/opt/local/etc/httpd/htdocs");
+my $htdocs="/opt/local/etc/httpd/htdocs");
 
 &ReadParse;
 
@@ -33,13 +32,12 @@ print Comments "Name: ",$in{'name'},"\n";
 print Comments "\n";
 print Comments $in{'comments'},"\n";
 
-($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst)=localtime(time);
-@mo = ('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec');
-@day = ('Sun','Mon','Tue','Wed','Thu','Fri','Sat');
-@day_full = ('Sunday','Monday','Tuesday','Wednesday',
-	     'Thursday','Friday','Saturday');
-$time_date= sprintf("%02d:%02d:%02d %s %s 19%s",
-            $hour, $min, $sec, $mday, $mo[$mon], $year";
+my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst)=localtime(time);
+my @mo = ('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec');
+my @day = ('Sun','Mon','Tue','Wed','Thu','Fri','Sat');
+my @day_full = ('Sunday','Monday','Tuesday','Wednesday',
+	            'Thursday','Friday','Saturday');
+my $time_date= sprintf("%02d:%02d:%02d %s %s 19%s", $hour, $min, $sec, $mday, $mo[$mon], $year");
 
 print Comments $time_date;
 

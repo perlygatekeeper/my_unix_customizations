@@ -1,8 +1,10 @@
 #!/usr/bin/perl
-#
 # A perl script to convert output of 'arp -a' command into /etc/ethers
 # format, and to add 0's to the one digit components of the ethernet address.
-#
+
+use strict;
+use warnings;
+
 while (<>) {
   my $name=''; my $ether='';
   ($name,$ether)=/^([^. ]+).*at (\S*)/;  

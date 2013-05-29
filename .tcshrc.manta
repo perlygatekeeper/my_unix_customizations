@@ -2,6 +2,7 @@
 set path=(${path} ~/mbin)
 alias a	alias
 setenv 	mc	"/git/mantacode"
+setenv 	wa	"/git/mantacode/manta-web-app"
 set cdpath=(~ /git/mantacode /git /)
 
 a untrace		"crk '\\n' '\n' | crk '\\t' '\t' | crk 'called at(.*)"'$'"' '\n\tcalled at "'$'"1\n'"
@@ -16,7 +17,10 @@ a ginfo 'echo "Branches:"; git branch -v; echo "\nRemotes:"; git remote -v; echo
 a gic	'git commit'
 a gich	'git checkout'
 a gib	'git branch'
+a gibv	'git branch -v'
+a gibr	'git branch -r'
 a gir	'git remote'
+a girv	'git remote -v'
 a gis	'git status'
 a gidi	'git diff'
 a gpush	'git push origin'

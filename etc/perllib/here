@@ -1,5 +1,5 @@
 
-    ($d=<<'    HERE')=~s/^\s{4}//gm;
+    ($d=<<'    HERE') =~ s/^\s{4}//gm;
     Indented here document.
 
     With indented content.  Stored in

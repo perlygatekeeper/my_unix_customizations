@@ -1,17 +1,18 @@
-#!/usr/local/bin/p5
-#
+#!/usr/bin/perl
 # A perl-5 script to test converting IP ADDR to cid
-#
-$name = $0; $name =~ s'.*/''; # remove path--like basename
-$usage = "usage:\n$name [-opt1] [-opt2] [-opt3]";
+
+use strict;
+use warnings;
+my $name = $0; $name =~ s'.*/''; # remove path--like basename
+my $usage = "usage:\n$name [-opt1] [-opt2] [-opt3]";
 
 print "  a1   a2   a3   a4\tcid\n";
-foreach $a1 ( 128 .. 129 ) {
-foreach $a2 ( 146, 255   ) {
-foreach $a3 ( 1, 2, 4, 8, 16, 32, 64, 128 ) {
-foreach $a4 (  0,  17,  34,  51,  68,  85, 102, 119,
+foreach my $a1 ( 128 .. 129 ) {
+foreach my $a2 ( 146, 255   ) {
+foreach my $a3 ( 1, 2, 4, 8, 16, 32, 64, 128 ) {
+foreach my $a4 (  0,  17,  34,  51,  68,  85, 102, 119,
              136, 153, 170, 187, 204, 221, 238, 255 ) {
-  $c=sprintf "%02x%02x%02x%02x", $a1, $a2, $a3, $a4;
+  my $c=sprintf "%02x%02x%02x%02x", $a1, $a2, $a3, $a4;
   printf "%3d %3d %3d %3d\t%s\n", $a1, $a2, $a3, $a4, $c;
 }
 }

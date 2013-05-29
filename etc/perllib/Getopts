@@ -5,42 +5,39 @@ sub Getopts {
     local($[) = 0;
 
     @args = split( / */, $argumentative );
-    while(($_ = $ARGV[0]) =~ /^-(.)(.*)/) {
-	($first,$rest) = ($1,$2);
-	$pos = index($argumentative,$first);
-	if($pos >= $[) {
-	    if($args[$pos+1] eq ':') {
-		shift(@ARGV);
-		if($rest eq '') {
-		    $rest = shift(@ARGV);
+    while ( ($_ = $ARGV[0]) =~ /^-(.)(.*)/ ) {
+		($first,$rest) = ($1,$2);
+		$pos = index($argumentative,$first);
+		if ($pos >= $[) {
+	    	if ($args[$pos+1] eq ':') {
+				shift(@ARGV);
+				if ($rest eq '') {
+		    		$rest = shift(@ARGV);
+				}
+				# changed by parker to make effect cumulative
+				# eval "\$opt_$first = \$rest;";
+				eval "if (\$opt_$first) { \$opt_$first .= \" \".\$rest; }
+		      	  	else              { \$opt_$first  = \$rest      ; }";
+	    	} else {
+				eval "\$opt_$first++;";
+				# added to store arguments that are digits to "$opt_num"
+				eval "\$opt_num = \$first;" if ($first=~/\d/) ;
+				if ($rest eq '') {
+		    		shift(@ARGV);
+				}
+				else {
+	    			$ARGV[0] = "-$rest";
+				}
+	    	}
+		} else {
+	    	print STDERR "Unknown option: $first\n";
+	    	++$errs;
+	    	if ($rest ne '') {
+				$ARGV[0] = "-$rest";
+	    	} else {
+				shift(@ARGV);
+	    	}
 		}
-		# changed by parker to make effect cumulative
-		# eval "\$opt_$first = \$rest;";
-		eval "if (\$opt_$first) { \$opt_$first .= \" \".\$rest; }
-		      else              { \$opt_$first  = \$rest      ; }";
-	    }
-	    else {
-		eval "\$opt_$first++;";
-		# added to store arguments that are digits to "$opt_num"
-		eval "\$opt_num = \$first;" if ($first=~/\d/) ;
-		if($rest eq '') {
-		    shift(@ARGV);
-		}
-		else {
-		    $ARGV[0] = "-$rest";
-		}
-	    }
-	}
-	else {
-	    print STDERR "Unknown option: $first\n";
-	    ++$errs;
-	    if($rest ne '') {
-		$ARGV[0] = "-$rest";
-	    }
-	    else {
-		shift(@ARGV);
-	    }
-	}
     }
     $errs == 0;
 }
