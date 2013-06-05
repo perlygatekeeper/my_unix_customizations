@@ -1,0 +1,37 @@
+#!/usr/bin/perl
+# A perl script to remove leading ordinal numbers (and times for tcsh)
+# from output of the history commands for tcsh or bash
+
+my $name = $0;
+my $name =~ s'.*/''; # remove path--like basename
+my $usage = "usage:\n$name [-opt1] [-opt2] [-opt3]";
+
+
+while (<>) {
+  
+}
+
+
+exit 0;
+
+__END__
+   860	16:20	git diff lib/read-only/index.js
+   861	16:21	git commit -a -m "indentation people!"
+   862	16:21	git push
+   863	16:21	h | grep vi
+   864	17:03	h | grep vi > files
+   865	17:03	vi files
+   866	17:04	cx ~/bin/unhist
+   867	17:04	vi ~/bin/unhist
+   868	10:41	h | tail
+   869	10:41	h | tail >> ~/bin/unhist
+   49  vrc
+   50  echo $shell
+   51  echo $SHELL
+   52  echo $version
+   53  echo $VERSION
+   54  set
+   55  setenv
+   56  exec $SHELL
+   57  history
+   58  history | tail >> ~/bin/unhist
