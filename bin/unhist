@@ -8,7 +8,9 @@ my $usage = "usage:\n$name [-opt1] [-opt2] [-opt3]";
 
 
 while (<>) {
-  
+	s/^\s+\d+(\t\d\d?:\d\d)?\t//;
+	next if m/^#+\d{10}$/; # skip time-mark lines in tcsh's .history files
+	print;
 }
 
 
