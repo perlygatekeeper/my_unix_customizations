@@ -27,6 +27,10 @@ a gpush	'git push origin'
 a gpull	'git pull origin'
 a gits	'a | grep git'
 a tim	'node /git/mantacode/srcrr-client/srcrr'
+# get a new branch from github for the first time.
+# > git checkout master
+# > git pull
+# > git checkout -b company-megabrowse-navigation --track origin/company-megabrowse-navigation
 
 a amber         tim -s aschwartz4-sbx
 a garth         tim -s gkerr-sbx
