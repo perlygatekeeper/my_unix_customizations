@@ -55,7 +55,8 @@ a ssh		'ssh -XY'
 a home		ssh parker@192.168.0.100
 a ipoodle	ssh steve@192.168.0.102
 a laptop	ssh steve@192.168.0.104
-a work		ssh sparker@192.168.241.51
+a work		ssh sparker@192.168.241.59
+a sbx		ssh sparker@192.168.241.203
 
 a hafh		ssh -p 8022 parker@71.79.236.111
 
