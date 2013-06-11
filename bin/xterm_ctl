@@ -86,7 +86,7 @@ sub parse_args {
   while ( @ARGV >= 1 ) {
     if      ( ($abbrev{$ARGV[0]} eq '-help' )
            || ($abbrev{$ARGV[0]} eq '-?' ) ) {
-      do help($usage);
+      help($usage);
       print "$abbrev{$ARGV[0]} $abbrev{$ARGV[0]}'\n" if ($verbose);
       shift(@ARGV); next;
 
