@@ -57,7 +57,7 @@ a ipoodle	ssh steve@192.168.0.102
 a laptop	ssh steve@192.168.0.104
 a work		ssh sparker@192.168.241.50
 a sbx		ssh sparker@192.168.241.203
-a desk		echo 192.168.241.55
+a workip	host sparker-server-1210.ecnext03.local 
 
 a hafh		ssh -p 8022 parker@71.79.236.111
 
