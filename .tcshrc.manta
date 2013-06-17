@@ -3,6 +3,7 @@ set path=(${path} ~/mbin)
 alias a	alias
 setenv 	mc	"/git/mantacode"
 setenv 	wa	"/git/mantacode/manta-web-app"
+setenv 	mwa	"/git/mantacode/manta-web-app"
 set cdpath=(~ /git/mantacode /git /)
 
 a untrace		"crk '\\n' '\n' | crk '\\t' '\t' | crk 'called at(.*)"'$'"' '\n\tcalled at "'$'"1\n'"
