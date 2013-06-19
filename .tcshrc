@@ -68,7 +68,6 @@ a vrc		'vi ~/.tcshrc'
 a vvrc		'vi ~/.vimrc'
 a src		'source ~/.tcshrc'
 
-
 setenv LSCOLORS "Gxfxcxdxbxegedabagacad"
 setenv PAGER	/usr/bin/less
 setenv EDITOR	/usr/bin/vim
