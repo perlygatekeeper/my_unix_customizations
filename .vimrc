@@ -11,32 +11,40 @@ set backspace=indent,eol,start	" allow backspacing over everything in insert mod
 
 set t_Co=256
 
-set viminfo='128,f1				" read/write a .viminfo file, don't store more
-								" than 128 lines of registers
-set history=1024          		" keep XX lines of command line history
-set ht=4						" horizontal tab set at 8
-set ts=4						" tab stop at 8
-set mps=(:),{:},[:],<:>			" match pairs for % command
+" read/write a .viminfo file, don't store more than 128 lines of registers
+set viminfo='128,f1
+" keep XX lines of command line history
+set history=1024          	
+" horizontal tab set at 4 & tab stop at 4
+set ht=4
+set ts=4	
+" match pairs for % command
+set mps=(:),{:},[:],<:>
 set noslowopen
-set hidden						" Hide other buffers instead of abandoning them.
-set number						" display line numbers
+" Hide other buffers instead of abandoning them & display line numbers
+set hidden
 
-syntax on						" turn on syntax detection
-filetype on           			" Enable filetype detection
-filetype indent on    			" Enable filetype-specific indenting
-filetype plugin on    			" Enable filetype-specific plugins
+" turn on syntax detection
+" Enable filetype detection, filetype-specific indenting & plugins
+syntax on					
+filetype on
+filetype indent on
+filetype plugin on
 
-set report=2					" report yanks/deletes of 2 or more lines
-set showcmd						" Status bar stuff.
-set showmode					" show current mode
-set ruler      		         	" show the cursor position all the time
+" report yanks/deletes of 2 or more lines & status bar stuff, current mode & ruler
+set report=2
+set showcmd	
+set showmode
+set ruler 
 
-set hlsearch					" highlighted searching
-set incsearch					" incremental searching
-set ignorecase					" usually ignore case when searching
-set smartcase					" unless I explicitly use an UPPER CASE character
+" Search stuff highlighted, incremental, usually ignore case unless I explicitly use an UPPER CASE character
+set hlsearch
+set incsearch
+set ignorecase
+set smartcase
 
-set autoindent					" autoindent by default
+" autoindent by default
+set autoindent
 nnoremap << :set noautoindent<Cr>:filetype indent off<Cr>
 nnoremap >> :set   autoindent<Cr>:filetype indent on<Cr>
 
