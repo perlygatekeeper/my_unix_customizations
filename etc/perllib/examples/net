@@ -1,4 +1,3 @@
-#!/n/al/0/public/bin/perl
 #!/usr/bin/perl
 
 telnet <<EOF

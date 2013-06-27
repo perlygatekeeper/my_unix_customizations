@@ -1,0 +1,1 @@
+perl -le 'foreach $a ( 0, 1 ) { foreach $b ( 0, 1) { printf "a: %d  b: %d -> a or b: %d\n", $a, $b, ($a or $b); } } '
