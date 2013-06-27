@@ -1,4 +1,3 @@
-#!/usr/local/localadm/bin/perl
 #!/usr/bin/perl
 
 undef $/;			# process complete file
