@@ -1,0 +1,45 @@
+Topics:
+
+Command-t
+Folding
+Spliting windows
+Buffers
+NERD_commenter
+NERD_tree
+bufexplorer
+sqlcomplete
+surround
+taglist
+vcs-svn
+vcs-git
+
+Align
+
+Snippets
+egrep '^$|^snippet |^##' ~/.vim/snippets/perl.snippets | perl -pe 's/snippet //;' | less
+
+
+
+> ll ~/.vim/plugin
+total 1416
+-rw-r--r--  1 steve  staff   20993 Sep 13 20:25 AlignMapsPlugin.vim
+-rw-r--r--  1 steve  staff    1967 Sep 13 20:25 AlignPlugin.vim
+-rw-r--r--@ 1 steve  staff  105914 Sep 13 20:33 NERD_commenter.vim
+-rw-r--r--@ 1 steve  staff  130440 Sep 13 03:38 NERD_tree.vim
+-rw-r--r--@ 1 steve  staff   36129 Sep 13 20:35 bufexplorer.vim
+-rw-r--r--  1 steve  staff   17896 Sep 13 20:25 cecutil.vim
+-rw-r--r--@ 1 steve  staff    7920 Sep 13 20:34 color_sample_pack.vim
+-rw-r--r--@ 1 steve  staff   57547 Sep 13 20:36 project.vim
+-rw-r--r--@ 1 steve  staff    7939 Sep 13 20:36 snipMate.vim
+-rw-r--r--@ 1 steve  staff   28295 Sep 13 20:36 sqlcomplete.vim
+-rw-r--r--@ 1 steve  staff   16960 Sep 13 20:37 surround.vim
+-rw-r--r--@ 1 steve  staff  147930 Sep 13 20:37 taglist.vim
+-rw-r--r--@ 1 steve  staff    8179 Sep 13 20:41 vcsbzr.vim
+-rw-r--r--@ 1 steve  staff   50378 Sep 13 20:41 vcscommand.vim
+-rw-r--r--@ 1 steve  staff   13716 Sep 13 20:41 vcscvs.vim
+-rw-r--r--@ 1 steve  staff    8012 Sep 13 20:41 vcsgit.vim
+-rw-r--r--@ 1 steve  staff    8317 Sep 13 20:41 vcshg.vim
+-rw-r--r--@ 1 steve  staff    7914 Sep 13 20:41 vcssvk.vim
+-rw-r--r--@ 1 steve  staff    8794 Sep 13 20:41 vcssvn.vim
+-rw-r--r--@ 1 steve  staff    2760 Sep 13 20:43 vimballPlugin.vim
+
