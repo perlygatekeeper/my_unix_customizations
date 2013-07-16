@@ -1,11 +1,10 @@
 #!/usr/bin/perl
-#!/usr/local/localadm/bin/perl
 # script to glue blocks of lines horizontially.
 # number of lines may be specified or the number coming through
 # is used thusly:
-# 1				# 1	#4
-# 2				# 2	#5
-# 3	would look line		# 3
+# 1                  # 1	# 4
+# 2                  # 2	# 5
+# 3	would look line  # 3
 # 4
 # 5
 #

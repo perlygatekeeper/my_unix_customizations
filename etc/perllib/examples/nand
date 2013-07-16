@@ -1,0 +1,2 @@
+
+perl -le 'foreach $a ( 0, 1 ) { foreach $b ( 0, 1) { printf "a: %d  b: %d -> a nand b: %d\n", $a, $b, not ($a and $b); } } '
