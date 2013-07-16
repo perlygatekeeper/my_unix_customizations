@@ -55,7 +55,7 @@ a ssh		'ssh -XY'
 a home		ssh parker@192.168.0.100
 a ipoodle	ssh steve@192.168.0.102
 a laptop	ssh steve@192.168.0.104
-a work		ssh sparker@192.168.241.50
+a work		ssh sparker@192.168.241.156
 a sbx		ssh sparker@192.168.241.203
 a workip	host sparker-server-1210.ecnext03.local 
 
@@ -92,6 +92,9 @@ set fignore='.o'
 set showdots='-A'
 if ( -f ~/.completion) then
   source ~/.completion
+endif
+if ( -f ~/.completion.git) then
+  source ~/.completion.git
 endif
 # remember that .macosx .ubuntu and .manta are marker files that need
 # to be made on a system to indicate what type of system it is.
