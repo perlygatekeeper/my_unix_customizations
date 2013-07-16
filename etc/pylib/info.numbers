@@ -1,0 +1,48 @@
+Examples:
+
+Here are some examples of numbers:
+   int				 long		 float		      complex
+    10		            51924361L		  0.0		        3.14j
+   100		            -0x19323L		 15.20		         45.j
+  -786		                0122L		-21.9		 9.322e - 36j
+   080		0xDEFABCECBDAECBFBAEl		 32.3+e18	        .876j
+ -0490		        535633629843L		-90.		 -.6545 +  0J
+-0x260		       -052318172735L		-32.54e100	       3e+26J
+  0x69		      -4721885298529L		 70.2-E12  	     4.53e-7j
+
+
+>>> int = 1
+>>> float = 5.33
+>>> complex = 1.0+2.1J
+>>> octal = 077
+>>> hex = 0xaf
+
+>>> int
+1
+>>> float
+5.3300000000000001
+>>> complex
+(1+2.1000000000000001j)
+>>> octal
+63
+>>> hex
+175
+
+>>> dir(int)
+['__abs__', '__add__', '__and__', '__class__', '__cmp__', '__coerce__', '__delattr__', '__div__', '__divmod__',
+ '__doc__', '__float__', '__floordiv__', '__format__', '__getattribute__', '__getnewargs__', '__hash__', '__hex__',
+ '__index__', '__init__', '__int__', '__invert__', '__long__', '__lshift__', '__mod__', '__mul__', '__neg__', '__new__',
+ '__nonzero__', '__oct__', '__or__', '__pos__', '__pow__', '__radd__', '__rand__', '__rdiv__', '__rdivmod__', '__reduce__',
+ '__reduce_ex__', '__repr__', '__rfloordiv__', '__rlshift__', '__rmod__', '__rmul__', '__ror__', '__rpow__', '__rrshift__',
+ '__rshift__', '__rsub__', '__rtruediv__', '__rxor__', '__setattr__', '__sizeof__', '__str__', '__sub__', '__subclasshook__',
+ '__truediv__', '__trunc__', '__xor__', 'conjugate', 'denominator', 'imag', 'numerator', 'real']
+
+>>> dir(float)
+['__abs__', '__add__', '__class__', '__coerce__', '__delattr__', '__div__', '__divmod__', '__doc__', '__eq__', '__float__',
+ '__floordiv__', '__format__', '__ge__', '__getattribute__', '__getformat__', '__getnewargs__', '__gt__', '__hash__',
+ '__init__', '__int__', '__le__', '__long__', '__lt__', '__mod__', '__mul__', '__ne__', '__neg__', '__new__', '__nonzero__',
+ '__pos__', '__pow__', '__radd__', '__rdiv__', '__rdivmod__', '__reduce__', '__reduce_ex__', '__repr__', '__rfloordiv__',
+ '__rmod__', '__rmul__', '__rpow__', '__rsub__', '__rtruediv__', '__setattr__', '__setformat__', '__sizeof__', '__str__',
+ '__sub__', '__subclasshook__', '__truediv__', '__trunc__', 'as_integer_ratio', 'conjugate', 'fromhex', 'hex', 'imag',
+ 'is_integer', 'real']
+
