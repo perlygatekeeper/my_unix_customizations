@@ -1,14 +1,16 @@
 #!/bin/bash
 
-SBXIP="${SBXIP:-192.168.241.35}"
-SBXROOT="${SBXROOT:-/svn/sbx-mgr-prod}"
+SBXIP="${SBXIP:-192.168.241.203}"
+SBXROOT="${GITROOT:-/git}"
+TIM='node /git/mantacode/srcrr-client/srcrr'
 
-for i in 'common-lib' 'community' 'core' 'comsite5' 'manta-app-base' 'web-platform' 'image-service' 'kwtool-rules' 'opencms-export' 'rabbitmq'
+#'opencms-export' 'image-service' 
+for i in 'nodejs-common-lib' 'core-app' 'community-app' 'www-411-app' 'manta-app-base-lib' 'rabbitmq-lib' 'kwtool-rules-lib' 'web-platform-lib'
 do 
-  echo $i
-  cd /svn/$i
-  /usr/bin/svn up
-  echo "syncing with ${SBXIP}"
-  /usr/bin/perl -I"$SBXROOT" "$SBXROOT"/tools/sandbox/swc.pl --sandbox-uri-base=http://${SBXIP}:8888/ sync
+  echo $i;
+  cd /git/$i;
+  git checkout master;
+  git pull;
+  ${TIM} sync -s ${SBXIP}
   echo "--------------------------------------------------------------------------------"
 done
