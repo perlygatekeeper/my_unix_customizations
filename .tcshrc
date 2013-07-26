@@ -93,6 +93,9 @@ set showdots='-A'
 if ( -f ~/.completion) then
   source ~/.completion
 endif
+if ( -f ~/.completion.git) then
+  source ~/.completion.git
+endif
 # remember that .macosx .ubuntu and .manta are marker files that need
 # to be made on a system to indicate what type of system it is.
 if ( -f ~/.tcshrc.macosx && -f ~/.macosx ) then
