@@ -63,8 +63,10 @@ sub process_inde {
 			if ($printing) {  # --- PRINTING ---
 				if ( $conf->{stop_lines}{$.} or
 					( $conf->{stop_regexp} and $_ =~ $conf->{stop_regexp} ) ) {       # look for stop trigger
+					$lines->{stops}++;
 					if ($conf->{print_stops}) {
 						$lines->{printed}++; printf "%5d ", $lines->{total} if ($conf->{number}); print;
+						$printing=0;
 					}
 					$printing = $conf->{linger};                                      # we have some printing left to do, but always end with printing=0
 					if ($printing) {                                                  # printing will either be the value for lingering, or 0 or 1 depending on print_stops 
@@ -224,8 +226,38 @@ sub parse_args_inde {
 			$conf->{stop_lines}{$1}++;
 			print "user has requested printing of line $1\n" if ($debug);
 			shift(@ARGV);
+		} elsif ( $ARGV[0] =~ m'^-?([^.]*)\.\.+([^.]*)$' ) {                                    # N to M
+			my $front=$1;
+			my $back=$2;
+			if ($front eq '' and $back eq '') {
+				print "'..' is not a valid option.\n";
+			} elsif ($front eq '') { # ..SOMETHING (not a number)
+print " ..X '$front' '$back'\n";
+				$conf->{start_printing} = 1;
+				push( @stop_regexps, qq($back) );
+			} elsif ($back eq '') { # SOMETHING.. (not a number)
+print "X..  '$front' '$back'\n";
+				push( @start_regexps, qq($front) );
+			} else {             # SOMETHING..SOMETHING_ELSE (at least one of which is not a number)
+print "X..Y '$front' '$back'\n";
+				if ( $front=~/^\d+$/ ) {
+print "N..? '$front' '$back'\n";
+					$conf->{start_lines}{$front}++;
+				} else {
+print "X..? '$front' '$back'\n";
+					push( @start_regexps, qq($front) );
+				}
+				if ( $back=~/^\d+$/ ) {
+print "?..N '$front' '$back'\n";
+					$conf->{stop_lines}{$back}++;
+				} else {
+print "?..X '$front' '$back'\n";
+					push( @stop_regexps, qq($back) );
+				}
+				shift(@ARGV);
+			}
 		} else {
-			warn("$conf->{name}: Unknown option '$ARGV[0]'; assuming file to scan...\n") if ($debug);
+			warn("$conf->{name}: Unknown option '$ARGV[0]'; assuming file to scan...\n") if ($conf->{debug});
 			push(@{$conf->{files}},shift(@ARGV));
 		}
 
@@ -243,7 +275,7 @@ sub parse_args_inde {
 		}
 	}  # end while
 	if ($conf->{debug}) {
-		print Dumper($abbrev);
+		# print Dumper($abbrev);
 		pre_report($conf);
 	}
 	# if (@$ranges) { @$conf->{ranges} = sort { ( $conf->{ranges}->[$a]{start} <=> $conf->{ranges}->[$b]{start} ) || ( $conf->{ranges}->[$a]{end} <=> $conf->{ranges}->[$b]{end} ) } @$ranges }
@@ -269,10 +301,10 @@ sub pre_report {
 	my $conf = shift;
 	print "starts\n";
 	print "set start  to '$conf->{start_regexp}'\n" if ($conf->{start_regexp});
-	print "set starts at: " . join(', ', @{$conf->{start_lines}}) .	"\n" if ($conf->{start_lines});;
+	print "set starts at: " . join(', ', keys %{$conf->{start_lines}}) .	"\n" if ($conf->{start_lines});;
 	print "\nstops\n";
 	print "set stop   to '$conf->{stop_regexp}'\n" if ($conf->{stop_regexp});
-	print "set stops  at: " . join(', ', @{$conf->{st_lines}}) .	"\n" if ($conf->{stop_lines});;
+	print "set stops  at: " . join(', ', keys %{$conf->{stop_lines}}) .	"\n" if ($conf->{stop_lines});;
 	print "\nfiles?\n";
 	print "$_\n" foreach (@{$conf->{files}});
 }
