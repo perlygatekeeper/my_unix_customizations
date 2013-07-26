@@ -10,9 +10,9 @@ a untrace		"crk '\\n' '\n' | crk '\\t' '\t' | crk 'called at(.*)"'$'"' '\n\tcall
 a puptest		'sudo /usr/sbin/puppetd --test'
 a mrc           'vi ~/.tcshrc.manta; source ~/.tcshrc.manta'
 
-a vcm		vi /git/manta-web-app/Manta/RequestDispatcher/ContextMaps.pm
-a vcp		vi /git/manta-web-app/Manta/Web/CompanyPage.pm
-a vmb		vi /git/manta-web-app/Manta/Web/Megabrowse.pm
+a vcm		vi /git/mantacode/manta-web-app/Manta/RequestDispatcher/ContextMaps.pm
+a vcp		vi /git/mantacode/manta-web-app/Manta/Web/CompanyPage.pm
+a vmb		vi /git/mantacode/manta-web-app/Manta/Web/Megabrowse.pm
 
 a ginfo 'echo "Branches:"; git branch -v; echo "\nRemotes:"; git remote -v; echo "\nStatus:"; git status'
 a gic	'git commit'
