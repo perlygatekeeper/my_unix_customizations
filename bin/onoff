@@ -10,11 +10,15 @@ my $name = $0; $name =~ s'.*/''; # remove path--like basename
 
 use strict;
 use warnings;
+use Text::Abbrev;
+use Data::Dumper;
 
 my $debug = 0;
-my ($lines, $conf, $printing);
+my $conf={};
 
+print Dumper($conf) if ($debug);
 $conf=&initialize;
+print Dumper($conf) if ($debug);
 
 if ( $conf->{use_paired_triggers} ) { 
 	print STDERR "paired triggers not yet implemented, 2103-07-25\n"; exit;
@@ -22,6 +26,7 @@ if ( $conf->{use_paired_triggers} ) {
 	&process_paired($conf);
 } else {
 	&parse_args_inde($conf,@ARGV);
+	print Dumper($conf) if ($debug);
 	&process_inde($conf);
 }
 
@@ -46,7 +51,7 @@ sub process_inde {
 	my $conf = shift;
 	my ($printing);
 	foreach my $file ( @{$conf->{files}} ) {
-		$lines->{starts} =
+		my $lines->{starts} =
 		$printing = $conf->{start_printing} || 0;
 		$lines->{total} = $lines->{'not printed'} = $lines->{printed} = 0;
 	    if ( $conf->{linger} or $conf->{lead} ) {
@@ -58,15 +63,18 @@ sub process_inde {
 			if ($printing) {  # --- PRINTING ---
 				if ( $conf->{stop_lines}{$.} or
 					( $conf->{stop_regexp} and $_ =~ $conf->{stop_regexp} ) ) {       # look for stop trigger
-					$printing = $conf->{linger} || $conf->{print_stops};              # we have some printing left to do, but always end with printing=0
+					if ($conf->{print_stops}) {
+						$lines->{printed}++; printf "%5d ", $lines->{total} if ($conf->{number}); print;
+					}
+					$printing = $conf->{linger};                                      # we have some printing left to do, but always end with printing=0
 					if ($printing) {                                                  # printing will either be the value for lingering, or 0 or 1 depending on print_stops 
-						while ($printing) {
+						while ($printing and $_=<FILE>) {
 							$printing--;
 							$lines->{total}++;
 							$lines->{printed}++; printf "%5d ", $lines->{total} if ($conf->{number}); print;
 						}
 					}
-				} else {                                                              # not a stop-triggering line, just count and print.
+				} else {
 					$lines->{printed}++; printf "%5d ", $lines->{total} if ($conf->{number}); print;
 				}
 			} else {  # --- NOT PRINTING ---
@@ -75,27 +83,25 @@ sub process_inde {
 					$lines->{starts}++;
 					if ( $conf->{lead} ) {                                            # we are to print $conf->{lead} lines before each start trigger line
 						while (@{$lines->{remembered}}) {
-							$lines->{total}++;
-							$lines->{printed}++; printf "%5d ", $lines->{total} if ($conf->{number}); print;
+							$lines->{printed}++; printf "%5d ", ($lines->{total} - @{$lines->{remembered}}) if ($conf->{number}); print shift(@{$lines->{remembered}});
 						}
-					} else {
-						$lines->{printed}++; printf "%5d ", $lines->{total} if ($conf->{number}); print;
 					}
-					$printing=1 unless ( $conf->{stop_regexp} and
-							       $_ =~ $conf->{stop_regexp} );                      # put us into printing state unless this line also matches stop regexp
+					$lines->{printed}++; printf "%5d ", $lines->{total} if ($conf->{number}); print;
+					$printing=1 unless ( ( $conf->{stop_regexp} and
+					                 $_ =~ $conf->{stop_regexp} ) or 
+					                     $conf->{stop_lines}{$.} );                   # put us into printing state unless this line also matches stop regexp
 			    } elsif ( $conf->{regexp} and $_ =~ $conf->{regexp} ) {               # look for a single-line trigger
 					$lines->{$conf->{regexp}}++;
 					if ( $conf->{lead} ) {                                            # we are to print $conf->{lead} lines before each start trigger line
 						while (@{$lines->{remembered}}) {
-							$lines->{total}++;
-							$lines->{printed}++; printf "%5d ", $lines->{total} if ($conf->{number}); print;
+							$lines->{printed}++; printf "%5d ", ($lines->{total} - @{$lines->{remembered}}) if ($conf->{number}); print shift(@{$lines->{remembered}});
 						}
-					} else {
-						$lines->{printed}++; printf "%5d ", $lines->{total} if ($conf->{number}); print;
 					}
+					$lines->{printed}++; printf "%5d ", $lines->{total} if ($conf->{number}); print;
 					$printing = $conf->{linger};                                      # we have some printing left to do, but always end with printing=0
 					if ($printing) {                                                  # printing will be the value for lingering
-						while ($printing--) {
+						while ($printing and $_=<FILE>) {
+							$printing--;
 							$lines->{total}++;
 							$lines->{printed}++; printf "%5d ", $lines->{total} if ($conf->{number}); print;
 						}
@@ -140,7 +146,6 @@ sub parse_args_inde {
 	           '# of lines to print before and after a trigger',
 	           'name of file to add to list of files to scan');
 	grep(s/^([^-])/-$1/,@args);
-	use Text::Abbrev;
 	my $abbrev = abbrev @args;
 	push(@args,'N','N..','..M','N..M');
 	push(@help,"will print line N, ignoring start/stop regexp's",
@@ -150,11 +155,12 @@ sub parse_args_inde {
 	for (my $arg=$[; $arg<=$#args; $arg++) {
 		push ( @{$conf->{explanations}}, { arg => $args[$arg], explanation => $help[$arg] } );
 	}
+
 	while ( @ARGV >= 1 ) {
 	    my (@start_regexps, @stop_regexps, @regexps);
 		if ( $abbrev->{$ARGV[0]} ) {                       # have a valid argument, find which one
 			if ( $abbrev->{$ARGV[0]} eq '-help' or  $abbrev->{$ARGV[0]} eq '-?' ) {
-				&help();
+				&help($conf);
 				shift(@ARGV);
 			} elsif ( $abbrev->{$ARGV[0]} eq '-debug' ) {
 				$conf->{debug} = 1;
@@ -162,7 +168,7 @@ sub parse_args_inde {
 				shift(@ARGV);
 			} elsif ( $abbrev->{$ARGV[0]} eq '-number' ) {
 				$conf->{number} = 1;
-				print "user asked us to number the output lines\n";
+				print "user asked us to number the output lines\n" if ($conf->{debug});
 				shift(@ARGV);
 			} elsif ( $abbrev->{$ARGV[0]} eq '-regexp' or  $abbrev->{$ARGV[0]} eq '-find' or  $abbrev->{$ARGV[0]} eq '-grep' ) {
 				push( @regexps, qq($ARGV[1]) );
@@ -222,6 +228,7 @@ sub parse_args_inde {
 			warn("$conf->{name}: Unknown option '$ARGV[0]'; assuming file to scan...\n") if ($debug);
 			push(@{$conf->{files}},shift(@ARGV));
 		}
+
 		if (@start_regexps) {
 			my $regexps_ored = join('|', @start_regexps);
 			$conf->{start_regexp} = qr/$regexps_ored/;
@@ -236,7 +243,6 @@ sub parse_args_inde {
 		}
 	}  # end while
 	if ($conf->{debug}) {
-		use Data::Dumper;
 		print Dumper($abbrev);
 		pre_report($conf);
 	}
@@ -244,10 +250,9 @@ sub parse_args_inde {
 }  # end parse_args
 
 sub help {
-	my @args = @_;
+	my ($conf,@args) = @_;
 	select(STDOUT); $|=1; $\=''; 
-	print "$_[0]\n";
-	if (@{$conf->{help}}) {
+	if (@{$conf->{explanations}}) {
 		foreach my $explanation ( @{$conf->{explanations}} ) {
 			printf "%-16s\t%s\n", $explanation->{arg}, $explanation->{explanation};
 		}
