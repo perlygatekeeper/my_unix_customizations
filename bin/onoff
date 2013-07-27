@@ -232,26 +232,26 @@ sub parse_args_inde {
 			if ($front eq '' and $back eq '') {
 				print "'..' is not a valid option.\n";
 			} elsif ($front eq '') { # ..SOMETHING (not a number)
-print " ..X '$front' '$back'\n";
+#print " ..X '$front' '$back'\n";
 				$conf->{start_printing} = 1;
 				push( @stop_regexps, qq($back) );
 			} elsif ($back eq '') { # SOMETHING.. (not a number)
-print "X..  '$front' '$back'\n";
+#print "X..  '$front' '$back'\n";
 				push( @start_regexps, qq($front) );
 			} else {             # SOMETHING..SOMETHING_ELSE (at least one of which is not a number)
-print "X..Y '$front' '$back'\n";
+#print "X..Y '$front' '$back'\n";
 				if ( $front=~/^\d+$/ ) {
-print "N..? '$front' '$back'\n";
+#print "N..? '$front' '$back'\n";
 					$conf->{start_lines}{$front}++;
 				} else {
-print "X..? '$front' '$back'\n";
+#print "X..? '$front' '$back'\n";
 					push( @start_regexps, qq($front) );
 				}
 				if ( $back=~/^\d+$/ ) {
-print "?..N '$front' '$back'\n";
+#print "?..N '$front' '$back'\n";
 					$conf->{stop_lines}{$back}++;
 				} else {
-print "?..X '$front' '$back'\n";
+#print "?..X '$front' '$back'\n";
 					push( @stop_regexps, qq($back) );
 				}
 				shift(@ARGV);
