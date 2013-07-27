@@ -254,8 +254,8 @@ sub parse_args_inde {
 #print "?..X '$front' '$back'\n";
 					push( @stop_regexps, qq($back) );
 				}
-				shift(@ARGV);
 			}
+			shift(@ARGV);
 		} else {
 			warn("$conf->{name}: Unknown option '$ARGV[0]'; assuming file to scan...\n") if ($conf->{debug});
 			push(@{$conf->{files}},shift(@ARGV));
