@@ -1,9 +1,104 @@
-#!/bin/bash
+#!/usr/bin/perl
+#
+# A perl script to spit info on a jpeg file
+#
+$name = $0;
+$name =~ s'.*/''; # remove path--like basename
+$usage = "usage: $name ";
+$usage.= "[-size] [-87|89] [-transparent] [-interlaced] ";
+$usage.= "[-colors] [-hist] files...";
+select( (select(STDOUT), $|=1) [ $[ ] );
 
-if [ $@ ] ; then
-  for X in $@ ; do echo -n "  <img src='$X"; \
-	  eval "/opt/local/bin/jpegtopnm --verbose $X 2>&1 > /dev/null | perl -ne 'if(/width/){s/^.*: /\047 /; s/, compon.*$/>/; s/,//; print;}' "; \
-  done
-else
-  /opt/local/bin/jpegtopnm --verbose 2>&1 > /dev/null | grep width
-fi
+$debug=0;
+
+$true=1; $false=0;
+
+$JPGTOPNM= (-f '/usr/common/bin/netpbm/jpegtopnm') ?
+               '/usr/common/bin/netpbm/jpegtopnm' : `which jpegtopnm`;
+$PPMTOJPG= (-f '/usr/common/bin/netpbm/ppmtojpeg') ?
+               '/usr/common/bin/netpbm/ppmtojpeg' : `which ppmtojpeg`;
+$PPMHIST = (-f '/usr/common/bin/netpbm/ppmhist' ) ?
+               '/usr/common/bin/netpbm/ppmhist'  : `which ppmhist`;
+$PPMQUANT= (-f '/usr/common/bin/netpbm/ppmquant') ?
+               '/usr/common/bin/netpbm/ppmquant' : `which ppmquant`;
+chomp $JPGTOPNM;
+chomp $PPMTOJPG;
+chomp $PPMHIST;
+chomp $PPMQUANT;
+
+$ENV{'SHELL'}= (-f '/bin/sh' ) ? 'bin/sh' : `which sh`;
+
+if ( $ARGV[0] eq '-colors' ) {
+  $colors=shift;
+}
+
+foreach (@ARGV) {
+  $size=length($_);
+  $maxsize=($size>$maxsize)?$size:$maxsize;
+}
+
+foreach (@ARGV) {
+#system("$JPGTOPNM -verbose -comments $_  2>&1 >/dev/null");
+  # protect the regexp characters ' ^ $ ? * + ( ) { } [ ] < > \ / . '
+  $_=~s/([\$\^*\[\]{}.<>()+?\/\\])/\\\1/g;
+ $command="$JPGTOPNM -verbose -comments $_ 2>&1 >/dev/null |";
+ $command="$JPGTOPNM |$PPMHIST $_ |" if ($colors);
+
+ print "about to run $command\n" if ($debug);
+
+ open(COMMAND,"$command") ||
+   die("$name: Cannot obtain information on JPG image '$_' with '$command': $!.");
+ my(@results)=<COMMAND>;
+ close(COMMAND);
+
+#@results=grep($_!~/writing/i,@results);
+#printf "%-${maxsize}s %s", $_, join("",@results);
+
+ foreach $result (@results) {
+   if (($width,$height,$interlaced) =
+       ($result =~ /reading (\d+) by (\d+) (.*) ?JPG image/i) ) {
+     last;
+   }
+ }
+ printf "%-${maxsize}s  %4d x %4d %s\n", $_, $width,$height,$interlaced;
+}
+
+exit 0;
+
+__END__
+NAME
+     ppmtojpeg - convert a portable pixmap into a JPG file
+ 
+SYNOPSIS
+     ppmtojpeg [-interlace] [-sort] [-map mapfile] [ - transparent
+     color] [ppmfile]
+NAME
+     jpegtopnm - convert a JPG file into a portable anymap
+ 
+SYNOPSIS
+     jpegtopnm [-verbose] [-comments] [-image N] [JPGfile]
+
+NAME
+     ppmquant - quantize the colors in a portable pixmap down  to
+     a specified number
+ 
+SYNOPSIS
+     ppmquant [-floyd|-fs] ncolors [ppmfile]
+     ppmquant [-floyd|-fs] -map mapfile [ppmfile]
+
+
+NAME
+     ppmhist - print a histogram of a portable pixmap
+ 
+SYNOPSIS
+     ppmhist [ppmfile]
+
+
+jpegtopnm -verbose lipidat.jpeg > /dev/null
+jpegtopnm: reading 467 by 136 JPG image
+jpegtopnm: writing a PPM file
+
+jpegtopnm -verbose $htdocs/../icons/OSU.171x171.jpeg >/dev/null
+jpegtopnm: reading 171 by 171 interlaced JPG image
+jpegtopnm: writing a PPM file
+

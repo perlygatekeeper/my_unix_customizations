@@ -14,26 +14,6 @@ a vcm		vi /git/mantacode/manta-web-app/Manta/RequestDispatcher/ContextMaps.pm
 a vcp		vi /git/mantacode/manta-web-app/Manta/Web/CompanyPage.pm
 a vmb		vi /git/mantacode/manta-web-app/Manta/Web/Megabrowse.pm
 
-a ginfo 'echo "Branches:"; git branch -v; echo "\nRemotes:"; git remote -v; echo "\nStatus:"; git status'
-a gic	'git commit'
-a gicam	'git commit -a -m '
-a gich	'git checkout'
-a gib	'git branch'
-a gibv	'git branch -v'
-a gibr	'git branch -r'
-a gir	'git remote'
-a girv	'git remote -v'
-a gis	'git status'
-a gidi	'git diff'
-a gpush	'git push origin'
-a gpull	'git pull origin'
-a gits	'a | grep git'
-a tim	'node /git/mantacode/srcrr-client/srcrr'
-# get a new branch from github for the first time.
-# > git checkout master
-# > git pull
-# > git checkout -b company-megabrowse-navigation --track origin/company-megabrowse-navigation
-
 a amber         tim -s aschwartz4-sbx
 a garth         tim -s gkerr-sbx
 a sara          tim -s sbraumiller-sbx
