@@ -14,6 +14,8 @@ a vcm		vi /git/mantacode/manta-web-app/Manta/RequestDispatcher/ContextMaps.pm
 a vcp		vi /git/mantacode/manta-web-app/Manta/Web/CompanyPage.pm
 a vmb		vi /git/mantacode/manta-web-app/Manta/Web/Megabrowse.pm
 
+a tim	'node /git/mantacode/srcrr-client/srcrr'
+
 a amber         tim -s aschwartz4-sbx
 a garth         tim -s gkerr-sbx
 a sara          tim -s sbraumiller-sbx

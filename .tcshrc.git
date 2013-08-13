@@ -12,7 +12,6 @@ a gidi	'git diff'
 a gpush	'git push origin'
 a gpull	'git pull origin'
 a gits	'a | grep git'
-a tim	'node /git/mantacode/srcrr-client/srcrr'
 # get a new branch from github for the first time.
 # > git checkout master
 # > git pull
