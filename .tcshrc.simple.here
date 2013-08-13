@@ -1,0 +1,28 @@
+alias a alias
+a u	unalias
+a ll	ls -l
+a lr	ls -ltr
+a lsd	ls -Fc
+a pu	pushd
+a po	popd
+a rot	pushd +1
+a vrc	vim ~/.tcshrc
+a src	source ~/.tcshrc
+a cx	chmod +x
+a rp	'set path=( $path )'
+a pidw	'ps -elf | grep \!* | grep -v grep'
+a oia	ssh -l root 140.254.17.250
+a h	history
+a gphp	'grep \!* *.php */*.php'
+
+set cdpath = ( / ~ )
+set path = ( $path ~/bin )
+
+##
+# Your previous /Users/steve/.tcshrc file was backed up as /Users/steve/.tcshrc.macports-saved_2011-03-08_at_23:52:21
+##
+
+# MacPorts Installer addition on 2011-03-08_at_23:52:21: adding an appropriate PATH variable for use with MacPorts.
+setenv PATH /opt/local/bin:/opt/local/sbin:$PATH
+# Finished adapting your PATH environment variable for use with MacPorts.
+

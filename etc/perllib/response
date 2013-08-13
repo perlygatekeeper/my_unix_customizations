@@ -3,7 +3,7 @@ sub response {
   print ($prompt) ? $prompt : "yes|no ";
   my $response=<STDIN>;
   $regexp ||= "^y";
-  $exit_exp ||= "^e(xit)?|^q(uit)?";
+  $exit_regexp ||= "^e(xit)?|^q(uit)?";
   if ($exit_regexp and $response=~/$exit_regexp/i) {
     print "Quitting $name in response to user input '$response'\n";
     exit;

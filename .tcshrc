@@ -106,8 +106,8 @@ if ( -f ~/.tcshrc.ubuntu && -f ~/.ubuntu ) then
 	# echo "sourcing ~/.tcshrc.ubuntu"
 	source ~/.tcshrc.ubuntu
 endif
-if ( -f ~/.tcshrc.manta && -f ~/.manta ) then
-	# echo "sourcing ~/.tcshrc.manta"
-	source ~/.tcshrc.manta
+if ( -f ~/.tcshrc.git && -f ~/.git_aliases ) then
+	# echo "sourcing ~/.tcshrc.git"
+	source ~/.tcshrc.git
 endif
 endif
