@@ -57,7 +57,11 @@ sub process_inde {
 	    if ( $conf->{linger} or $conf->{lead} ) {
 			$lines->{remembered} = [];
 		}
-  		open(FILE,"<", $file) || die("Cannot read from '$file': $!\n");
+		if ($file eq '-') {
+  		  open(FILE,"<-") || die("Cannot read from SDTIN: $!\n");
+		} else {
+  		  open(FILE,"<", $file) || die("Cannot read from '$file': $!\n");
+		}
   		while (<FILE>) {
 			$lines->{total}++;
 			if ($printing) {  # --- PRINTING ---
