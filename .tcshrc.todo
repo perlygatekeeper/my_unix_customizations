@@ -1,0 +1,27 @@
+make OS-based alaises for the following OS'es:
+
+MacOS X
+Ubuntu
+Suse
+Redhat
+SunOS
+Solaris
+Irix
+Aix
+FreeBSD
+
+and the following commands:
+a inst          sudo apt-get install
+a installed     dpkg -l
+a search        apt-cache search
+
+patching
+show data on hardware, like physical memory, swap, processor(s), network interfaces/settings.
+
+lsof - list open files
+
+reporting on OS name and version.
+
+------------------------------------------------------------------------------------------------------------------------
+
+git bootstraping and maintence
