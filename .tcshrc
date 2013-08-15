@@ -59,7 +59,7 @@ a work		ssh sparker@192.168.241.156
 a sbx		ssh sparker@192.168.241.203
 a workip	host sparker-server-1210.ecnext03.local 
 
-a hafh		ssh -p 8022 parker@71.79.236.111
+a hafh		ssh -p 8022 parker@71.79.250.47
 
 a ifc		'ifconfig -a'
 a str		'strings - \!* | less'
