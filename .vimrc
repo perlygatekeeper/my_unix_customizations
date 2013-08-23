@@ -15,6 +15,7 @@ set t_Co=256
 set viminfo='128,f1
 " keep XX lines of command line history
 set history=1024          	
+set paste
 " horizontal tab set at 4 & tab stop at 4
 set ht=4
 set ts=4	
@@ -46,7 +47,9 @@ set smartcase
 " autoindent by default
 set autoindent
 nnoremap << :set noautoindent<Cr>:filetype indent off<Cr>
+nnoremap <p :set paste<Cr>
 nnoremap >> :set   autoindent<Cr>:filetype indent on<Cr>
+nnoremap >p :set nopaste<Cr>
 
 if has("autocmd")
   " When editing a file, always jump to the last cursor position
