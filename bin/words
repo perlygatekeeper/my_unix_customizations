@@ -3,6 +3,7 @@
 # available via RH-RPM words-3.0-9.1
 WORDSFILE="/usr/share/dict/words";
 WORDSFILE="/usr/share/dict/linux.words";
+WORDSFILE="/usr/share/dict/web2";
 if [ "`tty`" = "not a tty" ] ; then
   P=cat
 else

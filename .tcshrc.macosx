@@ -19,3 +19,5 @@ setenv MANPATH /usr/share/man:/opt/local/share/man:/usr/local/man:/usr/local/sha
 # grep 'bin$'
 setenv PATH /Users/steve/bin:/sbin:/bin:/opt/local/bin:/usr/bin:/usr/X11/bin:/usr/local/bin:/System/Library/Perl/Extras/bin:/opt/local/lib/mysql5/bin:/opt/local/lib/postgresql90/bin:/opt/local/share/java/apache-ant/bin:/opt/local/apache2/bin:/Developer/usr/bin:/Developer/Makefiles/bin
 setenv PATH /usr/local/git/bin:/opt/local/bin:/opt/local/sbin:$PATH
+
+setenv WORDS /usr/share/dict/web2
