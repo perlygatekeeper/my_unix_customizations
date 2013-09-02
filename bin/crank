@@ -36,7 +36,7 @@ while ( @ARGV >= 1 ) {
     $all = "$ARGV[1]";
     shift; shift; }
   elsif ( ( $ARGV[0] eq '-?' ) || ( $ARGV[0] eq '-usage' ) ) {
-    help($usage); }
+    help($usage); shift; }
   elsif ( ( $ARGV[0] eq '-d' ) || ( $ARGV[0] eq '-default' ) ) {
     $crackstring=$tab;
     $replacestring=$newline;

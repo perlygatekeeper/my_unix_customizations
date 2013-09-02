@@ -4,3 +4,6 @@ a installed     dpkg -l
 a search        apt-cache search
 
 a uuids         sudo blkid -c /dev/null
+
+setenv WORDS /usr/
+
