@@ -24,7 +24,7 @@ $version=2.7; # binary now does NOT use unpack
 
 $name = $0; $name =~ s'.*/''; # remove path--like basename
 $usage = "usage:\n$name [--version]";
-$last_mod_date='Fri, Jun 27, 2003';
+$last_mod_date='Sun, Sep 1, 2013';
 $todo ="make language independent";
 $todo.="loop, for, variables";
 $author="Dr. Steven Parker";
@@ -42,6 +42,7 @@ $debug=0;
 
 
 $prompt = "Input [" . ((defined $stack_ref->[0])? $stack_ref->[0] : $empty) . "] ";
+my $num_type;
 while ( defined ($input = $term->readline($prompt)) ) {
   if ($input!~/\S/) {
     next;
@@ -55,12 +56,20 @@ while ( defined ($input = $term->readline($prompt)) ) {
     } elsif ($2>$3) {
       unshift (@{$stack_ref},eval "$3 .. $2");
     }
-  } elsif (&isanumber($input)) { # a line of numbers
+  } elsif ($num_type = &isanumber($input)) { # a line of numbers
+    print STDERR "nubmer type '$num_type'\n" if ($debug);
     foreach $item (split(/[\s,;]+/,$input)) {
-      if (&isanumber($item)=~/(dec|hex)/) {
-        unshift (@{$stack_ref},$item+0);
-      } elsif (&isanumber($item)=~/oct/) {
-        unshift (@{$stack_ref},$item+0);
+      if      ( $num_type =~ /dec/ ) {
+        unshift (@{$stack_ref},$item);
+      } elsif ( $num_type =~ /hex/ ) {
+        unshift (@{$stack_ref},hex($item));
+      } elsif ( $num_type =~ /oct/ ) {
+        unshift (@{$stack_ref},oct($item));
+      } elsif ( $num_type =~ /bin/ ) {
+        $item =~ s/^0b//;
+		print "let's make a decimal from '$item'\n";
+		my $decnum = unpack("N",pack("B32",substr(("0"x32).$item, -32)));
+        unshift (@{$stack_ref},$decnum);
       } else {
         if (not &execute($item)) {
           print STDERR "unknown input type '$item'\n";
@@ -163,19 +172,19 @@ sub by_type {
 
 sub isanumber {
   my($query)=@_;
-  print "is '" . $query . "' a number?\n";
-  if      ( $query =~ /^\s*[-+]?[0-9]+\.?[0-9]*\b/) {   # decimal integer or floating point
+  print "is '" . $query . "' a number?\n" if ($debug);
+  if      ( $query =~ /^\s*[-+]?0b[01]+\b/ ) {
+    return 'bin';
+  } elsif ( $query =~ /^\s*[-+]?0[0-7]+\b/ ) {
+    return 'oct';
+  } elsif ( $query =~ /^\s*[-+]?0[xX][0-9a-fA-F]+\b/ ) {
+    return 'hex';
+  } elsif ( $query =~ /^\s*[-+]?[0-9]+\.?[0-9]*\b/) {   # decimal integer or floating point
     return 'dec1';
   } elsif ( $query =~ /^[-+]?\.?[0-9]+\b/) {   # decimal integer or floating point
     return 'dec2';
   } elsif ( $query =~ /^\s*[-+]?[0-9]*\.[0-9]*[eE][-+]?[0-9][0-9]?\b/ ) { # exponential notation
     return 'exp';
-  } elsif ( $query =~ /^\s*[-+]?0[0-7]+\b/ ) {
-    return 'oct';
-  } elsif ( $query =~ /^\s*[-+]?0[xX][0-9a-fA-F]+\b/ ) {
-    return 'hex';
-  } elsif ( $query =~ /^\s*[-+]?0b[01]+\b/ ) {
-    return 'bin';
   } else {
     return 0;
   }
@@ -310,7 +319,7 @@ sub initialize {
 		     }
 		     print STDERR "$header\n";
 		     foreach $stack (sort keys %stacks) {
-		       printf STDERR "%s\t%d\n", $stack, scalar(@{$stacks{$stack}})
+		       printf STDERR "%5s\t%d\n", $stack, scalar(@{$stacks{$stack}})
 			 if (not $regexp or $stack =~ m,$regexp,);
 		     }
 		   } else {
@@ -741,24 +750,30 @@ sub display {
     printf STDERR "\\0%o\n", $s->[0];
   } elsif ($cmd =~ /binary/i) {
     if ($s->[0]=~/^\d+/) {
-      local($number)=$s->[0];
-      local($place)=0;
-      local($binary)='';
-      while ($number) {
-#	printf STDERR "place is         %s\n", $place;
-	local($check)=1<<$place++;
-	last if ($place>9);
-#	printf STDERR "number starts at %s\n", $number;
-#	printf STDERR "checking with    %s\n", $check;
-	if ($number&$check) {
-	  $number-=$check;
-	  $binary='1'.$binary;
-	} else {
-	  $binary='0'.$binary;
-	} 
-#	printf STDERR "number ends as   %s\n\n", $number;
-      }
-      printf STDERR " %s\n", $binary;
+	  my $bin_digits = '';
+	  if ( $arg_array->[0] =~ /^([1-9][0-9]?)$/ ) {
+	    $bin_digits = $1;
+	  }
+	  print "digits '$bin_digits'\n";
+	  printf STDERR "%0${bin_digits}b\n", $s->[0];
+#     local($number)=$s->[0];
+#     local($place)=0;
+#     local($binary)='';
+#     while ($number) {
+#	    printf STDERR "place is         %s\n", $place;
+#    local($check)=1<<$place++;
+#    last if ($place>9);
+#	    printf STDERR "number starts at %s\n", $number;
+#    	printf STDERR "checking with    %s\n", $check;
+#    if ($number&$check) {
+#      $number-=$check;
+#   	  $binary='1'.$binary;
+#   	} else {
+#   	  $binary='0'.$binary;
+#   	} 
+#    	printf STDERR "number ends as   %s\n\n", $number;
+#     }
+#     printf STDERR " %s\n", $binary;
 #     printf STDERR "%s\n", unpack("b16",($s->[0]+0));
     } else {
       printf STDERR "%s is not an non-negative integer\n", $s->[0];
