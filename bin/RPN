@@ -2,26 +2,26 @@
 
 # A perl-5 script to implement a reverse polish notation calculator
 # simple numeric calc, no strings, code, complex numbers on stack.
-#version=2.0;		# transfer input control to Term::ReadLine
-#version=2.1;		# extended help routine to allow INDENT in help messages
-#version=2.2;		# reverse stack, 0 is now top
-			# pop's  -> shift's
-			# push's -> unshift's
-			# prompt now has top value of stack
-			# fixed log10 (had to come before log in search)
-#version=2.3;		# add boolian functions
-			# add saved stacks and history
-			# add readin of customized functions and constants
-#version=2.4;		# added, min, max and ave functions
-			# fixed double newlines in histsave file,
-			# Term::ReadLine's GetHistory method returns NULLs!!!
-#version=2.5;		# fixed square function, command was editted for cube function not duplicated
-			# added concatenate function
-			# added ifelse function
-			# switched subroutine names as with numeric_n to n_arguments
-#version=2.6;		# fixed constant function
-$version=2.7;		# binary now does NOT use unpack
-#
+#version=2.0; # transfer input control to Term::ReadLine
+#version=2.1; # extended help routine to allow INDENT in help messages
+#version=2.2; # reverse stack, 0 is now top
+              # pop's  -> shift's
+              # push's -> unshift's
+              # prompt now has top value of stack
+              # fixed log10 (had to come before log in search)
+#version=2.3; # add boolian functions
+              # add saved stacks and history
+              # add readin of customized functions and constants
+#version=2.4; # added, min, max and ave functions
+              # fixed double newlines in histsave file,
+              # Term::ReadLine's GetHistory method returns NULLs!!!
+#version=2.5; # fixed square function, command was editted for cube function not duplicated
+              # added concatenate function
+              # added ifelse function
+              # switched subroutine names as with numeric_n to n_arguments
+#version=2.6; # fixed constant function
+$version=2.7; # binary now does NOT use unpack
+
 $name = $0; $name =~ s'.*/''; # remove path--like basename
 $usage = "usage:\n$name [--version]";
 $last_mod_date='Fri, Jun 27, 2003';
@@ -47,7 +47,7 @@ while ( defined ($input = $term->readline($prompt)) ) {
     next;
   }
   chomp($_); $term->addhistory($_);
-  if ($input=~m/^\s*(([-+]?\d+)\s*\.\.\s*([-+]?\d+))/) { # line with a 'string or "string
+  if ($input=~m/^\s*(([-+]?\d+)\s*\.\.\s*([-+]?\d+))/) { # line N .. M
     if ($2==$3) {
       unshift (@{$stack_ref},$2);
     } elsif ($2<$3) {
@@ -57,8 +57,10 @@ while ( defined ($input = $term->readline($prompt)) ) {
     }
   } elsif (&isanumber($input)) { # a line of numbers
     foreach $item (split(/[\s,;]+/,$input)) {
-      if (&isanumber($item)) {		# this seems redundant but it isn't, now I am looking at a single item on the line
-        unshift (@{$stack_ref},$item);
+      if (&isanumber($item)=~/(dec|hex)/) {
+        unshift (@{$stack_ref},$item+0);
+      } elsif (&isanumber($item)=~/oct/) {
+        unshift (@{$stack_ref},$item+0);
       } else {
         if (not &execute($item)) {
           print STDERR "unknown input type '$item'\n";
@@ -161,10 +163,22 @@ sub by_type {
 
 sub isanumber {
   my($query)=@_;
-  if ($query=~/^\s*[-+]?[0-9]+[0-9.]*|[-+]?\.[0-9]+/) {
-    return 1;
+  print "is '" . $query . "' a number?\n";
+  if      ( $query =~ /^\s*[-+]?[0-9]+\.?[0-9]*\b/) {   # decimal integer or floating point
+    return 'dec1';
+  } elsif ( $query =~ /^[-+]?\.?[0-9]+\b/) {   # decimal integer or floating point
+    return 'dec2';
+  } elsif ( $query =~ /^\s*[-+]?[0-9]*\.[0-9]*[eE][-+]?[0-9][0-9]?\b/ ) { # exponential notation
+    return 'exp';
+  } elsif ( $query =~ /^\s*[-+]?0[0-7]+\b/ ) {
+    return 'oct';
+  } elsif ( $query =~ /^\s*[-+]?0[xX][0-9a-fA-F]+\b/ ) {
+    return 'hex';
+  } elsif ( $query =~ /^\s*[-+]?0b[01]+\b/ ) {
+    return 'bin';
+  } else {
+    return 0;
   }
-  return 0;
 }
 
 sub initialize {
@@ -360,6 +374,7 @@ sub initialize {
              "INDENTd,i - decimal\n" .
              "INDENTx,X - hexadecimal with (abcdef) or (ABCDEF) respectively\n" .
              "INDENTo   - octal\n" .
+             "INDENTbn  - binary format\n",
              "INDENTf   - floating point\n" .
              "INDENTe,E - exponential format with (e00) or (E00) respectively\n" .
              "INDENTg,G - floating point or exponential format with (e00) or (E00) respectively\n" .
@@ -1027,4 +1042,18 @@ if_then_else
 if_then_elsif_else
 loop
 
+
+
+ 
+To convert a binary number to decimal base, use unpack and pack.
+
+my $binnum = '1101'; # binary number 
+my $decnum = unpack("N", pack("B32", substr('0'x32.$binnum, -32)));
+print "$binnum = $decnum \n";
+To convert a decimal number to binary, use unpack.
+
+my $decnum = 25; # decimal number
+my $binnum = unpack("B32", pack("N", $decnum)); # in binary
+$binnum =~ s!^0+(?=\d)!!;
+print "$decnum = $binnum \n";
 
