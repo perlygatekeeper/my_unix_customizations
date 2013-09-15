@@ -55,11 +55,9 @@ a ssh		'ssh -XY'
 a home		ssh parker@192.168.0.100
 a ipoodle	ssh steve@192.168.0.102
 a laptop	ssh steve@192.168.0.104
-a work		ssh sparker@192.168.241.156
-a sbx		ssh sparker@192.168.241.203
-a workip	host sparker-server-1210.ecnext03.local 
+a pi		ssh pi@192.168.0.109
 
-a hafh		ssh  -L 5432:talk.google.com:5222 -L 8280:127.0.0.1:8888 -L 8080:127.0.0.1:80 -p 8022 parker@71.79.250.47
+a hafh		ssh  -L 5432:talk.google.com:5222 -L 8280:127.0.0.1:8888 -L 8080:127.0.0.1:80 -p 22 parker@71.79.250.47
 # ssh -f -N -L 5432:talk.google.com:5222 user@home.network.com
 
 a ifc		'ifconfig -a'
