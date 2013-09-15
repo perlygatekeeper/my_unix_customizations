@@ -9,7 +9,7 @@ use strict;
 use warnings;
 
 my ($i, @primes);
-my $MAX=10000;
+my $MAX = 1000000;
 if ($ARGV[0]=~/^\d+$/) { $MAX=$ARGV[0]; shift; }
 my $L=length($MAX)+1;
 my $N=int(96/$L);
