@@ -1,27 +1,30 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 #-----------------------------------------------------------------------------
 #   ***   Define Default Strings, Values & Flags   ***
-use strict; 
-use warnings; 
+use strict;
+use warnings;
 my $name      = $0; $name =~ s'.*/'';
 my $false     = 0;
 my $true      = 1;
 my $usage     = "usage: $name [-m (for MANPATH)]\n";
-my $newline   = "\n"; 
-my $tab       = "\t"; 
-my $backspace = "\010"; 
-my $formfeed  = "\014"; 
-my $man;
-my $path;
+my $newline   = "\n";
+my $tab       = "\t";
+my $backspace = "\010";
+my $formfeed  = "\014";
+my ( $man, $path, $p5l, $llp );
 
 #   ***   Parse Command Line Argument(s)   ***
 while ( @ARGV >= 1 ) {
-   if ( $ARGV[0] eq '-m' ) { $man=$true; shift; }
+   if    ( $ARGV[0] eq '-m'  ) { $man=$true; shift; }
+   elsif ( $ARGV[0] eq '-p5' ) { $p5l=$true; shift; }
+   elsif ( $ARGV[0] eq '-lp' ) { $llp=$true; shift; }
    else { shift; print $usage; }
 }  # end while
 
-if ($man) { $path = $ENV{'MANPATH'} || ''; }
-else      { $path = $ENV{'PATH'}; };
+if    ($man) { $path = $ENV{'MANPATH'}  || ''; }
+elsif ($p5l) { $path = $ENV{'PERL5LIB'} || ''; }
+elsif ($llp) { $path = $ENV{'LD_LIBRARY_PATH'}  || ''; }
+else         { $path = $ENV{'PATH'}; };
 
 # print "$path";
 
@@ -35,6 +38,11 @@ print $path;
 exit 0;
 
 __END__
+
+echo use:    find . -type f -exec grep '^ln' {} \; | sh
+echo printpath is the 'real' file
+ln -fs printpath pp
+
 
 echo use:    find . -type f -exec grep '^ln' {} \; | sh
 echo printpath is the 'real' file
