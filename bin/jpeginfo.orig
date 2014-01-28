@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ $@ ] ; then
+  for X in $@ ; do echo -n "  <img src='$X"; \
+	  eval "/opt/local/bin/jpegtopnm --verbose $X 2>&1 > /dev/null | perl -ne 'if(/width/){s/^.*: /\047 /; s/, compon.*$/>/; s/,//; print;}' "; \
+  done
+else
+  /opt/local/bin/jpegtopnm --verbose 2>&1 > /dev/null | grep width
+fi
