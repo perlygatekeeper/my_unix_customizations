@@ -1,9 +1,9 @@
-#!/usr/bin/env perl -l
+#!/usr/bin/env perl
 use strict; use warnings;
 
 my $module = shift;
 
 print "looking for the '" . $module . "' module:\n";
 eval " use $module ";
-eval qq(print \"${module}'s version is '\$${module}::VERSION'\");
+eval qq(print \"${module}'s version is '\$${module}::VERSION'\\n\");
 exit 0;
