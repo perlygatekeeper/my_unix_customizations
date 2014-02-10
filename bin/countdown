@@ -1,4 +1,4 @@
-#! /usr/bin/perl
+#!/usr/bin/env perl
 # Countdown script (03/16/91)
 # By Steve Parker
  
