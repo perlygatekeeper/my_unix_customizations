@@ -1,5 +1,11 @@
 #!/usr/bin/perl
 # A perl script to output 'Only One Blank Line' or 'No Blank Lines'
+#
+# Filter all but one occurance of blank lines (oobl), or all blank lines (nbl)
+# A blank line has no characters on it.
+# -white    flag makes all white-space lines equivalent to blank lines.
+# -comment  flag makes #-style or //-style comment lines equivalent to blank lines.
+
 use strict;
 use warnings;
 
@@ -17,19 +23,19 @@ my $comment_check;
 
 if ($white) {
   if ($comment) {
-    $blank_check   = qr(^\s*$);			# hash- or double-slash- style comment lines
+    $blank_check   = qr(^\s*$);		# hash- or double-slash- style comment lines
     $comment_check = qr(^\s*(#|//)?);	# white or blank
   } else {
-    $blank_check   = qr(^\s*$);			# white-space-only or blank lines
-    $comment_check = '';				# comment lines ignored
+    $blank_check   = qr(^\s*$);		# white-space-only or blank lines
+    $comment_check = '';		# comment lines ignored
   }
 } else {
   if ($comment) {
-    $blank_check   = qr(^$);			# blank-only lines
+    $blank_check   = qr(^$);		# blank-only lines
     $comment_check = qr(^\s*(#|//)?);	# white or blank
   } else {
-    $blank_check   = qr(^$);			# blank-only lines
-    $comment_check = '';				# comment lines ignored
+    $blank_check   = qr(^$);		# blank-only lines
+    $comment_check = '';		# comment lines ignored
   }
 }
 
@@ -111,8 +117,6 @@ sub help {
 __END__
 
 
-
-
 #while (<>) {
 #  if (/^$/) {$blank++;}
 #  else      {$blank=0;}
@@ -141,3 +145,8 @@ __END__
 #           }
 #         }
 #       }
+
+
+echo use:    find . -type f -exec grep '^ln' {} \; | sh
+echo oobl is the 'real' file
+ln -fs oobl nbl
