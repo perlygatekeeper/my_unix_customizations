@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 #
 # Script to obtain my primary group name from my netgroup
 # membership(s).  This is to allow my primary gid to be overriden

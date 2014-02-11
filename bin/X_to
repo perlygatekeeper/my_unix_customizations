@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 #
 # A perl script to start a (possibly arbitrary) X11-command on a remote
 # host, with 3 special invocations, direct_xsession_to, xsession_to and xterm_to.

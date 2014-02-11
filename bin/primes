@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 #
 # A perl script to list the first N primes>
 # All primes from 2 to 99999 are stored at the end of the script>

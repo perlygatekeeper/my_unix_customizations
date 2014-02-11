@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl -w
 
 #------------------------------------------------------------#
 # Scrape images.google.com for images matching a specific    #

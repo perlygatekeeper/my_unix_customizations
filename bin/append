@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # A perl script to append the first argment to the end of the file (the second argument)
 use strict;
 use warnings;

@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 #
 # A perl script to check /etc/smb.conf using the command testparm
 # from the samba suite, against the IP address of the person running

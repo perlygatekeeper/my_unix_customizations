@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # A perl script to output 'Only One Blank Line' or 'No Blank Lines'
 #
 # Filter all but one occurance of blank lines (oobl), or all blank lines (nbl)

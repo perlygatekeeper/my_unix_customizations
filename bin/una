@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 #
 # A perl script to change character sequence 
 # 342 200 231 which looks like this '’'

@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 #
 # A perl-5 script to remove html tags - OR
 # encoding and split input string after the ? and all &'s
