@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # Program name: gifsize
 # Author: Rajiv Pant (Betul)
 # Version: 1.0. October 1994.

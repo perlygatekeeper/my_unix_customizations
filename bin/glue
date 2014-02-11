@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # script to glue blocks of lines horizontially.
 # number of lines may be specified or the number coming through
 # is used thusly:

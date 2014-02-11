@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 #
 # A perl-5 script to make a perl foreach construction 
 # out of a line containing an array name

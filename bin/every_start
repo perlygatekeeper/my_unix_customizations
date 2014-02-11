@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # A perl script to print every # line, starting at a given #
 # first odd then even lines is the default
 # for the reverse functionality see shuffle.
@@ -87,7 +87,7 @@ orig	3,1	3,2	3,3
 
 orignal script wasn't as general:
 
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # A perl script to print first odd then even lines.
 #
 # ie. lines thus:       	# will be rearranged to:	

@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 #
 # A perl script to 'unwrap' *.tar files from the net.
 #
@@ -541,7 +541,7 @@ sub uudecode {
 }
 
 #   ---   ---   ---
-#!/usr/bin/perl
+#!/usr/bin/env perl
 #
 # $Header: unshar,v 1.1 90/08/12 00:23:29 lwall Locked $
 #
