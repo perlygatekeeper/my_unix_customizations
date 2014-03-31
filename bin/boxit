@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 #
 # A perl filter to input a block of text and output that same block
 # surrounded with a nice pretty "text box"
@@ -6,160 +6,310 @@
 $name = $0; $name =~ s'.*/''; # remove path--like basename
 $usage = "usage:\n$name";
 
-# TO DO:   options?   -style style_by_name -styles (will list them) -trim -ltrim -rtrim
+# options?  --style style_name
+#           --styles (will list them)
+#           [ --trim | [ --ltrim | --rtrim ] 
+#           --tight
+#           --spacious
+# TO DO:    --table
+use Getopt::Long;
+my( $show, $styles, $trim, $ltrim, $rtrim, $tight, );
+my $spacious = 0;
+my $style = 'default';
+GetOptions ( 'debug'           => \$debug,
+             'style=s'         => \$style,
+             'list|styles'     => \$list_styles,
+             'tight'           => \$tight,
+             'show:i@{0,2}'    => \$show,
+             'spacious+'       => \$spacious,
+             'trim'            => \$trim,
+             'lefttrim|ltrim'  => \$ltrim,
+             'righttrim|rtrim' => \$rtrim,
+                   );
+my $styles = &set_styles;
 
-#  BSG or Linear with clipped corners
-$left		= '|';	#  /-----------\
-$right		= '|';	#  |           |
-$top		= '-';	#  |           |
-$bottom		= '-';	#  |           |
-$upper_right	= '\\';	#  |           |
-$upper_left	= '/';	#  |           |
-$lower_right	= '/';	#  |           |
-$lower_left	= '\\';	#  \-----------/
-
-#  Linear
-$left		= '|';	#  +-----------+
-$right		= '|';	#  |           |
-$top		= '-';	#  |           |
-$bottom		= '-';	#  |           |
-$upper_right	= '+';	#  |           |
-$upper_left	= '+';	#  |           |
-$lower_right	= '+';	#  |           |
-$lower_left	= '+';	#  +-----------+
-
-$horizontal_padding	= 2;
-$vertical_padding	= 1;
-
-my $max_length;
-my $shortest_left = 1000;
-while (<>) {
-  chomp;  push(@lines,$_);
-  next if (/^\s*$/); # skip white and blank lines.
-  my $length = length($_);
-  $max_length = ( ( $length > $max_length ) ? $length : $max_length );
-  ( $left_margin ) = ( $_ =~ /^(\s*)/ );
-  my $left_length = length($left_margin);
-  $shortest_left = ( ( $left_length < $shortest_left ) ? $left_length : $shortest_left );
-# printf "%5d: %5d/%5d  %5d/%5d '%5s'\n",
-#        $.,
-# 	 $left_length, $shortest_left,
-# 	 $length, $max_length,
-# 	 $left_margin;
+if ( not exists $styles->{$style} ) {
+  print STDERR "requested style >$style< isn't supported, using 'default'\n";
+  $style = 'default';
 }
 
-$left_margin = " " x $shortest_left;
-$blank_line	= $left_margin . $left . ( " " x $horizontal_padding ) .
-                  " " x ( $max_length - $shortest_left ) . 
-                  ( " " x $horizontal_padding ) . $right . "\n";
-$top_line	= $left_margin . $upper_left .
-                  ( $top    x ($max_length - $shortest_left + 2*$horizontal_padding) ) . $upper_right . "\n";
-$bottom_line	= $left_margin . $lower_left .
-                  ( $bottom x ($max_length - $shortest_left + 2*$horizontal_padding) ) . $lower_right . "\n";
+if ( $debug ) { print STDERR "style is >$style<\n"; }
 
-
-print $top_line;
-print $blank_line for ( 1 .. $vertical_padding);
-foreach $line (@lines) {
-  $line =~ s/^$left_margin// if $left_margin; # trim left margin
-  $right_padding = $max_length - $shortest_left - length($line);
-  print $left_margin . $left .     ( " " x $horizontal_padding ) .
-        $line .  ( " " x $right_padding ) .
- 	( " " x $horizontal_padding ) . $right . "\n";
-#	( " " x $horizontal_padding ) . $right . "'$right_padding'" . "\n";
+if ( $tight ) {
+  $horizontal_padding = 1;
+  $vertical_padding   = 0;
+} else {
+  $horizontal_padding = 2 + $spacious;
+  $vertical_padding   = 1 + $spacious;
 }
-print $blank_line for ( 1 .. $vertical_padding);
-print $bottom_line;
+
+if ( $debug ) { print STDERR "before main loop\n"; }
+if ( $debug ) {
+  use Data::Dumper;
+  print "show is a " . ref($show) . "\n";
+  print "show is has " . scalar(@$show) . " elements\n";
+  print Dumper($show);
+}
+if ( scalar(@$show) ) { 
+  if ( $debug ) { print STDERR "in 'show' block\n"; }
+  my $char = 'a';
+  my $line;
+  my @lines;
+  my $margin = 5;
+  my $length = $show->[0] || 5;
+  my $height = $show->[1] || 5;
+  foreach my $i ( 1 .. $height ) {
+    $line = '';
+    foreach my $i ( 1 .. $length ) { $line .= $char++; }
+	push(@lines,$line);
+  }
+  &box_me( $styles->{$style}, $margin, $margin + $length, @lines ); # 5 here is for left margin
+} elsif ( $list_styles ) {
+  if ( $debug ) { print STDERR "in 'list-styles' block\n"; }
+  print join( ', ', sort keys %$styles ) . "\n";
+} else {
+  if ( $debug ) { print STDERR "in 'filter' block\n"; }
+  # slurp lines and remember the left margin and the maxium length 
+  my $max_length    = 0;
+  my $shortest_left = 1000;
+  my ( @lines, $left_margin );
+  while (<>) {
+    chomp;
+    if ( $trim or $ltrim ) { s/^\s*//; }
+    if ( $trim or $rtrim ) { s/\s*$//; }
+    push(@lines,$_);
+    next if (/^\s*$/); # skip white and blank lines.
+    my $length = length($_);
+    $max_length = ( ( $length > $max_length ) ? $length : $max_length );
+    ( $left_margin ) = ( $_ =~ /^(\s*)/ );
+    my $left_length = length($left_margin);
+    $shortest_left = ( $left_length < $shortest_left ) ? $left_length : $shortest_left;
+    if ( $debug ) {
+      printf "%5d: %5d/%5d  %5d/%5d '%5s'\n", $.,
+             $left_length, $shortest_left, $length, $max_length, $left_margin;
+    }
+  }
+  &box_me( $styles->{$style}, $shortest_left, $max_length, @lines );
+}
+if ( $debug ) { print STDERR "after main loop\n"; }
 
 exit 0;
 
+sub box_me {
+  my ( $style, $shortest_left, $max_length, @lines ) = @_;
+#  |<- left margin ->|L|<---  horizontal run --->|R      L is left  box characters
+# ^                   /---------------------------\      R is right box characters
+# ^                   |                           | V
+# ^                   |                           | V  VVV is veritical padding
+# ^                   |                           | V
+# ^                   |__Contents of the box....__|
+# ^                    HH                       HH      HH is horizonal padding
+  my $left_margin = " " x $shortest_left;
+  my $blank_line   = $left_margin .
+
+                     $style->{left} .
+                     ( " " x $horizontal_padding ) .  " " x ( $max_length - $shortest_left ) . ( " " x $horizontal_padding ) . # horizontal run, middle
+                     $style->{right} . "\n";
+  my $top_line     = $left_margin .
+                     $style->{upper_left} .
+                     ( $style->{top}    x ($max_length - $shortest_left + 2*$horizontal_padding) ) . # horizontal run, top
+                     $style->{upper_right} . "\n";
+  my $bottom_line  = $left_margin .
+                     $style->{lower_left} .
+                     ( $style->{bottom} x ($max_length - $shortest_left + 2*$horizontal_padding) ) . # horizontal run, bottom
+                     $style->{lower_right} . "\n";
+  print $top_line;
+  print $blank_line for ( 1 .. $vertical_padding);
+  foreach $line (@lines) {
+    $line =~ s/^$left_margin// if $left_margin; # trim left margin
+    $right_padding = $max_length - $shortest_left - length($line);
+    print $left_margin . $style->{left} .     ( " " x $horizontal_padding ) .
+          $line .  ( " " x $right_padding ) .
+              ( " " x $horizontal_padding ) . $style->{right} . "\n";
+  }
+  print $blank_line for ( 1 .. $vertical_padding);
+  print $bottom_line;
+}
+
+
+sub set_styles {
+  my ( $style, $styles, $location, );
+
+  $style='default';
+  $styles->{$style}{top}         = q(-);
+  $styles->{$style}{bottom}      = q(-);
+  $styles->{$style}{left}        = q(|);
+  $styles->{$style}{right}       = q(|);
+  $styles->{$style}{upper_left}  = q(+);
+  $styles->{$style}{upper_right} = q(+);
+  $styles->{$style}{lower_left}  = q(+);
+  $styles->{$style}{lower_right} = q(+);
+
+  $style='clipped';
+  $styles->{$style}{upper_left}  = q(/);
+  $styles->{$style}{upper_right} = q(\\);
+  $styles->{$style}{lower_left}  = q(\\);
+  $styles->{$style}{lower_right} = q(/);
+
+  $style='bold';
+  $styles->{$style}{top}         = q(=);
+  $styles->{$style}{bottom}      = q(=);
+  $styles->{$style}{left}        = q(H);
+  $styles->{$style}{right}       = q(H);
+  $styles->{$style}{upper_left}  = q(@);
+  $styles->{$style}{upper_right} = q(@);
+  $styles->{$style}{lower_left}  = q(@);
+  $styles->{$style}{lower_right} = q(@);
+
+  $style='comment2';
+  $styles->{$style}{top}         = q(*);
+  $styles->{$style}{bottom}      = q(*);
+  $styles->{$style}{left}        = q(*);
+  $styles->{$style}{right}       = q(*);
+  $styles->{$style}{upper_left}  = q(/);
+  $styles->{$style}{upper_right} = q(\\);
+  $styles->{$style}{lower_left}  = q(\\);
+  $styles->{$style}{lower_right} = q(/);
+
+  $style='comment1';
+  foreach $location ( qw( top bottom left right upper_left upper_right lower_left lower_right ) ) {
+    $styles->{$style}{$location} = q(#);
+  }
+
+  $style='light';
+  foreach $location ( qw( top bottom left right upper_left upper_right lower_left lower_right ) ) {
+    $styles->{$style}{$location} = q(.);
+  }
+
+  $style='medium';
+  foreach $location ( qw( top bottom left right upper_left upper_right lower_left lower_right ) ) {
+    $styles->{$style}{$location} = q(*);
+  }
+
+  $style='heavy';
+  foreach $location ( qw( top bottom left right upper_left upper_right lower_left lower_right ) ) {
+    $styles->{$style}{$location} = q(@);
+  }
+
+  $style='comment3';
+  foreach $location ( qw( left upper_left lower_left ) ) {
+    $styles->{$style}{$location} = q(//);
+  }
+  foreach $location ( qw( top bottom right upper_right lower_right ) ) {
+    $styles->{$style}{$location} = q(/);
+  }
+
+  return $styles;
+}
+
 __END__
+
+#  Normal padding
+$horizontal_padding     = 2;
+$vertical_padding       = 1;
++------------------+
+|                  |
+|  Normal padding  |
+|                  |
++------------------+
+
+#  Tight padding
+$horizontal_padding     = 1;
+$vertical_padding       = 0;
++---------------+
+| Tight padding |
++---------------+
+
+
 #  BSG or Linear with clipped corners
-$left		= '|';	#  /-----------\
-$right		= '|';	#  |           |
-$top		= '-';	#  |           |
-$bottom		= '-';	#  |           |
-$upper_right	= '\\';	#  |           |
-$upper_left	= '/';	#  |           |
-$lower_right	= '/';	#  |           |
-$lower_left	= '\\';	#  \-----------/
+$left           = '|';  #  /-----------\
+$right          = '|';  #  |           |
+$top            = '-';  #  |           |
+$bottom         = '-';  #  |           |
+$upper_right    = '\\'; #  |           |
+$upper_left     = '/';  #  |           |
+$lower_right    = '/';  #  |           |
+$lower_left     = '\\'; #  \-----------/
 
 #  Linear
-$left		= '|';	#  +-----------+
-$right		= '|';	#  |           |
-$top		= '-';	#  |           |
-$bottom		= '-';	#  |           |
-$upper_right	= '+';	#  |           |
-$upper_left	= '+';	#  |           |
-$lower_right	= '+';	#  |           |
-$lower_left	= '+';	#  +-----------+
+$left           = '|';  #  +-----------+
+$right          = '|';  #  |           |
+$top            = '-';  #  |           |
+$bottom         = '-';  #  |           |
+$upper_right    = '+';  #  |           |
+$upper_left     = '+';  #  |           |
+$lower_right    = '+';  #  |           |
+$lower_left     = '+';  #  +-----------+
 
 #  Light
-$left		= '.';	#  .............
-$right		= '.';	#  .           .
-$top		= '.';	#  .           .
-$bottom		= '.';	#  .           .
-$upper_right	= '.';	#  .           .
-$upper_left	= '.';	#  .           .
-$lower_right	= '.';	#  .           .
-$lower_left	= '.';	#  .............
+$left           = '.';  #  .............
+$right          = '.';  #  .           .
+$top            = '.';  #  .           .
+$bottom         = '.';  #  .           .
+$upper_right    = '.';  #  .           .
+$upper_left     = '.';  #  .           .
+$lower_right    = '.';  #  .           .
+$lower_left     = '.';  #  .............
 
 #  Medium
-$left		= '*';	#  *************
-$right		= '*';	#  *           *
-$top		= '*';	#  *           *
-$bottom		= '*';	#  *           *
-$upper_right	= '*';	#  *           *
-$upper_left	= '*';	#  *           *
-$lower_right	= '*';	#  *           *
-$lower_left	= '*';	#  *************
+$left           = '*';  #  *************
+$right          = '*';  #  *           *
+$top            = '*';  #  *           *
+$bottom         = '*';  #  *           *
+$upper_right    = '*';  #  *           *
+$upper_left     = '*';  #  *           *
+$lower_right    = '*';  #  *           *
+$lower_left     = '*';  #  *************
 
 #  Heavy
-$left		= '@';	#  @@@@@@@@@@@@@
-$right		= '@';	#  @           @
-$top		= '@';	#  @           @
-$bottom		= '@';	#  @           @
-$upper_right	= '@';	#  @           @
-$upper_left	= '@';	#  @           @
-$lower_right	= '@';	#  @           @
-$lower_left	= '@';	#  @@@@@@@@@@@@@
+$left           = '@';  #  @@@@@@@@@@@@@
+$right          = '@';  #  @           @
+$top            = '@';  #  @           @
+$bottom         = '@';  #  @           @
+$upper_right    = '@';  #  @           @
+$upper_left     = '@';  #  @           @
+$lower_right    = '@';  #  @           @
+$lower_left     = '@';  #  @@@@@@@@@@@@@
 
 #  Comment1
-$left		= '#';	#  #############
-$right		= '#';	#  #           #
-$top		= '#';	#  #           #
-$bottom		= '#';	#  #           #
-$upper_right	= '#';	#  #           #
-$upper_left	= '#';	#  #           #
-$lower_right	= '#';	#  #           #
-$lower_left	= '#';	#  #############
+$left           = '#';  #  #############
+$right          = '#';  #  #           #
+$top            = '#';  #  #           #
+$bottom         = '#';  #  #           #
+$upper_right    = '#';  #  #           #
+$upper_left     = '#';  #  #           #
+$lower_right    = '#';  #  #           #
+$lower_left     = '#';  #  #############
 
 #  Comment2
-$left		= '*';	#  /***********\
-$right		= '*';	#  *           *
-$top		= '*';	#  *           *
-$bottom		= '*';	#  *           *
-$upper_right	= '\\';	#  *           *
-$upper_left	= '/';	#  *           *
-$lower_right	= '/';	#  *           *
-$lower_left	= '\\';	#  \***********/
+$left           = '*';  #  /***********\
+$right          = '*';  #  *           *
+$top            = '*';  #  *           *
+$bottom         = '*';  #  *           *
+$upper_right    = '\\'; #  *           *
+$upper_left     = '/';  #  *           *
+$lower_right    = '/';  #  *           *
+$lower_left     = '\\'; #  \***********/
 
 #  Comment3
-$left		= '//';	#  /////////////
-$right		= '/';	#  //          /
-$top		= '/';	#  //          /
-$bottom		= '/';	#  //          /
-$upper_right	= '/';	#  //          /
-$upper_left	= '//';	#  //          /
-$lower_right	= '/';	#  //          /
-$lower_left	= '//';	#  /////////////
+$left           = '//'; #  /////////////
+$right          = '/';  #  //          /
+$top            = '/';  #  //          /
+$bottom         = '/';  #  //          /
+$upper_right    = '/';  #  //          /
+$upper_left     = '//'; #  //          /
+$lower_right    = '/';  #  //          /
+$lower_left     = '//'; #  /////////////
 
 #  Bold
-$left		= 'H';	#  @===========@
-$right		= 'H';	#  H           H
-$top		= '=';	#  H           H
-$bottom		= '=';	#  H           H
-$upper_right	= '@';	#  H           H
-$upper_left	= '@';	#  H           H
-$lower_right	= '@';	#  H           H
-$lower_left	= '@';	#  @===========@
+$left           = 'H';  #  @===========@
+$right          = 'H';  #  H           H
+$top            = '=';  #  H           H
+$bottom         = '=';  #  H           H
+$upper_right    = '@';  #  H           H
+$upper_left     = '@';  #  H           H
+$lower_right    = '@';  #  H           H
+$lower_left     = '@';  #  @===========@
+
+
+
