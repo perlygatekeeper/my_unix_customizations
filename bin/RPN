@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 
 # A perl-5 script to implement a reverse polish notation calculator
 # simple numeric calc, no strings, code, complex numbers on stack.

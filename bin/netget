@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # A perl script to to record ftp site and date to end of .where file.
 $name = $0;
 $name =~ s'.*/''; # remove path--like basename

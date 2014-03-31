@@ -12,13 +12,12 @@ use lib '.';
 
 my $true=1; my $false=0;
 
-use regular_n_gon;
+use sized_regular_n_gon;
 
-my $triangle = regular_n_gon->new( sides => 3 );
+my $hexagon = regular_n_gon->new( sides => 6, sub_radius=>1.0 );
 
-print $triangle->sides . "\n";
-print $triangle->internal_angle . "\n";
-print regular_n_gon->in_degrees($triangle->internal_angle) . "\n";
+print $hexagon->sides . "\n";
+print regular_n_gon->in_degrees($hexagon->internal_angle) . "\n";
 
 exit 0;
 

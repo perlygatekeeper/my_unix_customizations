@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 
 # MAKELINE is a
 # script to make a vertical line down a file

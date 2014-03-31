@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 #
 # A perl script to printout all fractions of an inch XX/64
 # as a decimal as well as all the millimeter values 1..25

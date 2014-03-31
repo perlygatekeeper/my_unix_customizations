@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 #
 # A perl script to take the output of an ls -l command and
 # extract and sum the sizes

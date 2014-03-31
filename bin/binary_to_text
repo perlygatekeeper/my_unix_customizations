@@ -1,4 +1,4 @@
-#!/usr/bin/perl -wn
+#!/usr/bin/env perl -wn
 use strict;
 s/\s//g;
 print chr oct "0b$1" while /([01]{8})/g;
