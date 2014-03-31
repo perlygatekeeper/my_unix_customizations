@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 #
 # A perl script to write identifiers to STDERR and STDOUT
 #

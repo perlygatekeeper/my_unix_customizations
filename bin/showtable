@@ -1,4 +1,4 @@
-#!/usr/bin/perl5
+#!/usr/bin/env perl5
 # showtable - read data and show it
 #
 #    Copyright (C) 1996,1997  Alan K. Stebbens <aks@sgi.com>

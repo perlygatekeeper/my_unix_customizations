@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 #-----------------------------------------------------------------------------
 # cs2 is a perl script to count certain 'html tags'
 # counts all occurances of ' " ` ( ) [ ] { } / and \

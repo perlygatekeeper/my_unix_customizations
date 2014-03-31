@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # A perl script to copy all files FILE1's to FILE2's
 $name = $0; $name =~ s'.*/''; # remove path--like basename
 $usage = "usage:\n$name [-global] [-i] [-force] (do not ask before overwriting) FILEBASE1 FILEBASE2";

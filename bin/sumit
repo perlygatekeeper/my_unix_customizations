@@ -1,4 +1,4 @@
-#!/usr/bin/perl -n
+#!/usr/bin/env perl -n
 ($num)=($_=~/^\s*(\d+)/);
 $total+=$num;
 printf "%7d\t%s", $total, $_;

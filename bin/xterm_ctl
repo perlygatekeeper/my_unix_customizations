@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 #
 # A perl script to manipulate/explain terminals
 # one of my first perl scripts, written under perl 4

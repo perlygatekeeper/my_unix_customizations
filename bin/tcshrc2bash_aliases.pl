@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 #
 # A perl script to reap the aliases from ~/.tcshrc and put them in
 # ~/.bash_aliases

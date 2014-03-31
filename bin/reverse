@@ -1,4 +1,4 @@
-#!/usr/bin/perl -l
+#!/usr/bin/env perl -l
 #
 # A perl script to print files with each line having it's characters reversed
 #

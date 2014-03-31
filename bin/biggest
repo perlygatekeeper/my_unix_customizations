@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # find the biggest numerical value of the first field.
 # in all the files on the command line
 

@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 #
 # A perl filter to input a block of text and output that same block
 # surrounded with a nice pretty "text box"
