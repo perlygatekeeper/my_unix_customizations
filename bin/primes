@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 #
 # A perl script to list the first N primes>
 # All primes from 2 to 99999 are stored at the end of the script>
@@ -9,10 +9,10 @@ use strict;
 use warnings;
 
 my ($i, @primes);
-my $MAX = 1000000;
-if ($ARGV[0]=~/^\d+$/) { $MAX=$ARGV[0]; shift; }
-my $L=length($MAX)+1;
-my $N=int(96/$L);
+my $MAX = 100000;
+if ($ARGV[0] and $ARGV[0]=~/^\d+$/) { $MAX=$ARGV[0]; shift; }
+my $L=length($MAX)+1;    # $L is the number of characters needed to print the biggest prime + one space delimiter
+my $N=int(96/$L);        # $N is the number of primes to print on a 96-character-long line
 
 while (<DATA>) {
   next if (/^$|^\s*#/); #skip blank and commented lines.
@@ -20,17 +20,17 @@ while (<DATA>) {
   push(@primes,split);
   last if ($primes[$#primes] > $MAX)
 }
-my $first=($primes[$#primes]+1)/2;
+my $first = ( $primes[$#primes] + 1 )/2;
 # print "first is $first\n";
 
-foreach my $int ( $first .. int($MAX/2)) {
-  my $prime_canidate=2*$int +1;
-  my $sqrt=sqrt $prime_canidate;
-  my $is_prime=1;
+foreach my $generator ( $first .. int($MAX/2)) {
+  my $prime_canidate = 2*$generator + 1;
+  my $sqrt = sqrt $prime_canidate;
+  my $is_prime = 1;
   foreach my $prime (@primes) {
     last if ($prime>$sqrt);
 #   printf "pc: %6d\tpt: %6d\t", $prime_canidate, $prime;
-    my $div=$prime_canidate/$prime;
+    my $div = $prime_canidate/$prime;
 #   printf "div: %6.1f\n", $div;
     if ($div == int($div)) {
       $is_prime=0;

@@ -6,18 +6,19 @@ use warnings;
 my $name      = $0; $name =~ s'.*/'';
 my $false     = 0;
 my $true      = 1;
-my $usage     = "usage: $name [-m (for MANPATH)]\n";
+my $usage     = "usage: $name [-m (for MANPATH) | (-lpi|-llp) LD_LIBRARY_PATH | -p5 PERL5LIB ]\n";
 my $newline   = "\n";
 my $tab       = "\t";
 my $backspace = "\010";
 my $formfeed  = "\014";
-my ( $man, $path, $p5l, $llp );
+my ( $man, $path, $p5l, $llp, $ll );
 
 #   ***   Parse Command Line Argument(s)   ***
 while ( @ARGV >= 1 ) {
-   if    ( $ARGV[0] eq '-m'  ) { $man=$true; shift; }
-   elsif ( $ARGV[0] eq '-p5' ) { $p5l=$true; shift; }
-   elsif ( $ARGV[0] eq '-lp' ) { $llp=$true; shift; }
+   if    ( $ARGV[0] eq '-m'    ) { $man = $true; shift; }
+   elsif ( $ARGV[0] eq '-p5'   ) { $p5l = $true; shift; }
+   elsif ( $ARGV[0] =~ /-ll?p/ ) { $llp = $true; shift; }
+   elsif ( $ARGV[0] =~ /-ll/   ) { $ll  = $true; shift; }
    else { shift; print $usage; }
 }  # end while
 
@@ -33,7 +34,13 @@ $path=~s':?$'$newline'e;
 $path=~s':'$newline'ge;
 $path=~s'\n\n+'$newline'mge;
 
-print $path;
+if ( $ll ) {
+  $path =~ s'^'ls -ld 'mg;
+  print qx($path);
+} else {
+  print $path;
+}
+
 #   ***   EXIT GRACEFULLY   ***
 exit 0;
 
