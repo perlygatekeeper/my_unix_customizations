@@ -1,8 +1,16 @@
 #!/usr/bin/env perl
 #
-# A perl script to start on a given regexp and stop on another
+# A perl script to start and stop printing given sets of trigger conditions that include
+# line number ranges and regular expressions.
 #
-my $name = $0; $name =~ s'.*/''; # remove path--like basename
+
+my $last_mod_date = 'Tue, Apr 1, 2014';
+my $version = "3.0"; # Comments
+my $todo  = "Add testing.";
+   $todo .= "answer all questions after __END__";
+my $author = "Dr. Steven Parker";
+my $copyright = "$last_mod_date. All rights reserved.";
+
 # my $usage  = "usage:\n$name";
 # $usage .= "\t[ ( -on | -begin | -start ) start_regexp ] [ ( -off | -end | -stop ) stop_regexp ] [ -lead N -linger M | -context N ]";
 # $usage .= "\t[ N | N.. | ..M | N..M ]";
@@ -44,6 +52,7 @@ sub initialize {
                                                 # all start triggers are examined when not 'printing'
                                                 # only paired stop trigger will count when 'printing'
                                                 # alternatively, use independant triggers, whereby all stop triggers are active when in the 'printing' state
+    $conf->{indepenents_in_pairs} = 0;          # independent stops are honored while between paired lines.
     return $conf;
 }
 
@@ -338,9 +347,17 @@ Notes:
        Also, each trigger pair could have it's only lead or linger or both.
        Print all lines between 'Steve' and line 400, possible with paired triggers.
     b) Indepentant allows for more flexibility.
+	   7 start and 3 stop conditions can exist and operate independently.
+	   ie. starts are 1 2 3 4 5 6 7 and stops are a b c 
+	   the printing started by trigger 5 could be stoped by any of the stop triggers.
+	   duplication of this with forced paired triggers would require 7x3=21 different pairs.
 
 5) Can a start trigger also be a stop trigger?
 6) While lingering, should start conditions be searched for?
+7) What if lead lines include a stop trigger?
+8) Can we have our cake and eat it too, can we have independent start/stop triggers AND paired triggers?
+9) Should pairs be replaced with independant sets of clusters
+10) Should we allow multiple conditions, like print between lines mathcing 'start' to 'stop' but only if within the first 100 lines.
 
 
 
