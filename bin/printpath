@@ -6,7 +6,7 @@ use warnings;
 my $name      = $0; $name =~ s'.*/'';
 my $false     = 0;
 my $true      = 1;
-my $usage     = "usage: $name [-m (for MANPATH) | (-lpi|-llp) LD_LIBRARY_PATH | -p5 PERL5LIB ]\n";
+my $usage     = "usage: $name [-m (for MANPATH) | (-lp|-llp) LD_LIBRARY_PATH | -p5 PERL5LIB ]\n";
 my $newline   = "\n";
 my $tab       = "\t";
 my $backspace = "\010";
@@ -28,6 +28,7 @@ elsif ($llp) { $path = $ENV{'LD_LIBRARY_PATH'}  || ''; }
 else         { $path = $ENV{'PATH'}; };
 
 # print "$path";
+my $orig_path = $path;
 
 $path=~s'[  \t\n]+''ge;
 $path=~s':?$'$newline'e;
@@ -35,8 +36,8 @@ $path=~s':'$newline'ge;
 $path=~s'\n\n+'$newline'mge;
 
 if ( $ll ) {
-  $path =~ s'^'ls -ld 'mg;
-  print qx($path);
+  $orig_path =~ s':' 'g;
+  print qx(echo $orig_path | xargs ls -ld);
 } else {
   print $path;
 }
@@ -45,11 +46,6 @@ if ( $ll ) {
 exit 0;
 
 __END__
-
-echo use:    find . -type f -exec grep '^ln' {} \; | sh
-echo printpath is the 'real' file
-ln -fs printpath pp
-
 
 echo use:    find . -type f -exec grep '^ln' {} \; | sh
 echo printpath is the 'real' file
