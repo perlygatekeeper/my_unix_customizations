@@ -1,4 +1,6 @@
-#!/usr/bin/env perl -n
-($num)=($_=~/^\s*(\d+)/);
-$total+=$num;
-printf "%7d\t%s", $total, $_;
+#!/usr/bin/env perl
+while (<>) {
+  ($num) = ( $_ =~ /^\s*(\d+)/ );
+  $total += $num;
+  printf "%7d\t%s", $total, $_;
+}
