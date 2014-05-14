@@ -24,7 +24,7 @@ while (<>) {
       print "var_name           is '$var_name'\n";
       print "symbol             is '$symbol'\n";
     }
-    printf "%sforeach my \$%s (%s%s) {\n%s}\n",
+    printf "%sforeach my \$%s ( %s%s ) {\n%s}\n",
            $indent, $var_name, $symbol, $array_or_hash_name, $indent;
   } else {
     print;
