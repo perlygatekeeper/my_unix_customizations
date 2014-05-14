@@ -1,34 +1,31 @@
 #!/usr/bin/env perl
 #
-# A perl-5 script to make a perl foreach construction 
+# A perl-5 script to make a perl foreach construction
 # out of a line containing an array name
-#
-$name = $0; $name =~ s'.*/''; # remove path--like basename
-$usage = "usage:\n$name";
-$debug=0;
+
+use strict;
+use warnings;
+
+my $name = $0; $name =~ s'.*/''; # remove path--like basename
+my $usage = "usage:\n$name";
+my $debug=0;
 
 while (<>) {
-# if ( ($indent,$array_name)= ($_ =~ /^(\s*)\@(\S+)\s*$/) ) {
-#   $var_name=$array_name;
-#   $var_name=~s/ies$/y/;
-#   $var_name=~s/s$//;
-#   print "indent is '$indent'\n" if ($debug);
-#   print "array_name is '$array_name'\n" if ($debug);
-#   print "var_name is '$var_name'\n" if ($debug);
-#   printf "%sforeach \$%s (\@%s) {\n%s}\n",
-#          $indent, $var_name, $array_name, $indent;
-  if ( ($indent,$symbol,$array_or_hash_name)= ($_ =~ /^(\s*)([%@])(\S+)\s*$/) ) {
-    $var_name=$array_or_hash_name;
-    $var_name=~s/ies$/y/;
-    $var_name=~s/s$//;
+  if ( my($indent,$symbol,$array_or_hash_name) = ($_ =~ /^(\s*)([%@])(\S+)\s*$/) ) {
+    my $var_name = $array_or_hash_name;
+    $var_name = ~s/ies$/y/;
+    $var_name = ~s/e?s$//;
     if ($symbol = /\%/) { $symbol="keys %"; }
     elsif ($symbol = /\@/) { $symbol="\@"; }
-    print "indent is '$indent'\n" if ($debug);
-    print "array_or_hash_name is '$array_or_hash_name'\n" if ($debug);
-    print "var_name           is '$var_name'\n" if ($debug);
-    print "symbol             is '$symbol'\n" if ($debug);
-    printf "%sforeach \$%s (%s%s) {\n%s}\n",
-           $indent, $var_name, $symbol, $array_or_hash_name, $indent;
+    if ( $debug ) {
+       print "indent is '$indent'\n";
+       print "array_or_hash_name is '$array_or_hash_name'\n";
+       print "var_name           is '$var_name'\n";
+       print "symbol             is '$symbol'\n";
+  }
+  printf "%sforeach my \$%s (%s%s) {\n%s}\n",
+         $indent, $var_name, $symbol, $array_or_hash_name, $indent;
+
   } else {
     print;
   }
