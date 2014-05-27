@@ -10,19 +10,39 @@ use strict;
 use warnings;
 
 my @modules = @ARGV;
-foreach my $environment_variables ( qw( m M mod Mod MOD module Module MODULE ) ) {
-  if ( exists $ENV{$environment_variables} ) {
-    push ( @modules, $ENV{$environment_variables}) ;
+foreach my $environment_variable ( qw( m M mod Mod MOD module Module MODULE ) ) {
+  if ( exists $ENV{$environment_variable} ) {
+    push ( @modules, $ENV{$environment_variable}) ;
   }
 }
 unless ( scalar @modules ) { die $usage; }
 
 foreach my $module (@modules) {
+  my ($cant, $inc);
   my $cmd = "perl -M${module} -le 'print \$${module}::VERSION;'";
   print "$cmd\n";
-  my $returned=`perl -M$m -le "print \$"$m"::VERSION;"`;
+  my $returned=`$cmd 2>&1`;
+
+  if ($returned =~ /Can't/ ) {
+    # print '1- ' . $returned;
+    ($cant, $inc) = ( $returned =~ /^(.*in\s+.INC)\s+\(\@INC\s+contains:\s+(.*)/ );
+    # print '2-' . $cant .  "-\n";
+    # print '3-' . $inc  .  "-\n";
+    $inc=$2;
+    $inc =~ s/\).\nBEGIN.*$//;
+    $inc =~ s/ /\n /g;
+    $inc =~ s/\)\.$//g;
+    print "\n$cant\n $inc\n";
+  } else {
+    print $returned;
+  }
+  print "\n";
 }
 
 exit 0;
 
 __END__
+perl -MFoo::Bar -le 'print $Foo::Bar::VERSION;'
+Can't locate Foo/Bar.pm in @INC (@INC contains: /investments/bee_hive/config-file /investments/bee_hive/NationwidePerlLibraries /investments/bee_hive/NationwidePerlLibraries/lib/lib64/perl5 /u01/home/oracle/11.2/perl /u01/home/oracle/11.2/lib/site_perl/5.10.0/x86_64-linux-thread-multi /home/parkes7/etc/perllib /usr/local/lib64/perl5 /usr/local/share/perl5 /usr/lib64/perl5/vendor_perl /usr/share/perl5/vendor_perl /usr/lib64/perl5 /usr/share/perl5 .).
+BEGIN failed--compilation aborted.
+
