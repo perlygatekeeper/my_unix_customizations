@@ -16,8 +16,8 @@ use sized_regular_n_gon;
 
 my $hexagon = regular_n_gon->new( sides => 6, sub_radius=>1.0 );
 
-print $hexagon->sides . "\n";
-print regular_n_gon->in_degrees($hexagon->internal_angle) . "\n";
+print "A hexagon has " . $hexagon->sides . " sides.\n";
+print "Each internal internal angle of a hexagon is " . regular_n_gon->in_degrees($hexagon->internal_angle) . " degrees.\n";
 
 exit 0;
 
