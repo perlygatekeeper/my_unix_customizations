@@ -1,0 +1,45 @@
+thing will be stored as
+
+Options: git - boolean
+         refresh
+		 minimal - only get downloadable files, no images or metadata
+		 html - keep all html files, in HTML_ORIGINALS directory.
+		 username
+		 password
+		 customizer - extract the customizer source (even if this thing is a costumized version of a thing)
+
+
+thing_#
+ ./images/
+ ./Author.txt
+ ./Title.txt
+ ./ThingNumber.txt
+ ./Date.txt
+ ./Description.txt
+ ./Instructions.txt
+ ./Files/
+ ./License.txt
+ ./Comments.txt
+ ./Made.txt
+ ./Cellections.txt
+ ./Remixes.txt
+ ./Tags.txt
+ ./Makes.txt
+ ./RemixedFrom.txt
+ ./LinkedBy.txt
+ ./Data.txt
+  - Liked
+  - Collected
+  - Comments
+  - I_Made_One
+  - Watched
+  - Remixed
+  - Shared 
+  - Viewed
+  - Downloaded
+  - Found_In
+
+
+
+
+
