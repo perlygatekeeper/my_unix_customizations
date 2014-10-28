@@ -2,6 +2,11 @@ a ls       '\ls -GFb'
 a ll       '\ls -GFbalO'
 a la       '\ls -GFbalO@e'
 
+# xattr is the command to list and modify Extended attributes on mac files
+# com.apple.quarentine 
+# xattr file or xattr -l file
+
+
 # good way to regenerate MANPATH:
 # locate 'cat' 'man' | \
 # egrep '/(cat|man)/\1' | \
