@@ -1,0 +1,9 @@
+[DEFAULT]
+BASEURL=https://myspot.nwie.net/_layouts/15/EditProfile.aspx?accountname=nwie\parkes7
+[{000214A0-0000-0000-C000-000000000046}]
+Prop3=19,11
+[InternetShortcut]
+URL=https://myspot.nwie.net/_layouts/15/EditProfile.aspx?accountname=nwie\parkes7
+IDList=
+IconFile=https://myspot.nwie.net/_layouts/15/images/Spot13.GlobalControlTemplates/NWCustom_favicon.ico
+IconIndex=1

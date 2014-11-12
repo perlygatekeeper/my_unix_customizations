@@ -1,0 +1,9 @@
+[DEFAULT]
+BASEURL=http://spot.nwie.net/site/NWIIT/apd/SitePages/Home.aspx?RootFolder=%2Fsite%2FNWIIT%2Fapd%2FDocuments%2FBeeKeeper&FolderCTID=0x0101002F7F1F4D7803D54DB587656817E76BD7040044678E9E3DCA8841B6C76FAFAE3B1E9B&View={906CD551-2172-4830-8C36-A2555C791D2E}
+[{000214A0-0000-0000-C000-000000000046}]
+Prop3=19,2
+[InternetShortcut]
+URL=http://spot.nwie.net/site/NWIIT/apd/SitePages/Home.aspx?RootFolder=%2Fsite%2FNWIIT%2Fapd%2FDocuments%2FBeeKeeper&FolderCTID=0x0101002F7F1F4D7803D54DB587656817E76BD7040044678E9E3DCA8841B6C76FAFAE3B1E9B&View={906CD551-2172-4830-8C36-A2555C791D2E}
+IDList=
+IconFile=http://spot.nwie.net/_layouts/images/Nationwide.SharePoint.UE/NWCustom_favicon.ico
+IconIndex=1
