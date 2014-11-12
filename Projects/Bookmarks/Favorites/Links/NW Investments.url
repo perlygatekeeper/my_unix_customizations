@@ -1,0 +1,10 @@
+[DEFAULT]
+BASEURL=http://inside.nwie.net/NWIntranetWeb/ni_home.x
+[DOC_iframe_shim]
+BASEURL=about:blank
+ORIGURL=about:blank
+[{000214A0-0000-0000-C000-000000000046}]
+Prop3=19,2
+[InternetShortcut]
+URL=http://inside.nwie.net/NWIntranetWeb/ni_home.x
+IDList=

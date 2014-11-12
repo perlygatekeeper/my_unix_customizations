@@ -1,0 +1,9 @@
+[DEFAULT]
+BASEURL=https://svnprod.nwie.net/svn/nwinv/bee/trunk/
+[{000214A0-0000-0000-C000-000000000046}]
+Prop3=19,11
+[InternetShortcut]
+URL=https://svnprod.nwie.net/svn/nwinv/bee/trunk/
+IDList=
+IconFile=https://svnprod.nwie.net/favicon.ico
+IconIndex=1

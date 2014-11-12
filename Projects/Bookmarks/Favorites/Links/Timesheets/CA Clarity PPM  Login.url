@@ -1,0 +1,9 @@
+[DEFAULT]
+BASEURL=https://clarity.nwie.net/niku/app?action=npt.overview
+[{000214A0-0000-0000-C000-000000000046}]
+Prop3=19,11
+[InternetShortcut]
+URL=https://clarity.nwie.net/niku/app?action=npt.overview
+IDList=
+IconFile=https://clarity.nwie.net/niku/ui/images/shortcut.ico
+IconIndex=1
