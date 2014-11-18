@@ -1,9 +1,0 @@
-[DEFAULT]
-BASEURL=https://rtc.nwie.net/jazz/web/projects/Dev%20Center
-[{000214A0-0000-0000-C000-000000000046}]
-Prop3=19,11
-[InternetShortcut]
-URL=https://rtc.nwie.net/jazz/web/projects/Dev%20Center#action=com.ibm.team.dashboard.viewDashboard
-IDList=
-IconFile=https://rtc.nwie.net/jazz/web/com.ibm.team.rtc.web/ui/graphics/UICustomizations/RationalTeamConcert.ico
-IconIndex=1

@@ -1,7 +1,0 @@
-[DEFAULT]
-BASEURL=http://www.activestate.com/komodo-ide/downloads/thank-you?dl=http://downloads.activestate.com/Komodo/releases/8.5.0/Komodo-IDE-8.5.0-81977.msi
-[{000214A0-0000-0000-C000-000000000046}]
-Prop3=19,2
-[InternetShortcut]
-URL=http://www.activestate.com/komodo-ide/downloads/thank-you?dl=http://downloads.activestate.com/Komodo/releases/8.5.0/Komodo-IDE-8.5.0-81977.msi
-IDList=
