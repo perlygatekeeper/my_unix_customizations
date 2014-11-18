@@ -52,7 +52,7 @@ a term		'(set j=`ps -ax|grep \!*|head -1`;kill -15 $j[1]) >& /dev/null'
 # communication aliases
 # a fox		ssh -X -Y -L 8080:128.146.39.23:80 -L 4443:128.146.39.23:443 -l tmonnett fox.mps.ohio-state.edu
 a ssh		'ssh -XY'
-a home		ssh parker@192.168.0.100
+a home		ssh -L 8080:127.0.0.1:80 parker@192.168.0.2
 a ipoodle	ssh steve@192.168.1.141
 a laptop	ssh steve@192.168.0.104
 a pi		ssh pi@192.168.0.109

@@ -1,9 +1,0 @@
-[DEFAULT]
-BASEURL=http://spot.nwie.net/site/nwiit/wiki/Wiki%20Pages/Home.aspx
-[{000214A0-0000-0000-C000-000000000046}]
-Prop3=19,2
-[InternetShortcut]
-URL=http://spot.nwie.net/site/nwiit/wiki/Wiki%20Pages/Home.aspx
-IDList=
-IconFile=http://spot.nwie.net/_layouts/images/Nationwide.SharePoint.UE/NWCustom_favicon.ico
-IconIndex=1
