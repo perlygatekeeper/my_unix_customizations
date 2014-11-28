@@ -129,7 +129,7 @@ sub binary {
 
 sub parse_args {
 
-  local(%abbrev)=();
+  my $abbrev = {};
 
   @args=('?','help');
   @help=('print this message','print this message');
@@ -149,33 +149,33 @@ sub parse_args {
 
   grep(s/^([^-])/-\1/,@args);
 
-  require("abbrev.pl");
-  &abbrev(*abbrev, @args);
+  use Text::Abbrev;
+  abbrev($abbrev, @args);
 
   while ( @ARGV >= 1 ) {
     print "parsing '$ARGV[0]'" if ($debug);
-    if      ( ($abbrev{$ARGV[0]} eq '-help' )
-           || ($abbrev{$ARGV[0]} eq '-?' ) ) {
+    if      ( ($abbrev->{$ARGV[0]} eq '-help' )
+           || ($abbrev->{$ARGV[0]} eq '-?' ) ) {
       help($usage);
       shift(@ARGV);
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-octal' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-octal' ) {
       $type="octal";
       shift(@ARGV);
-    } elsif ( $abbrev{$ARGV[0]} eq '-hexadecimal' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-hexadecimal' ) {
       $type="hexadecimal";
       shift(@ARGV);
-    } elsif ( $abbrev{$ARGV[0]} eq '-decimal' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-decimal' ) {
       $type="decimal";
       shift(@ARGV);
-    } elsif ( $abbrev{$ARGV[0]} eq '-binary' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-binary' ) {
       $type="binary";
       shift(@ARGV);
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-single' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-single' ) {
       $columns=1; $table=0;
       shift(@ARGV);
-    } elsif ( $abbrev{$ARGV[0]} eq '-columns' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-columns' ) {
       shift(@ARGV);
       if ($ARGV[0] =~ /\d+/) {
         $columns=$ARGV[0];
@@ -184,7 +184,7 @@ sub parse_args {
         $table=1;
       }
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-start' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-start' ) {
       shift(@ARGV);
       if ( $ARGV[0] =~ /^[1-9]\d*$|^0$/ ) { # decimal number
         $start=$ARGV[0]; shift(@ARGV);
@@ -193,13 +193,13 @@ sub parse_args {
       } elsif ( $ARGV[0] =~ /^0[0-7]+$/ ) { # octal number
         $start=unpack("o",$ARGV[0]); shift(@ARGV);
       }
-    } elsif ( $abbrev{$ARGV[0]} eq '-end' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-end' ) {
       shift(@ARGV);
       if ( $ARGV[0] =~ /^\d+$|^0[xX][\dA-Fa-f]+$/ ) { # dec/oct/hex number
         $end=0+$ARGV[0]; shift(@ARGV);
       }
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-specials' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-specials' ) {
       $add_specials=1;
       shift(@ARGV);
 
@@ -216,7 +216,7 @@ sub parse_args {
       push(@ascii_numbers,"$ARGV[0]");
       shift(@ARGV);
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-character' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-character' ) {
       shift(@ARGV);
       if ($ARGV[0] =~ /^.$/) {
         push(@characters,"$ARGV[1]");
