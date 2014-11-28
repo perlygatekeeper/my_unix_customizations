@@ -56,8 +56,7 @@ exit 0;
 
 sub parse_args {
 
-  my(%abbrev)=(); # must be local, not my otherwise, *abbrev don't work in
-		     # call to &abbrev, I don't understand fully why at this time, 9/27/00 SP.
+  my $abbrev = {};
 
   my $debug;
   my @args=('?','help');
@@ -69,22 +68,21 @@ sub parse_args {
 
   grep(s/^([^-])/-$1/,@args);
 
-  # push(@INC,'/usr/common/lib/perl',"$HOME/perllib");
-  require("abbrev.pl");
-  &abbrev(*abbrev, @args);
+  use Text::Abbrev;
+  abbrev($abbrev, @args);
 
   while ( @ARGV >= 1 ) {
-    if      ( ($abbrev{$ARGV[0]} eq '-help' )
-           || ($abbrev{$ARGV[0]} eq '-?' ) ) {
+    if      ( ($abbrev->{$ARGV[0]} eq '-help' )
+           || ($abbrev->{$ARGV[0]} eq '-?' ) ) {
       help($usage,\@args);
       shift(@ARGV);
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-whitespace' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-whitespace' ) {
       $white=1;
       shift(@ARGV);
 	  print "whitespace flag set: $white\n";
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-comments' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-comments' ) {
       $comment=1;
       shift(@ARGV);
 	  print "comments flag set: $comment\n";

@@ -338,7 +338,7 @@ sub uudecode_file {
 #   ***   Parse Command Line Argument(s)   ***
 sub parse_args {
 
-  local(%abbrev)=();
+  my $abbrev = {};
   local($true,$false)=(1,0);
 
   @args=('?','help');
@@ -355,48 +355,47 @@ sub parse_args {
 
   grep(s/^([^-])/-\1/,@args);
 
-  push(@INC,'/usr/local/lib/perl',"$HOME/perllib");
-  require("abbrev.pl");
-  &abbrev(*abbrev, @args);
+  use Text::Abbrev;
+  abbrev($abbrev, @args);
 
   while ( @ARGV >= 1 ) {
-    if      ( ($abbrev{$ARGV[0]} eq '-help' )
-           || ($abbrev{$ARGV[0]} eq '-?' ) ) {
+    if      ( ($abbrev->{$ARGV[0]} eq '-help' )
+           || ($abbrev->{$ARGV[0]} eq '-?' ) ) {
       do help($usage);
       shift(@ARGV);
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-not_really' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-not_really' ) {
       print "No can do boss, gotchya!\n";
       $not_really=$true;
       shift(@ARGV);
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-remove' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-remove' ) {
       print "will remove files as I am finished with them.\n";
       $preserve=$false; 
       $remove=$true;
       shift(@ARGV);
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-preserve' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-preserve' ) {
       $preserve=$true;
       $remove=$false;
       shift(@ARGV);
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-UNSHAR' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-UNSHAR' ) {
       $unshar=$true;
       undef $UNSHAR;
       shift(@ARGV);
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-unshar' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-unshar' ) {
       $UNSHAR=$true;
       undef $unshar;
       shift(@ARGV);
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-safe' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-safe' ) {
       print "Warning: file considered safe.\n";
       $safe=$true;
       shift(@ARGV);
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-aa' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-aa' ) {
       $pieces=$true;
       shift(@ARGV);
       if ( @ARGV[0] && (! -f @ARGV[0]) && ( @ARGV[0] !~ /^-/ ) ) {

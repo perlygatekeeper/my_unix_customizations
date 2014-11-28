@@ -166,7 +166,7 @@ sub horizontal_line {
 
 
 sub parse_args {
-  local(%abbrev)=();
+  my $abbrev = {};
   local($true,$false)=(1,0);
 # &debug('options');
   @args=('?','help');
@@ -181,8 +181,9 @@ sub parse_args {
              'define horizontal character',
 	     'define string that will start each line');
   grep(s/^([^-])/-\1/,@args);
-  require("abbrev.pl");
-  &abbrev(*abbrev, @args);
+  use Text::Abbrev;
+  abbrev($abbrev, @args);
+
   # defaults
   $vertical='|';
   $horizontal='-';
@@ -196,34 +197,34 @@ sub parse_args {
       $ul=$lr='/';
   }
   while ( @ARGV >= 1 ) {
-    if      ( ($abbrev{$ARGV[0]} eq '-help' )
-           || ($abbrev{$ARGV[0]} eq '-?' ) ) {
+    if      ( ($abbrev->{$ARGV[0]} eq '-help' )
+           || ($abbrev->{$ARGV[0]} eq '-?' ) ) {
       do help($usage);
       shift(@ARGV);
-    } elsif ( $abbrev{$ARGV[0]} eq '-backspaces' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-backspaces' ) {
       $backspaces=1;
       shift(@ARGV);
-    } elsif ( $abbrev{$ARGV[0]} eq '-vertical' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-vertical' ) {
       $vertical=$ARGV[1];
       shift(@ARGV); shift(@ARGV);
-    } elsif ( $abbrev{$ARGV[0]} eq '-horizontal' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-horizontal' ) {
       $horizontal=$ARGV[1];
       shift(@ARGV); shift(@ARGV);
-    } elsif ( $abbrev{$ARGV[0]} eq '-starting' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-starting' ) {
       $starting=$ARGV[1];
       shift(@ARGV); shift(@ARGV);
-    } elsif ( $abbrev{$ARGV[0]} eq '-corners' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-corners' ) {
       $corners=$true;
       $ml=$mr=$ur=$ll=$ul=$lr='+';
       shift(@ARGV);
-    } elsif ( $abbrev{$ARGV[0]} eq '-blank' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-blank' ) {
       $blank=$true;
       shift(@ARGV);
-    } elsif ( $abbrev{$ARGV[0]} eq '-replace' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-replace' ) {
       $replace=$true;
       $blank=$true;
       shift(@ARGV);
-    } elsif ( $abbrev{$ARGV[0]} eq '-clipped' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-clipped' ) {
       $corners=$true;
       $ml='>';
       $mr='<';

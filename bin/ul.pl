@@ -31,7 +31,7 @@ exit 0;
 
 sub parse_args {
 
-  local(%abbrev)=();
+  my $abbrev = {};
   local($true,$false)=(1,0);
 
   @args=('?','help');
@@ -44,22 +44,21 @@ sub parse_args {
 
   grep(s/^([^-])/-\1/,@args);
 
-  push(@INC,'/usr/common/lib/perl',"$HOME/perllib");
-  require("abbrev.pl");
-  &abbrev(*abbrev, @args);
+  use Text::Abbrev;
+  abbrev($abbrev, @args);
 
   while ( @ARGV >= 1 ) {
-    if      ( ($abbrev{$ARGV[0]} eq '-help' )
-           || ($abbrev{$ARGV[0]} eq '-?' ) ) {
+    if      ( ($abbrev->{$ARGV[0]} eq '-help' )
+           || ($abbrev->{$ARGV[0]} eq '-?' ) ) {
       do help($usage);
       shift(@ARGV);
-    } elsif ( $abbrev{$ARGV[0]} eq '-underline' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-underline' ) {
       $underline_char=$ARGV[1];
       shift(@ARGV); shift(@ARGV);
-    } elsif ( $abbrev{$ARGV[0]} eq '-starting' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-starting' ) {
       $starting=$ARGV[1];
       shift(@ARGV); shift(@ARGV);
-    } elsif ( $abbrev{$ARGV[0]} eq '-backspaces' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-backspaces' ) {
       $backspaces=$true;
       shift(@ARGV);
     } else {
