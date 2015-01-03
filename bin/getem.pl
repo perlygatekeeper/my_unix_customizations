@@ -1,4 +1,4 @@
-#!/opt/local/bin/perl -w
+#!/usr/bin/env perl -w
   my $name = $0; $name =~ s'.*/''; # remove path--like basename
   my $usage = "usage:\n$name [-opt1] [-opt2] [-opt3]";
 
