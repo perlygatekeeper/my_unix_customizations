@@ -22,7 +22,7 @@ $open = '\(';	$close='\)';
 #print "counting $open's \& $close's\n"; # this doesn't work!   WHY?
 print "counting ${open}'s \& ${close}'s\n";
 
-printf "%5s %5s %5s %5s %5s %4s %s\n", 'line', 'opens', 'total', 'clses', 'total', 'count', 'line';
+printf "%5s  %5s %5s  %5s %5s  %4s  %s\n", 'line#', 'opens', 'o tot', 'clses', 'c tot', 'count', 'line contents';
 while (<>) {
   next if (/^\s*$/); # skip blank or white lines
   next if (/^\s*#/ and not $ignore_comments); # skip commented lines unless otherwise directed.
@@ -34,7 +34,7 @@ while (<>) {
   $count	+=$opens;
   $count	-=$closes;
   ($line=$_)=~s/^(.{60}).*/\1/;
-  printf "%3d %3d %3d %3d %3d %2d %s\n", $., $opens, $open_total, $closes, $close_total, $count, $line ;
+  printf "%5d  %5d %5d  %5d %5d  %5d  %s\n", $., $opens, $open_total, $closes, $close_total, $count, $line ;
 }
 exit 0;
 

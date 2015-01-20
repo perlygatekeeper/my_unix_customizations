@@ -12,32 +12,43 @@ my ($i, @primes);
 my $MAX = 100000;
 if ($ARGV[0] and $ARGV[0]=~/^\d+$/) { $MAX=$ARGV[0]; shift; }
 my $L=length($MAX)+1;    # $L is the number of characters needed to print the biggest prime + one space delimiter
-my $N=int(96/$L);        # $N is the number of primes to print on a 96-character-long line
+my $N=int(96/$L);        # $N is the number of primes to print on a 96-character-long line----\
+#         |         |         |         |         |         |         |         |         |    .   |
+#        10        20        30        40        50        60        70        80        90      100
+#234567891#234567892#234567893#234567894#234567895#234567896#234567897#234567898#234567899#234567890
 
+# we will load some number of known primes from the end of this script.  This isn't necessary, as the algorithm used
+# works with no pre-known primes, even 2, as the foreach loop won't be run.
+# in fact, I populated the known-prime list with $name 100000 >> $name.
 while (<DATA>) {
-  next if (/^$|^\s*#/); #skip blank and commented lines.
+  next if (/^$|^\s*#/); # skip blank and commented lines.
+# s/^#//; # activate this line (and comment previous one) if you'd rather have the known primes on comment lines
   chomp;
   push(@primes,split);
   last if ($primes[$#primes] > $MAX)
 }
-my $first = ( $primes[$#primes] + 1 )/2;
-# print "first is $first\n";
 
-foreach my $generator ( $first .. int($MAX/2)) {
-  my $prime_canidate = 2*$generator + 1;
-  my $sqrt = sqrt $prime_canidate;
-  my $is_prime = 1;
-  foreach my $prime (@primes) {
-    last if ($prime>$sqrt);
-#   printf "pc: %6d\tpt: %6d\t", $prime_canidate, $prime;
-    my $div = $prime_canidate/$prime;
-#   printf "div: %6.1f\n", $div;
-    if ($div == int($div)) {
-      $is_prime=0;
-      last;
+# DO WE NEED TO LOOK FOR MORE PRIMES?
+if ( $MAX > $primes[$#primes] ) {
+
+  my $first = (@primes) ? ( $primes[$#primes] + 1 )/2 : 1;
+  print "(first..last) generators are ( $first .. " .  int($MAX/2) . " )\n";
+  foreach my $generator ( $first .. int($MAX/2)) {
+    my $prime_canidate = 2*$generator + 1;
+    my $sqrt = sqrt $prime_canidate;
+    my $is_prime = 1;
+    foreach my $prime (@primes) {
+      last if ($prime>$sqrt);
+  #   printf "pc: %6d\tpt: %6d\t", $prime_canidate, $prime;
+      my $div = $prime_canidate/$prime;
+  #   printf "div: %6.1f\n", $div;
+      if ($div == int($div)) {
+        $is_prime=0;
+        last;
+      }
     }
+    if ($is_prime) { push(@primes,$prime_canidate); }
   }
-  if ($is_prime) { push(@primes,$prime_canidate); }
 }
 
 # PRINT THEM OUT
@@ -48,10 +59,40 @@ foreach my $prime (@primes) {
 }
 printf "\n";
 
-
 exit 0;
- 
 __END__
+  # This generator 2*N + 1 simply produces only odd numbers (50%)
+  #   A generator based on multiples of 10 would be better.
+  # 10*N + 1, 10*N + 3, 10*N + 7, 10*N + 9 (40%)
+  # As this would skip multiples of 5 as well as even numbers, but I was lazy and didn't want to code the calculation of the first_generator 
+  # First the generator can only be used with N >=1 so you have to preload the known-primes array with 2, 3, 5 and 7.
+  # Second, the first_generator would need to be modifed to give the next set of 4 prime canidates after the largest known prime in @primes
+  # Third, since this new generator gives us prime canidates in groups of four, and our larges known prime might have not have been the last
+  # member of a set of four, we will have to detect that and handle it, ie. if our largest known prime at the end of @primes is 53, then
+  # our first generator would be 6, giving us 61, 63, 67 and 69, but we would have not then considered 57(divisable by 3) and 59 (59 is prime).
+  #   I then discovered the wheel method of prime seiving: https://en.wikipedia.org/wiki/Wheel_factorization.
+  # I relalized that a generator based on 10, is an incomplete wheel seive.  Wheel seives are based on numbers which are products of the first
+  # few primes, so there are wheel seives based on 2, 2x3 = 6, 2x3x5 = 30, 2x3x5x7 = 210 etc.
+
+  # A wheel seive starts immediately AFTER the base number, so the wheel seive based on 30, produces the generator:
+  # preload primes: ( 2, 3, 5, 7, 11, 13, 17, 19, 23, 29 )
+  # 30 * N + 1, 7, 11, 13, 17, 19, 23, 29; and test prime canidates with primes P; where P >= 7 and P < SQRT(MAX)
+  # this is 8 numbers of each 80 consecutive natural numbers (26.7%)
+  # A wheel seive based on 2x3x5x7 = 210 produces the generator:
+  # preload primes (below 210): ( 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97,
+  # 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199 )
+  # unlike the wheel based on 30, this wheel's innermost ring contains 5 numbers which are not eliminated but are non-the-less compound:
+  # 121, 143, 169, 187 and 209.
+  #
+  # 11*11  11*13  13*13 11*17  11*19  | 13*17   11*23
+  # 121    143          187    209    |         253
+  #        143    169                 | 221
+
+  # 210 * N +    1,  11,  13,  17,  19,  23,  29,  31,  37,  41,  43,  47,  53,  59,  61,  67,  71,  73,  79,  83,  89,  97,
+  #            101, 103, 107, 109, 113, 121, 127, 131, 137, 139, 143, 149, 151, 157, 163, 167, 169, 173, 179, 181, 191, 193, 197, 199, 209
+  # and test prime canidates with primes P; where P >= 11 and P < SQRT(MAX)
+  # this is 47 of each 210 conscutive numbers (22.4%).
+
      2     3     5     7    11    13    17    19    23    29    31    37    41    43    47    53 
     59    61    67    71    73    79    83    89    97   101   103   107   109   113   127   131 
    137   139   149   151   157   163   167   173   179   181   191   193   197   199   211   223 
