@@ -6,3 +6,4 @@
 [a-z]*
 .??*
 Projects/*
+.dzil/config.ini
