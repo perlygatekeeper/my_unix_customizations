@@ -8,7 +8,8 @@ $usage = "usage:\n$name [MAX]";
 use strict;
 use warnings;
 
-my ($i, @primes);
+my ($i, @primes, );
+my $preload = 0;
 my $MAX = 100000;
 if ($ARGV[0] and $ARGV[0]=~/^\d+$/) { $MAX=$ARGV[0]; shift; }
 my $L=length($MAX)+1;    # $L is the number of characters needed to print the biggest prime + one space delimiter
@@ -20,19 +21,21 @@ my $N=int(96/$L);        # $N is the number of primes to print on a 96-character
 # we will load some number of known primes from the end of this script.  This isn't necessary, as the algorithm used
 # works with no pre-known primes, even 2, as the foreach loop won't be run.
 # in fact, I populated the known-prime list with $name 100000 >> $name.
-while (<DATA>) {
-  next if (/^$|^\s*#/); # skip blank and commented lines.
-# s/^#//; # activate this line (and comment previous one) if you'd rather have the known primes on comment lines
-  chomp;
-  push(@primes,split);
-  last if ($primes[$#primes] > $MAX)
+if ( $preload ) {
+  while (<DATA>) {
+    next if (/^$|^\s*#/); # skip blank and commented lines.
+  # s/^#//; # activate this line (and comment previous one) if you'd rather have the known primes on comment lines
+    chomp;
+    push(@primes,split);
+    last if ($primes[$#primes] > $MAX)
+  }
 }
 
+if ( not @primes ) { push( @primes, 2, 3 ) }
 # DO WE NEED TO LOOK FOR MORE PRIMES?
 if ( $MAX > $primes[$#primes] ) {
-
   my $first = (@primes) ? ( $primes[$#primes] + 1 )/2 : 1;
-  print "(first..last) generators are ( $first .. " .  int($MAX/2) . " )\n";
+# print "(first..last) generators are ( $first .. " .  int($MAX/2) . " )\n";
   foreach my $generator ( $first .. int($MAX/2)) {
     my $prime_canidate = 2*$generator + 1;
     my $sqrt = sqrt $prime_canidate;
