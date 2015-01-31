@@ -1,4 +1,36 @@
 [TestRelease]
 [ConfirmRelease]
 [UploadToCPAN]
-[PodWeaver]
+
+
+NAME
+
+Dist::Zilla::PluginBundle::Basic - the basic plugins to maintain and release CPAN dists
+
+VERSION
+
+version 5.031
+
+DESCRIPTION
+
+This plugin is meant to be a basic "first step" bundle for using Dist::Zilla.
+It won't munge any of your code, but will generate a Makefile.PL and allows easy,
+reliable releasing of distributions.
+
+It includes the following plugins with their default configuration:
+
+Dist::Zilla::Plugin::GatherDir
+Dist::Zilla::Plugin::PruneCruft
+Dist::Zilla::Plugin::ManifestSkip
+Dist::Zilla::Plugin::MetaYAML
+Dist::Zilla::Plugin::License
+Dist::Zilla::Plugin::Readme
+Dist::Zilla::Plugin::ExtraTests
+Dist::Zilla::Plugin::ExecDir
+Dist::Zilla::Plugin::ShareDir
+Dist::Zilla::Plugin::MakeMaker
+Dist::Zilla::Plugin::Manifest
+
+Dist::Zilla::Plugin::TestRelease
+Dist::Zilla::Plugin::ConfirmRelease
+Dist::Zilla::Plugin::UploadToCPAN
