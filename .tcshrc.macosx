@@ -6,6 +6,8 @@ a la       '\ls -GFbalO@e'
 # com.apple.quarentine 
 # xattr file or xattr -l file
 
+a inst          sudo port install
+a search        port search
 
 # good way to regenerate MANPATH:
 # locate 'cat' 'man' | \
