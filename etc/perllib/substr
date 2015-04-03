@@ -4,9 +4,9 @@
 
 First character is at offset 0
 
-OFFSET negative             == that far from the end of the string.
-no LENGTH                   == everything to the end of the string.
-negative LENGTH is negative == leaves that many characters off the end of the string.
+OFFSET is negative   == that far from the end of the string.
+no LENGTH            == everything to the end of the string.
+LENGTH is negative   == leaves that many characters off the end of the string.
 
 To keep the string the same length you may need to pad
 or chop your value using "sprintf".
@@ -23,7 +23,7 @@ Here's an example showing the behavior for boundary cases:
   my $oops = substr $name, 7;    # returns undef, with warning
   substr($name, 7) = 'gap';      # fatal error
 
-  my $str="abd123hij";		 # 2 ways to replace 123 with efg
+  my $str="abd123hij";		     # 2 ways to replace 123 with efg
   substr($str, 2, 3, 'efg');	 # assign 4th arg.
-  substr($str, 2, 3)='efg';	 # substr as an lvalue
+  substr($str, 2, 3)='efg';	     # substr as an lvalue
 
