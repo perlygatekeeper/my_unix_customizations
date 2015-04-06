@@ -18,21 +18,27 @@ foreach my $environment_variable ( qw( m M mod Mod MOD module Module MODULE ) ) 
 unless ( scalar @modules ) { die $usage; }
 
 foreach my $module (@modules) {
-  my ($cant, $inc);
+  my $cant = '';
+  my $inc  = '';
   my $cmd = "perl -M${module} -le 'print \$${module}::VERSION;'";
-  print "$cmd\n";
+  print "\n$cmd\n";
   my $returned=`$cmd 2>&1`;
 
   if ($returned =~ /Can't/ ) {
     # print '1- ' . $returned;
-    ($cant, $inc) = ( $returned =~ /^(.*in\s+.INC)\s+\(\@INC\s+contains:\s+(.*)/ );
+    # ($cant, $inc) = ( $returned =~ /^(.*in\s+.INC)\s+.*\(.INC\s+contains:\s+(.*)/ );
+    ($cant, $inc) = ( $returned =~ /^(.*in\s+.INC)\s+.*\(.INC\s+contains:\s+(.*)/ );
     # print '2-' . $cant .  "-\n";
     # print '3-' . $inc  .  "-\n";
-    $inc=$2;
-    $inc =~ s/\).\nBEGIN.*$//;
-    $inc =~ s/ /\n /g;
-    $inc =~ s/\)\.$//g;
-    print "\n$cant\n $inc\n";
+    # $inc=$2;
+    $inc =~ s/\).\nBEGIN.*$//; # get rid of ).\nBEGIN
+    $inc =~ s/ /\n /g;         # split on space
+    $inc =~ s/\)\.$//g;        # get rid of ').'
+	if ( $cant and $inc ) {
+      print "\n$cant\n $inc\n";
+	} else {
+      print "\n";
+    }
   } else {
     print $returned;
   }
@@ -46,3 +52,7 @@ perl -MFoo::Bar -le 'print $Foo::Bar::VERSION;'
 Can't locate Foo/Bar.pm in @INC (@INC contains: /investments/bee_hive/config-file /investments/bee_hive/NationwidePerlLibraries /investments/bee_hive/NationwidePerlLibraries/lib/lib64/perl5 /u01/home/oracle/11.2/perl /u01/home/oracle/11.2/lib/site_perl/5.10.0/x86_64-linux-thread-multi /home/parkes7/etc/perllib /usr/local/lib64/perl5 /usr/local/share/perl5 /usr/lib64/perl5/vendor_perl /usr/share/perl5/vendor_perl /usr/lib64/perl5 /usr/share/perl5 .).
 BEGIN failed--compilation aborted.
 
+new as of 5.20
+
+Can't locate Foo/Bar.pm in @INC (you may need to install the Foo::Bar module) (@INC contains: /Users/Steve/Projects/Thingiverse/lib /Library/Perl/5.18/darwin-thread-multi-2level /Library/Perl/5.18 /Network/Library/Perl/5.18/darwin-thread-multi-2level /Network/Library/Perl/5.18 /Library/Perl/Updates/5.18.2 /System/Library/Perl/5.18/darwin-thread-multi-2level /System/Library/Perl/5.18 /System/Library/Perl/Extras/5.18/darwin-thread-multi-2level /System/Library/Perl/Extras/5.18 .).
+BEGIN failed--compilation aborted.
