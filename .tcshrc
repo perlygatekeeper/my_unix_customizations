@@ -63,8 +63,8 @@ a hafh		ssh  -L 5432:talk.google.com:5222 -L 8280:127.0.0.1:8888 -L 8080:127.0.0
 a ifc		'ifconfig -a'
 a str		'strings - \!* | less'
 
-a vrc		'vi ~/.tcshrc'
-a vvrc		'vi ~/.vimrc'
+a vrc		'vim ~/.tcshrc'
+a vvrc		'vim ~/.vimrc'
 a src		'source ~/.tcshrc'
 
 setenv LSCOLORS "Gxfxcxdxbxegedabagacad"
@@ -100,6 +100,10 @@ endif
 if ( -f ~/.tcshrc.macosx && -f ~/.macosx ) then
 	# echo "sourcing ~/.tcshrc.macosx"
 	source ~/.tcshrc.macosx
+endif
+if ( -f ~/.tcshrc.cygwin && -f ~/.cygwin ) then
+	# echo "sourcing ~/.tcshrc.cygwin"
+	source ~/.tcshrc.cygwin
 endif
 if ( -f ~/.tcshrc.ubuntu && -f ~/.ubuntu ) then
 	# echo "sourcing ~/.tcshrc.ubuntu"

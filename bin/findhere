@@ -11,6 +11,9 @@ elif [ `basename $0` = "findname" ] ; then
 fi
 /usr/bin/find $search_path -path '*.svn' -prune -o -name $1 -print
 
-# echo findhere is the 'real' file
-# ln -fs findhere findhome
-# ln -fs findhere findname
+exit
+
+echo use:    find . -type f -exec grep '^ln' {} \; | sh
+echo findhere is the 'real' file
+ln -fs findhere findhome
+ln -fs findhere findname
