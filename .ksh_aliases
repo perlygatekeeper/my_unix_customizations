@@ -1,3 +1,11 @@
+export HISTSIZE=4096
+set -o emacs
+alias __A=`echo "\020"`     # up arrow = ^p = back a command
+alias __B=`echo "\016"`     # down arrow = ^n = down a command
+alias __C=`echo "\006"`     # right arrow = ^f = forward a character
+alias __D=`echo "\002"`     # left arrow = ^b = back a character
+alias __H=`echo "\001"`     # home = ^a = start of line
+alias __Y=`echo "\005"`     # end = ^e = end of line
 alias          a=alias
 alias          u=unalias
 alias          h='history -l 1'
@@ -42,22 +50,13 @@ alias         lo=exit
 # alias       slay='(set j=`ps -ax|grep \!*|head -1`;kill -9  $j[1]) >& /dev/null'
 # alias        zap='(set j=`ps -ax|grep \!*|head -1`;kill -1  $j[1]) >& /dev/null'
 # alias       term='(set j=`ps -ax|grep \!*|head -1`;kill -15 $j[1]) >& /dev/null'
-export HISTSIZE=4096
-set -o emacs
-alias __A=`echo "\020"`     # up arrow = ^p = back a command
-alias __B=`echo "\016"`     # down arrow = ^n = down a command
-alias __C=`echo "\006"`     # right arrow = ^f = forward a character
-alias __D=`echo "\002"`     # left arrow = ^b = back a character
-alias __H=`echo "\001"`     # home = ^a = start of line
-alias __Y=`echo "\005"`     # end = ^e = end of line
 alias         rp='hash -r'
 function mine {
-        export PERL5LIB="/home/parkes7/etc/perllib:${PERL5LIB}"
-        export PATH="/home/parkes7/bin:${PATH}"
-        export HISTFILE=~/.sh-history.parkes7
+        export PERL5LIB="/home/parks17/etc/perllib:${PERL5LIB}"
+        export PATH="/home/parks17/bin:${PATH}"
         export HISTSIZE=8192
-        cd /investments/bee_hive/bee_config_tidied
-        # export PATH=`/home/parkes7/bin/cleanpath`
+        # cd /investments/bee_hive/bee_config_tidied
+        # export PATH=`/home/parks17/bin/cleanpath`
 }
 function here {
         export PATH="${PATH}:."

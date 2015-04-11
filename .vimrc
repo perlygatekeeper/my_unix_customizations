@@ -13,43 +13,56 @@ set t_Co=256
 
 " read/write a .viminfo file, don't store more than 128 lines of registers
 set viminfo='128,f1
-" keep XX lines of command line history
-set history=1024          	
-set paste
+set history=1024
+set undolevels=1024
+set wildignore=*.swp,*.bak,*.pyc,*.o
+set visualbell
+set noerrorbells
+
 " horizontal tab set at 4 & tab stop at 4
-set ht=4
-set ts=4	
-" match pairs for % command
-set mps=(:),{:},[:],<:>
-set noslowopen
-" Hide other buffers instead of abandoning them & display line numbers
-set hidden
-
-" turn on syntax detection
-" Enable filetype detection, filetype-specific indenting & plugins
-syntax on					
-filetype on
-filetype indent on
-filetype plugin on
-
-" report yanks/deletes of 2 or more lines & status bar stuff, current mode & ruler
-set report=2
-set showcmd	
-set showmode
-set ruler 
-
-" Search stuff highlighted, incremental, usually ignore case unless I explicitly use an UPPER CASE character
-set hlsearch
-set incsearch
-set ignorecase
-set smartcase
-
-" autoindent by default
+"set ht=4
 set autoindent
+set copyindent
+set shiftwidth=4
+set tabstop=4
+set smarttab
+set backspace=indent,eol,start
+set pastetoggle=<F2>
+"set mouse=a
 nnoremap << :set noautoindent<Cr>:filetype indent off<Cr>
 nnoremap <p :set paste<Cr>
 nnoremap >> :set   autoindent<Cr>:filetype indent on<Cr>
 nnoremap >p :set nopaste<Cr>
+
+" match pairs for % command
+set mps=(:),{:},[:],<:>
+set noslowopen
+
+" Hide other buffers instead of abandoning them & display line numbers
+set hidden
+
+" Filetype/Syntax detection
+" Enable syntax highlighting filetype detection, filetype-specific indenting & plugins
+syntax on
+filetype on
+filetype indent on
+filetype plugin on
+
+" Appearance/Reporting/Status 
+" report yanks/deletes of 2 or more lines & status bar stuff, current mode & ruler
+set report=2
+set showcmd	
+set showmode
+set ruler
+" set list
+" set listchars=tab:>.,trail:.,extends:#,nbsp:.
+
+" Searching
+" highlighted, incremental, usually ignore case unless I explicitly use an UPPER CASE character
+set hlsearch
+set incsearch
+set ignorecase
+set smartcase
 
 if has("autocmd")
   " When editing a file, always jump to the last cursor position
@@ -80,11 +93,9 @@ nnoremap => !} crk '^(.)' '\t$1'<Cr>
 " edit alternate file.
 nnoremap =b :e#<Cr>
 " nnoremap =c !} cut -c
-" nnoremap =f !} fmt -c -78
-" nnoremap =F !} fold -
 " nnoremap =g !2} glue -b
 " nnoremap =G !G glue -b
-"" add '> ' to beginning of rest of the lines in the buffer
+" add '> ' to beginning of rest of the lines in the buffer
 " nnoremap =n :.,$ s/^> >/>> /<Cr>
 
 " template stuff for HTML(h), make(m), perl(p), tcsh(t) and python(y)
@@ -104,48 +115,44 @@ nnoremap =t :r ~/etc/tcshlib/
 nnoremap =T :r! ls -C ~/etc/tcshlib/
 nnoremap =y :r ~/etc/pylib/
 nnoremap =Y :r! ls -C ~/etc/pylib/
-
-nnoremap =l !!crk '\\t' '\t' \| crk '\\n' '\n' \| crk 'called at(.*)\$' '\n\tcalled at \$1\n'<Cr>
-
-nnoremap =f f{f(f[f<zf%
+nnoremap =f gqap
+vnoremap =f gqp
+" nnoremap =f !} fmt -c -78
+" nnoremap =F !} fold -
+"nnoremap =f f{f(f[f<zf%
 "nnoremap =F 
-
 nnoremap =u 1G!Gdos2unix<Cr>
 nnoremap =d 1G!Gunix2dos<Cr>
-
-nnoremap =q !}crk QQQ '\o'<Cr>
-nnoremap =Q !Gcrk QQQ '\o'<Cr>
+nnoremap =q !}crk QQQ '\o'<Cr>              " number QQQ's rest of para
+nnoremap =Q !Gcrk QQQ '\o'<Cr>              " number QQQ's rest of file
 nnoremap =r !Gcrk '^(\s*)\d+' '\1\o'<Cr>
-
 "nnoremap =s !} sort -t, +1<Cr>
 "nnoremap =S !} sort -n
-
-" url_decode
+"URL_decode
 nnoremap =U !} perl -pe "tr/+/ /; s/\%([a-fA-F0-9][a-fA-F0-9])/pack('C', hex($1))/eg;"
-
-
 nnoremap =x :e!
 nnoremap =X :.!sh
 nnoremap =w :w!
-
-nnoremap =<C-A> :%s/|
-nnoremap =<C-K> i <Esc>|
-nnoremap =<C-O> :. s/|
-nnoremap =<C-P> :1,. s/|
-nnoremap =<C-R> :.,$ s/|
-nnoremap =<C-W> :w<Cr>
-nnoremap =<C-N> :n<Cr>
-nnoremap =<C-T> xp
-
+"nnoremap =<C-A> :%s/|
+"nnoremap =<C-K> i <Esc>|
+"nnoremap =<C-O> :. s/|
+"nnoremap =<C-P> :1,. s/|
+"nnoremap =<C-R> :.,$ s/|
+"nnoremap =<C-W> :w<Cr>
+"nnoremap =<C-N> :n<Cr>
+"nnoremap =<C-T> xp
 " Backspace in Visual mode deletes selection.
 vnoremap <BS> d
-"
 " Tab/Shift+Tab indent/unindent the highlighted
 " block (and maintain the highlight after changing the indentation). Works for both Visual and
 " Select modes.
-"
-vnoremap <Tab>	>gv
+vnoremap <Tab> >gv
 vnoremap <S-Tab> <gv
+" Map ^L to do what it does, but also clear search highlighting.
+nnoremap <C-L> :nohlsearch<CR><C-L>
+" Shortcut for :bnext and :bprevious.
+nnoremap <A-Left> :bprevious<CR>
+nnoremap <A-Right> :bnext<CR>
 
 " Example Maps
 " Join all lines in a paragraph 
@@ -157,7 +164,6 @@ vnoremap <S-Tab> <gv
    :map ][ /}<CR>b99]}
    :map ]] j0[[%/{<CR>
    :map [] k$][%?}<CR>
-	    
 
 " short cut abbreviations and common mispellings corrections
 "iab oe ohio-state.edu
@@ -174,17 +180,6 @@ iab chemsitry chemistry
 iab direcotry directory
 iab St3ve Steve
 
-" Map ^L to do what it does, but also clear search highlighting.
-nnoremap <C-L> :nohlsearch<CR><C-L>
-
-" Shortcut for :bnext and :bprevious.
-nnoremap <A-Left> :bprevious<CR>
-nnoremap <A-Right> :bnext<CR>
-
 let g:snipMate = {}
 let g:snipMate.scope_aliases = {} 
 let g:snipMate.scope_aliases['html'] = 'html,tt'
-
-"augroup filetype
-"        autocmd BufNewFile,BufRead ~/MantaDev/*.html set filetype=tt
-"augroup END
