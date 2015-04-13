@@ -1,4 +1,54 @@
-" @(#)Vimrc 2.0 Steve Parker Mon Sep 12, 2011
+" @(#)Vimrc 2.0 Steve Parker Mon Apr 13, 2015
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+
+" let Vundle manage Vundle, required
+Plugin 'gmarik/Vundle.vim'
+
+" The following are examples of different formats supported.
+" Keep Plugin commands between vundle#begin/end.
+" plugin on GitHub repo
+Plugin 'msanders/snipmate.vim'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-repeat'
+Plugin 'scrooloose/nerdtree'
+Plugin 'bling/vim-airline'
+Plugin 'Spaceghost/vim-matchit'
+Plugin 'michaeljsmith/vim-indent-object'
+" Plugin 'tpope/vim-fugitive'
+" plugin from http://vim-scripts.org/vim/scripts.html
+" Plugin 'L9'
+" Git plugin not hosted on GitHub
+" Plugin 'git://git.wincent.com/command-t.git'
+" git repos on your local machine (i.e. when working on your own plugin)
+" Plugin 'file:///home/gmarik/path/to/plugin'
+" The sparkup vim script is in a subdirectory of this repo called vim.
+" Pass the path to set the runtimepath properly.
+" Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+" Avoid a name conflict with L9
+" Plugin 'user/L9', {'name': 'newL9'}
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+" To ignore plugin indent changes, instead use:
+"filetype plugin on
+"
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+"
+" see :h vundle for more details or wiki for FAQ
+" Put your non-Plugin stuff after this line
+" ----------------------------------------------
 set nocompatible   		     	" Use Vim defaults (much better!)
 set backspace=indent,eol,start	" allow backspacing over everything in insert mode
 "
@@ -8,7 +58,7 @@ set backspace=indent,eol,start	" allow backspacing over everything in insert mod
 " NOTE this may be useful: !'mcrk '(\S *)\t' '$1    '
 " replaces (X____)\t  with $1 . _ x 4
 "
-
+map <C-n> :NERDTreeToggle<CR>
 set t_Co=256
 
 " read/write a .viminfo file, don't store more than 128 lines of registers
@@ -44,7 +94,7 @@ set hidden
 " Filetype/Syntax detection
 " Enable syntax highlighting filetype detection, filetype-specific indenting & plugins
 syntax on
-filetype on
+filetype off
 filetype indent on
 filetype plugin on
 
@@ -113,6 +163,8 @@ nnoremap =p :r ~/etc/perllib/
 nnoremap =P :r! ls -C ~/etc/perllib/
 nnoremap =t :r ~/etc/tcshlib/
 nnoremap =T :r! ls -C ~/etc/tcshlib/
+nnoremap =v :r ~/etc/vimlib/
+nnoremap =V :r! ls -C ~/etc/vimlib/
 nnoremap =y :r ~/etc/pylib/
 nnoremap =Y :r! ls -C ~/etc/pylib/
 nnoremap =f gqap
