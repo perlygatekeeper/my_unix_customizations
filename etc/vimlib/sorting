@@ -1,0 +1,37 @@
+:[range]sor[t][!] [i][u][r][n][x][o] [/{pattern}/]
+
+[range]   - sort [range] lines (all lines if no [range]
+!         - reverse
+{pattern} - ignore parts of lines matching {pattern}
+            lines not matching {pattern} do not get sorted.
+r         - sort based on parts of line MATCHING {pattern} instead of
+            parts NOT MATCHING {pattern}
+i         - case-insensative sort
+u         - unique
+n         - decimal
+o         - octal
+x         - hexidecimal
+
+
+
+For example, to sort on the second comma-separated field:
+
+:sort /[^,]*,/
+
+To sort on the text at virtual column 10 (thus ignoring the difference between
+tabs and spaces):
+
+:sort /.*\%10v/
+
+To sort on the first number in the line, no matter what is in front of it:
+
+:sort /.\{-}\ze\d/
+
+(Explanation: ".\{-}" matches any text, "\ze" sets the end of the match and \d
+matches a digit.) With [r] sorting is done on the matching {pattern} instead of
+skipping past it as described above.
+
+For example, to sort on only the first three letters of each line:
+
+:sort /\a\a\a/ r
+
