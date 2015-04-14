@@ -660,8 +660,12 @@ sub initialize {
   $stack_name='s';
   $stack_ref=$stacks{$stack_name}=[];
   $empty = "-EMPTY-";
+# print "before use Term::ReadLine\n";
   use Term::ReadLine;
+# print "after  use Term::ReadLine\n";
+# print "before new Term::ReadLine\n";
   $term = new Term::ReadLine 'Reverse Polish Notation Perl Calc';
+# print "after  new Term::ReadLine\n";
   $OUT = $term->OUT || STDOUT;
   my($HOME)=$ENV{'HOME'};
   $stack_save= 	$ENV{RPN_STACKS} ||	"$HOME/.rpn_stacks";
@@ -734,11 +738,11 @@ sub save_exit {
   my($s,$cmd,$arg_str,$arg_array)=@_;
   my($stack,$something_to_write);
   use Data::Dumper;
-  print STDERR "looking for '$stack_save'\n";
+# print STDERR "looking for '$stack_save'\n";
   if (-f $stack_save) {
-    print STDERR "writing to '$stack_save'\n";
+#   print STDERR "writing to '$stack_save'\n";
     open(FILE,">$stack_save") || die("$name: Cannot write to '$stack_save': $!\n");
-    print STDERR "opened '$stack_save'\n";
+#   print STDERR "opened '$stack_save'\n";
     foreach $stack (sort keys %stacks) {
       if (($stack ne $stack_name) and not scalar(@{$stacks{$stack}})) {
         print STDERR "deleting stack '$stack'\n";

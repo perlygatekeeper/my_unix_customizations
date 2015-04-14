@@ -1,0 +1,71 @@
+http://www.vim.org/scripts/script.php?script_id=1697
+-----------------------------------------------------------------------------
+https://github.com/tpope/vim-surround/blob/master/doc/surround.txt
+
+An asterisk (*) is used to denote the cursor position.
+
+  Old text                  Command     New text ~
+  "Hello *world!"           ds"         Hello world!
+  [123+4*56]/2              cs])        (123+456)/2
+  "Look ma, I'm *HTML!"     cs"<q>      <q>Look ma, I'm HTML!</q>
+  if *x>3 {                 ysW(        if ( x>3 ) {
+  my $str = *whee!;         vllllS'     my $str = 'whee!';
+
+urroundings is *ds* .  The next character given determines the target
+to delete.  The exact nature of the target is explained in |surround-targets|
+but essentially it is the last character of a |text-object|.  This mapping
+deletes the difference between the "i"nner object and "a"n object.  This is
+easiest to understand with some examples:
+
+  Old text                  Command     New text ~
+  "Hello *world!"           ds"         Hello world!
+  (123+4*56)/2              ds)         123+456/2
+  <div>Yo!*</div>           dst         Yo!
+
+Change surroundings is *cs* .  It takes two arguments, a target like with
+|ds|, and a replacement.  Details about the second argument can be found
+below in |surround-replacements|.  Once again, examples are in order.
+
+  Old text                  Command     New text ~
+  "Hello *world!"           cs"'        'Hello world!'
+  "Hello *world!"           cs"<q>      <q>Hello world!</q>
+  (123+4*56)/2              cs)]        [123+456]/2
+  (123+4*56)/2              cs)[        [ 123+456 ]/2
+  <div>Yo!*</div>           cst<p>      <p>Yo!</p>
+
+*ys* takes a valid Vim motion or text object as the first object, and wraps
+it using the second argument as with |cs|.  (It's a stretch, but a good
+mnemonic for "ys" is "you surround".)
+
+  Old text                  Command     New text ~
+  Hello w*orld!             ysiw)       Hello (world)!
+
+As a special case, *yss* operates on the current line, ignoring leading
+whitespace.
+
+  Old text                  Command     New text ~
+      Hello w*orld!         yssB            {Hello world!}
+
+There is also *yS* and *ySS* which indent the surrounded text and place it
+on a line of its own.
+
+Eight punctuation marks, (, ), {, }, [, ], <, and >, represent themselves
+and their counterparts.  If the opening mark is used, contained whitespace is
+also trimmed.  The targets b, B, r, and a are aliases for ), }, ], and > 
+(the first two mirror Vim; the second two are completely arbitrary and
+subject to change).
+
+Three quote marks, ', ", `, represent themselves, in pairs.  They are only
+searched for on the current line.
+
+A t is a pair of HTML or XML tags.  See |tag-blocks| for details.  Remember
+that you can specify a numerical argument if you want to get to a tag other
+than the innermost one.
+
+The letters w, W, and s correspond to a |word|, a |WORD|, and a |sentence|,
+respectively.  These are special in that they have nothing to delete, and
+used with |ds| they are a no-op.  With |cs|, one could consider them a
+slight shortcut for ysi (cswb == ysiwb, more or less).
+
+A p represents a |paragraph|.  This behaves similarly to w, W, and s above;
+however, newlines are sometimes added and/or removed.
