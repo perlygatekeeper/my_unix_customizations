@@ -1,0 +1,4 @@
+	for (@${1:array}) {
+		admin($_)   when [ qw/${2:wordlist}/ ];
+		regular($_) when [ qw/${2:wordlist}/ ];
+	}

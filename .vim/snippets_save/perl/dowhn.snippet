@@ -1,0 +1,5 @@
+	# do { .. } while (); allowing next loop control
+	do {{
+		next if ${1:next_condition};
+		${2:# body...}
+	}} while ${3:while_condition};

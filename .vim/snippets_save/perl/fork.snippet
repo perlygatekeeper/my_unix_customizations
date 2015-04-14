@@ -1,0 +1,17 @@
+	#perl -le 'if ($pid=fork) { print "parent process, $$ the child is $pid"; } elsif (defined $pid) { print "child process, $$"; } else {print "wtf: $!"; }'
+	FORK: {
+		if ($pid = fork) {
+			# parent here
+			# child process pid is available in $pid
+		} elsif (defined $pid) { # $pid is zero here if defined
+			# child here
+			# parent process pid is available with getppid
+		} elsif ($! =~ /No more process/) {     
+			# EAGAIN, supposedly recoverable fork error
+			sleep 5;
+			redo FORK;
+		} else {
+			# weird fork error
+			die "$name: can't fork: $!\n";
+		}
+	}

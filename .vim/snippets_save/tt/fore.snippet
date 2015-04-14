@@ -1,0 +1,5 @@
+	[% FOREACH ${1:var} IN $1:s %]
+		[% NEXT IF $1.isguest %]
+		Name: [% $1.name %]    Email: [% $1.email %]
+		[% LAST IF ${2:condition}%]
+	[% END %]
