@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # A perl script to convert output of 'arp -a' command into /etc/ethers
 # format, and to add 0's to the one digit components of the ethernet address.
 

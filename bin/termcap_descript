@@ -1,4 +1,16 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
+# A perl script to SCRIPT_DESCRIPTION
+
+my $name = $0; $name =~ s'.*/''; # remove path--like basename
+my $usage = "usage: $name [-l] [-n] [-f TERMCAP_file] [-e TERM ... ]\n";
+
+use strict;
+use warnings;
+
+exit 0;
+
+__END__
+
 #-----------------------------------------------------------------------------
 
 #   ***   Define Strings, Values & Flags   ***
@@ -166,15 +178,31 @@ if ($tc_flag && $explaination_flag) {
 exit 0;
 
 ####   SUBROUTINES   ####
-#  TIMING RESULTS 
-# time tc.work -e vt100
-# yielded 
-#  0.7 real  0.5 user 0.2 sys <- explainations stored in an associative array
-# 15.0 real 14.2 user 0.4 sys <- generated for each entry by perl
-# 17.0 real  2.1 user 6.8 sys <- generated for each entry by `grep|cut`
-# LEASON: Don't fork new processes if you are concerned with speed of exec.
+
+sub load_descriptions {
+  my $termcaps;
+  while (<DATA>) {
+    next if (/^\s*$|^\s*#/); # skip white, blank and commented lines.
+    my ( $name, $type, $notes, $description ) =
+    ( $_ =~
+      qr(
+        (..)-?\S*\s+      # Name
+        (\S{1,4})\s{1,5}  # Type
+	    (\([^)]+\))?\s+   # Notes
+	    (\S.*)$           # Description
+      )x
+    );
+	$termcaps->{$name} = {
+	  type        => $type,
+	  notes       => $notes,
+	  description => $notes,
+	}
+  }
+  return $termcaps;
+}
 __END__
-Name    Type   Notes   Description
+
+#Name    Type   Notes   Description
 !1      str            sent by shifted save key
 !2      str            sent by shifted suspend key
 !3      str            sent by shifted undo key

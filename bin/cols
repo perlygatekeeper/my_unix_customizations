@@ -1,0 +1,33 @@
+#!/usr/bin/env perl
+# A perl script to mark out columns of a display
+
+my $name = $0; $name =~ s'.*/''; # remove path--like basename
+my $usage = "usage:\n$name [-opt1] [-opt2] [-opt3]";
+
+use strict;
+use warnings;
+
+# print "trying command 'stty size'\n";
+# print `stty size`;
+# print "these commands may also be useful 'tput cols; tput lines'\n";
+
+my $cols = `tput cols`;
+chomp $cols;
+$cols ||= `stty size`; chomp $cols; $cols =~ s/.* //;
+$cols ||= 200;
+
+$cols /= 10;
+
+my $tens = ($ARGV[0] and $ARGV[0] =~ m,\d\d?,) ? $ARGV[0] : $cols;
+foreach my $i ( 1 .. $tens ) {
+  printf "1234567890";
+}
+print "\n";
+foreach my $i ( 1 .. $tens ) {
+  printf "%10d", $i;
+}
+print "\n";
+
+exit 0;
+
+__END__

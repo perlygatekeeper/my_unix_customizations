@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 #
 # A perl-5 script to submit a Gaussian 98 job to an NQS or PBS batch queue.
 #

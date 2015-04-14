@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 #
 # A perl-5 script to indent code a certain number of spaces
 # (by default 2; can be negative);

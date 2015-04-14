@@ -1,1 +1,36 @@
-words
+#!/bin/sh
+# a shell script to search a words file
+# available via RH-RPM words-3.0-9.1
+WORDSFILE="/usr/share/dict/words";
+WORDSFILE="/usr/share/dict/linux.words";
+WORDSFILE="/usr/share/dict/web2";
+if [ "`tty`" = "not a tty" ] ; then
+  P=cat
+else
+  P=${PAGER:-less}
+fi
+if [ $# -eq 0 ] ; then
+  $P $WORDSFILE
+elif [ \( $1 = '-?' \) -o \( $1 = '?' \) ] ; then
+  echo "usage: $0 [-c "contains option" (default is front-anchored search)] [target_word|as much as you know]"
+  exit 0
+elif [ $1 = '-c' ] ; then
+# part of word option
+  shift
+  for i in "$@"
+    do
+      echo "FOR >>>$i<<< I FOUND THE FOLLOWING:"
+      grep "$i" $WORDSFILE
+    done | $P
+else
+  for i in "$@"
+    do
+      echo "FOR >>>$i<<< I FOUND THE FOLLOWING:"
+      grep "^$i" $WORDSFILE
+    done | $P
+fi
+
+# __END__
+# echo use:    find . -type f -exec grep '^ln' {} \; | sh
+# echo words is the 'real' file
+# ln -fs words wds

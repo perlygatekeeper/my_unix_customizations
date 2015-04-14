@@ -1,6 +1,0 @@
-	open(${1:FH},">$${2:filename}")
-	  || die("$name: Can not write to '$$2': $!\n");
-	while (<$1>) {
-		print $1 "${3:Hello World!}\n";
-	}
-	close($1);

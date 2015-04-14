@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 $maxdepth=25;
 $pwd=`pwd`; chomp $pwd;
 push(@ARGV,$pwd) if (not @ARGV);

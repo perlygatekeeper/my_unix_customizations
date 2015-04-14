@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 #
 # A perl script to list only lines from STDIN  that do not contain
 # ANY of the reg exp's given as arguments

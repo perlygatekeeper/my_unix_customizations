@@ -1,0 +1,115 @@
+alias          a=alias
+alias          u=unalias
+alias          h='history -l 1'
+alias          j=jobs
+alias          d='dirs -v'
+alias       home='ssh parker@192.168.0.101'
+alias       hafh='ssh parker@71.79.242.190'
+alias        lsd='ls -F'
+alias         ll='ls -l'
+alias         lr='ls -ltr'
+alias       dots='ls -d .??*'
+alias      lsdir='ls -l | grep drw'
+alias         cx='chmod +x'
+alias         ..='cd ..'
+alias          c=clear
+alias        day="date '+%a %h %d %Y'"
+alias         ds="date '+%Y%m%d'"
+alias        ssh='ssh -XY'
+alias        ifc='ifconfig -a'
+alias        str='strings - \!* | less'
+alias        src='. ~/.profile'
+alias        vrc='vim ~/.profile'
+alias        arc='vim ~/.aliases; . ~/.aliases'
+alias       vvrc='vim ~/.vimrc'
+alias         vm='vim Makefile'
+alias        bye=exit
+alias     logout=exit
+alias         lo=exit
+# Aliases that don't work well in ksh.
+# alias         sv='vi +"\!{:1}:" \!:2*'
+# alias        mcd='mkdir \!:1; cd \!:1;'
+# alias       orig='cp \!* \!*.orig'
+# alias         rp='set path=($path)'
+# alias    prepath='set path=(\!* $path)'
+# alias   postpath='set path=($path \!*)'
+# alias    addpath='set path=($path \!*)'
+# alias       here='set path=($path .)'
+# alias    pwdpath='set path=($path `pwd`)'
+# alias         po=popd
+# alias         pu=pushd
+# alias        rot='pushd +1'
+# alias      procs='ps -elf | cut -c76- | sort | crk '/\d' | uniq -c | sort -n'
+# alias       slay='(set j=`ps -ax|grep \!*|head -1`;kill -9  $j[1]) >& /dev/null'
+# alias        zap='(set j=`ps -ax|grep \!*|head -1`;kill -1  $j[1]) >& /dev/null'
+# alias       term='(set j=`ps -ax|grep \!*|head -1`;kill -15 $j[1]) >& /dev/null'
+export HISTSIZE=4096
+set -o emacs
+alias __A=`echo "\020"`     # up arrow = ^p = back a command
+alias __B=`echo "\016"`     # down arrow = ^n = down a command
+alias __C=`echo "\006"`     # right arrow = ^f = forward a character
+alias __D=`echo "\002"`     # left arrow = ^b = back a character
+alias __H=`echo "\001"`     # home = ^a = start of line
+alias __Y=`echo "\005"`     # end = ^e = end of line
+alias __Z=`echo "\033="`    # shift-tab = COMPLETION
+alias         rp='hash -r'
+# Nationwide-specific changes
+export sub="/investments/bee_hive/Subversion_Work/BEE_LINUX"
+export com="/investments/bee_hive/Subversion_Work/NationwidePerlLibraries/Linux_version"
+alias ddd='diff -b -w -B -r $BEE_HIVE/bin . | egrep "^(Only|diff)" | grep -v "\.svn" | perl -ne '\''if (m,^(.*?) (\./.*),){printf "%-90s\t%s\n",$1,$2;}else{print}'\''| cat -n'
+alias ccc='diff -b -w -B -r $BEE_HIVE/com/nationwide/inv . | egrep "^(Only|diff)" | grep -v "\.svn" | perl -ne '\''if (m,^(.*?) (\./.*),){printf "%-90s\t%s\n",$1,$2;}else{print}'\''| cat -n'
+function mine {
+    ( echo $PATH     | /bin/grep -q 'parkes7' ) || export PATH=$PATH:/home/parkes7/bin
+    ( echo $PERL5LIB | /bin/grep -q 'parkes7' ) || export PERL5LIB="${PERL5LIB}:/home/parkes7/etc/perllib:/home/parkes7/perl5"
+    export HISTFILE=~/.sh_history.parkes7
+    export HISTSIZE=8192
+    cd $OOI_CFA_DIR/BEE/bin
+    # export PATH=`/home/parkes7/bin/cleanpath`
+}
+function here {
+    export PATH="${PATH}:."
+}
+function addpath {
+    export PATH="${PATH}:$1"
+}
+function postpath {
+    export PATH="${PATH}:$1"
+}
+function prepath {
+    export PATH="$1:${PATH}"
+}
+function pwdpath {
+    export PATH="`pwd`:${PATH}"
+}
+function mcd {
+    mkdir $1
+    cd $1
+}
+function sv {
+    vi +"$1:" $2*
+}
+function orig {
+    cp $1 $1.orig
+}
+alias      procs='ps -eo "pid,ppid,tty,user,cputime,cmd"'
+alias       hogs='ps -eo "pid,ppid,tty,user,cputime,cmd" | egrep "[        ]0[^0]:|[       ]00:[^0]" | cut -c31- | sort'
+alias        pid='ps axu  | grep \!* | grep -v grep'
+alias       pidw='ps axuww| grep \!* | grep -v grep'
+
+# if [ -x "/usr/bin/uname" ] ; then
+#    UNAME="/usr/bin/uname"
+# elif [ -x "/bin/uname" ] ; then
+#    UNAME="/bin/uname"
+# else
+#    echo "uname not found."
+#    return
+# fi
+
+
+if [ "${USER}X" = "parkes7X" -a -z "$ALIASES_RAN" ] ; then
+    export PATH="${PATH}:/home/parkes7/bin"
+    export HISTFILE=~/.sh_history.parkes7
+    export HISTSIZE=8192
+fi
+
+ALIASES_RAN=Yes

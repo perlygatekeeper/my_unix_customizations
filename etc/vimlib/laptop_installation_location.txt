@@ -1,0 +1,17 @@
+/Applications/MacPorts/MacVim.app/Contents/Resources/vim/runtime/
+autoload/
+colors/
+compiler/
+doc/
+ftplugin/
+icons/
+indent/
+keymap/
+lang/
+macros/
+plugin/
+print/
+spell/
+syntax/
+tools/
+tutor/

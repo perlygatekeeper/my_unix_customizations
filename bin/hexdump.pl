@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 #
 # @(#) $Id: bin2hex.pl,v 1.9 1999/03/02 13:17:53 jaalto Exp $
 # @(#) Perl -- FILE, Convert binary file to hex dump

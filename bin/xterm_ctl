@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 #
 # A perl script to manipulate/explain terminals
 # one of my first perl scripts, written under perl 4
@@ -32,7 +32,8 @@ exit 0;
 #   ***   Parse Command Line Argument(s)   ***
 sub parse_args {
 
-  local(%abbrev)=();
+# local(%abbrev)=();
+  my $abbrev = {};
 
   @args=('?','help');
   @help=('print this message','print this message');
@@ -79,43 +80,52 @@ sub parse_args {
 
   grep(s/^([^-])/-\1/,@args);
 
-  require("abbrev.pl");
-  &abbrev(*abbrev, @args);
+# use lib("/Users/Steve/etc/perllib");
+# require("abbrev2.pl");
+  use Text::Abbrev;
+  abbrev($abbrev, @args);
 
 
   while ( @ARGV >= 1 ) {
+<<<<<<< HEAD
     if      ( ($abbrev{$ARGV[0]} eq '-help' )
            || ($abbrev{$ARGV[0]} eq '-?' ) ) {
       help($usage);
       print "$abbrev{$ARGV[0]} $abbrev{$ARGV[0]}'\n" if ($verbose);
+=======
+    if      ( ($abbrev->{$ARGV[0]} eq '-help' )
+           || ($abbrev->{$ARGV[0]} eq '-?' ) ) {
+      help($usage);
+      print "$abbrev->{$ARGV[0]} $abbrev->{$ARGV[0]}'\n" if ($verbose);
+>>>>>>> 2f69399162323b3e37c29db1926d838422987e1b
       shift(@ARGV); next;
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-icon' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-icon' ) {
       print "changing icon lable to '$ARGV[1]'\n" if ($verbose);
       print "${ESC}]1;$ARGV[1]${BEL}";
       shift(@ARGV); shift(@ARGV); next;
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-noclear' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-noclear' ) {
       print "will not clear first\n" if ($verbose);
       $noclear=1;
       shift(@ARGV); next;
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-title' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-title' ) {
       print "changing both icon & window lables to '$ARGV[1]'\n" if ($verbose);
       print "${ESC}]0;$ARGV[1]${BEL}";
       shift(@ARGV); shift(@ARGV); next;
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-name' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-name' ) {
       print "changing window lable to '$ARGV[1]'\n" if ($verbose);
       print "${ESC}]2;$ARGV[1]${BEL}";
       shift(@ARGV); shift(@ARGV); next;
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-font' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-font' ) {
       print "changing font to '$ARGV[1]'\n" if ($verbose);
       print "${ESC}]50;$ARGV[1]${BEL}";
       shift(@ARGV); shift(@ARGV); next;
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-reset' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-reset' ) {
       print "Doing a full reset:\n" if ($verbose);
       sleep 1;
       print "${ESC}c";
@@ -124,17 +134,17 @@ sub parse_args {
 #     print "[r[m[2J[H[?7h[?1;3;4;6l[4l<";
       shift(@ARGV); next;
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-size' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-size' ) {
       print "Changing screen size (currently unimplimented):\n" if ($verbose);
 #     print "${ESC}#8";
       shift(@ARGV); next;
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-es' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-es' ) {
       print "Doing a screen alignment test:\n" if ($verbose);
       print "${ESC}#8";
       shift(@ARGV); next;
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-test' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-test' ) {
       print "Please Send Device Attributes (DA)\n" if ($verbose);
 #     print "${ESC}[?1;2c";
       print "${ESC}[c\n";
@@ -145,31 +155,31 @@ sub parse_args {
       print "\n";
       shift(@ARGV); next;
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-tek' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-tek' ) {
       print "Switching to Tektronics mode.\n" if ($verbose);
       print "${ESC}[?38h";
       $ENV{'TERM'}='tek';
       print 'setenv TERM tek\n';
       shift(@ARGV); next;
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-teksave' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-teksave' ) {
       print "Saving Tektronics screen to COPYyy-mm-dd.hh:mm:ss.\n" if ($verbose);
       print "${ESC}${ETB}";
       shift(@ARGV); next;
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-vt100' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-vt100' ) {
       print "Switching to vt100 mode.\n" if ($verbose);
       print "${ESC}$control{'c'}";
       print 'setenv TERM xterm\n';
       shift(@ARGV); next;
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-real' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-real' ) {
       print "Entering normal operational mode " if ($verbose);
       print "(ie. actual escape sequences will be used)\n";
       &ascii; $debug="";
       shift(@ARGV); next;
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-debug' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-debug' ) {
       print "Entering debug mode (ie. escape is '\\E' etc.)\n";
       &ascii_visible_code;
 #     &ascii_visible_control;
@@ -177,68 +187,68 @@ sub parse_args {
       $debug="\n";
       shift(@ARGV); next;
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-quiet' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-quiet' ) {
       $verbose=0;
       shift(@ARGV); next;
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-verbose' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-verbose' ) {
       $verbose++;
       print "verbosity is now at $verbose\n";
       shift(@ARGV); next;
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-cls' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-cls' ) {
       print "Clearing Screen.\n" if ($verbose);
       print "${ESC}[H${ESC}[2J";
       shift(@ARGV); next;
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-tekcls' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-tekcls' ) {
       print "Clearing Screen.\n" if ($verbose);
       print "${ESC}$linefeed";
       print "$formfeed";
       shift(@ARGV); next;
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-80' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-80' ) {
       print "switching to 80 columns\n" if ($verbose);
       print "${ESC}[?40h${ESC}[?3l";
       shift(@ARGV); next;
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-132' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-132' ) {
       print "switching to 132 columns\n" if ($verbose);
       print "${ESC}[?40h${ESC}[?3h";
       shift(@ARGV); next;
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-jump' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-jump' ) {
       print "switching to jump (fast) scrolling\n" if ($verbose);
       print "${ESC}[?4l";
       shift(@ARGV); next;
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-smooth' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-smooth' ) {
       print "switching to smooth (slow) scrolling\n" if ($verbose);
       print "${ESC}[?4h";
       shift(@ARGV); next;
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-normal_buffer' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-normal_buffer' ) {
       print "Using normal screen buffer\n" if ($verbose);
       print "${ESC}[?47l";
       shift(@ARGV); next;
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-alternate_buffer' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-alternate_buffer' ) {
       print "Using alternate screen buffer\n" if ($verbose);
       print "${ESC}[?47h";
       shift(@ARGV); next;
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-reverse_video' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-reverse_video' ) {
       print "Using Reverse Video\n" if ($verbose);
       print "${ESC}[?5h";
       shift(@ARGV); next;
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-normal_video' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-normal_video' ) {
       print "Using Normal Video\n" if ($verbose);
       print "${ESC}[?5l";
       shift(@ARGV); next;
 
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-star' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-star' ) {
       local($x,$y,$star)=(0,0,'*');
       shift(@ARGV);
       if ( ($ARGV[0] =~ /\d+/ ) && ( $ARGV[0] >= 0 ) && ( $ARGV[0] <= 131 ) ) {
@@ -256,7 +266,7 @@ sub parse_args {
       print "${ESC}7${ESC}[${x};${y}H${star}${ESC}8";
       next;
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-pops' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-pops' ) {
       local($x,$y)=(0,0);
       local($pops_out);
       local(@pop)=(".","o","0","*"," ");
@@ -285,7 +295,7 @@ sub parse_args {
       }
       next;
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-stars' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-stars' ) {
       local($x,$y,$star,$space)=(0,0,'*',' ');
       local($stars_out);
       shift(@ARGV);
@@ -316,7 +326,7 @@ sub parse_args {
       }
       next;
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-circle' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-circle' ) {
       local($x,$y)=(0,0);
       local($things)='-=+o0O*%#%#@#@';
       local($center_x,$center_y,$radius2,$ratio) = (15,35,100,0.4);
@@ -351,7 +361,7 @@ sub parse_args {
       }
       next;
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-sparkle' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-sparkle' ) {
       local($x,$y)=(0,0);
 #     local($things)=' .,;:`' . "\'";
 #     local($things)='|() ';
@@ -388,7 +398,7 @@ srand(time|$$);
       }
       next;
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-flash' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-flash' ) {
 #     print "${ESC}[H${ESC}[2J" if (! $noclear); # clear home
       local($on_off,$loops,$delay)=(0,0,0);
       shift(@ARGV);
@@ -427,7 +437,7 @@ srand(time|$$);
       }
       next;
 
-    } elsif ( $abbrev{$ARGV[0]} eq '-scroll' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-scroll' ) {
       local($top,$bottom)=(0,24);
       shift(@ARGV);
       if ( ($ARGV[0] =~ /\d+/ ) && ( $ARGV[0] >= 0 ) && ( $ARGV[0] <= 24 ) ) {
@@ -442,7 +452,7 @@ srand(time|$$);
       print "${ESC}[${top};${bottom}r";
       next;
 
-    } elsif ( $abbrev{$ARGV[0]} !~ /^-/ ) {
+    } elsif ( $abbrev->{$ARGV[0]} !~ /^-/ ) {
       warn("$name: Unknown option '$ARGV[0]'; assuming title...\n");
       unshift(@ARGV,'-title'); next;
     } else {

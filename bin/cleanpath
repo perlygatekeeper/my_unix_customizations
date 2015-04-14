@@ -1,0 +1,14 @@
+#!/usr/bin/env perl
+# $verion=1.0;
+use warnings;
+use strict;
+
+my ( %path_components_output, @path_components_found );
+
+map push(@path_components_found,$_), ( grep( /./, split(/:+/, $ENV{PATH} ) ) );
+
+print join(':',  grep ( $_, map { ($path_components_output{$_}++) ? undef : $_ } ( @path_components_found ) ) ) . "\n";
+
+exit 0;
+
+__END__
