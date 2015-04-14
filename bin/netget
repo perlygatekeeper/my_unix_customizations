@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # A perl script to to record ftp site and date to end of .where file.
 $name = $0;
 $name =~ s'.*/''; # remove path--like basename
@@ -187,7 +187,6 @@ while ( $FILE=shift(@FILES) ) {
   $fileno++;
 }
 
-# local(@results)=<COMMAND>;
   close(COMMAND);
   if (! $debug) {
     unlink("/tmp/netget.$$");
@@ -200,7 +199,7 @@ exit 0;
 #   ***   Parse Command Line Argument(s)   ***
 sub parse_args {
 
-  local(%abbrev)=();
+  my $abbrev = {};
 
 
   @args=('?','help');
@@ -215,20 +214,19 @@ sub parse_args {
              "debug");
   grep(s/^([^-])/-\1/,@args);
 
-  push(@INC,'/usr/local/lib/perl',"$HOME/perllib");
-  require("abbrev.pl");
-  &abbrev(*abbrev, @args);
+  use Text::Abbrev;
+  abbrev($abbrev, @args);
 
   if (!@ARGV) { push(@ARGV,'-pull'); }
   while ( @ARGV >= 1 ) {
-    if      ( ($abbrev{$ARGV[0]} eq '-help' )
-           || ($abbrev{$ARGV[0]} eq '-?' ) ) {
+    if      ( ($abbrev->{$ARGV[0]} eq '-help' )
+           || ($abbrev->{$ARGV[0]} eq '-?' ) ) {
       do help($usage);
       shift(@ARGV);
-    } elsif   ( $abbrev{$ARGV[0]} eq '-verbose' ) {
+    } elsif   ( $abbrev->{$ARGV[0]} eq '-verbose' ) {
       $verbose=1;
       shift(@ARGV);
-    } elsif ( $abbrev{$ARGV[0]} eq '-pull' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-pull' ) {
       open(INFILE,"<$dot_where")
         || die("$name: Cannot read from '$dot_where': $!\n");
       while (<INFILE>) {
@@ -250,13 +248,13 @@ sub parse_args {
       }
       close(INFILE);
       shift(@ARGV);
-    } elsif ( $abbrev{$ARGV[0]} eq '-host' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-host' ) {
       $host=$ARGV[1];
       shift(@ARGV); shift(@ARGV);
-    } elsif ( $abbrev{$ARGV[0]} eq '-directory' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-directory' ) {
       $directory=$ARGV[1];
       shift(@ARGV); shift(@ARGV);
-    } elsif ( $abbrev{$ARGV[0]} eq '-user' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-user' ) {
       if ( $ARGV[1] && ( $ARGV[1] !~ /^-/ ) ) {
 	$user=$ARGV[1];
         shift(@ARGV); shift(@ARGV);
@@ -264,10 +262,10 @@ sub parse_args {
 	$user=$USER;
         shift(@ARGV);
       }
-    } elsif ( $abbrev{$ARGV[0]} eq '-debug' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-debug' ) {
 	$debug=1;
         shift(@ARGV);
-    } elsif ( $abbrev{$ARGV[0]} eq '-passwd' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-passwd' ) {
       $passwd=$ARGV[1];
       shift(@ARGV); shift(@ARGV);
     } else {

@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 #
 # A perl script to report who is on a group of workstations.
 #
@@ -129,7 +129,7 @@ sub ping_first {
 
 #   ---   ---   ---
 sub parse_args {
-  local(%abbrev)=();
+  my $abbrev = {};
   @args=('?','help');
   @help=('print this message','print this message');
   push(@args,'who','w','finger','do','command',
@@ -142,41 +142,41 @@ sub parse_args {
              'send the command to machines',
              'ignore the specified machines');
   grep(s/^([^-])/-\1/,@args);
-  push(@INC,'/usr/local/lib/perl');
-  require("abbrev.pl");
-  &abbrev(*abbrev, @args);
+
+  use Text::Abbrev;
+  abbrev($abbrev, @args);
 
   while ( @ARGV >= 1 ) {
-    if      ( ($abbrev{$ARGV[0]} eq '-help' )
-           || ($abbrev{$ARGV[0]} eq '-?' ) ) {
+    if      ( ($abbrev->{$ARGV[0]} eq '-help' )
+           || ($abbrev->{$ARGV[0]} eq '-?' ) ) {
       do help($usage);
       shift(@ARGV);
-    } elsif ( $abbrev{$ARGV[0]} eq '-who' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-who' ) {
       $command=$who;
       $header= 'Machine:	User       tty          When';
       shift(@ARGV);
-    } elsif ( $abbrev{$ARGV[0]} eq '-w' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-w' ) {
       $command="$w -h";
       $header=
       'Machine:	User     tty       login@  idle   JCPU   PCPU  what';
-    } elsif ( $abbrev{$ARGV[0]} eq '-finger' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-finger' ) {
       $command=$finger;
       $header=
       "Machine:  \tLogin       Name\t\tTTY Idle    When    From Where";
-    } elsif ( $abbrev{$ARGV[0]} eq '-command' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-command' ) {
       $command=$ARGV[1];
       shift(@ARGV); shift(@ARGV);
-    } elsif ( ( $abbrev{$ARGV[0]} eq '-tardis' )
-           || ( $abbrev{$ARGV[0]} eq '-box' ) ) {
+    } elsif ( ( $abbrev->{$ARGV[0]} eq '-tardis' )
+           || ( $abbrev->{$ARGV[0]} eq '-box' ) ) {
       $tardis=1;
       shift(@ARGV);
-    } elsif ( $abbrev{$ARGV[0]} eq '-machines' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-machines' ) {
       shift(@ARGV);
       while ($ARGV[0] !~ /^-/) {
         push(@MACHINES,$ARGV[0]);
         shift(@ARGV);
       }
-    } elsif ( $abbrev{$ARGV[0]} eq '-ignore' ) {
+    } elsif ( $abbrev->{$ARGV[0]} eq '-ignore' ) {
       $was_a_machine=1;
       shift(@ARGV);
       while ($was_a_machine) {

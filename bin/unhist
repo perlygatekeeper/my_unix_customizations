@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # A perl script to remove leading ordinal numbers (and times for tcsh)
 # from output of the history commands for tcsh or bash
 

@@ -1,4 +1,5 @@
 --type-set=images=.png,.gif,.jpg,.jpeg,.ico,.bmp,.PNG,.GIF,.JPG,.JPEG,.ICO,.BMP
+--ignore-dir=.cpan
 --color
 --group
 --pager=less -r

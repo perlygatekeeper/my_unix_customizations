@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # inplaced on 021403 with these lines for demonstration/testing
 #@numbers=(1..64);
 #@bin_numbers=&binary(@numbers);

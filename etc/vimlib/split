@@ -1,0 +1,25 @@
+CTRL-w s = Split screen Horizontally
+CTRL-w v = Split screen Vertically
+
+CTRL-w h = Switch to window to the LEFT
+CTRL-w j = Switch to window ABOVE
+CTRL-w k = Switch to window BELOW
+CTRL-w l = Switch to window to the RIGHT
+
+CTRL-w T = Move current window to a new tab
+CTRL-w r = Rotates the windows from left to right - only if the windows are split vertically
+CTRL-w R = Rotates the windows from right to left - only if the windows are split vertically
+CTRL-w H = Move current window the far left and use the full height of the screen
+CTRL-w J = Move current window the far bottom and use the full width of the screen
+CTRL-w K = Move current window the far top and full width of the screen
+CTRL-w L = Move current window the far right and full height of the screen
+
+CTRL-w = = Resize the windows equally
+CTRL-w > = Incrementally increase the window to the right
+           Takes a parameter, e.g. CTRL-w 20 >
+CTRL-w < = Incrementally increase the window to the left
+           Takes a parameter, e.g. CTRL-w 20 <
+CTRL-w - = Incrementally decrease the window's height
+           Takes a parameter, e.g. CTRL-w 10 -
+CTRL-w + = Incrementally increase the window's height
+           Takes a parameter, e.g. CTRL-w 10 +

@@ -1,6 +1,0 @@
-	sub help {
-		select(STDOUT); $|=1; $\=''; 
-		print "@_[0]\n";
-		print "${1:message}.\n";
-		exit 1;
-	}

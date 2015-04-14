@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 
 # getenvs.pl - by CommPort5 [@LucidX.com]
 # this is a hacked up and nice version of v9's getenv program

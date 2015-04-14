@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # script to glue blocks of lines horizontially.
 # number of lines may be specified or the number coming through
 # is used thusly:
@@ -10,73 +10,39 @@
 #
 #-----------------------------------------------------------------------------
 
-
 #   ***   Define Default Strings, Values & Flags   ***
-$name = $0;
-$usage = "usage:\n$name [-d delimitor_string ] [-g/-n number_lines_to_glue ]";
-$usage .= "\n\t[-c columns ] [-b/-w blank/white lines break column ]";
+my $name = $0;
+my $usage  = "usage:\n$name [-d delimitor_string ] [-g/-n number_lines_to_glue ]";
+   $usage .= "\n\t[-c columns ] [-b/-w blank/white lines break column ]";
 
-$newline="\n";
-$tab="\t";
-$backspace="\010";
-$formfeed="\014";
+my $newline   = "\n";
+my $tab       = "\t";
+my $backspace = "\010";
+my $formfeed  = "\014";
 
-$delimitstring=$tab;
-#$delimitstring="-";
-$numlines=0;
-$column=2;
-$line_break=0;
+my $delimitstring = $tab;
+#  $delimitstring = "-";
+my $numlines = 0;
+my $column   = 2;
+my $line_break = 0;
+
+&parse_args;
 
 #-----------------------------------------------------------------------------
 
-#   ***   Parse Command Line Argument(s)   ***
-while ( @ARGV >= 1 ) {
-# print "'$ARGV[0]'\n";
-  if    ( $ARGV[0] eq '-d' ) {
-    $delimitstring = $ARGV[1];
-    $delimitstring =~ s/([^\\]?)\\n/\1$newline/g;
-    $delimitstring =~ s/([^\\]?)\\t/\1$tab/g;
-    $delimitstring =~ s/([^\\]?)\\b/\1$backspace/g;
-    $delimitstring =~ s/([^\\]?)\\f/\1$formfeed/g;
-    $delimitstring =~ /([^\\]?)\\([0-7][0-7][0-7])/;
-    $octal=&ascii($2);
-    $delimitstring =~ s/(\\[0-7][0-7][0-7])/$octal/e;
-    shift; shift;
-  } elsif ( ( $ARGV[0] eq '-g' ) || ( $ARGV[0] eq '-n' ) ) {
-    $numlines = "$ARGV[1]";
-    shift; shift;
-  } elsif ( $ARGV[0] eq '-c' ) {
-    $column = "$ARGV[1]";
-    shift; shift;
-  } elsif ( $ARGV[0] eq '-b' ) {
-    $line_break=1;
-#   $line_break_flag = 1;
-    $break_reg="^\$";
-#print "line_break '$line_break' : line_break_reg '$line_break_reg'\n";
-    shift;
-  } elsif ( $ARGV[0] eq '-w' ) {
-    $line_break = 1;
-    $break_reg="^\s*\$";
-    shift;
-  } elsif ( $ARGV[0] eq '-?' ) {
-    do help($usage);
-  } else {
-    last;
-  }
-}  # end while
-
-
 if ( $line_break ) {
-  $line=0; $column=0;
-  $new_column_flag=0;
-  $column_start[$column]=0;
+  my $line = 0;
+  my $column = 0;
+  my $new_column_flag = 0;
+  my @line;
+  my @column_start;
+  $column_start[$column] = 0;
 
   # skip first blank/white lines
-
   while (<>)
-  { chop;
-    if ( $_ !~ /$break_reg/ )
-    { $line[$line]=$_; 
+  { chomp;
+    if ( $_ !~ /$break_reg/ ) {
+      $line[$line]=$_; 
       $line_length[$line]=length($_);
       $line++;
       last;
@@ -92,14 +58,13 @@ if ( $line_break ) {
     $line++;
     $break_line=0;
 
-    if ($new_column_flag) {
+    if ( $new_column_flag ) {
     # we have found the end of a column on the last pass through.
     # clear the new column flag.
       $new_column_flag=0;
     # set the length and width of last column
-      $column_length[$column]=$line-$column_start[$column];
-      $column_width[$column]=
-	&max(@line_length[$column_start[$column]..($line-1)]);
+      $column_length[$column] = $line - $column_start[$column];
+      $column_width[$column]  = &max(@line_length[$column_start[$column]..($line-1)]);
     # set for new column and set the start of this new column
       $column++;
       $column_start[$column]=$line-1;
@@ -137,7 +102,7 @@ if ( $line_break ) {
 
   $numlines=&max(@column_length);
 
-# Write out lines! <<<<<<<<<<<<<<<<<<<
+# Write out lines! 
 
   $numcolumns=$column;
   for   ( $line=0;   $line  <$numlines;   $line++)   {
@@ -156,7 +121,7 @@ if ( $line_break ) {
   }
 
 } else {
-# Load lines (and count if necessary). <<<<<<<<<<<<<<
+# Load lines (and count if necessary).
   $i=0;
   while (<>)
   { chop;
@@ -165,9 +130,9 @@ if ( $line_break ) {
   }
   $numlines=$numlines?$numlines:$i;
 
-  # Write out lines! <<<<<<<<<<<<<<<<<<<
+  # Write out lines!
 
-  # Lines 1 through N-1 <<<<<<<<<<<<<<<<<<<
+  # Lines 1 through N-1
 
   $offset=int($numlines/$column+0.99999);
   for ( $i=1; $i<=$offset-1; $i++)
@@ -177,9 +142,9 @@ if ( $line_break ) {
     print "$newline";
   }
 
-  # The last line.   <<<<<<<<<<<<<<<<<
+  # The last line.
 
-  $trailer=$numlines%$column?$numlines%$column:$column;
+  $trailer = ( $numlines%$column ) ? ($numlines%$column) : $column;
     for ( $j=1; $j<=($trailer-1); $j++)
     { print "$line[$offset*$j]$delimitstring"; }
     print "$line[$offset*$trailer]$newline";
@@ -190,32 +155,70 @@ if ( $line_break ) {
 exit 0;
  
 ####   SUBROUTINES   ####
+#   ***   Parse Command Line Argument(s)   ***
+sub parse_args {
+while ( @ARGV >= 1 ) {
+# print "'$ARGV[0]'\n";
+  if    ( $ARGV[0] eq '-d' ) {
+    $delimitstring = $ARGV[1];
+    $delimitstring =~ s/([^\\]?)\\n/\1$newline/g;
+    $delimitstring =~ s/([^\\]?)\\t/\1$tab/g;
+    $delimitstring =~ s/([^\\]?)\\b/\1$backspace/g;
+    $delimitstring =~ s/([^\\]?)\\f/\1$formfeed/g;
+    $delimitstring =~ /([^\\]?)\\([0-7][0-7][0-7])/;
+    $octal=&ascii($2);
+    $delimitstring =~ s/(\\[0-7][0-7][0-7])/$octal/e;
+    shift; shift;
+  } elsif ( ( $ARGV[0] eq '-g' ) || ( $ARGV[0] eq '-n' ) ) {
+    $numlines = "$ARGV[1]";
+    shift; shift;
+  } elsif ( $ARGV[0] eq '-c' ) {
+    $column = "$ARGV[1]";
+    shift; shift;
+  } elsif ( $ARGV[0] eq '-b' ) {
+    $line_break=1;
+    $break_reg="^\$";
+#print "line_break '$line_break' : line_break_reg '$line_break_reg'\n";
+    shift;
+  } elsif ( $ARGV[0] eq '-w' ) {
+    $line_break = 1;
+    $break_reg="^\s*\$";
+    shift;
+  } elsif ( $ARGV[0] eq '-?' ) {
+    do help($usage);
+  } else {
+    last;
+  }
+}  # end while
+
 sub help {
- print "@_[0]\n";
- print "Valid delimitor string expressions are:\n";
- print "\\t for tabs,      \\n for newlines,\n";
- print "\\f for formfeeds, \\b for backspaces\n";
- print "and \### for octal ascii codes\n";
- exit 1;
+  print "@_[0]\n";
+  print "Valid delimitor string expressions are:\n";
+  print "\\t for tabs,      \\n for newlines,\n";
+  print "\\f for formfeeds, \\b for backspaces\n";
+  print "and \### for octal ascii codes\n";
+  exit 1;
 }
+
 sub ascii {
 # returns character whos
 # ascii value equals argument 0 as
 #    octal or hex number if only one arg
 # OR    decimal   number if argument 2 = "d" or "D"
-    if ($_[1]=="d") { return pack('C1',$_[0]); }
- elsif ($_[1]=="D") { return pack('C1',$_[0]); }
- return pack('C1',oct($_[0]));
+     if ($_[1]=="d") { return pack('C1',$_[0]); }
+  elsif ($_[1]=="D") { return pack('C1',$_[0]); }
+  return pack('C1',oct($_[0]));
 }
+
 sub max {
  local($max,$entry);
 # returns max of list
 # print "from max: of $#_ entries: \n";
- $max=shift;
- foreach $entry (@_) {
+  $max=shift;
+  foreach $entry (@_) {
 #  print "'$entry' ";
-   $max=($entry>$max)?$entry:$max if ($entry ne '');
- }
+    $max=($entry>$max)?$entry:$max if ($entry ne '');
+  }
 # print "$max is the largest.\n";
- return $max;
+  return $max;
 }

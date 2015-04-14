@@ -1,0 +1,97 @@
+#!/usr/bin/env perl
+# A perl script to copy all files FILE1's to FILE2's
+$name = $0; $name =~ s'.*/''; # remove path--like basename
+$usage = "usage:\n$name [-global] [-insensitive] [-force] (do not ask before overwriting) FILEBASE1 FILEBASE2";
+
+if ($ARGV[0]=~/-v(er(bose)?)?/) {
+  $verbose++;
+  shift;
+}
+if ($ARGV[0]=~/-i(nsensitive)?/) {
+  $case_insensitive='i';
+  shift;
+}
+if ($ARGV[0]=~/-g(lobal)?/) {
+  $global='g';
+  shift;
+}
+if ($ARGV[0]=~/-f(orce)?/) {
+  $force++;
+  shift;
+}
+if ($ARGV[0] =~ /^--?h(elp)?/ or scalar(@ARGV) != 2) {
+  print "$usage\n";
+  if (@ARGV) { print join(", ", @ARGV) . "\n"; }
+  exit 0;
+} else {
+  $search=$ARGV[0];
+  $replace=$ARGV[1];
+}
+
+use File::Copy;
+
+$dir=".";
+opendir(DIR,$dir) || die "Can't open dir $dir: $!\n";
+@names = readdir(DIR);
+closedir(DIR);
+@names = grep(/^[^.]/,@names); # for . and .. entries and other dot files
+print "OK, found " . scalar(@names) . " files to rename using '$search' and '$replace'.\n";
+
+if (not @names) {
+  print "Nothing to do.\n";
+  print "$usage\n"
+} else {
+  foreach $name (@names) {
+    if ( $global or $case_insensitive ) {
+      eval "(\$new_name = \$name) =~ s/$search/$replace/$global$case_insensitive";
+    } else {
+      ($new_name = $name) =~ s/$search/$replace/e;
+    }
+	if ( $new_name eq $name ) {
+	  print "File '$name' unaffected by ($search:$replace) transformation, ignoring...\n" if ($verbose);
+	  next;
+	}
+    if ( not $force and -f $new_name ) {
+      if ( &response("File '$new_name' exits, overright with '$name'? [y/N/q]", "^y", "q(uit)?|e(xit)?") ) {
+	    move($name, $new_name);
+        printf "Moved %20s -> %20s\n", $name, $new_name;
+      } else {
+        printf "Will NOT move %20s -> %20s\n", $name, $new_name;
+		next;
+	  }
+    } elsif ( not $force ) {
+      if ( &response("Shall I rename '$name' to '$new_name' [y/N/q] ", "^y", "q(uit)?|e(xit)?") ) {
+	    move($name, $new_name);
+        printf "Moved %20s -> %20s\n", $name, $new_name;
+	  } else {
+        printf "Will NOT rename %20s as %20s\n", $name, $new_name;
+		next;
+	  }
+    } else {
+	  move($name, $new_name);
+      printf "Moved %20s -> %20s\n", $name, $new_name if ($verbose);
+    }
+  }
+}
+
+exit 0;
+
+sub response {
+  local($string,$regexp,$exit_regexp)=(@_);
+  if ($string) {
+    print $string;
+  } else {
+    print "yes|no";
+  }
+  $response=<STDIN>;
+  if ($regexp) {
+    return ($response=~/$regexp/i);
+  } elsif ($exit_regexp and $response=~/$exit_regexp/i) {
+    print "Quitting $name in response to user input '$response'\n";
+    exit;
+  } else {
+    return ($response=~/^y/i);
+  }
+}
+
+__END__

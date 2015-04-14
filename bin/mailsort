@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 #
 # A perl script to sort mail
 # Version 2.0    Wed Dec  8 12:03:06 EDT 1993

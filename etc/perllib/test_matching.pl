@@ -1,4 +1,4 @@
-#!/usr/local/bin/perl
+#!/usr/bin/env perl
 # A perl script to test extract_matching subroutine
 
 $name = $0;

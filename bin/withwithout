@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # An extention of the 'not' command
 # allows regexp's that must match, and regexp's
 # that must'nt.  Default is that they must, those

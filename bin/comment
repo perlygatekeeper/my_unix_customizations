@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 #
 # A perl script that will filter lines adding or removing comment marks
 # uncompleted as of Tue Oct 02, 2012
