@@ -4,6 +4,7 @@
 # Only execute this block if this an interactive shell (behave like .login)
 if ( $?prompt ) then
 
+
 # SHELL-RELATED ALIASES
 alias a		alias
 a u			unalias
