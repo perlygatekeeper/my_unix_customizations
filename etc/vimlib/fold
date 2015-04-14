@@ -1,0 +1,6 @@
+zf{motion} or
+{Visual}zf   Make a fold over {motion} or {Visual}
+zF           Fold at cursor.
+:{range}fold Fold {range} lines.
+zA		     When on a closed fold: open it recursively.
+zn           Fold none: reset 'foldenable'. All folds will be open.
