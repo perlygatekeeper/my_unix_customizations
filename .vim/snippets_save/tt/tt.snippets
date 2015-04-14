@@ -1,0 +1,41 @@
+snippet if
+	[% IF ${1:conditional} %]
+		${2:html_contents}
+	[% END %]
+snippet ife
+	[% IF ${1:conditional} %]
+		${2:html_contents}
+	[% ELSE %]
+		${3:alt_html_contents}
+	[% END %]
+snippet ifee
+	[% IF ${1:conditional}  %]
+		${2:html_contents}
+	[% ELIF $${3:2nd_conditional} %]
+		${4:alt_html_contents}
+	[% ELSE %]
+		${5:last_alt_html_contents}
+	[% END %]
+snippet proc
+	[% PROCESS ${1:filename} %]	
+snippet inc
+	[% INCLUDE ${1:filename} %]	
+snippet forelist
+	[% FOREACH ${1:var} = [ '${2:value1}' '${3:value2}' '${4:value3}' ] %]
+		* Item: [% ${1:var} %]
+	[% END %]
+snippet fore
+	[% FOREACH ${1:var} IN $1:s %]
+		[% NEXT IF $1.isguest %]
+		Name: [% $1.name %]    Email: [% $1.email %]
+		[% LAST IF ${2:condition}%]
+	[% END %]
+snippet bl=
+	[% ${1:blockname} = BLOCK %]
+		${2:Contents of Block}
+	[% END %]
+snippet bl
+	[% BLOCK footer %]
+		Copyright 2000 [% me %]
+		[% INCLUDE company/logo %]
+	[% END %]

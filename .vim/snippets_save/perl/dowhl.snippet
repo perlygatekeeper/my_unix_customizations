@@ -1,0 +1,7 @@
+	# do { .. } while (); allowing last loop control
+	LOOP: {
+		do {
+			last if  ${1:last_condition};
+			${2:# body...}
+		} while ${3:while_condition};
+	}

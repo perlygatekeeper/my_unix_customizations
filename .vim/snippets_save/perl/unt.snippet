@@ -1,0 +1,5 @@
+	until (${1}) {
+		${2:# body...}
+		next if (${3:next condition});
+		last if (${4:last condition});
+	}

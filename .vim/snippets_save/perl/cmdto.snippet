@@ -1,0 +1,5 @@
+	$command="| ${1:UNIX_COMMAND}";
+	open(${2:COMMAND},"$command") ||
+	  die("$name: Cannot ${3:COMMAND_DISCRIPTION} with '$command': $!.");
+	my @results = <${2:COMMAND}>;
+	close(${2:COMMAND});

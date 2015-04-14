@@ -1,0 +1,7 @@
+	open(${1:FH},"<$${2:filename}")
+	  || die("$name: Can not read from '$$2': $!\n");
+	while (<$1>) {
+		next if (/^\s*$|^\s*#/); # skip white, blank and commented lines.
+		${3:# commands};
+	}
+	close($1);
