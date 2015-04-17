@@ -1,2 +1,2 @@
 #!/bin/sh
-/usr/bin/make -f ~steve/etc/makelib/Makefile
+/usr/bin/make -f ~parks17/etc/makelib/Makefile

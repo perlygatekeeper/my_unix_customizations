@@ -15,7 +15,8 @@ a pu		pushd
 a rot		pushd +1
 
 # simple, generic utility aliases
-a sv		'vi +"\!{:1}:" \!:2*'
+a vi		'vim'
+a sv		'vim +"\!{:1}:" \!:2*'
 a lsd		'ls -F'
 a ll		'ls -l'
 a lr		'ls -ltr'
@@ -64,15 +65,17 @@ a hafh		ssh -p 8022 parker@71.79.236.111
 a ifc		'ifconfig -a'
 a str		'strings - \!* | less'
 
-a vrc		'vi ~/.tcshrc'
-a vvrc		'vi ~/.vimrc'
+a vrc		'vim ~/.tcshrc'
+a vvrc		'vim ~/.vimrc'
 a src		'source ~/.tcshrc'
 
 setenv LSCOLORS "Gxfxcxdxbxegedabagacad"
 setenv PAGER	"/usr/bin/less -r "
+setenv TERM		"xtermc"
 
 setenv EDITOR	/usr/bin/vim
 setenv VISUAL	/usr/bin/vim
+a vi		'vim'
 
 set rmstar on
 if ( $uid == 0 ) then
