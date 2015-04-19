@@ -21,6 +21,7 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'bling/vim-airline'
 Plugin 'Spaceghost/vim-matchit'
 Plugin 'michaeljsmith/vim-indent-object'
+Plugin 'vim-scripts/Align'
 " Plugin 'tpope/vim-fugitive'
 " plugin from http://vim-scripts.org/vim/scripts.html
 " Plugin 'L9'
