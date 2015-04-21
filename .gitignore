@@ -5,6 +5,7 @@
 [0-9]*
 [a-z]*
 .??*
+.gitconfig
 Projects/*
 .dzil/config.ini
 .vim/bundle
