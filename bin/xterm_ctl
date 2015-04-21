@@ -87,17 +87,10 @@ sub parse_args {
 
 
   while ( @ARGV >= 1 ) {
-<<<<<<< HEAD
-    if      ( ($abbrev{$ARGV[0]} eq '-help' )
-           || ($abbrev{$ARGV[0]} eq '-?' ) ) {
-      help($usage);
-      print "$abbrev{$ARGV[0]} $abbrev{$ARGV[0]}'\n" if ($verbose);
-=======
     if      ( ($abbrev->{$ARGV[0]} eq '-help' )
            || ($abbrev->{$ARGV[0]} eq '-?' ) ) {
       help($usage);
       print "$abbrev->{$ARGV[0]} $abbrev->{$ARGV[0]}'\n" if ($verbose);
->>>>>>> 2f69399162323b3e37c29db1926d838422987e1b
       shift(@ARGV); next;
 
     } elsif ( $abbrev->{$ARGV[0]} eq '-icon' ) {
