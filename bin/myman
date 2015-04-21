@@ -12,7 +12,7 @@ $EQN='/usr/bin/neqn';
 # $TBL=    (chop ($junk=`which tbl`),$junk);
 $TBL='/usr/bin/tbl';
 # $COL=    (chop ($junk=`which col`),$junk);
-$COL='/usr/bin/col';
+$COL='/usr/bin/col -p';
 # $REFER=  (chop ($junk=`which refer`),$junk);
 $REFER='/usr/bin/refer';
 #$VGRIND= (chop ($junk=`which vgrind`),$junk);
@@ -83,9 +83,10 @@ if ( $macros =~ /^'\\" ([terv]+)/ ) {
 $command = ($command) ?
            $command . " | $NROFF -man $manfile" :
            "$NROFF -man $manfile";
-$command .= " | $COL | $PAGER";
+# $command .= " | $COL | $PAGER";
+$command .= " | $PAGER";
 
-# print "Using command: >$command<\n";
+print "Using command: >$command<\n";
 system("$command");
 
 exit 0;
