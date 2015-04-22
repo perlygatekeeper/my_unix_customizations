@@ -4,3 +4,30 @@ zF           Fold at cursor.
 :{range}fold Fold {range} lines.
 zA		     When on a closed fold: open it recursively.
 zn           Fold none: reset 'foldenable'. All folds will be open.
+
+
+========== Folding ========== 
+
+za		Toggle folding
+zA		Toggle folding recursively
+zc		Close one or count folds under the cursor
+zC		Close all folds under cursor
+zD		Delete folds recursively
+zE		Delete ALL Folds
+zf		motion - Create a fold
+zF		Create a fold for count lines
+zi		Toggle foldenable
+
+zM		Close all folds, set foldlevel=0, set foldenable
+zR		Open all folds and set foldlevel to highest fold level.
+zn		Fold "none": reset foldenable and open all folds
+zN		Fold "normal": set foldenable and restore all folds
+zo		Open one or count folds
+z0		Open all folds under the cursor
+zv      Open all folds to expose the cursor
+
+useful to type 
+zMzv
+
+http://vimcasts.org/e/37
+http://vimcasts.org/e/38
