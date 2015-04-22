@@ -19,6 +19,7 @@ Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-fugitive'
 Plugin 'terryma/vim-multiple-cursors'
+Plugin 'tpope/vim-speeddating'
 Plugin 'scrooloose/nerdtree'
 Plugin 'bling/vim-airline'
 Plugin 'Spaceghost/vim-matchit'
@@ -142,7 +143,7 @@ nnoremap == :colorscheme vibrantink<Cr>
 nnoremap =_ :colorscheme wombat<Cr>
 nnoremap =+ :colorscheme tibet<Cr>
 
-nnoremap q :q!|
+nnoremap qq :q!|
 " nnoremap v ~
 nnoremap =.. :!swc --name comsite5 sync<Cr>
 nnoremap =} !} perl -pe 's///g;'
