@@ -1,0 +1,9 @@
+
+q: - command window
+     cntl-f gets you there if one's already typing a command
+
+q/ - search window
+     cntl-f gets you there if one's already typing a regexp
+
+
+%s//  - no search string uses last search string

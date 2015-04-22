@@ -1,0 +1,34 @@
+gg: cursor to top of file. After using gg (for example, to edit some import
+	statements or add a shebang line), I often use '' (tick-tick) to jump back
+	to the line I was editing at the time (for example, ggofrom foo import
+	bar<esc>''). Also, I often use ggVG (go to top, enter line-visual-mode, go
+	to bottom) to select the entire file. From there, I can pipe it to
+	something (for example, :!sort), format it (gw) or copy it to the
+	clipboard.
+
+gj and gk: cursor to next row, cursor to previous row ("make j and k do the
+		   right thing"). The j and k commands are defined as "move to next
+		   line" and "move to previous line", not "move to next screen row" and
+		   "move to previous screen row". This is an important distinction to
+		   make when long lines are wrapped, and I find "move to next/previous
+		   screen row" is a more reasonable default. Protip: use noremap j gj
+		   and noremap k gk in your vimrc.
+
+
+gt and gT: go tab - move to next/previous tab.
+
+gf: goto file - edit the file under the cursor. For example, if the cursor is
+    over the 'e' in import "../eventDispatercherImpl.as", the equivalent of :e
+    ../eventDispatercherImpl.as will be executed.
+
+gw: go wrap. Wrap the selected text (that is, text selected in visual mode).
+    Try selecting a long line (pressing V), then using gw to wrap it.
+gwap: wrap a paragraph
+
+gq: go format. Format the selected text (that is, text selected in visual mode).
+gqap: wrap a paragraph
+
+idfference between gw and gq is that gw returns cursor when used with movement command
+gq leaves cursor where movement command lands and is therefore able to be used with
+'.' repeat. as with gqj for line-by-line formatting or gq} for paragraph by paragraph
+formatting.
