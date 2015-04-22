@@ -1,5 +1,5 @@
 [user]
-	email = sparker@manta.com
+	email = parks17@nationwide.com
 	name = Steven Parker
 [alias]
     co = checkout
@@ -15,3 +15,7 @@
 [filter "media"]
 	clean = git-media-clean %f
 	smudge = git-media-smudge %f
+[url "https://github"]
+	insteadOf = git://github
+[http]
+	proxy = http://parks17:XXXXXXXX@http-proxy.nwie.net:8080
