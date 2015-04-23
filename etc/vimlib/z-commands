@@ -1,0 +1,6 @@
+
+z. or zz       -  scroll screen such that cursor is at middle of screen
+z+, zt, z<Cr>  -  scroll screen such that cursor is at top    of screen
+z- or zb       -  scroll screen such that cursor is at bottom of screen
+
+see fold for more z commands
