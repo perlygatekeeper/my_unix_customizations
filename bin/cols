@@ -16,8 +16,10 @@ my $ones;
 # print "these commands may also be useful 'tput cols; tput lines'\n";
 
 $cols   = ($ARGV[0] and $ARGV[0] =~ m,^\d+$,) ? $ARGV[0] : '';
-$cols ||= `tput cols`; chomp $cols;
-$cols ||= `stty size`; chomp $cols; $cols =~ s/.* //;
+$cols ||= ( -f '/bin/tput' )     ? `/bin/tput     cols` : ''; chomp $cols;
+$cols ||= ( -f '/usr/bin/tput' ) ? `/usr/bin/tput cols` : ''; chomp $cols;
+$cols ||= ( -f '/bin/stty' )     ? `/bin/stty     size` : ''; chomp $cols; $cols =~ s/.* //;
+$cols ||= ( -f '/usr/bin/stty' ) ? `/usr/bin/stty size` : ''; chomp $cols; $cols =~ s/.* //;
 $cols ||= 200;
 
 $ones = $cols%10;
