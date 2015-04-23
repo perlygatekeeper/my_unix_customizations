@@ -7,20 +7,27 @@ my $usage = "usage:\n$name [-opt1] [-opt2] [-opt3]";
 use strict;
 use warnings;
 
+my $cols;
+my $tens;
+my $ones;
+
 # print "trying command 'stty size'\n";
 # print `stty size`;
 # print "these commands may also be useful 'tput cols; tput lines'\n";
 
-my $cols = `tput cols`;
-chomp $cols;
+$cols   = ($ARGV[0] and $ARGV[0] =~ m,^\d+$,) ? $ARGV[0] : '';
+$cols ||= `tput cols`; chomp $cols;
 $cols ||= `stty size`; chomp $cols; $cols =~ s/.* //;
 $cols ||= 200;
 
-$cols /= 10;
+$ones = $cols%10;
+$tens = $cols/10;
 
-my $tens = ($ARGV[0] and $ARGV[0] =~ m,\d\d?,) ? $ARGV[0] : $cols;
 foreach my $i ( 1 .. $tens ) {
   printf "1234567890";
+}
+foreach my $i ( 1 .. $ones ) {
+  print $i;
 }
 print "\n";
 foreach my $i ( 1 .. $tens ) {
