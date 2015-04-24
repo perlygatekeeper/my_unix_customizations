@@ -57,7 +57,7 @@ if ( $debug ) {
   print "show is has " . scalar(@$show) . " elements\n";
   print Dumper($show);
 }
-if ( scalar(@$show) ) { 
+if ( $show and scalar(@$show) ) { 
   if ( $debug ) { print STDERR "in 'show' block\n"; }
   my $char = 'a';
   my $line;
@@ -69,6 +69,9 @@ if ( scalar(@$show) ) {
     $line = '';
     foreach my $i ( 1 .. $length ) { $line .= $char++; }
 	push(@lines,$line);
+  }
+  if ( ($length * $height) > 26 ) {
+    $length = length($lines[-1]);
   }
   &box_me( $styles->{$style}, $margin, $margin + $length, @lines ); # 5 here is for left margin
 } elsif ( $list_styles ) {
@@ -153,6 +156,10 @@ sub set_styles {
   $styles->{$style}{lower_right} = q(+);
 
   $style='clipped';
+  $styles->{$style}{top}         = q(-);
+  $styles->{$style}{bottom}      = q(-);
+  $styles->{$style}{left}        = q(|);
+  $styles->{$style}{right}       = q(|);
   $styles->{$style}{upper_left}  = q(/);
   $styles->{$style}{upper_right} = q(\\);
   $styles->{$style}{lower_left}  = q(\\);
