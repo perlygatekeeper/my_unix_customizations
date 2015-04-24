@@ -1,10 +1,16 @@
 #!/usr/bin/env perl
-#
 # A perl filter to input a block of text and output that same block
 # surrounded with a nice pretty "text box"
-#
-$name = $0; $name =~ s'.*/''; # remove path--like basename
-$usage = "usage:\n$name";
+
+use strict;
+use warnings;
+
+my $last_mod_date='Thu, Apr 23, 2015';
+my $author="Dr. Steven Parker";
+my $copyright="$last_mod_date. All rights reserved.";
+
+my $name = $0; $name =~ s'.*/''; # remove path--like basename
+my $usage = "usage:\n$name";
 
 # options?  --style style_name
 #           --styles (will list them)
@@ -13,18 +19,19 @@ $usage = "usage:\n$name";
 #           --spacious
 # TO DO:    --table
 use Getopt::Long;
-my( $show, $styles, $trim, $ltrim, $rtrim, $tight, );
-my $spacious = 0;
-my $style = 'default';
-GetOptions ( 'debug'           => \$debug,
-             'style=s'         => \$style,
-             'list|styles'     => \$list_styles,
-             'tight'           => \$tight,
-             'show:i@{0,2}'    => \$show,
-             'spacious+'       => \$spacious,
-             'trim'            => \$trim,
-             'lefttrim|ltrim'  => \$ltrim,
-             'righttrim|rtrim' => \$rtrim,
+my ($debug, $style, $list_styles, $tight, $show, $spacious, $trim, $rtrim, $ltrim,);
+my ($horizontal_padding, $vertical_padding,);
+$spacious = 0;
+$style = 'default';
+GetOptions ( 'debug'           => \$debug,        # simple
+             'style=s'         => \$style,        # string
+             'list|styles'     => \$list_styles,  # aliases
+             'tight'           => \$tight,        # simple
+             'show:i@{0,2}'    => \$show,         # integer
+             'spacious+'       => \$spacious,     # incrementing
+             'trim'            => \$trim,         # simple
+             'lefttrim|ltrim'  => \$ltrim,        # aliases
+             'righttrim|rtrim' => \$rtrim,        # aliases
                    );
 my $styles = &set_styles;
 
@@ -120,9 +127,9 @@ sub box_me {
                      $style->{lower_right} . "\n";
   print $top_line;
   print $blank_line for ( 1 .. $vertical_padding);
-  foreach $line (@lines) {
+  foreach my $line (@lines) {
     $line =~ s/^$left_margin// if $left_margin; # trim left margin
-    $right_padding = $max_length - $shortest_left - length($line);
+    my $right_padding = $max_length - $shortest_left - length($line);
     print $left_margin . $style->{left} .     ( " " x $horizontal_padding ) .
           $line .  ( " " x $right_padding ) .
               ( " " x $horizontal_padding ) . $style->{right} . "\n";
@@ -221,7 +228,7 @@ $vertical_padding       = 0;
 +---------------+
 
 
-#  BSG or Linear with clipped corners
+#  BSG (Battle Star Galatica) or Linear with clipped corners
 $left           = '|';  #  /-----------\
 $right          = '|';  #  |           |
 $top            = '-';  #  |           |

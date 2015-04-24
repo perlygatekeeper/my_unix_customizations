@@ -1,8 +1,6 @@
 #!/usr/bin/env perl
-#
-# A perl filter to put a box around text.
-#
-#
+# An earlier attempt at a perl filter to put a box around text.
+
 $name = $0;
 $name =~ s'.*/''; # remove path--like basename
 $usage = "usage:\n$name [-corners|-clipped] [-blank] [-replace] [-starting starting_string]";
@@ -46,13 +44,13 @@ $tracking_blank_lines=0; $last_blank_line='';
 foreach $line (@text) {  #  MAIN TEXT LOOP
   chomp $line;
   if ($blank and $tracking_blank_lines) { # we have found a blank line in the past and
-					  # are now looking for the first non-blank line.
+                                          # are now looking for the first non-blank line.
     if ($line=~/^\s*$/) { # we have second or latter blank line.
       $tracking_blank_lines++;
       if ($replace) {
-	push(@blank_lines,$line);
-	next;
-	# first blank line is replaced with a lower line or a middle line
+        push(@blank_lines,$line);
+        next;
+        # first blank line is replaced with a lower line or a middle line
         # &horizontal_line($starting,$lws,$corners,$ll,$lr,$horizontal,$max_length);
       }
       if (not $replace or $tracking_blank_lines>2) {
@@ -64,31 +62,31 @@ foreach $line (@text) {  #  MAIN TEXT LOOP
       $tracking_blank_lines=0; $last_blank_line='';
       if ($replace) {
       # all accumulated blank lines are printed, except for the replaced line(s).
-	if ($#blank_lines==0) { # only one blank line, replace with upper or middle line
-	  if (not $first_line) {
-	    $first_line=1;
+        if ($#blank_lines==0) { # only one blank line, replace with upper or middle line
+          if (not $first_line) {
+            $first_line=1;
             &horizontal_line($starting,$lws,$corners,$ul,$ur,$horizontal,$max_length);
-	  } else {
+          } else {
             &horizontal_line($starting,$lws,$corners,$ml,$mr,$horizontal,$max_length);
-	  }
-	} else { # more than one blank line
-	  if ($first_line) {
-	  # $blank_lines[0] is replaced with lower hor. line if not first line
+          }
+        } else { # more than one blank line
+          if ($first_line) {
+          # $blank_lines[0] is replaced with lower hor. line if not first line
             &horizontal_line($starting,$lws,$corners,$ll,$lr,$horizontal,$max_length);
-	  } else {
-	    &debug_print('blanks',"-0-");
-	    print $blank_lines[0] . "\n";
-	    $first_line=1;
-	  }
-	# $blank_lines[$#blank_lines] is replaced with upper hor. line
-	  for ($l=1; $l<$#blank_lines; $l++) {
-	    &debug_print('blanks',"-$l-");
-	    print $blank_lines[$l] . "\n";
-	  }
+          } else {
+            &debug_print('blanks',"-0-");
+            print $blank_lines[0] . "\n";
+            $first_line=1;
+          }
+        # $blank_lines[$#blank_lines] is replaced with upper hor. line
+          for ($l=1; $l<$#blank_lines; $l++) {
+            &debug_print('blanks',"-$l-");
+            print $blank_lines[$l] . "\n";
+          }
           &horizontal_line($starting,$lws,$corners,$ul,$ur,$horizontal,$max_length);
-	}
+        }
         &print_line($lws,$line,$max_length);
-	@blank_lines=();
+        @blank_lines=();
       } else {
         print $last_blank_line . "\n";
         &horizontal_line($starting,$lws,$corners,$ul,$ur,$horizontal,$max_length);
@@ -106,21 +104,21 @@ foreach $line (@text) {  #  MAIN TEXT LOOP
       $tracking_blank_lines++;
       if ($replace) {
       # and will trigger a print of a horizontal line when the number of blank lines is known
-	push(@blank_lines,$line);
+        push(@blank_lines,$line);
         next;
       } else {
         $last_blank_line=$line;
       # first blank line is noted and a closing horizontal line is printed first.
-	if ($first_line) {
+        if ($first_line) {
           &horizontal_line($starting,$lws,$corners,$ll,$lr,$horizontal,$max_length);
-	}
+        }
       }
     } else {
     # print non-blank lines normally.
       if (not $first_line) {
       # print first line of box
         &horizontal_line($starting,$lws,$corners,$ul,$ur,$horizontal,$max_length);
-	$first_line=1;
+        $first_line=1;
       }
       &print_line($lws,$line,$max_length);
     }
@@ -179,7 +177,7 @@ sub parse_args {
              'use backspaces to make the underline character (not implimented)',
              'define vertical character',
              'define horizontal character',
-	     'define string that will start each line');
+             'define string that will start each line');
   grep(s/^([^-])/-\1/,@args);
   use Text::Abbrev;
   abbrev($abbrev, @args);
