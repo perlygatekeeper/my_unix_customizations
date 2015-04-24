@@ -13,17 +13,17 @@ my $styles=[];
 my $style='linear';
 &define_sigils($sigils,$styles);
 
-my $left	=  $sigils->{$style}{left};
-my $right	=  $sigils->{$style}{right};
-my $top		=  $sigils->{$style}{top};
-my $bottom	=  $sigils->{$style}{bottom};
-my $upper_right	=  $sigils->{$style}{upper_right};
-my $upper_left	=  $sigils->{$style}{upper_left};
-my $lower_right	=  $sigils->{$style}{lower_right};
-my $lower_left	=  $sigils->{$style}{lower_left};
+my $left        =  $sigils->{$style}{left};
+my $right       =  $sigils->{$style}{right};
+my $top         =  $sigils->{$style}{top};
+my $bottom      =  $sigils->{$style}{bottom};
+my $upper_right =  $sigils->{$style}{upper_right};
+my $upper_left  =  $sigils->{$style}{upper_left};
+my $lower_right =  $sigils->{$style}{lower_right};
+my $lower_left  =  $sigils->{$style}{lower_left};
 
-my $horizontal_padding	= 2;
-my $vertical_padding	= 1;
+my $horizontal_padding  = 2;
+my $vertical_padding    = 1;
 
 my $max_length;
 my $shortest_left = 1000;
@@ -37,18 +37,18 @@ while (<>) {
   $shortest_left = ( ( $left_length < $shortest_left ) ? $left_length : $shortest_left );
 # printf "%5d: %5d/%5d  %5d/%5d '%5s'\n",
 #        $.,
-# 	 $left_length, $shortest_left,
-# 	 $length, $max_length,
-# 	 $left_margin;
+#        $left_length, $shortest_left,
+#        $length, $max_length,
+#        $left_margin;
 }
 
 my $left_margin = " " x $shortest_left;
-my $blank_line	= $left_margin . $left . ( " " x $horizontal_padding ) .
+my $blank_line  = $left_margin . $left . ( " " x $horizontal_padding ) .
                   " " x ( $max_length - $shortest_left ) . 
                   ( " " x $horizontal_padding ) . $right . "\n";
-my $top_line	= $left_margin . $upper_left .
+my $top_line    = $left_margin . $upper_left .
                   ( $top    x ($max_length - $shortest_left + 2*$horizontal_padding) ) . $upper_right . "\n";
-my $bottom_line	= $left_margin . $lower_left .
+my $bottom_line = $left_margin . $lower_left .
                   ( $bottom x ($max_length - $shortest_left + 2*$horizontal_padding) ) . $lower_right . "\n";
 
 
@@ -59,8 +59,8 @@ foreach $line (@lines) {
   $right_padding = $max_length - $shortest_left - length($line);
   print $left_margin . $left .     ( " " x $horizontal_padding ) .
         $line .  ( " " x $right_padding ) .
- 	( " " x $horizontal_padding ) . $right . "\n";
-#	( " " x $horizontal_padding ) . $right . "'$right_padding'" . "\n";
+        ( " " x $horizontal_padding ) . $right . "\n";
+#       ( " " x $horizontal_padding ) . $right . "'$right_padding'" . "\n";
 }
 print $blank_line for ( 1 .. $vertical_padding);
 print $bottom_line;
@@ -71,14 +71,14 @@ sub define_styles {
   my ($sigils) = @_;
   #  BSG or Linear with clipped corners
   push( @styles, ( $style="bsg" ) );
-  $sigils->{$style}{left}		= '|';	  #  /-----------\
-  $sigils->{$style}{right}		= '|';	  #  |           |
-  $sigils->{$style}{top}		= '-';	  #  |           |
-  $sigils->{$style}{bottom}		= '-';	  #  |           |
-  $sigils->{$style}{upper_right}	= '\\';	  #  |           |
-  $sigils->{$style}{upper_left}		= '/';	  #  |           |
-  $sigils->{$style}{lower_right}	= '/';	  #  |           |
-  $sigils->{$style}{lower_left}		= '\\';	  #  \-----------/
+  $sigils->{$style}{left}               = '|';    #  /-----------\
+  $sigils->{$style}{right}              = '|';    #  |           |
+  $sigils->{$style}{top}                = '-';    #  |           |
+  $sigils->{$style}{bottom}             = '-';    #  |           |
+  $sigils->{$style}{upper_right}        = '\\';   #  |           |
+  $sigils->{$style}{upper_left}         = '/';    #  |           |
+  $sigils->{$style}{lower_right}        = '/';    #  |           |
+  $sigils->{$style}{lower_left}         = '\\';   #  \-----------/
 
   # cool oneliner I used to convert the comments into
   # comment + push statement on following line, escaped to be used as a
@@ -86,91 +86,91 @@ sub define_styles {
   #  crk '(\#  ([A-Z]\S+))\n' '$1\n  push( \@styles, ( \$style="\L$2\E" ) );\n'
   #  Linear
   push( @styles, ( $style="linear" ) );
-  $sigils->{$style}{left}		= '|';	  #  +-----------+
-  $sigils->{$style}{right}		= '|';	  #  |           |
-  $sigils->{$style}{top}		= '-';	  #  |           |
-  $sigils->{$style}{bottom}		= '-';	  #  |           |
-  $sigils->{$style}{upper_right}	= '+';	  #  |           |
-  $sigils->{$style}{upper_left}		= '+';	  #  |           |
-  $sigils->{$style}{lower_right}	= '+';	  #  |           |
-  $sigils->{$style}{lower_left}		= '+';	  #  +-----------+
+  $sigils->{$style}{left}               = '|';    #  +-----------+
+  $sigils->{$style}{right}              = '|';    #  |           |
+  $sigils->{$style}{top}                = '-';    #  |           |
+  $sigils->{$style}{bottom}             = '-';    #  |           |
+  $sigils->{$style}{upper_right}        = '+';    #  |           |
+  $sigils->{$style}{upper_left}         = '+';    #  |           |
+  $sigils->{$style}{lower_right}        = '+';    #  |           |
+  $sigils->{$style}{lower_left}         = '+';    #  +-----------+
 
   #  Light
   push( @styles, ( $style="light" ) );
-  $sigils->{$style}{left}		= '.';	  #  .............
-  $sigils->{$style}{right}		= '.';	  #  .           .
-  $sigils->{$style}{top}		= '.';	  #  .           .
-  $sigils->{$style}{bottom}		= '.';	  #  .           .
-  $sigils->{$style}{upper_right}	= '.';	  #  .           .
-  $sigils->{$style}{upper_left}		= '.';	  #  .           .
-  $sigils->{$style}{lower_right}	= '.';	  #  .           .
-  $sigils->{$style}{lower_left}		= '.';	  #  .............
+  $sigils->{$style}{left}               = '.';    #  .............
+  $sigils->{$style}{right}              = '.';    #  .           .
+  $sigils->{$style}{top}                = '.';    #  .           .
+  $sigils->{$style}{bottom}             = '.';    #  .           .
+  $sigils->{$style}{upper_right}        = '.';    #  .           .
+  $sigils->{$style}{upper_left}         = '.';    #  .           .
+  $sigils->{$style}{lower_right}        = '.';    #  .           .
+  $sigils->{$style}{lower_left}         = '.';    #  .............
 
   #  Medium
   push( @styles, ( $style="medium" ) );
-  $sigils->{$style}{left}		= '*';	  #  *************
-  $sigils->{$style}{right}		= '*';	  #  *           *
-  $sigils->{$style}{top}		= '*';	  #  *           *
-  $sigils->{$style}{bottom}		= '*';	  #  *           *
-  $sigils->{$style}{upper_right}	= '*';	  #  *           *
-  $sigils->{$style}{upper_left}		= '*';	  #  *           *
-  $sigils->{$style}{lower_right}	= '*';	  #  *           *
-  $sigils->{$style}{lower_left}		= '*';	  #  *************
+  $sigils->{$style}{left}               = '*';    #  *************
+  $sigils->{$style}{right}              = '*';    #  *           *
+  $sigils->{$style}{top}                = '*';    #  *           *
+  $sigils->{$style}{bottom}             = '*';    #  *           *
+  $sigils->{$style}{upper_right}        = '*';    #  *           *
+  $sigils->{$style}{upper_left}         = '*';    #  *           *
+  $sigils->{$style}{lower_right}        = '*';    #  *           *
+  $sigils->{$style}{lower_left}         = '*';    #  *************
 
   #  Heavy
   push( @styles, ( $style="heavy" ) );
-  $sigils->{$style}{left}		= '@';	  #  @@@@@@@@@@@@@
-  $sigils->{$style}{right}		= '@';	  #  @           @
-  $sigils->{$style}{top}		= '@';	  #  @           @
-  $sigils->{$style}{bottom}		= '@';	  #  @           @
-  $sigils->{$style}{upper_right}	= '@';	  #  @           @
-  $sigils->{$style}{upper_left}		= '@';	  #  @           @
-  $sigils->{$style}{lower_right}	= '@';	  #  @           @
-  $sigils->{$style}{lower_left}		= '@';	  #  @@@@@@@@@@@@@
+  $sigils->{$style}{left}               = '@';    #  @@@@@@@@@@@@@
+  $sigils->{$style}{right}              = '@';    #  @           @
+  $sigils->{$style}{top}                = '@';    #  @           @
+  $sigils->{$style}{bottom}             = '@';    #  @           @
+  $sigils->{$style}{upper_right}        = '@';    #  @           @
+  $sigils->{$style}{upper_left}         = '@';    #  @           @
+  $sigils->{$style}{lower_right}        = '@';    #  @           @
+  $sigils->{$style}{lower_left}         = '@';    #  @@@@@@@@@@@@@
 
   #  Comment1
   push( @styles, ( $style="comment1" ) );
-  $sigils->{$style}{left}		= '#';	  #  #############
-  $sigils->{$style}{right}		= '#';	  #  #           #
-  $sigils->{$style}{top}		= '#';	  #  #           #
-  $sigils->{$style}{bottom}		= '#';	  #  #           #
-  $sigils->{$style}{upper_right}	= '#';	  #  #           #
-  $sigils->{$style}{upper_left}		= '#';	  #  #           #
-  $sigils->{$style}{lower_right}	= '#';	  #  #           #
-  $sigils->{$style}{lower_left}		= '#';	  #  #############
+  $sigils->{$style}{left}               = '#';    #  #############
+  $sigils->{$style}{right}              = '#';    #  #           #
+  $sigils->{$style}{top}                = '#';    #  #           #
+  $sigils->{$style}{bottom}             = '#';    #  #           #
+  $sigils->{$style}{upper_right}        = '#';    #  #           #
+  $sigils->{$style}{upper_left}         = '#';    #  #           #
+  $sigils->{$style}{lower_right}        = '#';    #  #           #
+  $sigils->{$style}{lower_left}         = '#';    #  #############
 
   #  Comment2
   push( @styles, ( $style="comment2" ) );
-  $sigils->{$style}{left}		= '*';	  #  /***********\
-  $sigils->{$style}{right}		= '*';	  #  *           *
-  $sigils->{$style}{top}		= '*';	  #  *           *
-  $sigils->{$style}{bottom}		= '*';	  #  *           *
-  $sigils->{$style}{upper_right}	= '\\';	  #  *           *
-  $sigils->{$style}{upper_left}		= '/';	  #  *           *
-  $sigils->{$style}{lower_right}	= '/';	  #  *           *
-  $sigils->{$style}{lower_left}		= '\\';	  #  \***********/
+  $sigils->{$style}{left}               = '*';    #  /***********\
+  $sigils->{$style}{right}              = '*';    #  *           *
+  $sigils->{$style}{top}                = '*';    #  *           *
+  $sigils->{$style}{bottom}             = '*';    #  *           *
+  $sigils->{$style}{upper_right}        = '\\';   #  *           *
+  $sigils->{$style}{upper_left}         = '/';    #  *           *
+  $sigils->{$style}{lower_right}        = '/';    #  *           *
+  $sigils->{$style}{lower_left}         = '\\';   #  \***********/
 
   #  Comment3
   push( @styles, ( $style="comment3" ) );
-  $sigils->{$style}{left}		= '//';	  #  /////////////
-  $sigils->{$style}{right}		= '/';	  #  //          /
-  $sigils->{$style}{top}		= '/';	  #  //          /
-  $sigils->{$style}{bottom}		= '/';	  #  //          /
-  $sigils->{$style}{upper_right}	= '/';	  #  //          /
-  $sigils->{$style}{upper_left}		= '//';	  #  //          /
-  $sigils->{$style}{lower_right}	= '/';	  #  //          /
-  $sigils->{$style}{lower_left}		= '//';	  #  /////////////
+  $sigils->{$style}{left}               = '//';   #  /////////////
+  $sigils->{$style}{right}              = '/';    #  //          /
+  $sigils->{$style}{top}                = '/';    #  //          /
+  $sigils->{$style}{bottom}             = '/';    #  //          /
+  $sigils->{$style}{upper_right}        = '/';    #  //          /
+  $sigils->{$style}{upper_left}         = '//';   #  //          /
+  $sigils->{$style}{lower_right}        = '/';    #  //          /
+  $sigils->{$style}{lower_left}         = '//';   #  /////////////
 
   #  Bold
   push( @styles, ( $style="bold" ) );
-  $sigils->{$style}{left}		= 'H';	  #  @===========@
-  $sigils->{$style}{right}		= 'H';	  #  H           H
-  $sigils->{$style}{top}		= '=';	  #  H           H
-  $sigils->{$style}{bottom}		= '=';	  #  H           H
-  $sigils->{$style}{upper_right}	= '@';	  #  H           H
-  $sigils->{$style}{upper_left}		= '@';	  #  H           H
-  $sigils->{$style}{lower_right}	= '@';	  #  H           H
-  $sigils->{$style}{lower_left}		= '@';	  #  @===========@
+  $sigils->{$style}{left}               = 'H';    #  @===========@
+  $sigils->{$style}{right}              = 'H';    #  H           H
+  $sigils->{$style}{top}                = '=';    #  H           H
+  $sigils->{$style}{bottom}             = '=';    #  H           H
+  $sigils->{$style}{upper_right}        = '@';    #  H           H
+  $sigils->{$style}{upper_left}         = '@';    #  H           H
+  $sigils->{$style}{lower_right}        = '@';    #  H           H
+  $sigils->{$style}{lower_left}         = '@';    #  @===========@
 }
 
 __END__
