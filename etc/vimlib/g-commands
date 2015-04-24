@@ -32,3 +32,15 @@ idfference between gw and gq is that gw returns cursor when used with movement c
 gq leaves cursor where movement command lands and is therefore able to be used with
 '.' repeat. as with gqj for line-by-line formatting or gq} for paragraph by paragraph
 formatting.
+
+gv ?
+gV ?
+
+
+gh, gH, g ctrl-H  start select mode in character, line and block modes respectively
+
+10g 
+
+gr{char}  virtual replace N characters with {char}
+
+ga        show encoding (char, dec, hex and octal) for character under cursor
