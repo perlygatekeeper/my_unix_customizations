@@ -119,11 +119,6 @@ set incsearch
 set ignorecase
 set smartcase
 
-" autoindent by default
-set autoindent
-nnoremap << :set noautoindent<Cr>:filetype indent off<Cr>
-nnoremap >> :set   autoindent<Cr>:filetype indent on<Cr>
-
 if has("autocmd")
   " When editing a file, always jump to the last cursor position
     autocmd BufReadPost *
