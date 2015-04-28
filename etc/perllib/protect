@@ -1,2 +1,2 @@
-  # protect the regexp characters ' ^ $ ? * + ( ) { } [ ] < > \ / . '
-  my $variable=~s/([\$\^*\[\]{}.<>()+?\/\\])/\\\1/g;
+  # protect the regexp characters ' ^ $ ? * + ( ) { } [ ] < > \ / . |'
+  my $variable=~s/([\$\^*\[\]{}.<>()+?\/\\|])/\\\1/g;
