@@ -19,16 +19,28 @@ my $usage = "usage:\n$name";
 #           --spacious
 # TO DO:    --table
 use Getopt::Long;
-my ($debug, $style, $list_styles, $tight, $show, $spacious, $trim, $rtrim, $ltrim,);
+my ($debug, $style, $list_styles, $show, $unbox, $trim, $rtrim, $ltrim,);
+my $tight    = 0;
+my $spacious = 0;
 my ($horizontal_padding, $vertical_padding,);
 $spacious = 0;
 $style = 'default';
 GetOptions ( 'debug'           => \$debug,        # simple
              'style=s'         => \$style,        # string
+             'clipped'         => sub { my ( $style_name, ) = @_; $style = $style_name; },
+             'comment1|1'      => sub { my ( $style_name, ) = @_; $style = $style_name; },
+             'comment2|2'      => sub { my ( $style_name, ) = @_; $style = $style_name; },
+             'comment3|3'      => sub { my ( $style_name, ) = @_; $style = $style_name; },
+             'light'           => sub { my ( $style_name, ) = @_; $style = $style_name; },
+             'medium'          => sub { my ( $style_name, ) = @_; $style = $style_name; },
+             'heavy'           => sub { my ( $style_name, ) = @_; $style = $style_name; },
+             'linear'          => sub { my ( $style_name, ) = @_; $style = $style_name; },
+             'bold'            => sub { my ( $style_name, ) = @_; $style = $style_name; },
              'list|styles'     => \$list_styles,  # aliases
              'tight'           => \$tight,        # simple
              'show:i@{0,2}'    => \$show,         # integer
              'spacious+'       => \$spacious,     # incrementing
+             'unbox'           => \$unbox,        # simple
              'trim'            => \$trim,         # simple
              'lefttrim|ltrim'  => \$ltrim,        # aliases
              'righttrim|rtrim' => \$rtrim,        # aliases
@@ -42,52 +54,57 @@ if ( not exists $styles->{$style} ) {
 
 if ( $debug ) { print STDERR "style is >$style<\n"; }
 
-if ( $tight ) {
-  $horizontal_padding = 1;
-  $vertical_padding   = 0;
-} else {
-  $horizontal_padding = 2 + $spacious;
-  $vertical_padding   = 1 + $spacious;
-}
+# if ( $tight ) {
+#   $horizontal_padding = 1;
+#   $vertical_padding   = 0;
+# } else {
+#   $horizontal_padding = 2 + $spacious;
+#   $vertical_padding   = 1 + $spacious;
+# }
+
+$horizontal_padding = 2 + $spacious - $tight;
+$vertical_padding   = 1 + $spacious - $tight;
 
 if ( $debug ) { print STDERR "before main loop\n"; }
-if ( $debug ) {
+if ( $debug and $show ) {
   use Data::Dumper;
   print "show is a " . ref($show) . "\n";
-  print "show is has " . scalar(@$show) . " elements\n";
-  print Dumper($show);
+  print "show has  " . scalar(@$show) . " elements\n" if ( ref($show) eq 'ARRAY' );
+  print Dumper($show) if ( ref($show) eq 'ARRAY' );
 }
 if ( $show and scalar(@$show) ) { 
   if ( $debug ) { print STDERR "in 'show' block\n"; }
   my $char = 'a';
   my $line;
-  my @lines;
+  my $lines;
   my $margin = 5;
   my $length = $show->[0] || 5;
   my $height = $show->[1] || 5;
   foreach my $i ( 1 .. $height ) {
     $line = '';
     foreach my $i ( 1 .. $length ) { $line .= $char++; }
-	push(@lines,$line);
+	push(@$lines,$line);
   }
   if ( ($length * $height) > 26 ) {
-    $length = length($lines[-1]);
+    $length = length($lines->[-1]);
   }
-  &box_me( $styles->{$style}, $margin, $margin + $length, @lines ); # 5 here is for left margin
+  &box_me( $styles->{$style}, $margin, $margin + $length,$lines ); # 5 here is for left margin
+  exit 0;
 } elsif ( $list_styles ) {
   if ( $debug ) { print STDERR "in 'list-styles' block\n"; }
   print join( ', ', sort keys %$styles ) . "\n";
+  exit 0;
 } else {
   if ( $debug ) { print STDERR "in 'filter' block\n"; }
   # slurp lines and remember the left margin and the maxium length 
   my $max_length    = 0;
   my $shortest_left = 1000;
-  my ( @lines, $left_margin );
+  my ( $lines, $left_margin );
   while (<>) {
     chomp;
     if ( $trim or $ltrim ) { s/^\s*//; }
     if ( $trim or $rtrim ) { s/\s*$//; }
-    push(@lines,$_);
+    push(@$lines,$_);
     next if (/^\s*$/); # skip white and blank lines.
     my $length = length($_);
     $max_length = ( ( $length > $max_length ) ? $length : $max_length );
@@ -95,18 +112,102 @@ if ( $show and scalar(@$show) ) {
     my $left_length = length($left_margin);
     $shortest_left = ( $left_length < $shortest_left ) ? $left_length : $shortest_left;
     if ( $debug ) {
-      printf "%5d: %5d/%5d  %5d/%5d '%5s'\n", $.,
-             $left_length, $shortest_left, $length, $max_length, $left_margin;
+      printf "%5d: %5d/%5d  %5d/%5d '%s' %s\n", $.,
+             $left_length, $shortest_left, $length, $max_length, $left_margin, $_;
     }
   }
-  &box_me( $styles->{$style}, $shortest_left, $max_length, @lines );
+  if ($unbox) {
+    if ( $debug ) {
+    	print STDERR "we are unboxing\n";
+    	print STDERR "starting with " . scalar (@$lines) . " lines\n";
+    }
+    &un_box_me( $styles->{$style}, $shortest_left, $max_length, $lines );
+    if ( $debug ) {
+    	print STDERR "unboxed, now printing\n";
+    	print STDERR "left with " . scalar (@$lines) . " lines\n";
+    }
+    print "$_\n" foreach @$lines;
+  } else {
+    if ( $debug ) { print STDERR "we are boxing\n"; }
+    &box_me( $styles->{$style}, $shortest_left, $max_length, $lines );
+  }
 }
 if ( $debug ) { print STDERR "after main loop\n"; }
 
 exit 0;
 
+sub un_box_me {
+  my ( $style, $shortest_left, $max_length, $lines ) = @_;
+  my $left_margin = " " x $shortest_left;
+  my $blank_line   = $left_margin
+                   .  $style->{left}
+                   .  ( " "              x ( $max_length - $shortest_left
+						                   - length($style->{left}) - length($style->{right})
+                   	   ) )
+  	               .  $style->{right};
+  my $top_line     = $left_margin
+                   .  $style->{upper_left}
+                   .  ( $style->{bottom} x ( $max_length - $shortest_left
+						                   - length($style->{upper_left}) - length($style->{upper_right})
+                   	   ) )
+  	               .  $style->{upper_right};
+  my $bottom_line  = $left_margin
+                   .  $style->{lower_left}
+                   .  ( $style->{bottom} x ( $max_length - $shortest_left
+						                   - length($style->{lower_left}) - length($style->{lower_right})
+                   	   ) )
+  	               .  $style->{lower_right};
+
+# testing for correct regexp for line removal
+# my $a = $bottom_line;
+# $a  =~ s/([\$\^*\[\]{}.<>()+?\/\\|])/\\$1/g;
+# if ( $lines->[0] =~ qr($a) ) {
+#   print STDERR "yes\n";
+# } else {
+#   print STDERR "no\n";
+#   print STDERR " " . $lines->[0] . "    doesn't match\n";
+#   print STDERR "($bottom_line)\n";
+# }
+
+  # protect the regexp characters ' ^ $ ? * + ( ) { } [ ] < > \ / . |'
+  $blank_line  =~ s/([\$\^*\[\]{}.<>()+?\/\\|])/\\$1/g;
+  $top_line    =~ s/([\$\^*\[\]{}.<>()+?\/\\|])/\\$1/g;
+  $bottom_line =~ s/([\$\^*\[\]{}.<>()+?\/\\|])/\\$1/g;
+
+  my $left   = $style->{left} . ( " " x $horizontal_padding);
+  my $right  = ( " " x $horizontal_padding ) .  $style->{right};
+  $left      =~ s/([\$\^*\[\]{}.<>()+?\/\\|])/\\$1/g;
+  $right     =~ s/([\$\^*\[\]{}.<>()+?\/\\|])/\\$1/g;
+
+  print STDERR " starting with " . scalar (@$lines) . " lines\n" if ($debug);
+  @$lines = grep( ( $_ !~ /$bottom_line/ and $_ !~ /$top_line/ and $_ !~ /$blank_line/ ), @$lines );
+  print STDERR " left with " . scalar (@$lines) . " lines\n" if ($debug);
+
+# individual testing of top, bottom and blank line removal regualar expressions
+# if ($debug) {
+#   print STDERR " starting with " . scalar (@$lines) . " lines\n";
+#   print STDERR "bottom regexp is ($bottom_line)\n" if ($debug);
+#   my @a = grep { ( $_ !~ qr($bottom_line) )  } @$lines;
+#   print STDERR "1 left with " . scalar (@a) . " lines after bottom removal\n";
+#   print STDERR "top    regexp is ($top_line)\n" if ($debug);
+#   my @b = grep( $_ !~ /$top_line/, @$lines );
+#   print STDERR "2 left with " . scalar (@b) . " lines after top    removal\n";
+#   print STDERR "blank  regexp is ($blank_line)\n" if ($debug);
+#   my @c = grep( $_ !~ /$blank_line/, @$lines );
+#   print STDERR "3 left with " . scalar (@c) . " lines after blank  removal\n";
+# }
+
+  foreach my $line ( @$lines ) {
+    $line =~ s/^(\s*)$left/$1/;
+    $line =~ s/$right$//;
+    if ( $trim or $ltrim ) { $line =~ s/^\s*//; }
+    if ( $trim or $rtrim ) { $line =~ s/\s*$//; }
+  }
+  return ( $style, $shortest_left, $max_length, $lines );
+}
+
 sub box_me {
-  my ( $style, $shortest_left, $max_length, @lines ) = @_;
+  my ( $style, $shortest_left, $max_length, $lines ) = @_;
 #  |<- left margin ->|L|<---  horizontal run --->|R      L is left  box characters
 # ^                   /---------------------------\      R is right box characters
 # ^                   |                           | V
@@ -116,7 +217,6 @@ sub box_me {
 # ^                    HH                       HH      HH is horizonal padding
   my $left_margin = " " x $shortest_left;
   my $blank_line   = $left_margin .
-
                      $style->{left} .
                      ( " " x $horizontal_padding ) .  " " x ( $max_length - $shortest_left ) . ( " " x $horizontal_padding ) . # horizontal run, middle
                      $style->{right} . "\n";
@@ -130,7 +230,7 @@ sub box_me {
                      $style->{lower_right} . "\n";
   print $top_line;
   print $blank_line for ( 1 .. $vertical_padding);
-  foreach my $line (@lines) {
+  foreach my $line (@$lines) {
     $line =~ s/^$left_margin// if $left_margin; # trim left margin
     my $right_padding = $max_length - $shortest_left - length($line);
     print $left_margin . $style->{left} .     ( " " x $horizontal_padding ) .

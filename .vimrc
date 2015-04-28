@@ -134,84 +134,77 @@ if has("autocmd")
 endif
 
 
+nnoremap qq :q!|
+let mapleader = "="
+nnoremap <leader>vimrc :tabe ~/.vimrc<cr>
+" autocmd bufwritepost .vimrc source $MYVIMRC
+augroup myvimrc
+   au!
+   au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
+augroup END
+
 " Colorscheme stuff
 colorscheme tibet
 set background=dark
-nnoremap =0 :set background=dark<Cr>
-nnoremap =1 :set background=light<Cr>
-nnoremap =- :colorscheme default<Cr>
-nnoremap == :colorscheme vibrantink<Cr>
-nnoremap =_ :colorscheme wombat<Cr>
-nnoremap =+ :colorscheme tibet<Cr>
+nnoremap <leader>0 :set background=dark<Cr>
+nnoremap <leader>1 :set background=light<Cr>
+nnoremap <leader>- :colorscheme default<Cr>
+nnoremap <leader>= :colorscheme vibrantink<Cr>
+nnoremap <leader>_ :colorscheme wombat<Cr>
+nnoremap <leader>+ :colorscheme tibet<Cr>
+nnoremap <leader>c :colorscheme 
+nnoremap <leader>C :r! ls -C ~/.vim/colors/
+" nnoremap <leader>.. :!swc --name comsite5 sync<Cr>
+nnoremap <leader>} !} perl -pe 's///g;'
+nnoremap <leader>% !% perl -pe 's///g;'
+nnoremap <leader>3 !G rot13
+nnoremap <leader>> !} crk '^(.)' '\t$1'<Cr>
 
-nnoremap qq :q!|
-" nnoremap v ~
-nnoremap =.. :!swc --name comsite5 sync<Cr>
-nnoremap =} !} perl -pe 's///g;'
-nnoremap =% !% perl -pe 's///g;'
-nnoremap =3 !G rot13
-nnoremap => !} crk '^(.)' '\t$1'<Cr>
 " edit alternate file.
-nnoremap =b :e#<Cr>
-" nnoremap =c !} cut -c
-" nnoremap =g !2} glue -b
-" nnoremap =G !G glue -b
-" add '> ' to beginning of rest of the lines in the buffer
+" nnoremap <leader>b :e#<Cr>
+" nnoremap <leader>c !} cut -c
+" nnoremap <leader>g !2} glue -b
+" nnoremap <leader>G !G glue -b
 
-" nnoremap =n :.,$ s/^> >/>> /<Cr>
-
-" template stuff for HTML(h), make(m), perl(p), tcsh(t) and python(y)
+" template stuff for HTML(h), make(m), perl(p), tcsh(t), vim(v) and python(y)
 " lowercase character prompts to read in a template
 " uppercase character prompts to read in a directory listing
-nnoremap =# :set number!<Cr>
-nnoremap =? :help<Cr>:only<Cr>
-nnoremap =c :colorscheme 
-nnoremap =C :r! ls -C ~/.vim/colors/
-nnoremap =h :r ~/etc/htmllib/
-nnoremap =H :r! ls -C ~/etc/htmllib/
-nnoremap =m :r ~/etc/makelib/
-nnoremap =M :r! ls -C ~/etc/makelib/
-nnoremap =p :r ~/etc/perllib/
-nnoremap =P :r! ls -C ~/etc/perllib/
-nnoremap =t :r ~/etc/tcshlib/
-nnoremap =T :r! ls -C ~/etc/tcshlib/
-nnoremap =v :r ~/etc/vimlib/
-nnoremap =V :r! ls -C ~/etc/vimlib/
-nnoremap =y :r ~/etc/pylib/
-nnoremap =Y :r! ls -C ~/etc/pylib/
+nnoremap <leader># :set number!<Cr>
+nnoremap <leader>? :help<Cr>:only<Cr>
+nnoremap <leader>h :r ~/etc/htmllib/
+nnoremap <leader>H :r! ls -C ~/etc/htmllib/
+nnoremap <leader>m :r ~/etc/makelib/
+nnoremap <leader>M :r! ls -C ~/etc/makelib/
+nnoremap <leader>p :r ~/etc/perllib/
+nnoremap <leader>P :r! ls -C ~/etc/perllib/
+nnoremap <leader>t :r ~/etc/tcshlib/
+nnoremap <leader>T :r! ls -C ~/etc/tcshlib/
+nnoremap <leader>v :r ~/etc/vimlib/
+nnoremap <leader>V :r! ls -C ~/etc/vimlib/
+nnoremap <leader>y :r ~/etc/pylib/
+nnoremap <leader>Y :r! ls -C ~/etc/pylib/
 
-nnoremap =f gqap
-vnoremap =f gqp
-" nnoremap =f !} fmt -c -78
-" nnoremap =F !} fold -
-"nnoremap =f f{f(f[f<zf%
-
-"nnoremap =F 
-nnoremap =u 1G!Gdos2unix<Cr>
-nnoremap =d 1G!Gunix2dos<Cr>
-nnoremap =q !}crk QQQ '\o'<Cr>              " number QQQ's rest of para
-nnoremap =Q !Gcrk QQQ '\o'<Cr>              " number QQQ's rest of file
-nnoremap =r !Gcrk '^(\s*)\d+' '\1\o'<Cr>
-"nnoremap =s !} sort -t, +1<Cr>
-"nnoremap =S !} sort -n
+nnoremap <leader>f gqap
+vnoremap <leader>f gqp
+" nnoremap <leader>f !} fmt -c -78
+" nnoremap <leader>F !} fold -
+nnoremap <leader>u 1G!Gdos2unix<Cr>
+nnoremap <leader>d 1G!Gunix2dos<Cr>
+nnoremap <leader>q !}crk QQQ '\o'<Cr>              " number QQQ's rest of para
+nnoremap <leader>Q !Gcrk QQQ '\o'<Cr>              " number QQQ's rest of file
+nnoremap <leader>r !Gcrk '^(\s*)\d+' '\1\o'<Cr>
+"nnoremap <leader>s !} sort -t, +1<Cr>
+"nnoremap <leader>S !} sort -n
 "URL_decode
-nnoremap =U !} perl -pe "tr/+/ /; s/\%([a-fA-F0-9][a-fA-F0-9])/pack('C', hex($1))/eg;"
-nnoremap =x :e!
-nnoremap =X :.!sh
-nnoremap =w :w!
-"nnoremap =<C-A> :%s/|
-"nnoremap =<C-K> i <Esc>|
-"nnoremap =<C-O> :. s/|
-"nnoremap =<C-P> :1,. s/|
-"nnoremap =<C-R> :.,$ s/|
-"nnoremap =<C-W> :w<Cr>
-"nnoremap =<C-N> :n<Cr>
-"nnoremap =<C-T> xp
+nnoremap <leader>U !} perl -pe "tr/+/ /; s/\%([a-fA-F0-9][a-fA-F0-9])/pack('C', hex($1))/eg;"
+nnoremap <leader>x :e!
+nnoremap <leader>X :.!sh
+nnoremap <leader>w :w!
 " Backspace in Visual mode deletes selection.
 vnoremap <BS> d
 " Tab/Shift+Tab indent/unindent the highlighted
-" block (and maintain the highlight after changing the indentation). Works for both Visual and
-" Select modes.
+" block (and maintain the highlight after changing the indentation).
+" Works for both Visual and Select modes.
 vnoremap <Tab> >gv
 vnoremap <S-Tab> <gv
 " Map ^L to do what it does, but also clear search highlighting.
@@ -225,11 +218,10 @@ nnoremap <A-Right> :bnext<CR>
 " nnoremap <S-F7> vipJ
 " Format selected lines
 " xnoremap Q gq
-
-   :map [[ ?{<CR>w99[{
-   :map ][ /}<CR>b99]}
-   :map ]] j0[[%/{<CR>
-   :map [] k$][%?}<CR>
+"  :map [[ ?{<CR>w99[{
+"  :map ][ /}<CR>b99]}
+"  :map ]] j0[[%/{<CR>
+"  :map [] k$][%?}<CR>
 
 " short cut abbreviations and common mispellings corrections
 "iab oe ohio-state.edu

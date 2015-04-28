@@ -2,8 +2,8 @@
 #
 # A perl script to 'unwrap' *.tar files from the net.
 #
-my $name   = ' ^ $ ? * + ( ) { } [ ] < > \ / . a 1 " ';
+my $name   = ' ^ $ ? * + ( ) { } [ ] < > \ / . | a 1 " ';
 my $search = $name;
-my $search =~ s/([\$\^*\[\]{}.<>()+?\/\\])/\\\1/g;
+   $search =~ s/([\$\^*\[\]{}.<>()+?\/\\|])/\\\1/g;
 print "'$name'\n";
 print "'$search'\n";
