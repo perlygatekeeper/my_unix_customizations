@@ -9,3 +9,5 @@
 Projects/*
 .dzil/config.ini
 .vim/bundle
+.viminfo
+_viminfo
