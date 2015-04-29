@@ -134,13 +134,22 @@ if has("autocmd")
 endif
 
 
-nnoremap qq :q!|
 let mapleader = "="
+" next few lines highlight column 79 on lines with a character in column 79
+" as an aid to keep comment boxes to 80 columns wide
+highlight ColorColumn ctermbg=darkred
+let cc=matchadd('ColorColumn', '\%79v', 100)
+" Map ^L to do what it does, but also clear search highlighting.
+nnoremap <C-L> :nohlsearch<Cr>:call matchdelete(cc)<Cr><C-L>
+" Map <leader>+pipe to turn column highlighting back on
+nnoremap <leader>\| :call matchadd('ColorColumn', '\%79v', 100, cc)<Cr>
+
+nnoremap qq :q!|
 nnoremap <leader>vimrc :tabe ~/.vimrc<cr>
 " autocmd bufwritepost .vimrc source $MYVIMRC
 augroup myvimrc
    au!
-   au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
+   au BufWritePost ~/.vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
 augroup END
 
 " Colorscheme stuff
@@ -207,8 +216,6 @@ vnoremap <BS> d
 " Works for both Visual and Select modes.
 vnoremap <Tab> >gv
 vnoremap <S-Tab> <gv
-" Map ^L to do what it does, but also clear search highlighting.
-nnoremap <C-L> :nohlsearch<CR><C-L>
 " Shortcut for :bnext and :bprevious.
 nnoremap <A-Left> :bprevious<CR>
 nnoremap <A-Right> :bnext<CR>
