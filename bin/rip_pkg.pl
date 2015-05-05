@@ -1,116 +1,151 @@
-#!/usr/bin/perl
-
-#
+#!/usr/bin/env perl
 # rip_pkg - rip apart Solaris pkg's and get the binaries out
 #
 # 2008 - Mike Golvach - eggi@comcast.net
+# 2015 - Steve Parker - parker.12@osu.edu
 # Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License
-#
+
+use strict;
+use warnings;
+
+my $debug = 1;
+my $preserve = 1;
 
 if ( $#ARGV != 0 ) {
- print "Usage: $0 pkg_file\n";
- exit(1);
+  print "Usage: $0 pkg_file\n";
+  exit(1);
 }
 
-$pkg_name = $ARGV[0];
+my $pkg_file = $ARGV[0];
+my $magic = '070701000';
+my $pkg_name;
 
-# check and make sure it's a SVR4 DataStream Pkg
-
-chomp($simple_header_check=`grep -i "package datastream" $pkg_name >/dev/null 2>&1;echo \$?`);
-
-if ( $simple_header_check != 0 ) {
- print "This doesn't appear to be a valid SVR4 DataStream pkg file.  Exiting...\n";
- exit;
+if ( not -f $pkg_file ) {
+  print STDERR "pkg file given ($pkg_file) does not exist.\n";
+  exit 0;
+} else {
+  open(PKG,"<", $pkg_file) || die("rip_pkg.pl: Cannot read from '$pkg_file': $!\n");
+  my $first_line = <PKG>;
+  if ( $first_line !~ /package datastream/i ) {
+    print STDERR "$pkg_file doesn't appear to be a valid SVR4 pkg DataStream file. $first_line\n\n Exiting...\n";
+	exit 1;
+  } else {
+  	my $second_line = <PKG>;
+  	$second_line =~ /^(\S+)\s+\d+\s+\d+/;
+  	$pkg_name = $1;
+    seek(PKG, 0, 0); # preserve first line for while loop below
+  } 
 }
-
-# Memory Hogging Here - Until This Cold Quits Me And I Can Think My Way Out Of This ;)
-
-open(PKG, "<$pkg_name");
-@pkg_file = <PKG>;
-close(PKG);
 
 # Split out header information and kludgey cpio file with binary contents
+open(P_HEADERS, ">", "$pkg_file.headers") || die("rip_pkg.pl: Cannot write to '$pkg_file.headers': $!\n");
+open(P_CPIO1,   ">", "$pkg_file.cpio1")   || die("rip_pkg.pl: Cannot write to '$pkg_file.cpio1':   $!\n");
+open(P_CPIO2,   ">", "$pkg_file.cpio2")   || die("rip_pkg.pl: Cannot write to '$pkg_file.cpio2':   $!\n");
 
-$header_end = 0;
-$cpio_start = 0;
-open (P_HEADERS, ">$pkg_name.headers");
-foreach $line (@pkg_file)   {
- if ( $header_end == 0 && $line =~ /TRAILER/ && $line =~ /pkginfo/ )  {
-  print P_HEADERS $line;
-  $header_end = 1;
- } elsif ( $header_end == 1 && $line =~ /pkginfo/ ) {
-  print P_HEADERS $line;
-  close(P_HEADERS);
-  $cpio_start = 1;
-  open(P_CPIO, ">$pkg_name.cpio");
- } elsif ( $cpio_start == 0 ) {
-  print P_HEADERS $line;
- } elsif ( $cpio_start == 1 ) {
-  print P_CPIO $line;
- } else {
-  print STDERR "WTF?\n";
- }
-}
-close(P_CPIO);
-
-open(P_HEADERS, "<$pkg_name.headers");
-@p_headers = <P_HEADERS>;
-close(P_HEADERS);
-
-$output_dir = 0;
-$pkginfo_start = 0;
-$pkginfo_seek = 0;
-$pkgmap_start = 0;
-foreach $p_head (@p_headers)  {
- if ( $output_dir eq 1 && $pkginfo_seek == 0 )  {
-  $output_dir = $p_head;
-  $output_dir =~ s/^(\w+)\W*.*$/$1/;
-  chomp($output_dir);
-  $pkginfo_seek = 1;
- } elsif ( $output_dir eq 0 && $p_head =~ /datastream/i ) {
-  $output_dir = 1;
- } elsif ( $output_dir eq 0 && $pkginfo_start == 0 ) {
-  next;
- } elsif ( $output_dir ne 0 && $p_head =~ /pkgmap/ ) {
-  $pkgmap_start = 1;
-  $pkginfo_start = 0;
- } elsif ( $pkgmap_start == 1 && $p_head =~ /pkginfo/ ) {
-  chomp($p_head);
-  push(@pkgmap, $p_head);
-  last;
- } elsif ( $output_dir ne 0 && $p_head =~ /pkginfo.*PKG=/ ) {
-  $pkginfo_start = 1;
- } elsif ( $output_dir ne 0 && $pkgmap_start == 1 ) {
-  chomp($p_head);
-  push(@pkgmap, $p_head);
- } elsif ( $output_dir ne 0 && $pkginfo_start == 1 ) {
-  chomp($p_head);
-  push(@pkginfo, $p_head);
- } else {
-  print "WTF NOTHING MATCHED\n OD $output_dir PST $pkginfo_start PS $pkginfo_seek PMST $pkgmap_start\n$p_head\n";
- }
+# HEADER
+while ( my $line = <PKG> ) {
+    print P_HEADERS $line;
+    if ( $line =~ /end of header/ ) {
+        close(P_HEADERS);
+        last;
+    }
 }
 
-mkdir("$output_dir");
-chdir("$output_dir");
-open(PKGINFO_OUT, ">>pkginfo");
-foreach $info (@pkginfo) {
- print PKGINFO_OUT "$info\n";
+my $first_line = 1;
+my $count = 0;
+
+# CPIO #1
+while ( my $line = <PKG> ) {
+	print STDERR "1" if ($debug);
+	if ( $line =~ /PKG=(\S+)/ ) {
+		$pkg_name ||= $1;
+	}
+	if ( $first_line ) {
+		$first_line = 0;
+		$line =~ s/^\0*//; # remove leading nulls
+	}
+    if ( $line =~ /^(\0*$magic[[:xdigit:]]+TRAILER!!!\0+)(.*)$/ ) {
+        print P_CPIO1 $1;
+        print P_CPIO1 "\n";
+        close(P_CPIO1);
+#		$count++;
+#	    print ".\n";
+		$line = $2;
+        $line =~ s/^\0*//; # remove leading nulls
+        print P_CPIO2 $line;
+        print P_CPIO2 "\n";
+		last;;
+    } else {
+        print P_CPIO1 $line;
+	}
 }
-open(PKGMAP_OUT, ">>pkgmap");
-foreach $map (@pkgmap) {
- print PKGMAP_OUT "$map\n";
+
+# while ( my $line = <PKG> ) {
+# $count++;
+# print "2 $count '$magic'\n";
+# if ( $count > 1 and $count < 15 ) {
+# print "\n $line\n";
+# }
+# if ( $line =~ /$magic/ ) {
+# $line =~ s/^\0*//; # remove leading nulls
+# print P_CPIO2 $line;
+# last;
+# }
+# }
+print "\n";
+
+# CPIO #2
+while ( my $line = <PKG> ) {
+	$count++;
+	print STDERR "3" if ($debug and $count < 100);;
+    print P_CPIO2 $line;
+    if ( $line =~ /^(\0*$magic[[:xdigit:]]+TRAILER!!!\0+)$/ ) {
+        last;
+	}
 }
-open(PROTO_OUT, ">>prototype");
-foreach $proto (@pkgmap) {
- @proto = split(" ", $proto);
- print PROTO_OUT "$proto[1] $proto[2] $proto[3] $proto[4] $proto[5] $proto[6]\n";
+close(P_CPIO2);
+close(PKG);
+print STDERR "\n" if ($debug);;
+
+if ( $pkg_name ) {
+  $pkg_name =~ s/^SMC//;
+  print STDERR "package name is found to be ($pkg_name)\n" if ($debug);
+  if ( not -d $pkg_name ) {
+    print STDERR "making directory for ($pkg_name)\n" if ($debug);
+    mkdir("$pkg_name") || die("Couldn't make directory ($pkg_name): $!");
+  }
+  chdir("$pkg_name");
+} else {
+  die("Couldn't determine package name for directory.");
 }
-system("cpio -iv <../$pkg_name.cpio >/dev/null 2>&1");
-chdir("reloc");
-system("tar cpf - *|(cd ../;tar xpf -)");
-chdir("../");
-system("rm -r reloc");
-chdir("../");
-unlink "$pkg_name.headers";
-unlink "$pkg_name.cpio";
+
+# system("cpio    -H newc -iv                    <../$pkg_file.cpio >/dev/null 2>&1");
+# use Archive::Cpio;
+# system("gnucpio -H newc -iv --make_directories <../$pkg_file.cpio1 >/dev/null 2>&1");
+# system("gnucpio -H newc -iv --make_directories <../$pkg_file.cpio2 >/dev/null 2>&1");
+if ($debug) {
+  system("/bin/cpio.exe -H newc -iv <../$pkg_file.cpio1");
+  system("/bin/cpio.exe -H newc -iv <../$pkg_file.cpio2");
+} else {
+  system("/bin/cpio.exe -H newc -iv <../$pkg_file.cpio1 >/dev/null 2>&1");
+  system("/bin/cpio.exe -H newc -iv <../$pkg_file.cpio2 >/dev/null 2>&1");
+}
+
+if ( -d "reloc" ) {
+  print "Relocating reloc!\n";
+  chdir("reloc");
+  system("tar cpf - *|(cd ../;tar xpf -)");
+  chdir("../");
+  use File::Path qw(rmtree);
+  rmtree( [ "reloc" ] );
+}
+chdir("../"); # return from package dir
+if (not $preserve) {
+  unlink("$pkg_file.cpio1")   if ( -f "$pkg_file.cpio1");
+  unlink("$pkg_file.cpio2")   if ( -f "$pkg_file.cpio2");
+  unlink("$pkg_file.headers") if ( -f "$pkg_file.headers");
+  print STDERR "cleaned up headers ($pkg_file.headers) and cpio's ($pkg_file.cpio?) temporary files.\n";
+}
+
+exit 0;
+__END__
