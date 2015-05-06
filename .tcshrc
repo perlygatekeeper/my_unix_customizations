@@ -53,14 +53,7 @@ a term		'(set j=`ps -ax|grep \!*|head -1`;kill -15 $j[1]) >& /dev/null'
 # communication aliases
 # a fox		ssh -X -Y -L 8080:128.146.39.23:80 -L 4443:128.146.39.23:443 -l tmonnett fox.mps.ohio-state.edu
 a ssh		'ssh -XY'
-a home		ssh parker@192.168.0.100
-a ipoodle	ssh steve@192.168.0.102
-a laptop	ssh steve@192.168.0.104
-a work		ssh sparker@192.168.241.156
-a sbx		ssh sparker@192.168.241.203
-a workip	host sparker-server-1210.ecnext03.local 
-
-a hafh		ssh -p 8022 parker@71.79.236.111
+a hafh		ssh -p 8022 parker@24.160.165.163
 
 a ifc		'ifconfig -a'
 a str		'strings - \!* | less'
@@ -103,19 +96,18 @@ endif
 # remember that .macosx .ubuntu and .manta are marker files that need
 # to be made on a system to indicate what type of system it is.
 if ( -f ~/.tcshrc.macosx && -f ~/.macosx ) then
-	# echo "sourcing ~/.tcshrc.macosx"
 	source ~/.tcshrc.macosx
 endif
 if ( -f ~/.tcshrc.cygwin && -f ~/.cygwin ) then
-	# echo "sourcing ~/.tcshrc.cygwin"
 	source ~/.tcshrc.cygwin
 endif
 if ( -f ~/.tcshrc.ubuntu && -f ~/.ubuntu ) then
-	# echo "sourcing ~/.tcshrc.ubuntu"
 	source ~/.tcshrc.ubuntu
 endif
 if ( -f ~/.tcshrc.git && -f ~/.git_aliases ) then
-	# echo "sourcing ~/.tcshrc.git"
 	source ~/.tcshrc.git
+endif
+if ( -f ~/.tcshrc.home && -f ~/.home ) then
+	source ~/.tcshrc.home
 endif
 endif
