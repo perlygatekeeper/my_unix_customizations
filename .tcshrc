@@ -25,6 +25,7 @@ a lsdir		'ls -l | grep drw'
 a cx		"chmod +x"
 a mcd		"mkdir \!:1; cd \!:1;"
 a orig 		'cp \!* \!*.orig'
+a odiff     'diff -b -w \!* \!*.orig'
 a ..		"cd .."
 a .			"source"
 a c			'clear'
@@ -47,7 +48,7 @@ a procs		"ps -elf | cut -c76- | sort | crk '/\d' | uniq -c | sort -n"
 a pid		"ps axu  | grep \!* | grep -v grep"
 a pidw		"ps axuww| grep \!* | grep -v grep"
 a slay		'(set j=`ps -ax|grep \!*|head -1`;kill -9  $j[1]) >& /dev/null'
-a zap		'(set j=`ps -ax|grep \!*|head -1`;kill -1  $j[1]) >& /dev/null'
+a hup		'(set j=`ps -ax|grep \!*|head -1`;kill -1  $j[1]) >& /dev/null'
 a term		'(set j=`ps -ax|grep \!*|head -1`;kill -15 $j[1]) >& /dev/null'
 
 # communication aliases
