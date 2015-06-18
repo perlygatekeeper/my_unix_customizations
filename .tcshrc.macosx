@@ -6,6 +6,25 @@ a la       '\ls -GFbalO@e'
 # com.apple.quarentine 
 # xattr file or xattr -l file
 
+# installed
+#    Show the installed versions and variants for portname.  If no portname is given, all installed ports are shown.
+
+#  location
+#    Print the install location of a given port.
+
+#  contents
+#    Lists the files installed by portname.
+
+#  provides
+#    Determines which port owns a given file and can take either a relative or absolute path. For example:
+
+#          port provides /opt/local/etc/irssi.conf
+#          port provides include/tiff.h
+
+
+a installed     port installed
+a contents      port contents
+a files         port provides
 a inst          sudo port install
 a search        port search
 

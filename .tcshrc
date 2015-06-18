@@ -65,7 +65,7 @@ a src		'source ~/.tcshrc'
 
 setenv LSCOLORS "Gxfxcxdxbxegedabagacad"
 setenv PAGER	"/usr/bin/less -r "
-setenv TERM		"xtermc"
+# setenv TERM		"xtermc"
 
 setenv EDITOR	/usr/bin/vim
 setenv VISUAL	/usr/bin/vim
