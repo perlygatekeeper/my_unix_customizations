@@ -13,12 +13,12 @@ my $usage = "usage:\n$name";
 #   a value of 1 will be assigned when the option is used on the command line.
 # A negatable option is specified with an exclamation mark "!" after the option name:
 
-use Getopt::Long 2.34;  # $version > 2.32 gives --help - and --version for
-use Data::Dumper;
-use Pod::Usage;
-
 $main::VERSION = 3.1;
 # print STDERR "main::VERSION: ($main::VERSION)\n"; 
+
+use Getopt::Long 2.34;  # $version > 2.32 gives --help -\? and --version for
+use Data::Dumper;
+use Pod::Usage;
 
 # Defaults
 my $verbosity = 0;                           # set up connectioned defaults
@@ -32,8 +32,10 @@ my $opts = { 'infile'      => "message.opt", # set up connections and defaults
              'debug_level' => \$debug,
              'man'         => \$man,
            };
-GetOptions ( $opts, 'outfile:s', "infile:s", "verbosity+", "debug_level+", 'help|?', 'man', 'version' ) or pod2usage(2);
-pod2usage(1) if $help;
+# GetOptions ( $opts, 'outfile:s', "infile:s", "verbosity+", "debug_level+", 'help|?', 'man', 'version' ) or pod2usage(2);
+# GetOptions ( $opts, 'outfile:s', "infile:s", "verbosity+", "debug_level+", 'help|?', 'man' ) or pod2usage(2);
+# pod2usage(1) if $help;
+GetOptions ( $opts, 'outfile:s', "infile:s", "verbosity+", "debug_level+", 'man' ) or pod2usage(2);
 pod2usage(-exitval => 0, -verbose => 2) if $man;
 
 print Dumper($opts);

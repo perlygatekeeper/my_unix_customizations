@@ -14,10 +14,29 @@ use Getopt::Long 2.33;
 my $data    = "file.dat";
 my $length  = 24;
 my $verbose = 0;
+my $version = 0;
+my $help    = 0;
 GetOptions ("length=i" => \$length,    # numeric
             "file=s"   => \$data,      # string
+            "help"     => \$help,
+            "version"  => \$version,
             "verbose"  => \$verbose)   # flag
      or die("Error in command line arguments.\n" . $usage);
+
+printf "%-12s is (%d)\n", 'length',       $length;
+printf "%-12s is (%s)\n", 'file',         $data;
+printf "%-12s is (%d)\n", 'verbose',      $verbose;
+print  "Try some negatives:\n";
+print  "$name -q\n";
+print  "$name -l bob\n";
+print  "$name --len 45\n";
+print  "$name --length 100\n";
+print  "$name --verbose\n";
+print  "$name --version (get this one free fro using version > 2.32 of GetOpt::Log\n";
+print  "$name -\\?       (get this one free fro using version > 2.32 of GetOpt::Log\n";
+print  "$name --help    (get this one free fro using version > 2.32 of GetOpt::Log\n";
+print  "$name --file 4\n";
+print  "$name --file output.txt\n";
 
 exit 0;
 
