@@ -1,36 +1,41 @@
 #!/usr/bin/env perl
-# A perl script to read bytes
+# A perl script to read an One-Time-Pad and a message and either
+# encrypt or decrypt the message with the random data found on
+# the One-Time-Pad.
 
 my $name = $0; $name =~ s'.*/''; # remove path--like basename
-my $usage = "usage:\n$name [-opt1] [-opt2] [-opt3]";
+my $usage = "usage:\n$name";
 
 use strict;
 use warnings;
 
-use Getopt::Long;
+$main::VERSION = 2.0;
+use Getopt::Long 2.34;  # $version > 2.32 gives --help -\? and --version for
+use Data::Dumper;
+use Pod::Usage;
 
-my $file_number  =  1;
+# Defaults
+my $otp_number   =  1;
 my $debug        =  0;
-
-my $infile       = sprintf ("randomness/random-bytes-%02d.txt", $file_number );
-my $offset_file  = "offsets.txt";
-my $packed       = '';
+my $offsets_file = "offsets.txt";
 my $offsets      = [];
-my $lines        = 0;
 
-open(OFFS, "<", $offset_file) || die("$name: Cannot read from '$offset_file': $!\n");
-while (<OFFS>) {
-	chomp;
-	if ($debug) {
-	    print "($_)";
-	}
-	push( @$offsets, "$_" );
-}
-close(OFFS);
-if ($debug) {
-    print scalar(@$offsets) . "\n";
-    print       join( " <=\n", @$offsets ) . "\n";
-}
+my $help      = 0;
+my $debug     = 0;
+my $man       = 0;
+my $opts = { 'infile'      => "message.opt", # set up connections and defaults
+             'outfile'     => "message.txt",
+             'debug+'      => \$debug,
+             'man'         => \$man,
+           };
+
+
+GetOptions ( $opts, 'outfile:s', "infile:s", "verbosity+", "debug+", 'man' ) or pod2usage(2);
+pod2usage(-exitval => 0, -verbose => 2) if $man;
+
+my $infile       = sprintf ("randomness/random-bytes-%02d.txt", $options{opt_number} );
+
+
 
 open(RANDOM,"<", $infile)  || die("$name: Cannot read from '$infile':  $!\n");
 my $i = 0;
@@ -38,13 +43,12 @@ while ( $i++ < $offsets->[$file_number] ) {
 	print $i . " chomp \n" if ($debug);
 	<RANDOM>;
 }
-#	if ($ARGV[0] and $ARGV[0] =~ /-s(ee)?/i ) {
-#		my $m = $msg;
-#		$m =~ s/\n/\\n/g;
-#	    print STDERR "($m)\n";
-#	}
+
+
 
 my $msg;
+my $packed       = '';
+my $lines        = 0;
 
 $/ = \16;
 while ( <> ) {
@@ -81,15 +85,38 @@ $offsets->[$file_number] += $lines;
 
 print STDERR "\n";
 
-if ($debug) {
-    print scalar(@$offsets) . "\n";
+
+sub read_offsets_from_file {
+    my ( $options, $offsets ) = @_;
+    open( OFFS, "<",  $options->{offsets_file} )
+      || die("$name: Cannot read from '$options->{offsets_file}': $!\n");
+    while (<OFFS>) {
+        chomp;
+	    if ($debug) {
+	        print "($_)";
+	    }
+	    push( @$offsets, "$_" );
+    }
+    close(OFFS);
+    if ($debug) {
+        print scalar(@$offsets) . "\n";
+        print       join( " <=\n", @$offsets ) . "\n";
+    }
 }
-open(OFFS, ">", $offset_file) || die("$name: Cannot write to '$offset_file': $!\n");
-print OFFS	join( "\n", @$offsets ) . "\n";
-if ($debug) {
-    print       join( " <-\n", @$offsets) . "\n";
+
+sub write_offsets_to_file {
+    my ( $options, $offsets ) = @_;
+    if ($debug) {
+        print scalar(@$offsets) . "\n";
+    }
+    open( OFFS, ">", $options->{offsets_file} )
+      || die("$name: Cannot write to '$options->{offsets_file}': $!\n");
+    print OFFS	join( "\n", @$offsets ) . "\n";
+    if ($debug) {
+        print       join( " <-\n", @$offsets) . "\n";
+    }
+    close(OFFS);
 }
-close(OFFS);
 
 exit 0;
 
@@ -106,192 +133,56 @@ fc af 6f aa cd 9d fd 5e e5 a4 8e a7 3e c9 1c a9
 f8 0d 97 5c 39 57 96 4d a5 b2 2c 67 d2 90 15 96
 
 
-    read FILEHANDLE,SCALAR,LENGTH,OFFSET
-    read FILEHANDLE,SCALAR,LENGTH
-            Attempts to read LENGTH characters of data into variable SCALAR
-            from the specified FILEHANDLE. Returns the number of characters
-            actually read, 0 at end of file, or undef if there was an error
-            (in the latter case $! is also set). SCALAR will be grown or
-            shrunk so that the last character actually read is the last
-            character of the scalar after the read.
-
-            An OFFSET may be specified to place the read data at some place in
-            the string other than the beginning. A negative OFFSET specifies
-            placement at that many characters counting backwards from the end
-            of the string. A positive OFFSET greater than the length of SCALAR
-            results in the string being padded to the required size with "\0"
-            bytes before the result of the read is appended.
-
-            The call is implemented in terms of either Perl's or your system's
-            native fread(3) library function. To get a true read(2) system
-            call, see sysread.
-
-            Note the characters: depending on the status of the filehandle,
-            either (8-bit) bytes or characters are read. By default, all
-            filehandles operate on bytes, but for example if the filehandle
-            has been opened with the ":utf8" I/O layer (see "open", and the
-            "open" pragma, open), the I/O will operate on UTF8-encoded Unicode
-            characters, not bytes. Similarly for the ":encoding" pragma: in
-            that case pretty much any characters can be read.
-
-     substr EXPR,OFFSET,LENGTH,REPLACEMENT
-     substr EXPR,OFFSET,LENGTH
-     substr EXPR,OFFSET
-
-First character is at offset 0
-
-OFFSET is negative   == that far from the end of the string.
-no LENGTH            == everything to the end of the string.
-LENGTH is negative   == leaves that many characters off the end of the string.
-
-To keep the string the same length you may need to pad
-or chop your value using "sprintf".
-
-
-OFFSET and LENGTH partly outside, only part returned.
-OFFSET and LENGTH completely outside, UNDEF returned.
-
-Here's an example showing the behavior for boundary cases:
-
-  my $name = 'fred';
-  substr($name, 4) = 'dy';       # $name is now 'freddy'
-  my $null = substr $name, 6, 2; # returns '' (no warning)
-  my $oops = substr $name, 7;    # returns undef, with warning
-  substr($name, 7) = 'gap';      # fatal error
-
-  my $str="abd123hij";		     # 2 ways to replace 123 with efg
-  substr($str, 2, 3, 'efg');	 # assign 4th arg.
-  substr($str, 2, 3)='efg';	     # substr as an lvalue
-
-AUTOLOAD		getgrnam		readwrite
-Getopts			getopt-long		recursive_decent
-OLD			getpwnam		regexp
-SymbolTable		group			remote
-URLS			help			response
-abbrev2.pl		here			roman
-addr2hex		hostname		rot13
-append			if			rw
-arp_ethers.pl		ifelse			select
-arrays			inout			serial.numbers
-arraytohash		inout.faq		setup_case
-author			last_mod		shadow
-binary			lower			shebang
-box.pl			ls			sleep
-break			main			sort
-byteflip		minutes			sort.old
-case			mkdir			special_chars
-chem_select		move			splice
-command			multidimensional_array	split
-copy			multiline		stack
-copyright		mytime			stat
-croak			name			stderr.faq
-crypt			new			stndrd
-ctrl-c.ignore		newhelp			sub
-data			newline			sub_ascii
-date			newtime			sub_case
-datetime		number			sub_help
-default			onebits			sub_parse_args
-directory		open			sub_ping_first
-env			parity			sub_sign
-eval			parse_args		substr
-example_syntax		passwd			system
-examples		perl.ans		t5
-extract_matching.pl	perl.todo		template
-fileperms		perl_number_tester	test
-files			perms			test_matching.pl
-flags			ping_first.pl		tie
-flip			pipeline		tilde-to-home
-flush			pointers		time
-for			    print			true
-for.orig		protect			usage
-forarray		protect.chars		user
-fori			pwd			version
-fork			qqq			wantarray
-ftp-telnet.faq		random			while
-get_ip_name		read			write
-
-
-http://perldoc.perl.org/Getopt/Long.html
-
-use Getopt::Long;
-GetOptions('color=s' => \$variable); # a string value required
-GetOptions('color:s' => \$variable); # a string value is optional
-GetOptions('color=i' => \$variable); # an integer value is required
-GetOptions('color:i' => \$variable); # an integer value is optional
-GetOptions('color=f' => \$variable); # a float value is required
-GetOptions('color:f' => \$variable); # a float value is optional
-
-GetOptions('dir|path|location=s' => \$variable);
-# The first name specified is the primary name; all the other are called aliases.
-
-# Use the special option '<>' to specify a function that will be called when an unexpected parameter is found.
-
-GetOptions('dir=s' => \$variable, '<>' => \&function);
-
-
-Without additional configuration, GetOptions() will ignore the case of option names, and allow the options to be abbreviated to uniqueness.
-
-+ The option does not take an argument and will be incremented by 1 every time it appears on the command line. E.g. "more+" ,
-  when used with --more --more --more, will increment the value three times, resulting in a value of 3 (provided it was 0 or undefined at first).
-  The + specifier is ignored if the option destination is not a scalar.
-
-= type [ desttype ] [ repeat ]
-  The option requires an argument of the given type. Supported types are:
-
-s String. An arbitrary sequence of characters. It is valid for the argument to start with - or -- .
-i Integer. An optional leading plus or minus sign, followed by a sequence of digits.
-o Extended integer, Perl style. This can be either an optional leading plus or minus sign, followed by a sequence of digits,
-  or an octal string (a zero, optionally followed by '0', '1', .. '7'), or a hexadecimal string
-  (0x followed by '0' .. '9', 'a' .. 'f', case insensitive), or a binary string (0b followed by a series of '0' and '1').
-f Real number. For example 3.14 , -6.23E24 and so on.
-
-The desttype can be @ or % to specify that the option is list or a hash valued. This is only needed when the destination
-for the option value is not otherwise specified. It should be omitted when not needed.
-The repeat specifies the number of values this option takes per occurrence on the command line.
-It has the format { [ min ] [ , [ max ] ] }.
-
-
 #!/usr/bin/env perl
-use Getopt::Long;
- 
-my ($help, @url, $size);
- 
-#-- prints usage if no command line parameters are passed or there is an unknown
-#   parameter or help option is passed
-usage() if ( @ARGV < 1 or
-          ! GetOptions('help|?' => \$help, 'url=s' => \@url, 'size=i' => \$size)
-          or defined $help );
- 
-sub usage
-{
-  print "Unknown option: @_\n" if ( @_ );
-  print "usage: program [--url URL] [--size SIZE] [--help|-?]\n";
-  exit;
-}
+# A perl script to demonstrate simple options via GetOpt::Long
 
-# ---------
-use Getopt::Long;
-    use Pod::Usage;
-    my $man = 0;
-    my $help = 0;
-    GetOptions('help|?' => \$help, man => \$man) or pod2usage(2);
-    pod2usage(1) if $help;
-    pod2usage(-exitval => 0, -verbose => 2) if $man;
-__END__
+use strict;
+use warnings;
+
+my $name = $0; $name =~ s'.*/''; # remove path--like basename
+my $usage = "usage:\n$name";
+
+
+# The argument specification is optional.
+#   If omitted, the option is considered boolean,
+#   a value of 1 will be assigned when the option is used on the command line.
+# A negatable option is specified with an exclamation mark "!" after the option name:
+
+
+
 =head1 NAME
-    sample - Using Getopt::Long and Pod::Usage
+
+sample - Using Getopt::Long and Pod::Usage
+
 =head1 SYNOPSIS
-    sample [options] [file ...]
-    Options:
-       -help            brief help message
-       -man             full documentation
 
-auto_version (default:disabled)
-Automatically provide support for the --version option if the application did not specify a handler for this option itself.
-Getopt::Long will provide a standard version message that includes the program name, its version (if $main::VERSION is defined), and the versions of Getopt::Long and Perl. The message will be written to standard output and processing will terminate.
-auto_version will be enabled if the calling program explicitly specified a version number higher than 2.32 in the use or require statement.
+sample [options] [file ...]
 
-auto_help (default:disabled)
-Automatically provide support for the --help and -? options if the application did not specify a handler for this option itself.
-Getopt::Long will provide a help message using module Pod::Usage. The message, derived from the SYNOPSIS POD section, will be written to standard output and processing will terminate.
-auto_help will be enabled if the calling program explicitly specified a version number higher than 2.32 in the use or require statement.
+Options:
+  -help|-?         brief help message
+  -man             full documentation
+  -outfile         output filename
+  -infile          input filename
+  -debug_level     level of debugging, useful range 0..6
+  -verbosity       call multiple time to up the amount of info printed
+
+=head1 OPTIONS
+
+=over 8
+
+=item B<-help>
+
+Print a brief help message and exits.
+
+=item B<-man>
+
+Prints the manual page and exits.
+
+=back
+
+=head1 DESCRIPTION
+
+B<This program> will read the given input file(s) and do something
+useful with the contents thereof.
+
+=cut

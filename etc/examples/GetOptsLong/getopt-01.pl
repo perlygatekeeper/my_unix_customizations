@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 
-my $VERSION = 1.0;
+$main::VERSION = 1.0;
 
 my $name = $0; $name =~ s'.*/''; # remove path--like basename
 my $usage = "usage:\n$name [ -length LENGTH ] [ -file FILENAME ] [ -verbose ]";
@@ -14,12 +14,8 @@ use Getopt::Long 2.33;
 my $data    = "file.dat";
 my $length  = 24;
 my $verbose = 0;
-my $version = 0;
-my $help    = 0;
 GetOptions ("length=i" => \$length,    # numeric
             "file=s"   => \$data,      # string
-            "help"     => \$help,
-            "version"  => \$version,
             "verbose"  => \$verbose)   # flag
      or die("Error in command line arguments.\n" . $usage);
 
