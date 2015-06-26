@@ -1,10 +1,17 @@
 #!/usr/bin/env perl
+<<<<<<< HEAD
 # A perl script to read an One-Time-Pad and a message and either
 # encrypt or decrypt the message with the random data found on
 # the One-Time-Pad.
 
 my $name = $0; $name =~ s'.*/''; # remove path--like basename
 my $usage = "usage:\n$name";
+=======
+# A perl script to read bytes
+
+my $name = $0; $name =~ s'.*/''; # remove path--like basename
+my $usage = "usage:\n$name [-opt1] [-opt2] [-opt3]";
+>>>>>>> 274012b81a50ddda1ea1edcadfc0549813efdcd4
 
 use strict;
 use warnings;
@@ -35,16 +42,12 @@ pod2usage(-exitval => 0, -verbose => 2) if $man;
 
 my $infile       = sprintf ("randomness/random-bytes-%02d.txt", $options{opt_number} );
 
-
-
 open(RANDOM,"<", $infile)  || die("$name: Cannot read from '$infile':  $!\n");
 my $i = 0;
 while ( $i++ < $offsets->[$file_number] ) {
 	print $i . " chomp \n" if ($debug);
 	<RANDOM>;
 }
-
-
 
 my $msg;
 my $packed       = '';
@@ -84,7 +87,6 @@ close(RANDOM);
 $offsets->[$file_number] += $lines;
 
 print STDERR "\n";
-
 
 sub read_offsets_from_file {
     my ( $options, $offsets ) = @_;
