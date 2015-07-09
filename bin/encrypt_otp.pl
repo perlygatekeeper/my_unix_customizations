@@ -1,17 +1,10 @@
 #!/usr/bin/env perl
-<<<<<<< HEAD
 # A perl script to read an One-Time-Pad and a message and either
 # encrypt or decrypt the message with the random data found on
 # the One-Time-Pad.
 
 my $name = $0; $name =~ s'.*/''; # remove path--like basename
 my $usage = "usage:\n$name";
-=======
-# A perl script to read bytes
-
-my $name = $0; $name =~ s'.*/''; # remove path--like basename
-my $usage = "usage:\n$name [-opt1] [-opt2] [-opt3]";
->>>>>>> 274012b81a50ddda1ea1edcadfc0549813efdcd4
 
 use strict;
 use warnings;
