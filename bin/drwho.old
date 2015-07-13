@@ -1,20 +1,19 @@
 #!/usr/bin/env perl
-use strict;
-use warnings;;
-
+#
 # A perl script to report who is on a group of workstations.
-my $name = $0;
-   $name =~ s'.*/''; # remove path--like basename
-my $usage = 'Usage: drwho [-finger|-who|-w|-do|-c command]' . "\n";
-   $usage.= '             [-ignore machine ...]' . "\n";
-   $usage.= '             [-machines ...]' . "\n";
-   $usage.= '             [-box|tardis]';
-my $version="2.0";              # first official version.
-   $version="2.1";              # add inteligent ping command 
-                                # assignment (see sub ping_frst)
+#
+$name = $0;
+$name =~ s'.*/''; # remove path--like basename
+$usage = 'Usage: drwho [-finger|-who|-w|-do|-c command]' . "\n";
+$usage.= '             [-ignore machine ...]' . "\n";
+$usage.= '             [-machines ...]' . "\n";
+$usage.= '             [-box|tardis]';
+$version="2.0";		# first official version.
+$version="2.1";		# add inteligent ping command 
+			# assignment (see sub ping_frst)
 
-my $last_mod_date="Thu Aug 03 1995";
-my $author="Dr. Steven Parker";
+$last_mod_date="Thu Aug 03 1995";
+$author="Dr. Steven Parker";
 select(STDOUT); $|=1;
 
 &initialize;
@@ -94,14 +93,14 @@ sub initialize {
   $who=   `which who`    || '/usr/bin/who';
   $ping=  `which ping`   || '/usr/sbin/ping';
 
-# IBM's  AIX             SunOS/IRIX         Sol            OSF1
+# IBM's  AIX		 SunOS/IRIX	    Sol            OSF1
 # $ping=  `which ping`   || 'etc/ping';
 
 # DEC's OSF1 or Digital Unix
 # $ping=  `which ping`   || '/sbin/ping';
 
   $command = $finger;
-  $header= 'Machine:    Login       Name              TTY Idle    When    From Where';
+  $header= 'Machine:   	Login       Name              TTY Idle    When    From Where';
 
   @MACHINES=$ENV{'MACHINES'} || ('chemistry.ohio-state.edu','simon','finally');
   @NICKS=('chem','sim','fin'); # each machine can have one nickname.
@@ -114,7 +113,7 @@ sub ping_first {
   local($name)=@_;
   local($command)='/usr/sbin/ping';
   $timeout=1;
-  #        AIX           SunOS/IRIX         Sol            OSF1
+  #        AIX		 SunOS/IRIX	    Sol            OSF1
   foreach ('/etc/ping','/usr/etc/ping','/usr/sbin/ping','/sbin/ping') {
     if ( -x $_) { $command=$_; last; }
   }
@@ -134,7 +133,7 @@ sub parse_args {
   @args=('?','help');
   @help=('print this message','print this message');
   push(@args,'who','w','finger','do','command',
-             'box','tardis','machines','ignore');
+	     'box','tardis','machines','ignore');
   push(@help,"use the 'who'         command",
              "use the 'w' (or what) command",
              "use the 'finger'      command",
@@ -154,12 +153,12 @@ sub parse_args {
       shift(@ARGV);
     } elsif ( $abbrev->{$ARGV[0]} eq '-who' ) {
       $command=$who;
-      $header= 'Machine:        User       tty          When';
+      $header= 'Machine:	User       tty          When';
       shift(@ARGV);
     } elsif ( $abbrev->{$ARGV[0]} eq '-w' ) {
       $command="$w -h";
       $header=
-      'Machine: User     tty       login@  idle   JCPU   PCPU  what';
+      'Machine:	User     tty       login@  idle   JCPU   PCPU  what';
     } elsif ( $abbrev->{$ARGV[0]} eq '-finger' ) {
       $command=$finger;
       $header=
@@ -183,12 +182,12 @@ sub parse_args {
       while ($was_a_machine) {
        $was_a_machine=0;
         for (local($i)=$[; $i<=$#MACHINES; $i++) {
-          if ( ( $ARGV[0] =~ /$MACHINES[$i]/i )
-             ||( $ARGV[0] =~ /$NICKS[$i]/i ) ) {
-             $ignore{$MACHINES[$i]}++;
+	  if ( ( $ARGV[0] =~ /$MACHINES[$i]/i )
+	     ||( $ARGV[0] =~ /$NICKS[$i]/i ) ) {
+	     $ignore{$MACHINES[$i]}++;
              shift(@ARGV);
              $was_a_machine=1;
-          }
+	  }
         }
       }
     } else {

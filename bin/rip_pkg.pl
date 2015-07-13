@@ -124,11 +124,15 @@ if ( $pkg_name ) {
 # system("gnucpio -H newc -iv --make_directories <../$pkg_file.cpio1 >/dev/null 2>&1");
 # system("gnucpio -H newc -iv --make_directories <../$pkg_file.cpio2 >/dev/null 2>&1");
 if ($debug) {
-  system("/bin/cpio.exe -H newc -iv <../$pkg_file.cpio1");
-  system("/bin/cpio.exe -H newc -iv <../$pkg_file.cpio2");
+  print "here\n";
+# system("/usr/bin/cpio -H newc -iv <../$pkg_file.cpio1");
+# system("/usr/bin/cpio -H newc -iv <../$pkg_file.cpio2");
+  system("gnucpio -H newc -iv --make_directories <../$pkg_file.cpio1 >/dev/null 2>&1");
+  system("gnucpio -H newc -iv --make_directories <../$pkg_file.cpio2 >/dev/null 2>&1");
+  print "there\n";
 } else {
-  system("/bin/cpio.exe -H newc -iv <../$pkg_file.cpio1 >/dev/null 2>&1");
-  system("/bin/cpio.exe -H newc -iv <../$pkg_file.cpio2 >/dev/null 2>&1");
+  system("/usr/bin/cpio -H newc -iv <../$pkg_file.cpio1 >/dev/null 2>&1");
+  system("/usr/bin/cpio -H newc -iv <../$pkg_file.cpio2 >/dev/null 2>&1");
 }
 
 if ( -d "reloc" ) {
