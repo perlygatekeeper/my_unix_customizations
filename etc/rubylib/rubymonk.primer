@@ -1,0 +1,531 @@
+-=- Introduction To Ruby Objects -=-
+
+0.0 Introduction to Objects
+    Everything is an object
+    self											# returns main
+    -----------------------------
+    Talking to objects
+    2.even?											# returns true
+    1.next.next										# returns 3
+
+0.1 More Objects and Methods
+    Looking up methods
+    1.methods										# returns a LOT
+    1.methods.sort									# returns a LOT
+    [:!, :!=, :!~, :%, :&, :*, :**, :+, :+@, :-, :-@, :/,
+    :<, :<<, :<=, :<=>, :==, :===, :=~, :>, :>=, :>>,
+    :[], :^, :__id__, :__send__, :`,
+    :abs, :abs2, :acts_like?, :ago, :angle, :arg, :as_json
+    .
+    .
+    .
+    to_json, :to_param, :to_query, :to_r, :to_s, :to_yaml,
+    :to_yaml_properties, :to_yaml_style, :truncate, :trust,
+    :try, :unloadable, :untaint, :until, :untrust, :untrusted?,
+    :upto, :week, :weeks, :with_options, :with_warnings, :year,
+    :years, :zero?, :|, :~]
+    -----------------------------
+    Invoking methods with arguments
+    ['rock','paper','scissors'].index('paper')		# returns 1
+    2.between?(1,3)									# returns true
+
+
+0.2 Syntactic Sugar for Special Methods
+    Special Methods
+    4.+(3)											# returns 7
+    1+2												# returns 3
+    special methods:   +  -  *  /  ==  !=  <  >  <=  >=  and  []
+
+    words = [ "foo", "bar", "baz" ]
+    words[1]   # returns "bar"
+
+    words = [ "foo", "bar", "baz" ]
+    words.[](1) 									# also returns "bar"
+
+
+ -=- Introduction to Strings -=-
+1.0 Introduction to Strings
+    String construction
+    "Ruby Monk"
+    -----------------------------
+    Literal forms
+    'July'
+    "July"
+    -----------------------------
+    String length
+    "RubyMonk".length()								# returns 8
+
+1.1 String Basics
+    String Interpolation
+    a = 1
+    b = 4
+    puts "The number #{a} is less than #{b}"		# returns  'The number 1 is less than 4'
+
+    !! Any valid block of Ruby code you place inside #{} will be evaluated and inserted at that location.
+
+    def string_length_interpolater(incoming_string)
+      "The string you just gave me has a length of #{incoming_string.length()}"
+    end
+    -----------------------------
+    Search in a String
+    "[Luke:] I can’t believe it. [Yoda:] That is why you fail.".include? 'Yoda'    or 
+    "[Luke:] I can’t believe it. [Yoda:] That is why you fail.".include?('Yoda')
+
+    "Ruby is a beautiful language".starts_with?('Ruby')
+
+    "I am a Rubyist".index('R')
+
+    -----------------------------
+    String case change
+    puts 'i am in lowercase'.upcase					#=> 'I AM IN LOWERCASE'
+
+    'This is Mixed CASE'.downcase()
+
+    "ThiS iS A vErY ComPlEx SenTeNcE".swapcase
+
+1.2 Advanced String Operations
+    Splitting Strings
+    
+    'Fear is the path to the dark side'.split(" ")
+
+    -----------------------------
+    Concatenating Strings
+
+    'Ruby' + 'Monk'									#=> 'RubyMonk'
+
+    "Ruby".concat("Monk")							# also returns 'RubyMonk'
+    
+    "Ruby"<<"Monk"									# changes "Ruby" string object and returns it.
+
+    -----------------------------
+    Replacing a substring
+    "I should look into your problem when I get time".sub('I','We') # returns:
+    "We should look into your problem when I get time"
+
+    "I should look into your problem when I get time".gsub('I','We') # returns:
+    "We should look into your problem when We get time"
+
+    'RubyMonk'.gsub(/[aeiou]/,'1')					# returns "R1byM1nk"
+    
+    'RubyMonk Is Pretty Brilliant'.gsub(/[A-Z]/,'0') # returns:
+    '0uby0onk 0s 0retty 0rilliant'
+
+    -----------------------------
+    Find a substring using RegEx
+    'RubyMonk Is Pretty Brilliant'.match(/ ./)		# returns 'I'
+
+    'RubyMonk Is Pretty Brilliant'.match(/ ./,11)   # returns 'P', second arg to match is position to start
+
+
+ -=- Conditions and Loops: Control Structures in Ruby -=-
+2.0 Boolean Expressions in Ruby
+    Beginner's Guide to Expressions in Ruby
+    name==('Bob')
+
+    age <= 35 # change this expression
+
+    age >= 23 && ( name == 'Bob' || name == 'Jill' )
+
+    ! ( name == 'Bob' )								# didn't work without ()'s
+
+2.1 The if..else construct
+    Ruby Conditional Branching : the 'if' statement
+
+	def check_sign(number)
+      if number > 0
+        "#{number} is positive"
+      else
+        "#{number} is negative"
+      end        
+    end
+    
+    STDOUT:
+    
+    -1 is negative
+    1 is positive
+    0 is negative
+    -----------------------------
+
+    def check_sign(number)
+      if number > 0
+        "#{number} is positive"
+      elsif number < 0
+        "#{number} is negative"
+      else
+        "#{number}"
+      end        
+    end
+    STDOUT:
+    
+    zero is considered to be neither positive nor negative ✔
+    the number 2 is considered positive ✔
+    the number -2 is considered negative ✔
+    
+
+    age = 10
+    unless age >= 18
+        puts "Sorry, you need to be at least eighteen to drive a car. Grow up fast!"
+    end
+    
+    STDOUT:
+    
+    Sorry, you need to be at least eighteen to drive a car. Grow up fast!
+
+    -----------------------------
+    The ternary operator
+    def check_sign(number)
+      number > 0 ? "#{number} is positive" : "#{number} is negative"
+    end
+
+    STDOUT:
+
+    -1 is negative
+    1 is positive
+    0 is negative
+    -----------------------------
+    Truthiness of objects in Ruby
+    In such cases, the objects false and nil equates to false.
+    Every other object like say 1, 0, "" are all evaluated to be true. Here is a demonstration:
+    
+    if 0
+      puts "Hey, 0 is considered to be a truth in Ruby" 
+    end
+    
+    STDOUT:
+    
+    Hey, 0 is considered to be a truth in Ruby
+
+    !!!   0, "" are true in RUBY   !!!
+
+2.2 Loops in Ruby
+    Loops in Ruby
+
+    Infinite Loops
+    # you have to change the following statement (into multiple ones if needed)
+    # so that the monk meditates till monk.nirvana? becomes true.
+    loop do
+      monk.meditate
+      if monk.nirvana?
+        break
+      end
+    end
+    STDOUT:
+
+    the monk should meditate till he reaches nirvana ✔
+    -----------------------------
+    Run a block of code N times
+
+    Say N is 5, let us imagine how it might look.
+
+    5.times do
+        # do the stuff that needs to be done
+    end
+
+    !!! N.times do .. end     will loop N times !!!
+    -----------------------------
+    # add a loop inside this method to ring the bell 'n' times
+    def ring(bell, n)
+      n.times do
+        bell.ring
+      end
+    end            
+    
+    STDOUT:
+    
+    The monastery has a new bell!
+    The bell has been rung for the 1st time!
+    The bell has been rung for the 2nd time!
+    The bell has been rung for the 3rd time!
+    The monastery has a new bell!
+    The bell has been rung for the 1st time!
+    The bell has been rung for the 2nd time!
+    The bell has been rung for the 3rd time!
+    The bell has been rung for the 4th time!
+    The bell has been rung for the 5th time!
+    The bell has been rung for the 6th time!
+    should ring the monastery bell 3 times ✔
+    should ring the monastery bell 6 times for urgent matters ✔
+    
+
+ -=- Arrays in Ruby -=-
+3.0 Introduction to Arrays
+    Empty Arrays
+
+    [] -OR- Array.new  					# creates a new array.
+
+    -----------------------------
+    Building arrays
+    [ 1, 2, 3, 4, 5 ]   
+
+    -----------------------------
+    Looking up data in Arrays
+    [1, 2, 3, 4, 5][2]					# returns 3
+
+    [1, 2, 3, 4, 5, 6, 7][4]
+
+    STDOUT:
+
+    5
+    the value at index '4' should be 5 ✔
+
+    !!! arrays in Ruby are zero-indexed !!!
+
+    -----------------------------
+    [1, 2, 3, 4, 5][-5]
+    STDOUT:
+
+    1
+    the value at index '-5' should be 1 ✔
+
+    -----------------------------
+    [1, 2, 3, 4, 5][-1]
+    STDOUT:
+
+    5
+    the value at index '-1' should be 5 ✔
+
+    -----------------------------
+    Growing arrays
+
+    [1, 2, 3, 4, 5] << "woot"
+    STDOUT:
+
+    [1, 2, 3, 4, 5, "woot"]
+    append 'woot' to the end of the array ✔
+
+
+
+
+
+3.1 Basic Array Operations
+
+    Transforming arrays
+    [1, 2, 3, 4, 5].map { |i| i + 1 }	# returns [ 2, 3, 4, 5, 6 ]
+
+    [1, 2, 3, 4, 5] map { |i| i * 3 }   # returns [ 3, 6, 9, 12, 15 ]
+
+    !!!  loop index in curly braces are defined by |i| just inside the { !!!!
+    !!!  Array#map and Array#collect are aliases and are thus interchangable !!!
+
+    -----------------------------
+    Filtering elements of an Array
+
+    # select even numbers
+    [1,2,3,4,5,6].select {|number| number % 2 == 0}	 # returns [ 2, 4, 6 ]
+
+    !!!  use Array#select to filter Array elements, like grep in Perl !!!
+
+    names = ['rock', 'paper', 'scissors', 'lizard', 'spock']
+    names.select { |string| string.length > 5 }STDOUT:
+    
+    ["scissors", "lizard"]
+    gives words that are longer than five characters ✔
+
+    -----------------------------
+    Deleting elements
+    [1,3,5,4,6,7].delete(5)
+
+    STDOUT:
+
+    5
+    deletes element 5 from the array ✔
+
+    [1,2,3,4,5,6,7].delete_if{|i| i < 4 }
+
+    STDOUT:
+
+    4
+    5
+    6
+    7
+    -----------------------------
+    [1,2,3,4,5,6,7,8,9].delete_if {|i| i % 2 == 0 }
+
+    STDOUT:
+
+    [1, 3, 5, 7, 9]
+    deletes all the even numbers ✔
+    does not delete the odd numbers ✔
+
+3.2 Iteration
+    Got `for` loops?
+
+    array = [1, 2, 3, 4, 5]
+    for i in array
+      puts i
+    end
+    -----------------------------
+    def array_copy(source)
+      destination = []
+        source.select { |i| destination.push(i) if (i < 4) }
+        return destination
+    end
+
+    STDOUT:
+
+    passing [1, 2, 3, 4, 5] to array_copy returns [1,2,3] ✔
+    passing [-23, 12, 0, 19] to array_copy returns [-23, 0] ✔
+
+    -----------------------------
+    looping with `each`
+    array = [1, 2, 3, 4, 5]
+    array.each do |i|
+      puts i
+    end
+
+    STDOUT:
+
+    1
+    2
+    3
+    4
+    5
+
+    -----------------------------
+    def array_copy(source)                        def array_copy(source)
+      destination = []                   OR         destination = []
+      source.each do |i|                            source.each do |i|
+        destination << i if ( i < 4 )                 if ( i < 4 )
+                                                        destination << i
+                                                      end
+      return destination                              return destination
+    end                                           end
+    
+    STDOUT:
+    
+    we should use the Array#each method to do the copying ✔
+    passing [1, 2, 3, 4, 5] to array_copy returns [1,2,3] ✔
+    passing [-23, 12, 0, 19] to array_copy returns [-23, 0] ✔
+
+ -=- Hashes in Ruby -=-
+4.0 Introduction to Ruby Hashes
+    Creating a Hash
+
+    student_ages = {
+      "Jack" => 10,
+      "Jill" => 12,
+      "Bob" => 14
+    }
+    -----------------------------
+    restaurant_menu = {
+      "Ramen"       => 3,
+      "Dal Makhani" => 4,
+      "Tea"         => 2,
+    }
+    STDOUT:
+
+    the price of a Ramen is 3 ✔
+    the price of a Dal Makhani is 4 ✔
+    the price of a Tea is 2 ✔
+    -----------------------------
+    Fetch values from a Hash
+
+    restaurant_menu["Ramen"]
+    STDOUT:
+
+    3
+    find the price of the Ramen from the restaurant_menu ✔
+    -----------------------------
+    Modifying a Hash
+
+    restaurant_menu = {}
+    restaurant_menu["Dal Makhani"] = 4.5
+    restaurant_menu["Tea"] = 2
+
+    STDOUT:
+
+    price of Dal Makhani is 4.5 ✔
+    price of Tea is 2 ✔
+
+
+4.1 Hashes, in and out.
+    Iterating over a Hash
+
+    restaurant_menu = { "Ramen" => 3, "Dal Makhani" => 4, "Coffee" => 2 }
+    restaurant_menu.each do | item, price |
+      puts "#{item}: $#{price}"
+    end
+    STDOUT:
+
+    Ramen: $3
+    Dal Makhani: $4
+    Coffee: $2
+
+    restaurant_menu = { "Ramen" => 3, "Dal Makhani" => 4, "Coffee" => 2 }
+    restaurant_menu.each do |item, price|
+      restaurant_menu[item] = price * 1.1
+    end
+    STDOUT:
+
+    the price of Ramen should be 10% more in the new menu ✔
+    the price of Dal Makhani should be 4.4 which is 10% more from the old price ✔
+
+    -----------------------------
+    Extracting the keys and values from a Hash
+    restaurant_menu = { "Ramen" => 3, "Dal Makhani" => 4, "Coffee" => 2 }
+    restaurant_menu.keys
+
+    STDOUT:
+
+    ["Ramen", "Dal Makhani", "Coffee"]
+    list all the keys (item names) in the menu ✔
+    -----------------------------
+    Newer, faster.
+    normal = Hash.new
+    was_not_there = normal[:zig]
+    puts "Wasn't there:"
+    p was_not_there
+
+    usually_brown = Hash.new("brown")
+    pretending_to_be_there = usually_brown[:zig]
+    puts "Pretending to be there:"
+    p pretending_to_be_there
+
+    STDOUT:
+
+    Wasn't there:
+    nil
+    Pretending to be there:
+    "brown"
+    -----------------------------
+    chuck_norris = Hash[:punch, 99, :kick, 98, :stops_bullets_with_hands, true]
+    p chuck_norris
+
+    STDOUT:
+
+    {:punch=>99, :kick=>98, :stops_bullets_with_hands=>true}
+    -----------------------------
+    def artax
+      a = [:punch, 0]
+      b = [:kick, 72]
+      c = [:stops_bullets_with_hands, false]
+      key_value_pairs = [a, b, c]
+      Hash[key_value_pairs]
+    end
+    p artax
+
+    {:punch=>0, :kick=>72, :stops_bullets_with_hands=>false}
+    has a kick of 72 ✔
+    has a punch of 0... because, like, he's a horse. ✔
+
+ -=- Classes and Object Oriented Programming in Ruby
+5.0 Classes
+5.1 Building your own class
+
+ -=- Introduction to Ruby Methods -=-
+6.1 Being Methodical
+6.2 Calling a method
+
+ -=- Introduction to Lambdas and Blocks
+7.1 Lambdas In Ruby
+7.2 Blocks in Ruby
+
+ -=- Introduction to Modules -=-
+8.1 Getting Modular
+8.2 Modules as Namespaces
+
+ -=- Introduction to I/O -=-
+9.1 Streams
+9.2 Using the `File` Class
+
+
