@@ -9,11 +9,14 @@ my $usage = "usage:\n$name [ --infile FILE | FILE ... ] [ --outfile FILE ] "
 
 use strict;
 use warnings;
-use Getopt::Long 2.34;  # $version > 2.32 gives --help -\? and --version for
+# $version > 2.32 gives --help -\? and --version for free but doesn't unless 2.34 is numeric not '2.34'
+# '2.34' as a string with a qw(...) gives a syntax error
+# use Getopt::Long '2.34' qw(:config auto_help auto_version); 
+use Getopt::Long qw(:config auto_help auto_version);
 use Data::Dumper;
 use Pod::Usage;
 
-$main::VERSION = 2.0;
+$main::VERSION = 2.1;
 
 # Defaults
 my $verbosity = 0;                           # set up connectioned defaults
@@ -137,19 +140,68 @@ encrypt_otp.pl - En/De crypt with one of many one-time-pads
 
 encrypt_otp.pl [options] [file ...]
 
-Options:
-  -help|-?         brief help message
-  -man             full documentation
-  -outfile         output filename
-  -infile          input filename
-  -debug_level     level of debugging, useful range 0..6
-  -verbosity       call multiple time to up the amount of info printed
+encrypt_otp.pl --man  to print full manual
+
+=head1 DESCRIPTION
+
+encrypt_otp.pl will encrypt or decrypt input given to it, either via the
+--infile option or STDIN.  It will do so using the choose one-time-pad, which
+are stored in the subdirectory 'randomness' and named random-bytes-DD.txt where
+DD is the zero-padded, decimal number of the pad, which may be set via the
+--pad_number option.
+
+The data used to encrypt/decrypt the message is obtained from the one-time-pad
+file, after skipping 'offset' lines.  The offset is found in the offsets.txt
+file for the given pad or may be explicitly specified with the --offset option.
+If the offset is found in the offsets.txt file, then it's value is adjusted by
+the number of lines required for the message being Xcrypted and written back to
+the offsets.txt file, thus making it ready to use for the next file.
+
+This method of determining the offset in the pad files should work fine in
+normal operation while still allowing the option of either editing the
+offsets.txt file by hand or keeping a backup copy.  The only information
+passed between participants is the length of each message passed between them.
+
+It is understood that this is an fragile solution at best for the present
+and a better protocol/method is planned in future versions.  At worst a user
+could scan the pad file a set number of lines forward or behind the presently
+stored offset for that pad and attempt to use each subsequent line in the range
+as the offset for a given message.
+
 
 =head1 OPTIONS
 
 =over 8
 
-=item B<-help>
+=item B<-pad_number>
+
+Choose which One-Time Pad to use [ 0..25]
+
+=item B<-offset>
+
+Override the offset (in lines) stored in the offsets file for the choosen pad.
+
+=item B<-outfile>
+
+Output filename
+
+=item B<-infile>
+
+Input filename
+
+=item B<-debug_level>
+
+Level of debugging, useful range 0..6
+
+=item B<-verbosity>
+
+Call multiple time to increase the amount of information printed
+
+=item B<-version>
+
+Print a the version, version of GetOpt::Long and perl, then exit.
+
+=item B<-help|-?>
 
 Print a brief help message and exits.
 
