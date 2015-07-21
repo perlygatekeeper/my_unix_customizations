@@ -20,19 +20,17 @@ $main::VERSION = 2.1;
 
 # Defaults
 my $verbosity = 0;                           # set up connectioned defaults
-my $help      = 0;
 my $debug     = 0;
 my $man       = 0;
 my $offsets   = [];
-my $opts = { 'infile'      => "message.opt", # set up connections and defaults
-             'outfile'     => "message.txt",
-#            'help'        => \$help,
-             'debug_level' => \$debug,
-             'man'         => \$man,
-             'pad_number'  => 1,
-             'offset'      => 0,
+my $opts = { 'debug'        => \$debug,
+             'man'          => \$man,
+             'pad_number'   => 1,
+             'offsets_file' => "offsets.txt",
+#         	 'infile'       => "message.opt", # set up connections and defaults
+#            'outfile'      => "message.txt",
            };
-GetOptions ( $opts, "outfile:s", "infile:s", "debug+", "man", "pad_number=i", "offset=i") or pod2usage(2);
+GetOptions ( $opts, "outfile:s", "infile:s", "debug+", "man", "pad_number=i", "offset:i") or pod2usage(2);
 pod2usage(-exitval => 0, -verbose => 2) if $man;
 
 read_offsets_from_file( $opts, $offsets );
@@ -46,14 +44,15 @@ exit 0;
 
 sub prepare_otp {
 	my ( $opts, $offsets ) = @_;
+	my $OTP_FH;
     my $padfile = sprintf ("randomness/random-bytes-%02d.txt", $opts->{pad_number} );
-    open(RANDOM,"<", $padfile)  || die("$name: Cannot read from '$padfile':  $!\n");
+    open($OTP_FH,"<", $padfile)  || die("$name: Cannot read from '$padfile':  $!\n");
     my $i = 0;
     while ( $i++ < $offsets->[$opts->{pad_number}] ) {
     	print STDERR $i . " chomp \n" if ($debug);
-    	<RANDOM>;
+    	<$OTP_FH>;
     }
-    return *RANDOM; # return a filehandle?
+    return $opts{'otp_file_handle'} = $OTP_FH;
 }
 
 sub process_file {
@@ -67,14 +66,14 @@ sub process_file {
         my $msg = $_;
         my $length = length($msg);
         if ($debug) {
-            print "message is " . length($msg) . " characters long.\n";
-    	    print ". ";
+            print STDERR "message is " . length($msg) . " characters long.\n";
+#   	    print STDERR ". ";
     	}
     	if ( $length and $length < 16 ) {
     		$msg .= " " x ( 16 - $length );
     	}
-    	my $rand_numbers_line = <RANDOM>;
-        print $rand_numbers_line if ($debug);
+    	my $rand_numbers_line = <$opts{'otp_file_handle'}>;
+        print STDERR $rand_numbers_line if ($debug);
         chomp $rand_numbers_line;
         $packed = pack( "H2" x 16, split( / /, $rand_numbers_line ) );
         my $m;
@@ -82,12 +81,12 @@ sub process_file {
         foreach ( 1 .. 16 ) {
             $r = substr($packed, 0, 1, '');
         	$m = substr($msg,    0, 1, '');
-        	printf "%02d ->%d,%d<-\n", $_, ord($r), ord($m) if ($debug>1);
+        	printf STDERR "%02d ->%d,%d<-\n", $_, ord($r), ord($m) if ($debug>1);
         	printf "%c", ( ord($r) ^ ord($m));
     	}
         if ($debug) {
             foreach my $char ( split(//, $packed) ) {
-                printf("(%02X, %d) ", ord($char), ord($char) );
+                printf STDERR "(%02X, %d) ", ord($char), ord($char);
             }
     	}
     	$lines++;
@@ -103,14 +102,14 @@ sub read_offsets_from_file {
     while (<OFFS>) {
         chomp;
 	    if ($debug) {
-	        print "($_)";
+	        print STDERR "($_) ";
 	    }
 	    push( @$offsets, "$_" );
     }
     close(OFFS);
     if ($debug) {
-        print scalar(@$offsets) . "\n";
-        print       join( " <=\n", @$offsets ) . "\n";
+        print STDERR "\n"  . scalar(@$offsets) . "\n";
+#       print STDERR join( " <=\n", @$offsets ) . "\n";
     }
 }
 
@@ -123,7 +122,7 @@ sub write_offsets_to_file {
       || die("$name: Cannot write to '$opts->{offsets_file}': $!\n");
     print OFFS	join( "\n", @$offsets ) . "\n";
     if ($debug) {
-        print       join( " <-\n", @$offsets) . "\n";
+        print STDERR join( " <-\n", @$offsets) . "\n";
     }
     close(OFFS);
 }
