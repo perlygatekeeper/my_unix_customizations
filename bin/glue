@@ -39,8 +39,8 @@ if ( $line_break ) {
   $column_start[$column] = 0;
 
   # skip first blank/white lines
-  while (<>)
-  { chomp;
+  while (<>) {
+  	chomp;
     if ( $_ !~ /$break_reg/ ) {
       $line[$line]=$_; 
       $line_length[$line]=length($_);
@@ -51,8 +51,8 @@ if ( $line_break ) {
   
   #continue on with rest of lines
 
-  while (<>)
-  { chop;
+  while (<>) {
+  	chomp;
     $line[$line]=$_;
     $line_length[$line]=length($_);
     $line++;
@@ -91,10 +91,9 @@ if ( $line_break ) {
 # the last line has been read, we have therefore
 # found the end of the last column.
 # (if the last line wasn't itself a break line)
-  if (! $break_line) {
-    $column_length[$column]=$line-$column_start[$column];
-    $column_width[$column]=
-      &max(@line_length[$column_start[$column]..($line-1)]);
+  if ( ! $break_line) {
+    $column_length[$column] = $line-$column_start[$column];
+    $column_width[$column] = &max(@line_length[$column_start[$column]..($line-1)]);
   # set for ghost column and set the start of this guost column
     $column++;
     $column_start[$column]=$line;
@@ -157,39 +156,42 @@ exit 0;
 ####   SUBROUTINES   ####
 #   ***   Parse Command Line Argument(s)   ***
 sub parse_args {
-while ( @ARGV >= 1 ) {
-# print "'$ARGV[0]'\n";
-  if    ( $ARGV[0] eq '-d' ) {
-    $delimitstring = $ARGV[1];
-    $delimitstring =~ s/([^\\]?)\\n/\1$newline/g;
-    $delimitstring =~ s/([^\\]?)\\t/\1$tab/g;
-    $delimitstring =~ s/([^\\]?)\\b/\1$backspace/g;
-    $delimitstring =~ s/([^\\]?)\\f/\1$formfeed/g;
-    $delimitstring =~ /([^\\]?)\\([0-7][0-7][0-7])/;
-    $octal=&ascii($2);
-    $delimitstring =~ s/(\\[0-7][0-7][0-7])/$octal/e;
-    shift; shift;
-  } elsif ( ( $ARGV[0] eq '-g' ) || ( $ARGV[0] eq '-n' ) ) {
-    $numlines = "$ARGV[1]";
-    shift; shift;
-  } elsif ( $ARGV[0] eq '-c' ) {
-    $column = "$ARGV[1]";
-    shift; shift;
-  } elsif ( $ARGV[0] eq '-b' ) {
-    $line_break=1;
-    $break_reg="^\$";
-#print "line_break '$line_break' : line_break_reg '$line_break_reg'\n";
-    shift;
-  } elsif ( $ARGV[0] eq '-w' ) {
-    $line_break = 1;
-    $break_reg="^\s*\$";
-    shift;
-  } elsif ( $ARGV[0] eq '-?' ) {
-    do help($usage);
-  } else {
-    last;
-  }
-}  # end while
+  my $count=1;
+  while ( @ARGV >= 1 ) {
+	# print "'$ARGV[0]'\n"; $count++; exit if ($count>=10);
+    if    ( $ARGV[0] eq '-d' ) {
+      $delimitstring = $ARGV[1];
+      $delimitstring =~ s/([^\\]?)\\n/\1$newline/g;
+      $delimitstring =~ s/([^\\]?)\\t/\1$tab/g;
+      $delimitstring =~ s/([^\\]?)\\b/\1$backspace/g;
+      $delimitstring =~ s/([^\\]?)\\f/\1$formfeed/g;
+      $delimitstring =~ /([^\\]?)\\([0-7][0-7][0-7])/;
+      $octal=&ascii($2);
+      $delimitstring =~ s/(\\[0-7][0-7][0-7])/$octal/e;
+      shift @ARGV; shift @ARGV;
+    } elsif ( ( $ARGV[0] eq '-g' ) || ( $ARGV[0] eq '-n' ) ) {
+      $numlines = "$ARGV[1]";
+      shift @ARGV; shift @ARGV;
+	  # print "g $numlines " . scalar(@ARGV) . " ";
+    } elsif ( $ARGV[0] eq '-c' ) {
+      $column = "$ARGV[1]";
+      shift @ARGV; shift @ARGV;
+    } elsif ( $ARGV[0] eq '-b' ) {
+      $line_break=1;
+      $break_reg="^\$";
+  # print "line_break '$line_break' : line_break_reg '$line_break_reg'\n";
+      shift @ARGV;
+    } elsif ( $ARGV[0] eq '-w' ) {
+      $line_break = 1;
+      $break_reg="^\s*\$";
+      shift @ARGV;
+    } elsif ( $ARGV[0] eq '-?' ) {
+      help($usage);
+    } else {
+      last;
+    }
+  }  # end while
+}
 
 sub help {
   print "@_[0]\n";

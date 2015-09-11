@@ -13,8 +13,8 @@ $usage = "usage:\n$name [-open C] [-close C] [--] FILENAME\n"
 #$open = '\(';	$close='\)';
 #$open = '{';	$close='}';
 
-$open = '{';	$close='}';
 $open = '\(';	$close='\)';
+$open = '{';	$close='}';
 
 &parse_args();
 # print "arguments left on the command line are (" . join(', ',@ARGV) . ")\n";
