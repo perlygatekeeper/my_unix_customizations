@@ -103,4 +103,10 @@ __END__
 12345678901234567890123456789
 123456789012345678901234567890
 1234567890123456789012345678901234567890123
+__END__
+
+echo use:    find . -type f -exec grep '^ln' {} \; | sh
+echo makeline is the 'real' file
+ln -fs makeline  ml
+ln -fs makeline  mkline
 
