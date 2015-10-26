@@ -54,14 +54,6 @@ if ( not exists $styles->{$style} ) {
 
 if ( $debug ) { print STDERR "style is >$style<\n"; }
 
-# if ( $tight ) {
-#   $horizontal_padding = 1;
-#   $vertical_padding   = 0;
-# } else {
-#   $horizontal_padding = 2 + $spacious;
-#   $vertical_padding   = 1 + $spacious;
-# }
-
 $horizontal_padding = 2 + $spacious - $tight;
 $vertical_padding   = 1 + $spacious - $tight;
 
@@ -80,6 +72,9 @@ if ( $show and scalar(@$show) ) {
   my $margin = 5;
   my $length = $show->[0] || 5;
   my $height = $show->[1] || 5;
+  if ( ($length * $height) > 26 ) {
+    $char = 'aa';
+  }
   foreach my $i ( 1 .. $height ) {
     $line = '';
     foreach my $i ( 1 .. $length ) { $line .= $char++; }

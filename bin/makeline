@@ -1,12 +1,12 @@
 #!/usr/bin/env perl
 # MAKELINE is a
 # script to make a vertical line down a file
-use strict;
-use warnings;
-
 my $name = $0;
    $name =~ s'.*/''; # remove path--like basename
 my $usage = "usage: $name [ [-]position ] [ <separator> ... (-) ] \n";
+
+use strict;
+use warnings;
 
 my $position_given;
 my $position;
@@ -26,6 +26,8 @@ while ( @ARGV >= 1 ) {
   }
 }  # end while
 
+if (not @separator) { push(@separator, "#"); }
+
 while ( my $line = <> ) {
   chomp($line);
   if (! $position_given) { $position=length($line); $position_given++; }
@@ -41,12 +43,12 @@ while ( my $line = <> ) {
   if ( $len == ($position-1) ) {
     print $line
         . $separator[$separator]
-        . "\n";
+	. "\n";
   } else {
     print substr($line,0,($position-1))
         . $separator[$separator]
         . substr($line,($position-1),($len-$position+1))
-        . "\n";
+	. "\n";
   }
 
   $separator++;
@@ -56,28 +58,25 @@ while ( my $line = <> ) {
 exit 0;
 __END__
 
-    1 (1) This is some test text.
-    2 (2) With multiple lines, some short and some long.
-    3 (3) See. (followed by one blank line)
+                                                           
+    1 (1) This is some test text.                          
+    2 (2) With multiple lines, some short and some long.   
+    3 (3) See. (followed by one blank line)                
+                                                           
+    4 (5) This is a single short line.                     
+                                                           
+                                                           
+    5 (8) This is a single short line.                     
+    6 (9) This is some test text.                          
+    7 (10) With multiple lines, some short and some long.  
+                                                           
+                                                           
+                                                           
+    8 (14) This is a single short line.                    
+    9 (15) This is some test text.                         
+   10 (16) With multiple lines, some short and some long.  
 
-    4 (5) This is a single short line.
 
-    5 (8) This is a single short line.
-    6 (9) This is some test text.
-    7 (10) With multiple lines, some short and some long.
-
-    8 (14) This is a single short line.
-    9 (15) This is some test text.
-   10 (16) With multiple lines, some short and some long.
-
-1
-12
-123
-1234
-12345
-123456
-1234567
-12345678
 123456789
 1234567890
 12345678901
@@ -100,3 +99,5 @@ __END__
 1234567890123456789012345678
 12345678901234567890123456789
 123456789012345678901234567890
+1234567890123456789012345678901234567890123
+

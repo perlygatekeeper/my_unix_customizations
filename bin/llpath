@@ -5,10 +5,11 @@ push(@ARGV,$pwd) if (not @ARGV);
 
 while ($path=shift) {
   if ($path !~ m,/,) { $path = $pwd . '/' . $path }
+  print STDERR "Starting with ($path)\n";
   $depth=0;
   until ($path eq "/" or not $path) {
-    last if (++$depth>=$maxdepth);
     system("ls -dl $path");
+    last if ( $path !~ m,/, or ( ++$depth >= $maxdepth ) );
     $path =~ s,/[^/]*$,,;
   }
 }

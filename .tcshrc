@@ -108,6 +108,9 @@ endif
 if ( -f ~/.tcshrc.git && -f ~/.git_aliases ) then
 	source ~/.tcshrc.git
 endif
+if ( -f ~/.tcshrc.nw && -f ~/.nationwide ) then
+	source ~/.tcshrc.nw
+endif
 if ( -f ~/.tcshrc.home && -f ~/.home ) then
 	source ~/.tcshrc.home
 endif

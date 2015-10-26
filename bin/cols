@@ -20,6 +20,7 @@ $cols ||= ( -f '/bin/tput' )     ? `/bin/tput     cols` : ''; chomp $cols;
 $cols ||= ( -f '/usr/bin/tput' ) ? `/usr/bin/tput cols` : ''; chomp $cols;
 $cols ||= ( -f '/bin/stty' )     ? `/bin/stty     size` : ''; chomp $cols; $cols =~ s/.* //;
 $cols ||= ( -f '/usr/bin/stty' ) ? `/usr/bin/stty size` : ''; chomp $cols; $cols =~ s/.* //;
+$cols =~ s/.* //;
 $cols ||= 200;
 
 $ones = $cols%10;

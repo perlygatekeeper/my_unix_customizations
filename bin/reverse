@@ -1,4 +1,4 @@
-#!/usr/bin/env perl -l
+#!/usr/bin/env perl
 #
 # A perl script to print files with each line having it's characters reversed
 #
@@ -7,7 +7,7 @@ $usage = "usage:\n$name [FILENAME ...]";
 
 while (<>) {
   chomp;
-  print scalar reverse;
+  print scalar reverse . "\n";
 }
 
 exit 0;
