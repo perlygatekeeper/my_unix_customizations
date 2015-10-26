@@ -5,13 +5,16 @@ my $name = $0;
    $name =~ s'.*/''; # remove path--like basename
 my $usage = "usage: $name [ [-]position ] [ <separator> ... (-) ] \n";
 
+# ToDo?   make 'longest' argument
+#         make help functionallity
+
 use strict;
 use warnings;
 
-my $position_given;
-my $position;
-my $separator = $[;
-my @separator;
+my $position_given;    # column given on the command line for the line to be drawn
+my $position;          # column at which the line will be drawn
+my $separator = $[;    # seperator_index, set to start of arrays
+my @separator;         # seperator array, will contain chars looped through to make line
 
 #   ***   Parse Command Line Argument(s)   ***
 while ( @ARGV >= 1 ) {
@@ -30,7 +33,7 @@ if (not @separator) { push(@separator, "#"); }
 
 while ( my $line = <> ) {
   chomp($line);
-  if (! $position_given) { $position=length($line); $position_given++; }
+  if (! $position_given) { $position=length($line)+1; $position_given++; }
 
 # QUESTION? pad with spaces.
   my $len = length($line);
