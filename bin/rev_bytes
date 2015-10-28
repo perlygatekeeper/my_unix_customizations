@@ -1,0 +1,1283 @@
+#!/usr/bin/env perl
+# A perl script to reverse each byte of the input
+# effectively changing big edian to little edian
+
+my $name = $0; $name =~ s'.*/''; # remove path--like basename
+my $usage = "usage:\n$name";
+
+use strict;
+use warnings;
+my $reverse_bytes;
+
+$reverse_bytes = &reverse_hash();
+foreach my $char ( split(//, 'Steve Rocks!') ) {
+   printf "%c ",      ord($char);
+   printf "{%08B} ",  ord($char);
+   printf "(%08B)\n", ord($reverse_bytes->{$char});
+}
+
+# while (<>) {
+# foreach my $byte ( split(//,$_) ) {
+# print $reverse_bytes{$byte};
+# }
+# }
+#my $num=0x5514ddb7;
+#foreach my $num ( 0x55, 0x14, 0xdd, 0xb7, 0x5514bbd7 ) {
+#    my $s=pack('I<!',$num);
+#    my $x=unpack('I>!',$s);
+#    printf("%#x: %#x\n",$num, $x);
+#	# printf("%s\n", vec 0x5514bbd7);
+#}
+# foreach my $char ( 0x00 ..  0xFF ) {
+#   if ( ( $char < 128 ) and ( $char > 0 ) ) {
+#       printf ( "d:(%03d) ", $char);
+# 		printf "    \$rev{0b%08B} = 0b%s;\n", $char, join('', reverse(split(//, sprintf ( "%08b", $char))));
+# 		# print split(//, sprintf ( "b:(%08b) ", $char) );
+#       printf ( "B:(%08B) ", $char);
+#       printf ( "c:(%c)\n", $char);
+#   } else {
+#       printf ( "d:(%03d) b:(%08b) B:(%08B)\n", $char, $char, $char);
+#}
+# print "here: >$char<>" . unpack("b",$char) . "><" . unpack("B",$char) . "<\n";
+# print map{ vec $char,      $_, 1 } 0 .. 7;
+# }
+# print "\n";
+
+
+exit 0;
+
+sub reverse_hash {
+    my %rev;
+    $rev{chr(0b00000000)} = chr(0b00000000);
+    $rev{chr(0b00000001)} = chr(0b10000000);
+    $rev{chr(0b00000010)} = chr(0b01000000);
+    $rev{chr(0b00000011)} = chr(0b11000000);
+    $rev{chr(0b00000100)} = chr(0b00100000);
+    $rev{chr(0b00000101)} = chr(0b10100000);
+    $rev{chr(0b00000110)} = chr(0b01100000);
+    $rev{chr(0b00000111)} = chr(0b11100000);
+    $rev{chr(0b00001000)} = chr(0b00010000);
+    $rev{chr(0b00001001)} = chr(0b10010000);
+    $rev{chr(0b00001010)} = chr(0b01010000);
+    $rev{chr(0b00001011)} = chr(0b11010000);
+    $rev{chr(0b00001100)} = chr(0b00110000);
+    $rev{chr(0b00001101)} = chr(0b10110000);
+    $rev{chr(0b00001110)} = chr(0b01110000);
+    $rev{chr(0b00001111)} = chr(0b11110000);
+    $rev{chr(0b00010000)} = chr(0b00001000);
+    $rev{chr(0b00010001)} = chr(0b10001000);
+    $rev{chr(0b00010010)} = chr(0b01001000);
+    $rev{chr(0b00010011)} = chr(0b11001000);
+    $rev{chr(0b00010100)} = chr(0b00101000);
+    $rev{chr(0b00010101)} = chr(0b10101000);
+    $rev{chr(0b00010110)} = chr(0b01101000);
+    $rev{chr(0b00010111)} = chr(0b11101000);
+    $rev{chr(0b00011000)} = chr(0b00011000);
+    $rev{chr(0b00011001)} = chr(0b10011000);
+    $rev{chr(0b00011010)} = chr(0b01011000);
+    $rev{chr(0b00011011)} = chr(0b11011000);
+    $rev{chr(0b00011100)} = chr(0b00111000);
+    $rev{chr(0b00011101)} = chr(0b10111000);
+    $rev{chr(0b00011110)} = chr(0b01111000);
+    $rev{chr(0b00011111)} = chr(0b11111000);
+    $rev{chr(0b00100000)} = chr(0b00000100);
+    $rev{chr(0b00100001)} = chr(0b10000100);
+    $rev{chr(0b00100010)} = chr(0b01000100);
+    $rev{chr(0b00100011)} = chr(0b11000100);
+    $rev{chr(0b00100100)} = chr(0b00100100);
+    $rev{chr(0b00100101)} = chr(0b10100100);
+    $rev{chr(0b00100110)} = chr(0b01100100);
+    $rev{chr(0b00100111)} = chr(0b11100100);
+    $rev{chr(0b00101000)} = chr(0b00010100);
+    $rev{chr(0b00101001)} = chr(0b10010100);
+    $rev{chr(0b00101010)} = chr(0b01010100);
+    $rev{chr(0b00101011)} = chr(0b11010100);
+    $rev{chr(0b00101100)} = chr(0b00110100);
+    $rev{chr(0b00101101)} = chr(0b10110100);
+    $rev{chr(0b00101110)} = chr(0b01110100);
+    $rev{chr(0b00101111)} = chr(0b11110100);
+    $rev{chr(0b00110000)} = chr(0b00001100);
+    $rev{chr(0b00110001)} = chr(0b10001100);
+    $rev{chr(0b00110010)} = chr(0b01001100);
+    $rev{chr(0b00110011)} = chr(0b11001100);
+    $rev{chr(0b00110100)} = chr(0b00101100);
+    $rev{chr(0b00110101)} = chr(0b10101100);
+    $rev{chr(0b00110110)} = chr(0b01101100);
+    $rev{chr(0b00110111)} = chr(0b11101100);
+    $rev{chr(0b00111000)} = chr(0b00011100);
+    $rev{chr(0b00111001)} = chr(0b10011100);
+    $rev{chr(0b00111010)} = chr(0b01011100);
+    $rev{chr(0b00111011)} = chr(0b11011100);
+    $rev{chr(0b00111100)} = chr(0b00111100);
+    $rev{chr(0b00111101)} = chr(0b10111100);
+    $rev{chr(0b00111110)} = chr(0b01111100);
+    $rev{chr(0b00111111)} = chr(0b11111100);
+    $rev{chr(0b01000000)} = chr(0b00000010);
+    $rev{chr(0b01000001)} = chr(0b10000010);
+    $rev{chr(0b01000010)} = chr(0b01000010);
+    $rev{chr(0b01000011)} = chr(0b11000010);
+    $rev{chr(0b01000100)} = chr(0b00100010);
+    $rev{chr(0b01000101)} = chr(0b10100010);
+    $rev{chr(0b01000110)} = chr(0b01100010);
+    $rev{chr(0b01000111)} = chr(0b11100010);
+    $rev{chr(0b01001000)} = chr(0b00010010);
+    $rev{chr(0b01001001)} = chr(0b10010010);
+    $rev{chr(0b01001010)} = chr(0b01010010);
+    $rev{chr(0b01001011)} = chr(0b11010010);
+    $rev{chr(0b01001100)} = chr(0b00110010);
+    $rev{chr(0b01001101)} = chr(0b10110010);
+    $rev{chr(0b01001110)} = chr(0b01110010);
+    $rev{chr(0b01001111)} = chr(0b11110010);
+    $rev{chr(0b01010000)} = chr(0b00001010);
+    $rev{chr(0b01010001)} = chr(0b10001010);
+    $rev{chr(0b01010010)} = chr(0b01001010);
+    $rev{chr(0b01010011)} = chr(0b11001010);
+    $rev{chr(0b01010100)} = chr(0b00101010);
+    $rev{chr(0b01010101)} = chr(0b10101010);
+    $rev{chr(0b01010110)} = chr(0b01101010);
+    $rev{chr(0b01010111)} = chr(0b11101010);
+    $rev{chr(0b01011000)} = chr(0b00011010);
+    $rev{chr(0b01011001)} = chr(0b10011010);
+    $rev{chr(0b01011010)} = chr(0b01011010);
+    $rev{chr(0b01011011)} = chr(0b11011010);
+    $rev{chr(0b01011100)} = chr(0b00111010);
+    $rev{chr(0b01011101)} = chr(0b10111010);
+    $rev{chr(0b01011110)} = chr(0b01111010);
+    $rev{chr(0b01011111)} = chr(0b11111010);
+    $rev{chr(0b01100000)} = chr(0b00000110);
+    $rev{chr(0b01100001)} = chr(0b10000110);
+    $rev{chr(0b01100010)} = chr(0b01000110);
+    $rev{chr(0b01100011)} = chr(0b11000110);
+    $rev{chr(0b01100100)} = chr(0b00100110);
+    $rev{chr(0b01100101)} = chr(0b10100110);
+    $rev{chr(0b01100110)} = chr(0b01100110);
+    $rev{chr(0b01100111)} = chr(0b11100110);
+    $rev{chr(0b01101000)} = chr(0b00010110);
+    $rev{chr(0b01101001)} = chr(0b10010110);
+    $rev{chr(0b01101010)} = chr(0b01010110);
+    $rev{chr(0b01101011)} = chr(0b11010110);
+    $rev{chr(0b01101100)} = chr(0b00110110);
+    $rev{chr(0b01101101)} = chr(0b10110110);
+    $rev{chr(0b01101110)} = chr(0b01110110);
+    $rev{chr(0b01101111)} = chr(0b11110110);
+    $rev{chr(0b01110000)} = chr(0b00001110);
+    $rev{chr(0b01110001)} = chr(0b10001110);
+    $rev{chr(0b01110010)} = chr(0b01001110);
+    $rev{chr(0b01110011)} = chr(0b11001110);
+    $rev{chr(0b01110100)} = chr(0b00101110);
+    $rev{chr(0b01110101)} = chr(0b10101110);
+    $rev{chr(0b01110110)} = chr(0b01101110);
+    $rev{chr(0b01110111)} = chr(0b11101110);
+    $rev{chr(0b01111000)} = chr(0b00011110);
+    $rev{chr(0b01111001)} = chr(0b10011110);
+    $rev{chr(0b01111010)} = chr(0b01011110);
+    $rev{chr(0b01111011)} = chr(0b11011110);
+    $rev{chr(0b01111100)} = chr(0b00111110);
+    $rev{chr(0b01111101)} = chr(0b10111110);
+    $rev{chr(0b01111110)} = chr(0b01111110);
+    $rev{chr(0b01111111)} = chr(0b11111110);
+    $rev{chr(0b10000000)} = chr(0b00000001);
+    $rev{chr(0b10000001)} = chr(0b10000001);
+    $rev{chr(0b10000010)} = chr(0b01000001);
+    $rev{chr(0b10000011)} = chr(0b11000001);
+    $rev{chr(0b10000100)} = chr(0b00100001);
+    $rev{chr(0b10000101)} = chr(0b10100001);
+    $rev{chr(0b10000110)} = chr(0b01100001);
+    $rev{chr(0b10000111)} = chr(0b11100001);
+    $rev{chr(0b10001000)} = chr(0b00010001);
+    $rev{chr(0b10001001)} = chr(0b10010001);
+    $rev{chr(0b10001010)} = chr(0b01010001);
+    $rev{chr(0b10001011)} = chr(0b11010001);
+    $rev{chr(0b10001100)} = chr(0b00110001);
+    $rev{chr(0b10001101)} = chr(0b10110001);
+    $rev{chr(0b10001110)} = chr(0b01110001);
+    $rev{chr(0b10001111)} = chr(0b11110001);
+    $rev{chr(0b10010000)} = chr(0b00001001);
+    $rev{chr(0b10010001)} = chr(0b10001001);
+    $rev{chr(0b10010010)} = chr(0b01001001);
+    $rev{chr(0b10010011)} = chr(0b11001001);
+    $rev{chr(0b10010100)} = chr(0b00101001);
+    $rev{chr(0b10010101)} = chr(0b10101001);
+    $rev{chr(0b10010110)} = chr(0b01101001);
+    $rev{chr(0b10010111)} = chr(0b11101001);
+    $rev{chr(0b10011000)} = chr(0b00011001);
+    $rev{chr(0b10011001)} = chr(0b10011001);
+    $rev{chr(0b10011010)} = chr(0b01011001);
+    $rev{chr(0b10011011)} = chr(0b11011001);
+    $rev{chr(0b10011100)} = chr(0b00111001);
+    $rev{chr(0b10011101)} = chr(0b10111001);
+    $rev{chr(0b10011110)} = chr(0b01111001);
+    $rev{chr(0b10011111)} = chr(0b11111001);
+    $rev{chr(0b10100000)} = chr(0b00000101);
+    $rev{chr(0b10100001)} = chr(0b10000101);
+    $rev{chr(0b10100010)} = chr(0b01000101);
+    $rev{chr(0b10100011)} = chr(0b11000101);
+    $rev{chr(0b10100100)} = chr(0b00100101);
+    $rev{chr(0b10100101)} = chr(0b10100101);
+    $rev{chr(0b10100110)} = chr(0b01100101);
+    $rev{chr(0b10100111)} = chr(0b11100101);
+    $rev{chr(0b10101000)} = chr(0b00010101);
+    $rev{chr(0b10101001)} = chr(0b10010101);
+    $rev{chr(0b10101010)} = chr(0b01010101);
+    $rev{chr(0b10101011)} = chr(0b11010101);
+    $rev{chr(0b10101100)} = chr(0b00110101);
+    $rev{chr(0b10101101)} = chr(0b10110101);
+    $rev{chr(0b10101110)} = chr(0b01110101);
+    $rev{chr(0b10101111)} = chr(0b11110101);
+    $rev{chr(0b10110000)} = chr(0b00001101);
+    $rev{chr(0b10110001)} = chr(0b10001101);
+    $rev{chr(0b10110010)} = chr(0b01001101);
+    $rev{chr(0b10110011)} = chr(0b11001101);
+    $rev{chr(0b10110100)} = chr(0b00101101);
+    $rev{chr(0b10110101)} = chr(0b10101101);
+    $rev{chr(0b10110110)} = chr(0b01101101);
+    $rev{chr(0b10110111)} = chr(0b11101101);
+    $rev{chr(0b10111000)} = chr(0b00011101);
+    $rev{chr(0b10111001)} = chr(0b10011101);
+    $rev{chr(0b10111010)} = chr(0b01011101);
+    $rev{chr(0b10111011)} = chr(0b11011101);
+    $rev{chr(0b10111100)} = chr(0b00111101);
+    $rev{chr(0b10111101)} = chr(0b10111101);
+    $rev{chr(0b10111110)} = chr(0b01111101);
+    $rev{chr(0b10111111)} = chr(0b11111101);
+    $rev{chr(0b11000000)} = chr(0b00000011);
+    $rev{chr(0b11000001)} = chr(0b10000011);
+    $rev{chr(0b11000010)} = chr(0b01000011);
+    $rev{chr(0b11000011)} = chr(0b11000011);
+    $rev{chr(0b11000100)} = chr(0b00100011);
+    $rev{chr(0b11000101)} = chr(0b10100011);
+    $rev{chr(0b11000110)} = chr(0b01100011);
+    $rev{chr(0b11000111)} = chr(0b11100011);
+    $rev{chr(0b11001000)} = chr(0b00010011);
+    $rev{chr(0b11001001)} = chr(0b10010011);
+    $rev{chr(0b11001010)} = chr(0b01010011);
+    $rev{chr(0b11001011)} = chr(0b11010011);
+    $rev{chr(0b11001100)} = chr(0b00110011);
+    $rev{chr(0b11001101)} = chr(0b10110011);
+    $rev{chr(0b11001110)} = chr(0b01110011);
+    $rev{chr(0b11001111)} = chr(0b11110011);
+    $rev{chr(0b11010000)} = chr(0b00001011);
+    $rev{chr(0b11010001)} = chr(0b10001011);
+    $rev{chr(0b11010010)} = chr(0b01001011);
+    $rev{chr(0b11010011)} = chr(0b11001011);
+    $rev{chr(0b11010100)} = chr(0b00101011);
+    $rev{chr(0b11010101)} = chr(0b10101011);
+    $rev{chr(0b11010110)} = chr(0b01101011);
+    $rev{chr(0b11010111)} = chr(0b11101011);
+    $rev{chr(0b11011000)} = chr(0b00011011);
+    $rev{chr(0b11011001)} = chr(0b10011011);
+    $rev{chr(0b11011010)} = chr(0b01011011);
+    $rev{chr(0b11011011)} = chr(0b11011011);
+    $rev{chr(0b11011100)} = chr(0b00111011);
+    $rev{chr(0b11011101)} = chr(0b10111011);
+    $rev{chr(0b11011110)} = chr(0b01111011);
+    $rev{chr(0b11011111)} = chr(0b11111011);
+    $rev{chr(0b11100000)} = chr(0b00000111);
+    $rev{chr(0b11100001)} = chr(0b10000111);
+    $rev{chr(0b11100010)} = chr(0b01000111);
+    $rev{chr(0b11100011)} = chr(0b11000111);
+    $rev{chr(0b11100100)} = chr(0b00100111);
+    $rev{chr(0b11100101)} = chr(0b10100111);
+    $rev{chr(0b11100110)} = chr(0b01100111);
+    $rev{chr(0b11100111)} = chr(0b11100111);
+    $rev{chr(0b11101000)} = chr(0b00010111);
+    $rev{chr(0b11101001)} = chr(0b10010111);
+    $rev{chr(0b11101010)} = chr(0b01010111);
+    $rev{chr(0b11101011)} = chr(0b11010111);
+    $rev{chr(0b11101100)} = chr(0b00110111);
+    $rev{chr(0b11101101)} = chr(0b10110111);
+    $rev{chr(0b11101110)} = chr(0b01110111);
+    $rev{chr(0b11101111)} = chr(0b11110111);
+    $rev{chr(0b11110000)} = chr(0b00001111);
+    $rev{chr(0b11110001)} = chr(0b10001111);
+    $rev{chr(0b11110010)} = chr(0b01001111);
+    $rev{chr(0b11110011)} = chr(0b11001111);
+    $rev{chr(0b11110100)} = chr(0b00101111);
+    $rev{chr(0b11110101)} = chr(0b10101111);
+    $rev{chr(0b11110110)} = chr(0b01101111);
+    $rev{chr(0b11110111)} = chr(0b11101111);
+    $rev{chr(0b11111000)} = chr(0b00011111);
+    $rev{chr(0b11111001)} = chr(0b10011111);
+    $rev{chr(0b11111010)} = chr(0b01011111);
+    $rev{chr(0b11111011)} = chr(0b11011111);
+    $rev{chr(0b11111100)} = chr(0b00111111);
+    $rev{chr(0b11111101)} = chr(0b10111111);
+    $rev{chr(0b11111110)} = chr(0b01111111);
+    $rev{chr(0b11111111)} = chr(0b11111111);
+    return \%rev;
+}
+
+__END__
+$num = 0x01020304;
+
+ $Npacked = pack 'N', $num;
+ $Vpacked = pack 'V', $num;
+
+ print map{ vec $Vpacked,      $_, 1 } 0 .. 31
+ print map{ vec $Npacked,      $_, 1 } 0 .. 31
+ print map{ vec $Vpacked, 31 - $_, 1 } 0 .. 31
+ print map{ vec $Npacked, 31 - $_, 1 } 0 .. 31
+ 
+00100000 11000000 01000000 10000000
+10000000 01000000 11000000 00100000
+00000001 00000010 00000011 00000100
+00000100 00000011 00000010 00000001
+
+    $rev{chr(0x00)} = chr(0xff); # 00000000 * 11111111 0x00
+    $rev{chr(0x01)} = chr(0xfe); # 00000001
+    $rev{chr(0x02)} = chr(0xfd); # 00000010
+    $rev{chr(0x03)} = chr(0xfc); # 00000011
+    $rev{chr(0x04)} = chr(0xfb); # 00000100
+    $rev{chr(0x05)} = chr(0xfa); # 00000101
+    $rev{chr(0x06)} = chr(0xf9); # 00000110
+    $rev{chr(0x07)} = chr(0xf8); # 00000111
+    $rev{chr(0x08)} = chr(0xf7); # 00001000
+    $rev{chr(0x09)} = chr(0xf6); # 00001001
+    $rev{chr(0x0a)} = chr(0xf5); # 00001010
+    $rev{chr(0x0b)} = chr(0xf4); # 00001011
+    $rev{chr(0x0c)} = chr(0xf3); # 00001100
+    $rev{chr(0x0d)} = chr(0xf2); # 00001101
+    $rev{chr(0x0e)} = chr(0xf1); # 00001110
+    $rev{chr(0x0f)} = chr(0xf0); # 00001111
+    $rev{chr(0x10)} = chr(0xef); # 00010000
+    $rev{chr(0x11)} = chr(0xee); # 00010001
+    $rev{chr(0x12)} = chr(0xed); # 00010010
+    $rev{chr(0x13)} = chr(0xec); # 00010011
+    $rev{chr(0x14)} = chr(0xeb); # 00010100
+    $rev{chr(0x15)} = chr(0xea); # 00010101
+    $rev{chr(0x16)} = chr(0xe9); # 00010110
+    $rev{chr(0x17)} = chr(0xe8); # 00010111
+    $rev{chr(0x18)} = chr(0xe7); # 00011000 * 11100111 0x18
+    $rev{chr(0x19)} = chr(0xe6); # 00011001
+    $rev{chr(0x1a)} = chr(0xe5); # 00011010
+    $rev{chr(0x1b)} = chr(0xe4); # 00011011
+    $rev{chr(0x1c)} = chr(0xe3); # 00011100
+    $rev{chr(0x1d)} = chr(0xe2); # 00011101
+    $rev{chr(0x1e)} = chr(0xe1); # 00011110
+    $rev{chr(0x1f)} = chr(0xe0); # 00011111
+    $rev{chr(0x20)} = chr(0xdf); # 00100000
+    $rev{chr(0x21)} = chr(0xde); # 00100001
+    $rev{chr(0x22)} = chr(0xdd); # 00100010
+    $rev{chr(0x23)} = chr(0xdc); # 00100011
+    $rev{chr(0x24)} = chr(0xdb); # 00100100 * 11011011 0x24
+    $rev{chr(0x25)} = chr(0xda); # 00100101
+    $rev{chr(0x26)} = chr(0xd9); # 00100110
+    $rev{chr(0x27)} = chr(0xd8); # 00100111
+    $rev{chr(0x28)} = chr(0xd7); # 00101000
+    $rev{chr(0x29)} = chr(0xd6); # 00101001
+    $rev{chr(0x2a)} = chr(0xd5); # 00101010
+    $rev{chr(0x2b)} = chr(0xd4); # 00101011
+    $rev{chr(0x2c)} = chr(0xd3); # 00101100
+    $rev{chr(0x2d)} = chr(0xd2); # 00101101
+    $rev{chr(0x2e)} = chr(0xd1); # 00101110
+    $rev{chr(0x2f)} = chr(0xd0); # 00101111
+    $rev{chr(0x30)} = chr(0xcf); # 00110000
+    $rev{chr(0x31)} = chr(0xce); # 00110001
+    $rev{chr(0x32)} = chr(0xcd); # 00110010
+    $rev{chr(0x33)} = chr(0xcc); # 00110011
+    $rev{chr(0x34)} = chr(0xcb); # 00110100
+    $rev{chr(0x35)} = chr(0xca); # 00110101
+    $rev{chr(0x36)} = chr(0xc9); # 00110110
+    $rev{chr(0x37)} = chr(0xc8); # 00110111
+    $rev{chr(0x38)} = chr(0xc7); # 00111000
+    $rev{chr(0x39)} = chr(0xc6); # 00111001
+    $rev{chr(0x3a)} = chr(0xc5); # 00111010
+    $rev{chr(0x3b)} = chr(0xc4); # 00111011
+    $rev{chr(0x3c)} = chr(0xc3); # 00111100 * 11000011 0x3c
+    $rev{chr(0x3d)} = chr(0xc2); # 00111101
+    $rev{chr(0x3e)} = chr(0xc1); # 00111110
+    $rev{chr(0x3f)} = chr(0xc0); # 00111111
+    $rev{chr(0x40)} = chr(0xbf); # 01000000
+    $rev{chr(0x41)} = chr(0xbe); # 01000001
+    $rev{chr(0x42)} = chr(0xbd); # 01000010 * 10111101 0x42
+    $rev{chr(0x43)} = chr(0xbc); # 01000011
+    $rev{chr(0x44)} = chr(0xbb); # 01000100
+    $rev{chr(0x45)} = chr(0xba); # 01000101
+    $rev{chr(0x46)} = chr(0xb9); # 01000110
+    $rev{chr(0x47)} = chr(0xb8); # 01000111
+    $rev{chr(0x48)} = chr(0xb7); # 01001000
+    $rev{chr(0x49)} = chr(0xb6); # 01001001
+    $rev{chr(0x4a)} = chr(0xb5); # 01001010
+    $rev{chr(0x4b)} = chr(0xb4); # 01001011
+    $rev{chr(0x4c)} = chr(0xb3); # 01001100
+    $rev{chr(0x4d)} = chr(0xb2); # 01001101
+    $rev{chr(0x4e)} = chr(0xb1); # 01001110
+    $rev{chr(0x4f)} = chr(0xb0); # 01001111
+    $rev{chr(0x50)} = chr(0xaf); # 01010000
+    $rev{chr(0x51)} = chr(0xae); # 01010001
+    $rev{chr(0x52)} = chr(0xad); # 01010010
+    $rev{chr(0x53)} = chr(0xac); # 01010011
+    $rev{chr(0x54)} = chr(0xab); # 01010100
+    $rev{chr(0x55)} = chr(0xaa); # 01010101
+    $rev{chr(0x56)} = chr(0xa9); # 01010110
+    $rev{chr(0x57)} = chr(0xa8); # 01010111
+    $rev{chr(0x58)} = chr(0xa7); # 01011000
+    $rev{chr(0x59)} = chr(0xa6); # 01011001
+    $rev{chr(0x5a)} = chr(0xa5); # 01011010 * 10100101 0xa5
+    $rev{chr(0x5b)} = chr(0xa4); # 01011011
+    $rev{chr(0x5c)} = chr(0xa3); # 01011100
+    $rev{chr(0x5d)} = chr(0xa2); # 01011101
+    $rev{chr(0x5e)} = chr(0xa1); # 01011110
+    $rev{chr(0x5f)} = chr(0xa0); # 01011111
+    $rev{chr(0x60)} = chr(0x9f); # 01100000
+    $rev{chr(0x61)} = chr(0x9e); # 01100001
+    $rev{chr(0x62)} = chr(0x9d); # 01100010
+    $rev{chr(0x63)} = chr(0x9c); # 01100011
+    $rev{chr(0x64)} = chr(0x9b); # 01100100
+    $rev{chr(0x65)} = chr(0x9a); # 01100101
+    $rev{chr(0x66)} = chr(0x99); # 01100110 * 10011001 0x66
+    $rev{chr(0x67)} = chr(0x98); # 01100111
+    $rev{chr(0x68)} = chr(0x97); # 01101000
+    $rev{chr(0x69)} = chr(0x96); # 01101001
+    $rev{chr(0x6a)} = chr(0x95); # 01101010
+    $rev{chr(0x6b)} = chr(0x94); # 01101011
+    $rev{chr(0x6c)} = chr(0x93); # 01101100
+    $rev{chr(0x6d)} = chr(0x92); # 01101101
+    $rev{chr(0x6e)} = chr(0x91); # 01101110
+    $rev{chr(0x6f)} = chr(0x90); # 01101111
+    $rev{chr(0x70)} = chr(0x8f); # 01110000
+    $rev{chr(0x71)} = chr(0x8e); # 01110001
+    $rev{chr(0x72)} = chr(0x8d); # 01110010
+    $rev{chr(0x73)} = chr(0x8c); # 01110011
+    $rev{chr(0x74)} = chr(0x8b); # 01110100
+    $rev{chr(0x75)} = chr(0x8a); # 01110101
+    $rev{chr(0x76)} = chr(0x89); # 01110110
+    $rev{chr(0x77)} = chr(0x88); # 01110111
+    $rev{chr(0x78)} = chr(0x87); # 01111000
+    $rev{chr(0x79)} = chr(0x86); # 01111001
+    $rev{chr(0x7a)} = chr(0x85); # 01111010
+    $rev{chr(0x7b)} = chr(0x84); # 01111011
+    $rev{chr(0x7c)} = chr(0x83); # 01111100
+    $rev{chr(0x7d)} = chr(0x82); # 01111101
+    $rev{chr(0x7e)} = chr(0x81); # 01111110 * 10000001 0x7e
+    $rev{chr(0x7f)} = chr(0x80); # 01111111
+    $rev{chr(0x80)} = chr(0x7f); # 10000000
+    $rev{chr(0x81)} = chr(0x7e); # 10000001 * 01111110 0x81
+    $rev{chr(0x82)} = chr(0x7d); # 10000010
+    $rev{chr(0x83)} = chr(0x7c); # 10000011
+    $rev{chr(0x84)} = chr(0x7b); # 10000100
+    $rev{chr(0x85)} = chr(0x7a); # 10000101
+    $rev{chr(0x86)} = chr(0x79); # 10000110
+    $rev{chr(0x87)} = chr(0x78); # 10000111
+    $rev{chr(0x88)} = chr(0x77); # 10001000
+    $rev{chr(0x89)} = chr(0x76); # 10001001
+    $rev{chr(0x8a)} = chr(0x75); # 10001010
+    $rev{chr(0x8b)} = chr(0x74); # 10001011
+    $rev{chr(0x8c)} = chr(0x73); # 10001100
+    $rev{chr(0x8d)} = chr(0x72); # 10001101
+    $rev{chr(0x8e)} = chr(0x71); # 10001110
+    $rev{chr(0x8f)} = chr(0x70); # 10001111
+    $rev{chr(0x90)} = chr(0x6f); # 10010000
+    $rev{chr(0x91)} = chr(0x6e); # 10010001
+    $rev{chr(0x92)} = chr(0x6d); # 10010010
+    $rev{chr(0x93)} = chr(0x6c); # 10010011
+    $rev{chr(0x94)} = chr(0x6b); # 10010100
+    $rev{chr(0x95)} = chr(0x6a); # 10010101
+    $rev{chr(0x96)} = chr(0x69); # 10010110
+    $rev{chr(0x97)} = chr(0x68); # 10010111
+    $rev{chr(0x98)} = chr(0x67); # 10011000
+    $rev{chr(0x99)} = chr(0x66); # 10011001 * 01100110 0x99
+    $rev{chr(0x9a)} = chr(0x65); # 10011010
+    $rev{chr(0x9b)} = chr(0x64); # 10011011
+    $rev{chr(0x9c)} = chr(0x63); # 10011100
+    $rev{chr(0x9d)} = chr(0x62); # 10011101
+    $rev{chr(0x9e)} = chr(0x61); # 10011110
+    $rev{chr(0x9f)} = chr(0x60); # 10011111
+    $rev{chr(0xa0)} = chr(0x5f); # 10100000
+    $rev{chr(0xa1)} = chr(0x5e); # 10100001
+    $rev{chr(0xa2)} = chr(0x5d); # 10100010
+    $rev{chr(0xa3)} = chr(0x5c); # 10100011
+    $rev{chr(0xa4)} = chr(0x5b); # 10100100
+    $rev{chr(0xa5)} = chr(0x5a); # 10100101 * 01011010 0xa5
+    $rev{chr(0xa6)} = chr(0x59); # 10100110
+    $rev{chr(0xa7)} = chr(0x58); # 10100111
+    $rev{chr(0xa8)} = chr(0x57); # 10101000
+    $rev{chr(0xa9)} = chr(0x56); # 10101001
+    $rev{chr(0xaa)} = chr(0x55); # 10101010
+    $rev{chr(0xab)} = chr(0x54); # 10101011
+    $rev{chr(0xac)} = chr(0x53); # 10101100
+    $rev{chr(0xad)} = chr(0x52); # 10101101
+    $rev{chr(0xae)} = chr(0x51); # 10101110
+    $rev{chr(0xaf)} = chr(0x50); # 10101111
+    $rev{chr(0xb0)} = chr(0x4f); # 10110000
+    $rev{chr(0xb1)} = chr(0x4e); # 10110001
+    $rev{chr(0xb2)} = chr(0x4d); # 10110010
+    $rev{chr(0xb3)} = chr(0x4c); # 10110011
+    $rev{chr(0xb4)} = chr(0x4b); # 10110100
+    $rev{chr(0xb5)} = chr(0x4a); # 10110101
+    $rev{chr(0xb6)} = chr(0x49); # 10110110
+    $rev{chr(0xb7)} = chr(0x48); # 10110111
+    $rev{chr(0xb8)} = chr(0x47); # 10111000
+    $rev{chr(0xb9)} = chr(0x46); # 10111001
+    $rev{chr(0xba)} = chr(0x45); # 10111010
+    $rev{chr(0xbb)} = chr(0x44); # 10111011
+    $rev{chr(0xbc)} = chr(0x43); # 10111100
+    $rev{chr(0xbd)} = chr(0x42); # 10111101 * 01000010 0xbd
+    $rev{chr(0xbe)} = chr(0x41); # 10111110
+    $rev{chr(0xbf)} = chr(0x40); # 10111111
+    $rev{chr(0xc0)} = chr(0x3f); # 11000000
+    $rev{chr(0xc1)} = chr(0x3e); # 11000001
+    $rev{chr(0xc2)} = chr(0x3d); # 11000010
+    $rev{chr(0xc3)} = chr(0x3c); # 11000011 * 00111100 0xc3
+    $rev{chr(0xc4)} = chr(0x3b); # 11000100
+    $rev{chr(0xc5)} = chr(0x3a); # 11000101
+    $rev{chr(0xc6)} = chr(0x39); # 11000110
+    $rev{chr(0xc7)} = chr(0x38); # 11000111
+    $rev{chr(0xc8)} = chr(0x37); # 11001000
+    $rev{chr(0xc9)} = chr(0x36); # 11001001
+    $rev{chr(0xca)} = chr(0x35); # 11001010
+    $rev{chr(0xcb)} = chr(0x34); # 11001011
+    $rev{chr(0xcc)} = chr(0x33); # 11001100
+    $rev{chr(0xcd)} = chr(0x32); # 11001101
+    $rev{chr(0xce)} = chr(0x31); # 11001110
+    $rev{chr(0xcf)} = chr(0x30); # 11001111
+    $rev{chr(0xd0)} = chr(0x2f); # 11010000
+    $rev{chr(0xd1)} = chr(0x2e); # 11010001
+    $rev{chr(0xd2)} = chr(0x2d); # 11010010
+    $rev{chr(0xd3)} = chr(0x2c); # 11010011
+    $rev{chr(0xd4)} = chr(0x2b); # 11010100
+    $rev{chr(0xd5)} = chr(0x2a); # 11010101
+    $rev{chr(0xd6)} = chr(0x29); # 11010110
+    $rev{chr(0xd7)} = chr(0x28); # 11010111
+    $rev{chr(0xd8)} = chr(0x27); # 11011000
+    $rev{chr(0xd9)} = chr(0x26); # 11011001
+    $rev{chr(0xda)} = chr(0x25); # 11011010
+    $rev{chr(0xdb)} = chr(0x24); # 11011011 * 00100100 0xdb
+    $rev{chr(0xdc)} = chr(0x23); # 11011100
+    $rev{chr(0xdd)} = chr(0x22); # 11011101
+    $rev{chr(0xde)} = chr(0x21); # 11011110
+    $rev{chr(0xdf)} = chr(0x20); # 11011111
+    $rev{chr(0xe0)} = chr(0x1f); # 11100000
+    $rev{chr(0xe1)} = chr(0x1e); # 11100001
+    $rev{chr(0xe2)} = chr(0x1d); # 11100010
+    $rev{chr(0xe3)} = chr(0x1c); # 11100011
+    $rev{chr(0xe4)} = chr(0x1b); # 11100100
+    $rev{chr(0xe5)} = chr(0x1a); # 11100101
+    $rev{chr(0xe6)} = chr(0x19); # 11100110
+    $rev{chr(0xe7)} = chr(0x18); # 11100111 * 00011000 0xe7
+    $rev{chr(0xe8)} = chr(0x17); # 11101000
+    $rev{chr(0xe9)} = chr(0x16); # 11101001
+    $rev{chr(0xea)} = chr(0x15); # 11101010
+    $rev{chr(0xeb)} = chr(0x14); # 11101011
+    $rev{chr(0xec)} = chr(0x13); # 11101100
+    $rev{chr(0xed)} = chr(0x12); # 11101101
+    $rev{chr(0xee)} = chr(0x11); # 11101110
+    $rev{chr(0xef)} = chr(0x10); # 11101111
+    $rev{chr(0xf0)} = chr(0x0f); # 11110000
+    $rev{chr(0xf1)} = chr(0x0e); # 11110001
+    $rev{chr(0xf2)} = chr(0x0d); # 11110010
+    $rev{chr(0xf3)} = chr(0x0c); # 11110011
+    $rev{chr(0xf4)} = chr(0x0b); # 11110100
+    $rev{chr(0xf5)} = chr(0x0a); # 11110101
+    $rev{chr(0xf6)} = chr(0x09); # 11110110
+    $rev{chr(0xf7)} = chr(0x08); # 11110111
+    $rev{chr(0xf8)} = chr(0x07); # 11111000
+    $rev{chr(0xf9)} = chr(0x06); # 11111001
+    $rev{chr(0xfa)} = chr(0x05); # 11111010
+    $rev{chr(0xfb)} = chr(0x04); # 11111011
+    $rev{chr(0xfc)} = chr(0x03); # 11111100
+    $rev{chr(0xfd)} = chr(0x02); # 11111101
+    $rev{chr(0xfe)} = chr(0x01); # 11111110
+    $rev{chr(0xff)} = chr(0x00); # 11111111 * 00000000 0xff
+     1	16:04	rm bundle.tar
+     2	16:04	df
+     3	16:04	installed
+     4	16:04	installed | grep open
+     5	16:05	apt-cyg describe openssl
+     6	16:06	openssl rsa -in .ssh/id_rsa.pub -pubout
+     7	16:08	pidw open
+     8	16:08	pidw | head
+     9	16:08	ps auxwww | head
+    10	16:08	kill 133584
+    11	16:08	kill 13584
+    12	16:10	vim .tcshrc
+    13	16:15	grep proxy .??*
+    14	16:17	la
+    15	16:17	ls -al
+    16	16:17	ls -la
+    17	16:17	quit
+    18	16:21	git clone --recursive 'https://github.com/vim-scripts/Align.git' '/home/mobaxterm/.vim/bundle/Align'
+    19	16:23	a gis
+    20	16:26	echo $http-proxy
+    21	16:27	setenv
+    22	16:27	setenv | grep -i prox
+    23	16:28	setenv HTTP_PROXY "http://parks17:Changem3@http-proxy.nwie.net:8080/"
+    24	16:28	setenv http_proxy "http://parks17:Changem3@http-proxy.nwie.net:8080/"
+    25	16:28	setenv http_proxy "https://parks17:Changem3@http-proxy.nwie.net:8080/"
+    26	16:28	setenv HTTP_PROXY "https://parks17:Changem3@http-proxy.nwie.net:8080/"
+    27	16:31	cd bin lr
+    28	16:31	cd ../.vim
+    29	16:32	cd snippets_save/
+    30	16:32	cat vundle.get
+    31	16:34	cd bundle/
+    32	16:34	mkdir Align.vim
+    33	16:35	ls ~/Downloads
+    34	16:35	ls ~/Downloads/Align.vim/Align-master/*
+    35	16:35	cp -r ~/Downloads/Align.vim/Align-master/* .
+    36	16:35	vi README
+    37	16:37	vim
+    38	16:37	popd
+    39	16:37	cd pmts/
+    40	16:37	cd src/
+    41	16:37	cd pl/
+    42	16:38	pu ~/.vim/bundle/
+    43	16:39	cd Align.vim/
+    44	16:39	cd plugin/
+    45	16:39	..
+    46	16:39	ls -R
+    47	16:40	vim pmts3101a.pl
+    48	16:40	rot
+    49	16:40	cd Vundle.vim/
+    50	16:40	vi changelog.md
+    51	16:41	cd autoload/
+    52	16:41	cd vundle/
+    53	16:41	vi scripts.vim
+    54	16:41	vi config.vim
+    55	16:41	cd doc
+    56	16:42	vi tags
+    57	16:43	cat vundle.txt
+    58	9:49	setenv http_proxy "http://parks17:Changem3@http-proxy.nwie.net:8080"
+    59	9:49	setenv HTTP_PROXY "http://parks17:Changem3@http-proxy.nwie.net:8080"
+    60	9:50	set term xtermc
+    61	9:50	set term=xtermc
+    62	9:51	a vi vim
+    63	9:52	cat .tcshrc.cygwin
+    64	9:52	which words
+    65	9:52	cat stuff
+    66	9:52	rm stuff
+    67	9:53	ld
+    68	9:53	cd pkg/
+    69	9:36	vf Nationwide/
+    70	9:36	cd nation
+    71	9:36	ll ..
+    72	9:36	l
+    73	9:36	cd fs
+    74	9:36	vi fs
+    75	9:37	mv fs perltidy-options
+    76	9:37	cd my-unix/
+    77	9:38	vi mm
+    78	9:38	cd MyDocuments/
+    79	9:38	vi Hours\ 20150323.txt
+    80	9:39	cd Downloads/
+    81	9:39	file now
+    82	9:39	vi now
+    83	9:40	mv now pkgutil.pkg
+    84	9:40	cd Dest
+    85	9:41	vi april_2015
+    86	9:41	ls */week* */*/week*
+    87	9:42	ls */week* */*/week* */*/*/week*
+    88	9:43	tcsh
+    89	9:43	echo $SAVEHIST
+    90	9:43	echo $savehist
+    91	9:43	tcsh -v
+    92	9:43	tcsh -V
+    93	9:44	tcsh --version
+    94	13:42	setenv PAGER /usr/bin/less.exe
+    95	13:42	cd /tmp
+    96	13:42	setenv PAGER "/usr/bin/less.exe -r"
+    97	13:43	less.exe -h
+    98	13:43	less.exe -?
+    99	13:43	less.exe -\?
+   100	13:45	echo $TERM
+   101	13:46	vi connect-proxy.1
+   102	13:46	nroff -man connect-proxy.
+   103	13:46	nroff -man connect-proxy.1
+   104	13:46	nroff -man connect-proxy.1 | less.exe
+   105	13:46	nroff -man connect-proxy.1 | less.exe -r
+   106	13:47	file /usr/bin/col
+   107	13:48	col -\?
+   108	13:48	which col
+   109	13:48	ll /bin/col
+   110	13:49	ll /usr/bin/col
+   111	13:49	sum /bin/col /usr/bin/col
+   112	13:49	vi ~/bin/myman
+   113	13:50	myman connect-proxy.1
+   114	13:52	which man.exe
+   115	13:52	ll /usr/man.exe
+   116	13:53	ll /bin/man.exe
+   117	13:53	ll /bin/man.exe /usr/bin/man.exe
+   118	13:53	sum ll /bin/man.exe /usr/bin/man.exe
+   119	13:53	file /bin/man.exe
+   120	16:00	kill.exe -f -9 41284
+   121	16:01	kill.exe -f KILL 41284
+   122	16:01	kill.exe KILL 41284
+   123	16:01	kill.exe -f -s KILL 41284
+   124	16:01	kill.exe
+   125	16:01	pidw man
+   126	16:01	kill.exe -f -s 9 41284
+   127	16:02	kill.exe -s 9 41284
+   128	16:19	setenv HTTP_PROXY http://parks17:Changem3@github.com:8080/
+   129	16:22	mkdir tmp
+   130	16:22	cd tmp
+   131	16:22	wget https://github.com/perlygatekeeper/my_unix_customizations.git
+   132	16:23	ll .*hist*
+   133	16:23	unhist .bash_history | less
+   134	16:24	h | grep -i http
+   135	16:25	: git clone --recursive 'https://github.com/
+   136	16:26	grep Plug .vimrc
+   137	16:29	: git clone --recursive 'https://192.30.252.131/tpope/vim-fugative.git' '/home/mobaxterm/.vim/bundle/vim-fugative'
+   138	16:30	setenv http_proxy http://parks17:Changem3@github.com:8080/
+   139	16:30	git clone --recursive 'https://192.30.252.131/tpope/vim-fugative.git' '/home/mobaxterm/.vim/bundle/vim-fugative'
+   140	9:49	git config --global http.proxy http://parks17:Changem3@http-proxy.nwie.net:8080
+   141	9:51	vi .gitignore
+   142	9:51	git add .gitignore
+   143	9:52	cp .gitconfig .gc
+   144	9:52	git rm .gitconfig
+   145	9:52	git rm -f .gitconfig
+   146	9:52	ll .gitconfig
+   147	9:53	which less
+   148	9:53	echo $PAGER
+   149	9:53	src
+   150	9:53	git diff .tcshrc
+   151	9:54	git co .tcshrc
+   152	9:54	vi bin/myman
+   153	9:55	git add bin/myman
+   154	9:56	gicam "nationwide changes
+   155	9:56	gicam "nationwide changes"
+   156	9:57	cp .gc .gitconfig
+   157	10:00	vrc
+   158	10:02	vvrc
+   159	10:06	git config remote.origin.url https://perlygatekeeper@github.com/perlygatekeeper/my_unix_customization.git
+   160	10:07	man ssh-agent
+   161	10:14	ssh-agent
+   162	10:32	ssh-agent -c
+   163	10:33	`ssh-agent -c`
+   164	10:33	. ssh-agent -c
+   165	10:33	. `ssh-agent -c`
+   166	10:33	ssh-agent -c > /tmp/a ; . /tmp/a ; rm /tmp/a
+   167	10:34	kill.exe -15 45208
+   168	10:34	kill.exe -15 47492
+   169	10:34	kill.exe -15 43504
+   170	10:34	kill.exe -15 47252
+   171	10:34	pidw ssh-agent
+   172	10:36	git config -l
+   173	10:37	vi .gitconfig
+   174	10:37	git remote
+   175	10:37	h | grep git
+   176	10:38	git config remote.origin.url git://perlygatekeeper@github.com/perlygatekeeper/my_unix_customization.git
+   177	10:38	git config remote.origin.url https://perlygatekeeper@github.com/perlygatekeeper/my_unix_customization
+   178	10:46	man corkscrew
+   179	10:49	touch .ssh/proxyauthfile
+   180	10:49	chmod 700 .ssh/proxyauthfile
+   181	10:49	ll .ssh
+   182	10:50	vi .ssh/proxyauthfile
+   183	10:52	vim .ssh/config
+   184	10:55	ssh gitproxy
+   185	10:59	ssh github.com
+   186	11:00	ssh ssh.github.com
+   187	11:01	h | less
+   188	11:03	git config remote.origin.url https://perlygatekeeper@github.com/perlygatekeeper/my_unix_customizations.git
+   189	11:05	vi .gitconfig .gitconfig.perm
+   190	11:06	diff .gitconfig .gitconfig.perm
+   191	11:11	cd harvest
+   192	11:11	cd pmts
+   193	11:11	cd sr
+   194	11:11	cd src
+   195	11:13	kill 35552
+   196	11:13	pidw agent
+   197	11:23	. .tcshrc.cygwin
+   198	11:23	echo $PAGER $TERM
+   199	11:24	man ssh
+   200	11:25	vi .ssh/config
+   201	11:25	ssh tango
+   202	15:47	AWESOME
+   203	15:49	gix
+   204	15:49	mv my_unix_customizations/Nationwide/ .
+   205	15:49	mv my_unix_customizations/mbin/ .
+   206	15:50	gis | less
+   207	15:50	mv my_unix_customizations/.ssh .
+   208	15:50	ls -a
+   209	15:51	cd .vim
+   210	15:51	mv my_unix_customizations/.vim/snippets_save/ .vim/
+   211	15:51	mv my_unix_customizations/.vim/vundle.get .vim/
+   212	15:52	mv my_unix_customizations/.vim/colors .vim/
+   213	15:52	vi .vimrc
+   214	16:01	git diff .vimrc
+   215	16:02	git add .vimrc
+   216	16:02	git commit -m "work on window's version of .vimrc"
+   217	22:34	gir
+   218	22:35	girv
+   219	22:35	gpull
+   220	22:36	a gpull
+   221	22:37	git pull origin
+   222	22:37	cd etc/perllib
+   223	22:37	vi protect
+   225	17:31	cd ../pmts
+   226	17:31	vim NFCD_file.rb
+   227	9:58	cd ../
+   228	9:58	cd nbin
+   229	10:00	vi week8
+   230	10:00	./week_summation.pl week8
+   231	12:39	cd /
+   232	12:39	cd cygdrive/
+   233	12:39	cd e
+   234	12:40	ols
+   235	12:40	vim encrypt_otp.pl
+   236	12:41	cat offsets.txt
+   237	12:41	vim offsets.txt
+   238	12:42	cd randomness/
+   239	12:42	./encrypt_otp.pl < first_letter.otped
+   240	16:16	ls]
+   241	16:16	cd ACARR\ MSI\ CHANGES/
+   242	16:17	mv ACARR\ \ FR-1\ System\ Error\ Messages.sql ACARR\ FR-1\ System\ Error\ Messages.sql
+   243	16:17	mv Rollback\ ACARR\ \ FR-1\ System\ Error\ Messages.sql Rollback\ ACARR\ FR-1\ System\ Error\ Messages.sql
+   244	16:18	mv ACARR\ \ FR-2\ Last\ Payment\ Number\ 1098.sql ACARR\ FR-2\ Last\ Payment\ Number\ 1098.sql
+   245	16:18	mv Rollback\ ACARR\ \ FR-2\ Last\ Payment\ Number\ 1098.sql Rollback\ ACARR\ FR-2\ Last\ Payment\ Number\ 1098.sql
+   246	16:18	mv Rollback\ ACARR\ \ FR-2\ IBA\ 1026.sql Rollback\ ACARR\ FR-2\ IBA\ 1026.sql
+   247	16:19	mv ACARR\ FR-1\ System\ Error\ Messages.sql ACARR\ FR-1\ System\ Error\ Messages\ 1004.sql
+   248	16:20	mv Rollback\ ACARR\ FR-1\ System\ Error\ Messages.sql Rollback\ ACARR\ FR-1\ System\ Error\ Messages\ 1004.sql
+   249	16:21	dos2unix ACARR\ FR-1\ System\ Error\ Messages\ 1004.sql
+   250	16:21	dos2unix *
+   251	16:21	echo -n "\n"
+   252	16:22	echo -n "\n" >> ACARR\ FR-1\ System\ Error\ Messages\ 1004.sql
+   253	16:22	tail ACARR\ FR-1\ System\ Error\ Messages\ 1004.sql | od -a
+   254	16:23	echo $i ; echo -n "\n" >> $i
+   255	16:23	echo $i
+   256	16:23	echo -n "\n" >> $i
+   257	16:24	foreach i ( ACARR\ FR-2* Roll* )
+   258	16:24	echo -n "\n" >> "$i"
+   259	16:24	end
+   260	16:24	tail ACARR\ FR-2\ Phone_Messages\ 1019.sql | od -a
+   261	9:57	vi /vol/pmts/bin/pmts3013
+   262	14:12	cd Nationwide/
+   263	14:13	cp ~/Desktop/MSI\ LCARR\ Change\ Customer\ Group\ PMTS\ 1050.sql .
+   264	14:27	cx mkrollback.pl
+   265	14:27	perl -c mkrollback.pl
+   266	14:41	./mkrollback.pl MSI\ LCARR\ Change\ Customer\ Group\ PMTS\ 1050.sql | grep -c delete
+   267	14:41	cat MSI\ LCARR\ Change\ Customer\ Group\ PMTS\ 1050.sql | grep -c insert
+   268	14:44	pwd
+   269	14:44	cp Rollback\ LCARR\ Change\ Customer\ Group\ PMTS\ 1050.sql ~/Desktop/
+   270	14:50	cp ~/Desktop/MSI\ Change\ for\ Internal\ Organizations\ PMTS1007.sql .
+   271	14:59	vi MSI\ Change\ for\ Internal\ Organizations\ PMTS1007.sql
+   272	15:09	cp Rollback\ LCARR\ Change\ Internal\ Organizations\ PMTS\ 1007.sql ~/Desktop/
+   273	15:16	cp ~/Desktop/LCARRR\ Payment\ Type\ PMTS\ 1087.sql .
+   274	15:28	vi LCARRR\ Payment\ Type\ PMTS\ 1087.sql
+   275	15:43	vi MSI\ Change\ for\ Internal\ Organizations\ PMTS1007.sql Rollback\ LCARR\ Change\ Internal\ Organizations\ PMTS\ 1007.sql
+   276	15:44	./mkrollback.pl LCARRR\ Payment\ Type\ PMTS\ 1087.sql
+   277	15:44	./mkrollback.pl LCARRR\ Payment\ Type\ PMTS\ 1087.sql > Rollback\ Payment\ Type\ PMTS\ 1087.sql
+   278	15:45	./mkrollback.pl MSI\ Change\ for\ Internal\ Organizations\ PMTS1007.sql
+   279	15:45	./mkrollback.pl MSI\ Change\ for\ Internal\ Organizations\ PMTS1007.sql > Rollback
+   280	15:45	mv Rollback Rollback\ LCARR\ "Change Internal Organizations PMTS 1007.sql"
+   281	15:45	vi mkrollback.pl
+   282	15:46	vi MSI\ LCARR\ Change\ Customer\ Group\ PMTS\ 1050.sql
+   283	15:46	./mkrollback.pl MSI\ LCARR\ Change\ Customer\ Group\ PMTS\ 1050.sql
+   284	15:46	./mkrollback.pl MSI\ LCARR\ Change\ Customer\ Group\ PMTS\ 1050.sql > Rollback\ LCARR\ Change\ Customer\ Group\ PMTS\ 1050.sql
+   285	15:46	cp Rollback\ * ~/Desktop/
+   286	10:57	vim -X `find . -type f -exec grep -l HEAD {} \; | crk '(.*)' '"$1"'`
+   287	10:57	find . -type f -exec grep -l HEAD {} \; | crk '(.*)' '"$1"'
+   288	10:58	find . -type f -exec grep -l HEAD {} \; | tee /tmp/mergelist
+   289	10:59	crk '(.*)' '"$1"' /tmp/mergelist
+   290	10:59	crk '([^\n]*)' '"$1"' /tmp/mergelist
+   291	10:59	crk '(.*)\n' '"$1"\n' /tmp/mergelist
+   292	11:00	find . -type f -exec grep -l HEAD {} \; | crk '(.*)\n' '"$1"\n'
+   293	11:00	vim -X `find . -type f -exec grep -l HEAD {} \; | crk '(.*)\n' '"$1"\n'`
+   294	11:02	crk '(.*)\n' '"$1"\n' /tmp/mergelist tee /tmp/mergelist2
+   295	11:03	crk '(.*)\n' '"$1"\n' /tmp/mergelist | tee /tmp/mergelist2
+   296	11:03	vim -X `cat /tmp/mergelist2 `
+   297	11:03	vim -X `head -1 cat /tmp/mergelist2 `
+   298	11:06	rm -i '\<==' '==*'
+   299	11:07	rm -rfi '\<=='
+   300	11:07	rm -i *
+   301	11:07	cat /tmp/mergelist2
+   302	11:08	vim -X ./cukes/lcarr/cukes/features/input_files/ach-nontaxable.feature
+   303	11:08	vim -X ./cukes/lcarr/cukes/features/input_files/ach-taxable.feature
+   304	11:09	vim -X ./cukes/lcarr/cukes/features/input_files/check*
+   305	11:10	vim -X ./cukes/lcarr/cukes/features/input_files/[wz]*
+   306	11:12	vim -X ./cukes/lcarr/cukes/features/support/env.rb
+   307	11:13	vim -X ./cukes/lcarr/cuke_data/output/
+   308	11:13	vim -X ./cukes/lcarr/cuke_data/output/[abc]*
+   309	11:13	vim -X ./cukes/lcarr/cuke_data/output/[abc]*/*
+   310	11:15	vi esp/notes.txt.orig
+   311	11:16	find . -type f -exec grep -l 'HEAD' {} /dev/null \;
+   312	11:16	find . -type f -exec grep 'HEAD' {} /dev/null \;
+   313	11:16	find . -type f -exec grep '^<<<<<<<<<<<< HEAD' {} /dev/null \;
+   314	11:17	find . -type f -exec grep '^<<<<<<< HEAD' {} /dev/null \;
+   315	11:17	find . -type f -exec grep '^<<<<<<< HEAD' {} /dev/null \;./cukes/lcarr/cukes/features/input_files/wire-taxable.feature ./slither/NFCD/NFCD_file.rb.orig
+   316	11:17	vim -X ./cukes/lcarr/cukes/features/input_files/wire-taxable.feature ./slither/NFCD/NFCD_file.rb.orig
+   317	11:21	ll Phil
+   318	11:22	ll -d Phil
+   319	11:22	mkdir Phil2
+   320	11:47	cd windows\ home/
+   321	11:47	cd Phil2
+   322	11:49	setenv HTTPS_PROXY=http-proxy.nwie.net:8080
+   323	11:49	setenv HTTPS_PROXY "http-proxy.nwie.net:8080"
+   324	11:49	cd windows\ home/Phil2/
+   325	11:49	setenv HTTP_PROXY "http-proxy.nwie.net:8080"
+   326	11:50	echo $HTTP_PROXY
+   327	11:50	setenv HTTP_PROXY "parks17@http-proxy.nwie.net:8080"
+   328	11:50	setenv HTTP_PROXY "parks17:Cpiapit4@http-proxy.nwie.net:8080"
+   329	11:50	setenv HTTPS_PROXY "parks17:Cpiapit4@http-proxy.nwie.net:8080"
+   330	11:50	setenv https_proxy "parks17:Cpiapit4@http-proxy.nwie.net:8080"
+   331	11:51	setenv http_proxy "parks17:Cpiapit4@http-proxy.nwie.net:8080"
+   332	11:51	echo $http_proxy
+   333	11:51	c
+   334	11:51	vim -X ~/.
+   335	11:52	vim -X ~/.gitconfig
+   336	11:53	git clone git@github.com:DigitalMoss/Presentations.git
+   337	11:53	git clone https://ithub.com:DigitalMoss/Presentations.git
+   338	11:53	git clone https://github.com:DigitalMoss/Presentations.git
+   339	11:54	git clone https://github.com/DigitalMoss/Presentations.git
+   340	13:37	diff Phil Phil2
+   341	13:38	cd Phil
+   342	13:38	mv presentations Presentations
+   343	13:39	mv presentations/ Presentations
+   344	13:39	mv presentations/ Presentations/
+   345	13:40	cd..
+   346	13:40	diff -r Phil Phil2
+   347	13:49	man \diff
+   348	13:49	diff -w -r Phil Phil2 | less
+   349	13:49	diff -W -r Phil Phil2 | less
+   350	13:50	diff -r Phil Phil2 | less
+   351	13:50	diff -b -r Phil Phil2 | less
+   352	13:50	which diff
+   353	13:50	ll /usr/bin/diff
+   354	13:52	diff -w -b -B -i -r Phil Phil2 | less
+   355	13:52	/usr/bin/diff
+   356	13:52	diff -w -b -B -i -S Phil/Presentations/nationwide/javabeans/cukes/lcarr/cukes/features/input_files/ach-nontaxable.feature -r Phil Phil2 | less
+   357	13:53	diff -w -b -B -i -S ach-nontaxable.feature -r Phil Phil2 | less
+   358	13:53	a inst
+   359	13:53	a search
+   360	13:53	search diff
+   361	13:54	search diffutils
+   362	13:54	apt-cyg --help
+   363	13:54	apt-cyg describe diffutils
+   364	13:55	inst diffutils
+   365	13:55	diff.exe
+   366	13:55	diff.exe -w -b -B -i -S ach-nontaxable.feature -r Phil Phil2 | less
+   367	13:56	diff.exe -w -b -B -i -S Phil/Presentations/nationwide/javabeans/cukes/lcarr/cukes/features/input_files/ach-nontaxable.feature -r Phil Phil2 | less
+   368	13:56	whereis diff
+   369	13:56	myman /usr/share/man/man1/diff.1.gz
+   370	13:57	zcat /usr/share/man/man1/diff.1.gz | /usr/bin/nroff -man
+   371	13:57	zcat /usr/share/man/man1/diff.1.gz | /usr/bin/nroff -man | less -r
+   372	14:00	diff.exe -x='.git' -w -b -B -i -S Phil/Presentations/nationwide/javabeans/cukes/lcarr/cukes/features/input_files/ach-nontaxable.feature -r Phil Phil2 | less
+   373	14:01	diff.exe -x='\.git' -w -b -B -i -S Phil/Presentations/nationwide/javabeans/cukes/lcarr/cukes/features/input_files/ach-nontaxable.feature -r Phil Phil2 | less
+   374	14:01	diff.exe -x='Phil/Presentations/.git' -w -b -B -i -r Phil Phil2 | less
+   375	14:01	diff.exe -x='Phil/Presentations/\.git' -w -b -B -i -r Phil Phil2 | less
+   376	14:02	diff.exe -x='Phil/Presentations/.git*' -w -b -B -i -r Phil Phil2 | less
+   377	14:03	diff.exe -x='.git*' -w -b -B -i -r Phil Phil2 | less
+   378	14:03	zcat /usr/share/man/man1/diff.1.gz | /usr/bin/nroff -man | less.exe -r
+   379	14:04	info diff
+   380	14:06	man info
+   381	14:06	whereis info
+   382	14:06	cd /usr/share/info
+   383	14:13	cd -
+   384	14:13	diff.exe -x='.git' -w -b -B -i -r Phil Phil2 | less
+   385	14:13	diff.exe -x='*.git' -w -b -B -i -r Phil Phil2 | less
+   386	14:13	diff.exe -x='*.git*' -w -b -B -i -r Phil Phil2 | less
+   387	14:13	diff.exe -x='/.git' -w -b -B -i -r Phil Phil2 | less
+   388	14:18	info diffutils
+   389	14:22	diff.exe -x '*.git*' -w -b -B -i -r Phil Phil2 | less
+   390	14:22	diff.exe -x '.git' -w -b -B -i -r Phil Phil2 | less
+   391	14:22	rm Phil
+   392	14:22	rm -r Phil
+   393	14:22	rm -rf Phil
+   394	14:22	mv Phil2 Phil
+   397	15:30	vi encrypt_otp.pl
+   398	15:30	grep HEAD *
+   399	15:31	vi tac tac.orig
+   400	15:32	vi reverse
+   401	15:33	git mv tac tac.system
+   402	15:34	git mv tac.orig tac
+   403	15:34	vi tac
+   404	15:36	perldoc Tie::File
+   405	15:41	corelist
+   406	15:43	perl -v
+   407	15:46	perldoc -f corelist
+   408	15:46	perldoc -corelist
+   409	15:47	corelist -v
+   410	15:48	corelist -a 'Tie::File'
+   411	15:48	perldoc corelist
+   412	15:50	perl -lMModule::CoreList -e 'print Module_CoreList->changes_between("5.8.1", "5.14.4");'
+   413	15:50	perl -lMModule::CoreList -e 'print Module::CoreList->changes_between("5.8.1", "5.14.4");'
+   414	15:51	corelist -a 'Module::CoreList'
+   415	15:53	perl -lMModule::CoreList -e 'print Module::CoreList->find_version("5.8.1");'
+   416	15:53	perl -lMModule::CoreList -e 'print Module::CoreList->find_version(v5.8.1);'
+   417	15:54	perl -lMModule::CoreList -e 'print Module::CoreList->find_version($]);'
+   418	15:54	perl -lMModule::CoreList -e 'print join("\n",Module::CoreList->find_version($]));'
+   419	15:54	perl -lMModule::CoreList -e 'print join( "\n", Module::CoreList->find_version($]) );'
+   420	15:54	perl -lMModule::CoreList -e 'print join( "\n", %Module::CoreList->find_version($]) );'
+   421	15:55	perl -lMModule::CoreList -e 'print join( "\n", %{Module::CoreList->find_version($])} );'
+   422	15:55	perl -lMModule::CoreList -e 'print join( "\n", keys %{Module::CoreList->find_version($])} );'
+   423	15:56	perl -lMModule::CoreList -e 'print $],join( "\n", sort keys %{Module::CoreList->find_ve[[Drsion($])} );'
+   424	15:56	perl -lMModule::CoreList -e 'print $],join( "\n", sort keys %{Module::CoreList->find_version($])} );'
+   425	15:56	perl -lMModule::CoreList -e 'print $],join( "\n", sort keys %{Module::CoreList->find_version(5.008001)} );'
+   426	15:57	perl -lMModule::CoreList -e 'print join( "\n", sort keys %{Module::CoreList->find_version(5.008001)} );'
+   427	15:57	perl -lMModule::CoreList -e 'print join( "\n", sort keys %{Module::CoreList->find_version(5.008001)} );' > /tmp/p5008001
+   428	15:57	perl -lMModule::CoreList -e 'print join( "\n", sort keys %{Module::CoreList->find_version($])} );' > /tmp/p5014014
+   429	15:57	diff /tmp/p5008001 /tmp/p5014014
+   430	15:57	diff /tmp/p5008001 /tmp/p5014014 | less
+   431	15:58	diff /tmp/p5008001 /tmp/p5014014 | tee > /tmp/now_vs_then
+   432	15:58	diff /tmp/p5008001 /tmp/p5014014 | tee /tmp/now_vs_then
+   433	15:59	perldoc AutoSplit
+   434	16:00	perl -lMModule::CoreList -e 'print Module::CoreList->find_version('5.008001');'
+   435	16:02	perl -lMModule::CoreList -e 'print Module::CoreList->find_version("5.008001");'
+   436	16:02	perl -lMModule::CoreList -e 'print Module::CoreList->first_release_by_date("Module::CoreList");'
+   437	16:04	perl -lMModule::CoreList -e 'print scalar Module::CoreList->find_version("5.008001");'
+   438	16:04	perl -lMModule::CoreList -e 'print scalar(Module::CoreList->find_version("5.008001"));'
+   439	16:07	perl -lMModule::CoreList -e 'print scalar(keys Module::CoreList->find_version("v5.8.1"));'
+   440	16:07	perl -lMModule::CoreList -e 'print Module::CoreList->find_version("v5.8.1"));'
+   441	16:07	perl -lMModule::CoreList -e 'print Module::CoreList->find_version("v5.8.1");'
+   442	16:08	perl -lMModule::CoreList -e 'print Module::CoreList->find_modules("ersion");'
+   443	16:11	perl -lMModule::CoreList -e 'print scalar(keys Module::CoreList->find_version("5.008001"));'
+   444	16:11	perl -lMModule::CoreList -e 'print join( "\n", sort keys %{Module::CoreList->find_version($])} );'
+   445	16:11	perl -lMModule::CoreList -e 'print join( "\n", sort keys %{Module::CoreList->find_version($])} );' | grep -i version
+   446	16:16	perldoc version
+   447	16:27	perldoc perbug
+   448	16:27	perldoc perlbug
+   449	16:29	perlbug
+   450	16:34	perl -l -MModule::CoreList -e 'print Module::CoreList->find_version("5014014");'
+   451	16:35	perl -l -MModule::CoreList -e 'print Module::CoreList->find_version("5008001");'
+   452	16:35	perl -l -MModule::CoreList -e 'print ref(Module::CoreList->find_version("5008001"));'
+   453	16:36	perl -l -MModule::CoreList -e 'print Module::CoreList->find_version("5014004");'
+   454	16:36	perl -l -MModule::CoreList -e 'print Module::CoreList->find_version(5014004);'
+   455	16:36	perl -l -MModule::CoreList -e 'print scalar Module::CoreList->find_version(5014004);'
+   456	16:36	perl -l -MModule::CoreList -e 'print scalar Module::CoreList->find_version("5");'
+   457	16:37	perl -l -MModule::CoreList -e 'print Module::CoreList->find_version("5");'
+   458	16:38	perl -l -MModule::CoreList -e 'print ref(Module::CoreList->find_version("5"));'
+   459	16:57	vi perlbug.rep
+   460	17:09	perl -le '
+   461	17:10	perl -le '@a=(1,2,3); print join("\n", @a);'
+   462	17:10	perl -le '@a=(1,2,3); foreach i (@a) { $i *= 2; }; print join("\n", @a);'
+   463	17:10	perl -le '@a=(1,2,3); foreach $i (@a) { $i *= 2; }; print join("\n", @a);'
+   464	17:11	perl -le '@a=(1,2,3); foreach $i (@a) { $i *= 2; print ref($i); }; print join("\n", @a);'
+   465	14:11	perl -l -MModule::CoreList -e '%fv=Module::CoreList->find_version("5"); map { printf "%-30s\t%s\n", $_, $fv{$_}; } sort keys %fv'
+   466	14:12	perl -l -MModule::CoreList -e '%fv=Module::CoreList->find_version("5"); map { printf "%-30s", $_, } sort keys %fv'
+   467	14:12	perl -l -MModule::CoreList -e '%fv=Module::CoreList->find_version("5"); map { printf "%-30s", $_; } sort keys %fv'
+   468	14:12	perl -l -MModule::CoreList -e '%fv=Module::CoreList->find_version("5"); map { printf "%-30s", $_; } sort keys %fv; print "'
+   469	14:12	perl -l -MModule::CoreList -e '%fv=Module::CoreList->find_version("5"); map { printf "%-30s", $_; } sort keys %fv; print "\n"'
+   470	14:13	perldoc Data::Dumper
+   471	14:15	perl -l -MModule::CoreList -MData::Dumper -e '%fv=Module::CoreList->find_version("5"); print Dumper(%fv);'
+   472	14:16	perl -l -MModule::CoreList -MData::Dumper -e '%fv=Module::CoreList->find_version("5"); print Dumper(\%fv);'
+   473	14:16	perl -l -MModule::CoreList -e 'print join("\n",sort keys %{Module::CoreList->find_version("5")});'
+   474	14:16	perl -l -MModule::CoreList -MData::Dumper -e '$fv=Module::CoreList->find_version("5"); print Dumper($fv);'
+   475	14:17	perl -l -MModule::CoreList -MData::Dumper -e '$fv=Module::CoreList->find_version("5"); print Dumper($fv); print $fv->{'Cwd'}'
+   476	14:17	perl -l -MModule::CoreList -MData::Dumper -e '$fv=Module::CoreList->find_version("5"); print Dumper($fv); print $fv->{"Cwd"}'
+   477	14:18	perl -l -MModule::CoreList -MData::Dumper -e '$fv=Module::CoreList->find_version("5"); print Dumper($fv); print ">" . $fv->{"Cwd"} ."<\n"'
+   478	14:18	perl -l -MModule::CoreList -MData::Dumper -e '$fv=Module::CoreList->find_version("5"); print Dumper($fv); print "undef" if (not defined $fv->{"Cwd"})'
+   479	14:18	perl -l -MModule::CoreList -MData::Dumper -e '$fv=Module::CoreList->find_version("5001001"); print Dumper($fv); print "undef" if (not defined $fv->{"Cwd"})'
+   480	14:19	perl -l -MModule::CoreList -MData::Dumper -e '$fv=Module::CoreList->find_version("5.001001"); print Dumper($fv); print "undef" if (not defined $fv->{"Cwd"})'
+   481	14:24	perl -l -MModule::CoreList -MData::Dumper -e '$fv=Module::CoreList->find_version(5.001001); print Dumper($fv); print "undef" if (not defined $fv->{"Cwd"})'
+   482	14:24	perl -l -MModule::CoreList -MData::Dumper -e '$fv=Module::CoreList->find_version(5.008008); print Dumper($fv); print "undef" if (not defined $fv->{"Cwd"})'
+   483	13:20	cd testing
+   484	13:20	cd ../perl
+   485	13:20	cd ../perllib/
+   486	13:20	lsd
+   487	13:20	cd examples/
+   488	13:21	cd Moose/
+   489	13:21	cd shapes/
+   490	13:21	cd test
+   491	13:21	cd Loops/
+   492	13:27	cx loops
+   493	13:31	./loops
+   494	13:31	vi loops
+   495	13:32	git add loops
+   496	13:32	cd ../../../
+   497	13:32	cd ../bin
+   498	13:42	perl -c countdown
+   499	13:42	countdown
+   500	13:42	countdown 20 10
+   501	13:43	vi countdown
+   502	13:45	countdown -20
+   503	13:45	countdown 20
+   504	13:45	countdown 20 -10
+   505	13:45	countdown -20 10
+   506	13:45	countdown -20 10 -1
+   507	13:45	countdown -20 10 2
+   508	13:45	countdown -20 10 4
+   509	13:45	git add countdown
+   510	13:46	gicam "some work from nationwide"
+   511	14:40	sdiff pom.xml pom.xml_Michael | less
+   512	14:41	a sdiff
+   513	14:41	\sdiff -b -B -w 260 pom.xml pom.xml_Michael
+   514	14:42	\sdiff -b -B -W 260 pom.xml pom.xml_Michael
+   515	14:42	\sdiff -b -B -W pom.xml pom.xml_Michael
+   516	14:42	\sdiff pom.xml pom.xml_Michael
+   517	14:42	sdiff pom.xml pom.xml_Michael
+   518	14:42	which sdiff
+   519	14:42	ll /usr/bin/diff*
+   520	14:42	man diff
+   521	14:43	diff.exe pom.xml pom.xml_Michael
+   522	14:43	diff.exe pom.xml pom.xml_Michael | less
+   523	14:43	diff.exe -b -B -W pom.xml pom.xml_Michael | less
+   524	14:43	diff.exe -b -B -W pom.xml pom.xml_Michael
+   525	14:43	diff.exe -b -B -W 200 pom.xml pom.xml_Michael
+   526	14:43	diff.exe -b -B -W 200 -y pom.xml pom.xml_Michael
+   527	14:44	diff.exe -b -B -W 200 -y pom.xml pom.xml_Michael | less
+   528	14:44	diff.exe -b -B -W 240 -y pom.xml pom.xml_Michael | less
+   529	14:47	diff.exe --help
+   530	14:47	diff.exe --help | grep color
+   531	14:48	diff.exe -b -B -W 180 -y pom.xml pom.xml_Michael | less
+   532	14:48	diff.exe -b -B -W 180 -y pom.xml pom.xml_Michael | crk '\r' | less
+   533	14:51	diff.exe -b -B -W 180 -y pom.xml pom.xml_Michael | crk '\r' | cat -n
+   534	14:51	diff.exe -b -B -W 180 -y pom.xml pom.xml_Michael | crk '\r' | cat.exe -n |
+   535	14:51	diff.exe -b -B -W 180 -y pom.xml pom.xml_Michael | crk '\r' | cat.exe -n | less
+   536	14:51	diff.exe -b -B -W 180 -y pom.xml pom.xml_Michael | crk '\r' | cat.exe -n
+   537	14:52	diff.exe -b -B -W 180 -y pom.xml pom.xml_Michael | crk '\r' | perl -pe 's/(.*)/$. $1/;'
+   538	14:52	diff.exe -b -B -W 180 -y pom.xml pom.xml_Michael | crk '\r' | perl -pe 's/(.*)/$. $1/;' | less
+   539	14:52	diff.exe -b -B -W 260 -y pom.xml pom.xml_Michael | crk '\r' | perl -pe 's/(.*)/$. $1/;' | less
+   540	14:52	diff.exe -b -B -W 2400 -y pom.xml pom.xml_Michael | crk '\r' | perl -pe 's/(.*)/$. $1/;' | less
+   541	14:53	orig pom.xml
+   542	14:53	vi pom.xml
+   543	14:54	diff.exe -b -B -W 240 -y pom.xml pom.xml_Michael | crk '\r' | perl -pe 's/(.*)/$. $1/;' | less
+   544	14:56	cp pom.xml.orig pom.xlm
+   545	14:56	vi pom.xlm
+   546	15:07	vi pom.xml_Michael
+   547	15:07	diff.exe -b -B -W 240 -y pom.xml pom.xml_Michael | crk '\r' | less
+   548	15:07	diff.exe -b -B -W 160 -y pom.xml pom.xml_Michael | crk '\r' | less
+   549	15:08	diff.exe -b -B -W 120 -y pom.xml pom.xml_Michael | crk '\r' | less
+   550	10:55	git commit -a -m "etc/windows/unix-like.commands.bat tested, fixed and works now."
+   551	10:55	cp ../etc/windows/unix-like.commands.bat
+   552	10:55	cp ../etc/windows/unix-like.commands.bat /tmp/unix-like
+   553	11:18	cd etc
+   554	11:19	mkdir rubylib
+   555	11:19	cd rubylib
+   556	14:39	s -r -D
+   557	14:40	chmod 700 /tmp/uscreens
+   558	14:40	chmod -R 700 /tmp/uscreens
+   559	14:40	ll /tmp/uscreens
+   560	16:07	git add .
+   561	16:07	git add ./rubymonk.primer
+   562	16:07	git add -f ./rubymonk.primer
+   564	16:08	git pull
+   565	16:08	gicam "pulled and added etc/rubylib"
+   566	16:08	git push
+   567	16:10	vi rubymonk.primer
+   568	11:18	exec screen
+   569	14:48	vi .tcshrc.cygwin
+   570	14:51	gfacl /tmp/uscreens/S-parks17
+   571	14:51	getfacl /tmp/uscreens/S-parks17
+   572	14:51	getfacl /tmp/uscreens
+   573	14:51	getfacl /tmp
+   574	14:52	man getfacl
+   575	16:05	mcd svn
+   576	16:06	svn mfr
+   577	16:07	mcd mfr
+   578	16:07	which svn
+   579	16:07	svn https://svnprod.nwie.net/svn/CPFR/MFR/trunk
+   580	16:07	svn co https://svnprod.nwie.net/svn/CPFR/MFR/trunk
+   581	16:09	cd trunk
+   583	14:19	cd Desktop/
+   586	14:19	vi oatswork
+   587	17:10	vi oatswork2
+   588	10:47	vi oaltswork3
+   589	11:10	ll /tmp /tmp/uscreens /tmp/uscreens/S-parks17
+   590	11:10	chmod 777 /tmp/uscreens
+   591	11:10	chmod 777 /tmp
+   592	11:10	screen -r -D
+   593	11:11	screen -r
+   594	11:11	exec screen -r -D
+   595	10:07	vi ~/.tcshrc.cygwin
+   596	10:07	cat ~/.tcshrc.cygwin
+   597	10:08	setfacl 'u::rw-,g::---,o::---' /tmp/uscreens/parks17
+   598	10:08	setfacl -s 'u::rw-,g::---,o::---' /tmp/uscreens/parks17
+   599	10:09	setfacl -s 'u::rw-,g::---,o::---' /tmp/uscreens/S-parks17
+   600	10:09	setfacl -s 'u::rwx,g::---,o::---' /tmp/uscreens/S-parks17
+   601	10:09	ll -d /tmp /tmp/uscreens /tmp/uscreens/S-parks17
+   602	10:10	screen
+   603	13:57	mkpasswd -l
+   604	13:57	mkpasswd -c
+   605	13:57	mkpasswd -l >> /etc/passwd
+   606	13:58	mkpasswd -c | perl -pe 'sX/bashX/tcshX;'
+   607	13:58	mkpasswd -c | perl -pe 's:/bash:/tcsh:;' >> /etc/passwd
+   608	13:58	cat /etc/group
+   609	14:01	cd ..
+   611	14:01	cat /etc/passwd
+   612	14:01	mkpasswd -c | perl -pe 's:/bash:/tcsh:;'
+   613	14:02	mkpasswd -c | perl -pe 's:/bash:/tcsh:; s,604844,16000,'
+   614	14:02	mkpasswd -c | perl -pe 's:/bash:/tcsh:; s,604844,16000,' >> /etc/passwd
+   615	14:02	exit
+   616	20:12	cd
+   617	20:13	cd bin
+   619	20:24	git status
+   620	14:53	gis
+   621	14:54	git diff
+   622	14:54	git log
+   623	14:54	ls
+   624	14:55	primes
+   625	14:56	primes | less
+   626	14:56	lr
+   650	15:13	./rev_bytes | ; ess
+   675	15:21	./rev_bytes | less
+   678	15:21	ll
+   679	15:22	cat .rev_bytes >> ./rev_bytes
+   683	15:26	./rev_bytes >> .rev_bytes
+   698	15:32	./rev_bytes
+   700	15:39	crk --help
+   702	17:51	vi crk
+   704	17:56	perl -le '$b=0b00110101; print $b'
+   705	17:56	perl -le '$b=0b00110101; printf "%x", $b'
+   706	17:56	perl -le '$b=0b00110101; printf "%02x", $b'
+   709	17:58	perl -ple 'if (/reverse_hash/) { $a=1 }; if ($a) { s/(0b[01]{8})/sprintf("%02X",$1)/ge; }'
+   711	17:59	perl -ple 'if (/reverse_hash/) { $a=1 }; if ($a) { s/(0b[01]{8})/sprintf("\%02X",$1)/ge; }' rev_bytes
+   712	17:59	perl -ple 'if (/reverse_hash/) { $a=1 }; if ($a) { s/(0b[01]{8})/sprintf("\\%02X",$1)/ge; }' rev_bytes
+   713	18:00	perl -ple 'if (/reverse_hash/) { $a=1 }; if ($a) { s/(0b[01]{8})/sprintf("%02X",$1)/ge; }' rev_bytes
+   714	18:00	perl -ple 'if (/reverse_hash/) { $a="%" }; if ($a) { s/(0b[01]{8})/sprintf("$a02X",$1)/ge; }' rev_bytes
+   715	18:00	perl -ple 'if (/reverse_hash/) { $a="%" }; if ($a) { s/(0b[01]{8})/sprintf("$a02X",$1)/eeg; }' rev_bytes
+   716	18:00	perl -ple 'if (/reverse_hash/) { $a="%" }; if ($a) { s/(0b[01]{8})/sprintf("%02X",$1)/eeg; }' rev_bytes
+   717	18:01	perl -ple 'if (/reverse_hash/) { $a="%" }; if ($a) { s,(0b[01]{8}),sprintf("%02X",$1),eeg; }' rev_bytes
+   718	18:01	perl -ple 'if (/reverse_hash/) { $a="%" }; if ($a) { s,(0b[01]{8}),sprintf("%02X",$1),eg; }' rev_bytes
+   719	18:01	perl -ple 'if (/reverse_hash/) { $a="%" }; if ($a) { s|(0b[01]{8})|sprintf("%02X",$1)|eg; }' rev_bytes
+   720	18:02	ascii -hex
+   721	18:02	which ascii
+   722	18:02	~/bin/ascii
+   723	18:02	~/bin/ascii -hex
+   724	18:03	perl -ple 'if (/reverse_hash/) { $a=chr(045); }; if ($a) { s|(0b[01]{8})|sprintf("%02X",$1)|eg; }' rev_bytes
+   725	18:03	perl -ple 'if (/reverse_hash/) { $a=chr(045); }; if ($a) { s|(0b[01]{8})|sprintf("$a02X",$1)|eg; }' rev_bytes
+   726	18:03	perl -ple 'if (/reverse_hash/) { $a=chr(045); }; if ($a) { s|(0b[01]{8})|sprintf("$a02X",$1);|eg; }' rev_bytes
+   727	18:04	perl -ple 'if (/reverse_hash/) { $a=chr(045); }; if ($a) { s|(0b[01]{8})|$a;|eg; }' rev_bytes
+   729	18:05	perl -ple 'if (/reverse_hash/) { $a=chr(045); }; if ($a) { s|(0b[01]{8})|$a;|eg; }' rev_bytes | less
+   730	18:05	perl -ple 'if (/reverse_hash/) { $a=chr(045); }; if ($a) { s|(0b[01]{8})|sprintf("%02X",$1)|eg; }' rev_bytes | less
+   731	18:05	perl -ple 'if (/reverse_hash/) { $a=1; }; if ($a) { s|(0b[01]{8})|sprintf("%02X",$1).$1|eg; }' rev_bytes | less
+   733	18:06	perl -ple 'if (/reverse_hash/) { $a=1; }; if ($a) { s|(0b[01]{8})|sprintf("%02X",bin($1)).$1|eg; }' rev_bytes | less
+   735	18:06	perl -ple 'if (/reverse_hash/) { $a=1; }; if ($a) { s|(0b[01]{8})|sprintf("%02B",$1.$1|eg; }' rev_bytes | less
+   739	18:08	perl -ple 'if (/reverse_hash/) { $a=1; }; if ($a) { s|(0b[01]{8})|sprintf("%02B",$1)|eg; }' rev_bytes | less
+   740	18:09	perldoc -f bin
+   741	18:09	perldoc -f oct
+   742	18:09	perldoc -f dec
+   743	18:10	perldoc -f hex
+   744	18:10	perl -ple 'if (/reverse_hash/) { $a=1; }; if ($a) { s|(0b[01]{8})|unpack("%02X",$1)|eg; }' rev_bytes | less
+   745	18:12	perl -ple 'if (/reverse_hash/) { $a=1; }; if ($a) { s|(0b[01]{8})|pack("%02X",$1)|eg; }' rev_bytes | less
+   746	18:12	perl -ple 'if (/reverse_hash/) { $a=1; }; if ($a) { s|(0b[01]{8})|pack("%02X",$1)|eeg; }' rev_bytes | less
+   747	18:12	perl -ple 'if (/reverse_hash/) { $a=1; }; if ($a) { s|(0b[01]{8})|unpack("%02X",$1)|eeg; }' rev_bytes | less
+   748	18:12	perl -ple 'if (/reverse_hash/) { $a=1; }; if ($a) { s|(0b[01]{8})|sprintf("%02X",$1)|eeg; }' rev_bytes | less
+   751	21:04	perl -le '$b=0b00110101; printf "%02x\n", $b'
+   752	21:04	perl -ple 'if (/reverse_hash/) { $a=1; }; if ($a) { s|(0b[01]{8})|sprintf("%02X",$1)|eg; }' rev_bytes | less
+   753	21:04	perl -ple 'if (/reverse_hash/) { $a=1; }; if ($a) { s|(0b[01]{8})|sprintf("%02X",$1)|eg; }' rev_bytes
+   754	21:07	perl -ple 'if (/reverse_hash/) { $a=1; }; if ($a) { s|(0b[01]{8})|sprintf("%02X",\1)|eg; }' rev_bytes
+   756	21:08	perl -ple 'if (/reverse_hash/) { $a=1; }; if ($a) { s|.*(0b[01]{8}).*|\1|eg; }' rev_bytes
+   757	21:08	perl -ple 'if (/reverse_hash/) { $a=1; }; if ($a) { s|.*(0b[01]{8}).*|$1|eg; }' rev_bytes
+   758	21:08	perl -ple 'if (/reverse_hash/) { $a=1; }; if ($a) { s|.*(0b[01]{8}).*|sprintf("%02X",\1)|eg; }' rev_bytes
+   759	21:09	perl -ple 'if (/reverse_hash/) { $a=1; }; if ($a) { s|.*(0b[01]{8}).*|pack("%02X",\1)|eg; }' rev_bytes
+   760	21:09	perl -ple 'if (/reverse_hash/) { $a=1; }; if ($a) { s|.*(0b[01]{8}).*|pack("02X",\1)|eg; }' rev_bytes
+   761	21:09	perl -ple 'if (/reverse_hash/) { $a=1; }; if ($a) { s|.*(0b[01]{8}).*|pack("2X",\1)|eg; }' rev_bytes
+   762	21:09	perl -ple 'if (/reverse_hash/) { $a=1; }; if ($a) { s|.*(0b[01]{8}).*|pack("X",\1)|eg; }' rev_bytes
+   763	21:09	perl -ple 'if (/reverse_hash/) { $a=1; }; if ($a) { s|.*(0b[01]{8}).*|pack("x",\1)|eg; }' rev_bytes
+   764	21:09	perldoc -f pack
+   765	21:10	perl -ple 'if (/reverse_hash/) { $a=1; }; if ($a) { s|.*(0b[01]{8}).*|pack("h",\1)|eg; }' rev_bytes
+   766	21:11	perl -ple 'if (/reverse_hash/) { $a=1; }; if ($a) { s|.*(0b[01]{8}).*|pack("h",\1)|eg; }' rev_bytes | less
+   767	21:11	perl -ple 'if (/reverse_hash/) { $a=1; }; if ($a) { s|.*(0b[01]{8}).*|pack("H",\1)|eg; }' rev_bytes | less
+   768	21:12	perldoc -f vec
+   769	21:13	perl -ple 'if (/reverse_hash/) { $a=1; }; if ($a) { s|.*(0b[01]{8}).*|reverse \1|eg; }' rev_bytes | less
+   770	21:13	perl -ple 'if (/reverse_hash/) { $a=1; }; if ($a) { s|(0b[01]{8})|reverse \1|eg; }' rev_bytes | less
+   771	21:13	perl -ple 'if (/reverse_hash/) { $a=1; }; if ($a) { s|(0b[01]{8})|reverse \1|g; }' rev_bytes | less
+   772	21:17	perl -ple 'if (/reverse_hash/) { $a=1; }; if ($a) { s|(0b[01]{8})|sprintf("%s",\1)|eg; }' rev_bytes | less
+   773	21:17	perl -ple 'if (/reverse_hash/) { $a=1; }; if ($a) { s|(0b[01]{8})|sprintf("\%s",\1)|eg; }' rev_bytes | less
+   774	21:17	perl -ple 'if (/reverse_hash/) { $a=1; }; if ($a) { s|(0b[01]{8})|sprintf("\%s",$1)|eg; }' rev_bytes | less
+   775	21:18	perl -ple 'if (/reverse_hash/) { $a=1; }; if ($a) { s|(0b[01]{8})|sprintf("%s",$1)|eg; }' rev_bytes | less
+   776	21:18	perl -ple 'if (/reverse_hash/) { $a=1; }; if ($a) { s|(0b[01]{8})|$1|eg; }' rev_bytes | less
+   777	21:19	perl -ple 'if (/reverse_hash/) { $a=1; }; if ($a) { s|(0b[01]{8})|dec($1)|eg; }' rev_bytes | less
+   778	21:19	perl -ple 'if (/reverse_hash/) { $a=1; }; if ($a) { s|(0b[01]{8})|hex($1)|eg; }' rev_bytes | less
+   779	21:22	perl -ple 'if (/reverse_hash/) { $a=1; }; if ($a) { s|(0b[01]{8})|hex($1+0)|eg; }' rev_bytes | less
+   780	21:23	perl -ple 'if (/reverse_hash/) { $a=1; }; if ($a) { s|(0b[01]{8})|sprintf("%02x",$1)|eg; }' rev_bytes | less
+   781	21:25	perl -ple 'foreach $i ( 0x00 .. 0xFF) { printf "    \$rev{chr(%02x)} = chr(%02x);\n", $i, 256-$i; }'
+   782	21:26	perl -e 'foreach $i ( 0x00 .. 0xFF) { printf "    \$rev{chr(%02x)} = chr(%02x);\n", $i, 256-$i; }'
+   783	21:26	perl -e 'foreach $i ( 0x00 .. 0xFF) { printf "    \$rev{chr(0x%02x)} = chr(0x%02x);\n", $i, 256-$i; }'
+   784	21:26	perl -e 'foreach $i ( 0x00 .. 0xFF) { printf "    \$rev{chr(0x%02x)} = chr(0x%02x);\n", $i, 256-$i; }' | less
+   786	21:27	perl -e 'foreach $i ( 0x00 .. 0xFF) { printf "    \$rev{chr(0x%02x)} = chr(0x%02x);\n", $i, 255-$i; }' | less
+   787	21:28	perl -e 'foreach $i ( 0x00 .. 0xFF) { printf "    \$rev{chr(0x%02x)} = chr(0x%02x); #\n", $i, 255-$i; }'
+   788	21:30	perldoc -f sprintf
+   789	21:31	perl -e 'foreach $i ( 0x00 .. 0xFF) { printf "    \$rev{chr(0x%02x)} = chr(0x%02x); # %08b\n", $i, 255-$i, $i; }'
+   790	21:37	perl -e 'foreach $i ( 0x00 .. 0xFF) { printf "    \$rev{chr(0x%02x)} = chr(0x%02x); # %08b\n", $i, 255-$i, $i; }' >> rev_bytes
+   791	21:37	vi rev_bytes
+   792	23:20	h
+   793	23:20	h >> rev_bytes
