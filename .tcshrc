@@ -75,7 +75,7 @@ set rmstar on
 if ( $uid == 0 ) then
   set prompt = ": %S%m%s@%.03 [%h]; "
 else
-  set prompt = "%S%m%s@%~ <%h> "
+  set prompt = "%S%m%s@%.2 <%h> "
 endif
 
 set history=4096 savehist=(4096 merge)

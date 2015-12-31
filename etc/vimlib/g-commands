@@ -28,14 +28,13 @@ gwap: wrap a paragraph
 gq: go format. Format the selected text (that is, text selected in visual mode).
 gqap: wrap a paragraph
 
-idfference between gw and gq is that gw returns cursor when used with movement command
+difference between gw and gq is that gw returns cursor when used with movement command
 gq leaves cursor where movement command lands and is therefore able to be used with
 '.' repeat. as with gqj for line-by-line formatting or gq} for paragraph by paragraph
 formatting.
 
 gv ?
 gV ?
-
 
 gh, gH, g ctrl-H  start select mode in character, line and block modes respectively
 

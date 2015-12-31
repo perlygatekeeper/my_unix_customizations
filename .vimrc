@@ -209,6 +209,9 @@ nnoremap <leader>U !} perl -pe "tr/+/ /; s/\%([a-fA-F0-9][a-fA-F0-9])/pack('C', 
 nnoremap <leader>x :e!
 nnoremap <leader>X :.!sh
 nnoremap <leader>w :w!
+" maps to zip through files
+nnoremap <leader>, :N<Cr>
+nnoremap <leader>. :n<Cr>
 " Backspace in Visual mode deletes selection.
 vnoremap <BS> d
 " Tab/Shift+Tab indent/unindent the highlighted
@@ -236,12 +239,12 @@ nnoremap <A-Right> :bnext<CR>
 "iab mos Microsoft operating systems
 "iab aoe acs.ohio-state.edu
 "iab choe chemistry.ohio-state.edu
+"iab matna manta
+"iab chemsitry chemistry
 iab ev environment variable
 iab prodcut product
 iab produtc product
 iab resluts results
-iab matna manta
-iab chemsitry chemistry
 iab direcotry directory
 iab St3ve Steve
 
