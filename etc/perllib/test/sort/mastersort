@@ -258,7 +258,7 @@ sub initialize {
     $sort_message = "Choice (#,s,l,i,n,L,A,C,D,E,R,I,N,q,x,?):";
 }
 
-sub responce {
+sub response {
     local ( $string, $regexp ) = (@_);
     if ($string) {
         print STDERR "$string";
