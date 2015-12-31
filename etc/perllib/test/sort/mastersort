@@ -1,14 +1,14 @@
 #!/usr/local/bin/p5
 #
 # A perl script to sort .. well anything
-$last_mod_date='Wed, Mar 13 1996';
-$version="1.0"; # loosely from mailsort 2.0
-$todo="Things yet to do.";
-$author="Dr. Steven Parker";
-$copyright="$last_mod_date. All rights reserved.";
+$last_mod_date = 'Wed, Mar 13 1996';
+$version       = "1.0";                                    # loosely from mailsort 2.0
+$todo          = "Things yet to do.";
+$author        = "Dr. Steven Parker";
+$copyright     = "$last_mod_date. All rights reserved.";
 #
 $name = $0;
-$name =~ s'.*/''; # remove path--like basename
+$name =~ s'.*/'';                                          # remove path--like basename
 $usage = "usage:\n$name [-opt1] [-opt2] [-opt3]";
 
 use Entry;
@@ -17,33 +17,34 @@ use Entry;
 # & entry("Prompt?", "default_value",
 # "config_string", "validity_checking_sub");
 
-$file_no=0;
+$file_no = 0;
+
 # look for output files
-while ($ARGV=shift) {
-  if ( ! -r $ARGV ) { # file not there, must be output file?
-    local($FH)= sprintf("%02d",$file_no);
-    open($FH,">$ARGV") ||
-      die("$name: Cannot write to '$ARGV': $!\n");
-    $OUTPUT_FILES{$ARGV}=$FH;
-    $OUTPUT_FILES[$file_no]="$ARGV";
-    print "Adding as output file number $file_no the file $ARGV\n";
-    $file_no++;
-  } else { 	      # file exists and is readable must be an input file
-    print "Adding $ARGV as an input file.\n";
-    push(@INPUT_FILES,$ARGV);
-  }
+while ( $ARGV = shift ) {
+    if ( !-r $ARGV ) {    # file not there, must be output file?
+        local ($FH) = sprintf( "%02d", $file_no );
+        open( $FH, ">$ARGV" )
+          || die("$name: Cannot write to '$ARGV': $!\n");
+        $OUTPUT_FILES{$ARGV} = $FH;
+        $OUTPUT_FILES[$file_no] = "$ARGV";
+        print "Adding as output file number $file_no the file $ARGV\n";
+        $file_no++;
+    } else {              # file exists and is readable must be an input file
+        print "Adding $ARGV as an input file.\n";
+        push( @INPUT_FILES, $ARGV );
+    }
 }
 
 # loop over input files
-unshift (@INPUT_FILES, '-') unless @INPUT_FILES;
-while ($INPUT_FILE=shift @INPUT_FILES) {
+unshift( @INPUT_FILES, '-' ) unless @INPUT_FILES;
+while ( $INPUT_FILE = shift @INPUT_FILES ) {
 
 # action on whole file (example of manidtory retirement of old files)
 # ($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
 #  $atime,$mtime,$ctime,$blksize,$blocks) = stat($INPUT_FILE);
 # if ( (-M $INPUT_FILE) > $manidtory_retirement) {
 #   if (&responce("'$INPUT_FILE' is $too_old, shall I remove it?")) {
-#     unlink $INPUT_FILE; 
+#     unlink $INPUT_FILE;
 #     next;
 #   } else {
 #     if (!&responce("Shall I examine '$INPUT_FILE' and eliminate messages older than $too_many_days_old days old?")) {
@@ -51,181 +52,183 @@ while ($INPUT_FILE=shift @INPUT_FILES) {
 #     }
 #   }
 
-# make temp working file
-# if    ( ! -f $INPUT_FILE.bak) { $tempfile=$INPUT_FILE.".bak"; }
-# elsif ( ! -f $INPUT_FILE.tmp) { $tempfile=$INPUT_FILE.".tmp"; }
-# else                    { $tempfile=$INPUT_FILE.".$$"; }
-# print "Moving $INPUT_FILE to $tempfile, termporarily.\n";
-# rename($INPUT_FILE,$tempfile);
+    # make temp working file
+    # if    ( ! -f $INPUT_FILE.bak) { $tempfile=$INPUT_FILE.".bak"; }
+    # elsif ( ! -f $INPUT_FILE.tmp) { $tempfile=$INPUT_FILE.".tmp"; }
+    # else                    { $tempfile=$INPUT_FILE.".$$"; }
+    # print "Moving $INPUT_FILE to $tempfile, termporarily.\n";
+    # rename($INPUT_FILE,$tempfile);
 
-# open temp working file
-  print "Opening input file $INPUT_FILE\n";
-  print "\n";
-  open(FH,"<$INPUT_FILE") || die("$name: Cannot read from '$tempfile': $!\n");
-  while ( $snarfed_bit = &{$snarf_routine}(FH) ) {
-    print $snarfed_bit if ($print_snarfed);
-    $next=0;
-    $written=0;
-#   while (!$next)
-#     $responce=&entry($sort_message,'','null_allowed');
-    while ( ( !$next && ($responce=&entry($sort_message,'','null_allowed')) ),
-              !$next) {
-      if      ($responce eq 's' ) { # s  = short listing of snarfed_bit
-	local($short);
-	$short=sprintf("%-78s\n",$snarfed_bit);
-	print "$short";
-      } elsif ($responce eq 'l' ) { # l  = long  listing of snarfed_bit
-	print $snarfed_bit;
-      } elsif ($responce eq 'i' ) { # i  = information on   snarfed_bit
-	if ($sbinfo) {
-	} else {
-	  local($losb)=length($snarfed_bit);
-	  print "Length of snarfed_bit is $losf\n";
-	}
-      } elsif ($responce eq 'n' ) { # n  = next snarfed_bit
-	if ($must_write and ! $written ) {
-	  $move_on = &entry("Didn't write this line, move on anyway[no] ");
-          if ($move_on =~ /^y/i ) { $next++; }
-	} else {
-	  $next++;
-	}
-      } elsif ($responce =~/^\d+$/) { # \d = number of outfile,write snarfed_bit
-        local($FH)= sprintf("%02d",$responce);
-	if ($OUTPUT_FILES[$FH]) {
-	  local($short);
-	  $short=sprintf("%-60s\n",$snarfed_bit);
-	  print "$FH <- $short";
-	  print $FH $snarfed_bit;
-	  $written++;
-	  $next=$next_if_written;
-	} else {
-	  print "Invalid file number choice, try 'L'\n";
-	}
-      } elsif ($responce eq 'L' ) { # L  = List output file choices
-	# foreach $choice sort keys %OUTPUT_FILES 
-	foreach $file ( @OUTPUT_FILES ) {
-	  next if (!$file);
-	  printf "%4d %s\n", $OUTPUT_FILES{"$file"}, $file;
-	}
-      } elsif ($responce eq 'A' ) { # A  = Add new output file
-	$NEW_FILE=&entry("Input name of new output file: ");
-        local($FH)= sprintf("%02d",$file_no);
-        if ( ! -r $NEW_FILE ) { # file not there, valid output file?
-          if (! open($FH,">$NEW_FILE") ) {
-            warn("$name: Cannot write to '$NEW_FILE': $!\n");
-	    next;
-	  }
-          $OUTPUT_FILES{$NEW_FILE}=$FH;
-          $OUTPUT_FILES[$file_no]="$NEW_FILE";
-          print "Adding as output file number $FH the file $NEWFILE\n";
-          $file_no++;
-	} else {
-	  print "File $NEW_FILE exists, shall we ";
-	  $what_to_do=&entry("Overwrite, Append, Forget it? ");
-	  if ($what_to_do=~/^O/i) {
-            if (! open($FH,">$NEW_FILE") ) {
-              warn("$name: Can't overwrite '$NEW_FILE': $!\n");
-	      next;
-	    } else {
-              $OUTPUT_FILES{$NEW_FILE}=$FH;
-              $OUTPUT_FILES[$file_no]="$NEW_FILE";
-	      print "Overwriting $NEW_FILE as file number $FH\n";
-              $file_no++;
-	    }
-	  } elsif ($what_to_do=~/^A/i) {
-            if (! open($FH,">>$NEW_FILE") ) {
-              warn("$name: Can't append to '$NEW_FILE': $!\n");
-	      next;
-	    } else {
-              $OUTPUT_FILES{$NEW_FILE}=$FH;
-              $OUTPUT_FILES[$file_no]="$NEW_FILE";
-	      print "Appending to $NEW_FILE as file number $FH\n";
-              $file_no++;
-	    }
-	  } else {
-	    print "Dropping $NEW_FILE as possible output file.\n";
-	  }
-	}
-      } elsif ($responce eq 'D' ) { # D  = Establish Default Action
-	$default_action=&entry("Enter default action:");
-      } elsif ($responce eq 'C' ) { # C  = Clear Default Action
-	print "Clearing default action '$default_action'.\n";
-	undef $default_action;
-      } elsif ($responce eq 'E' ) { # E  = Establish output file selection rule
-	print "Currently unimplimented.\n";
-      } elsif ($responce eq 'R' ) { # R  = Remove as choice and Close outfile 
-	local($close_file)=
-	  &entry("Name or number of output file to remove as choice? ");
-	if ( $OUTPUT_FILES{$close_file} ) {
-	  # by name
-	  $close_file_no=$OUTPUT_FILES{"$close_file"};
-	  print "Removing $close_file_no/$close_file as an output file choice.\n";
-          local($FH)= sprintf("%02d",$close_file_no);
-	  undef $OUTPUT_FILES[$close_file_no];
-	  undef $OUTPUT_FILES{"$close_file"};
-	} elsif ( $close_file=~/\d+/ and $OUTPUT_FILES[$close_file] ) {
-	  # by number
-          local($FH)= sprintf("%02d",$close_file);
-	  $close_file_name=$OUTPUT_FILES[$close_file];
-	  print "Removing $FH/$close_file_name as an output file choice.\n";
-	  undef $OUTPUT_FILES[$close_file];
-	  undef $OUTPUT_FILES{$close_file_name};
-	  close($FH);
-	} else {
-	  print "Entry $close_file doesn't seem to be an output file choice.\n";
-	  next;
-	}
-      } elsif ($responce eq 'I' ) { # I  = Info on input file
-	print "Presently examining file $ARGV\n";
-	print "On line $.\n";
-      } elsif ($responce eq 'N' ) { # N  = Next input file
-	print "Moving to next input file (if there is one.)\n";
-	last; # last while snarf_bit loop
-      } elsif ($responce eq 'q' ) { # q  = quit
-	print "Quitting.\n";
-	foreach $output_file (keys %OUTPUT_FILES) {
-	  print "Closing $output_file\n";
-	  close($OUTPUT_FILES{$output_file});
-	}
-	exit 0;
-      } elsif ($responce eq 'x' ) { # x  = exit
-	print "Exiting.\n";
-	foreach $output_file (keys %OUTPUT_FILES) {
-	  local($unlink);
-	  if (&responce("Unlink $output_file? ")) {
-	    unlink $output_file;
-	  }
-	}
-	exit 0;
-      } elsif ($responce eq '?' ) { # ?  = give list of choices
-        print "?  = give list of choices (this message)\n";
-        print "s  = short listing of snarfed_bit\n";
-        print "l  = long  listing of snarfed_bit\n";
-        print "i  = information on   snarfed_bit\n";
-        print "n  = next snarfed_bit\n";
-        print "\d = number of outfile,write snarfed_bit\n";
-        print "L  = List output file choices\n";
-        print "A  = Add new output file\n";
-        print "C  = Clear Default Action\n";
-        print "D  = Establish Default Action\n";
-        print "E  = Establish output file selection rule\n";
-        print "R  = Remove as choice and Close outfile\n";
-        print "I  = Info on input file\n";
-        print "N  = Next input file\n";
-        print "q  = quit\n";
-        print "x  = exit unlinking output files.\n";
-      } elsif ($responce eq '' ) { # null command, is there a default_action?
-	if (defined $default_action && ($default_action ne '') ) {
-	  print "Doing default '$default_action'\n";
-	  $responce=$default_action;
-	  redo;
-	}
-      } else {
-	print "unknow command '$responce'\n";
-      }
-    } # !$next
-  } # snarfed_bit loop
-  close(FH);
+    # open temp working file
+    print "Opening input file $INPUT_FILE\n";
+    print "\n";
+    open( FH, "<$INPUT_FILE" ) || die("$name: Cannot read from '$tempfile': $!\n");
+    while ( $snarfed_bit = &{$snarf_routine}(FH) ) {
+        print $snarfed_bit if ($print_snarfed);
+        $next    = 0;
+        $written = 0;
+
+        #   while (!$next)
+        #     $responce=&entry($sort_message,'','null_allowed');
+        while ( ( !$next && ( $responce = &entry( $sort_message, '', 'null_allowed' ) ) ), !$next )
+        {
+            if ( $responce eq 's' ) {    # s  = short listing of snarfed_bit
+                local ($short);
+                $short = sprintf( "%-78s\n", $snarfed_bit );
+                print "$short";
+            } elsif ( $responce eq 'l' ) {    # l  = long  listing of snarfed_bit
+                print $snarfed_bit;
+            } elsif ( $responce eq 'i' ) {    # i  = information on   snarfed_bit
+                if ($sbinfo) {
+                } else {
+                    local ($losb) = length($snarfed_bit);
+                    print "Length of snarfed_bit is $losf\n";
+                }
+            } elsif ( $responce eq 'n' ) {    # n  = next snarfed_bit
+                if ( $must_write and !$written ) {
+                    $move_on = &entry("Didn't write this line, move on anyway[no] ");
+                    if ( $move_on =~ /^y/i ) { $next++; }
+                } else {
+                    $next++;
+                }
+            } elsif ( $responce =~ /^\d+$/ ) {    # \d = number of outfile,write snarfed_bit
+                local ($FH) = sprintf( "%02d", $responce );
+                if ( $OUTPUT_FILES[$FH] ) {
+                    local ($short);
+                    $short = sprintf( "%-60s\n", $snarfed_bit );
+                    print "$FH <- $short";
+                    print $FH $snarfed_bit;
+                    $written++;
+                    $next = $next_if_written;
+                } else {
+                    print "Invalid file number choice, try 'L'\n";
+                }
+            } elsif ( $responce eq 'L' ) {        # L  = List output file choices
+                                                  # foreach $choice sort keys %OUTPUT_FILES
+                foreach $file (@OUTPUT_FILES) {
+                    next if ( !$file );
+                    printf "%4d %s\n", $OUTPUT_FILES{"$file"}, $file;
+                }
+            } elsif ( $responce eq 'A' ) {        # A  = Add new output file
+                $NEW_FILE = &entry("Input name of new output file: ");
+                local ($FH) = sprintf( "%02d", $file_no );
+                if ( !-r $NEW_FILE ) {            # file not there, valid output file?
+                    if ( !open( $FH, ">$NEW_FILE" ) ) {
+                        warn("$name: Cannot write to '$NEW_FILE': $!\n");
+                        next;
+                    }
+                    $OUTPUT_FILES{$NEW_FILE} = $FH;
+                    $OUTPUT_FILES[$file_no] = "$NEW_FILE";
+                    print "Adding as output file number $FH the file $NEWFILE\n";
+                    $file_no++;
+                } else {
+                    print "File $NEW_FILE exists, shall we ";
+                    $what_to_do = &entry("Overwrite, Append, Forget it? ");
+                    if ( $what_to_do =~ /^O/i ) {
+                        if ( !open( $FH, ">$NEW_FILE" ) ) {
+                            warn("$name: Can't overwrite '$NEW_FILE': $!\n");
+                            next;
+                        } else {
+                            $OUTPUT_FILES{$NEW_FILE} = $FH;
+                            $OUTPUT_FILES[$file_no] = "$NEW_FILE";
+                            print "Overwriting $NEW_FILE as file number $FH\n";
+                            $file_no++;
+                        }
+                    } elsif ( $what_to_do =~ /^A/i ) {
+                        if ( !open( $FH, ">>$NEW_FILE" ) ) {
+                            warn("$name: Can't append to '$NEW_FILE': $!\n");
+                            next;
+                        } else {
+                            $OUTPUT_FILES{$NEW_FILE} = $FH;
+                            $OUTPUT_FILES[$file_no] = "$NEW_FILE";
+                            print "Appending to $NEW_FILE as file number $FH\n";
+                            $file_no++;
+                        }
+                    } else {
+                        print "Dropping $NEW_FILE as possible output file.\n";
+                    }
+                }
+            } elsif ( $responce eq 'D' ) {    # D  = Establish Default Action
+                $default_action = &entry("Enter default action:");
+            } elsif ( $responce eq 'C' ) {    # C  = Clear Default Action
+                print "Clearing default action '$default_action'.\n";
+                undef $default_action;
+            } elsif ( $responce eq 'E' ) {    # E  = Establish output file selection rule
+                print "Currently unimplimented.\n";
+            } elsif ( $responce eq 'R' ) {    # R  = Remove as choice and Close outfile
+                local ($close_file) = &entry("Name or number of output file to remove as choice? ");
+                if ( $OUTPUT_FILES{$close_file} ) {
+
+                    # by name
+                    $close_file_no = $OUTPUT_FILES{"$close_file"};
+                    print "Removing $close_file_no/$close_file as an output file choice.\n";
+                    local ($FH) = sprintf( "%02d", $close_file_no );
+                    undef $OUTPUT_FILES[$close_file_no];
+                    undef $OUTPUT_FILES{"$close_file"};
+                } elsif ( $close_file =~ /\d+/ and $OUTPUT_FILES[$close_file] ) {
+
+                    # by number
+                    local ($FH) = sprintf( "%02d", $close_file );
+                    $close_file_name = $OUTPUT_FILES[$close_file];
+                    print "Removing $FH/$close_file_name as an output file choice.\n";
+                    undef $OUTPUT_FILES[$close_file];
+                    undef $OUTPUT_FILES{$close_file_name};
+                    close($FH);
+                } else {
+                    print "Entry $close_file doesn't seem to be an output file choice.\n";
+                    next;
+                }
+            } elsif ( $responce eq 'I' ) {    # I  = Info on input file
+                print "Presently examining file $ARGV\n";
+                print "On line $.\n";
+            } elsif ( $responce eq 'N' ) {    # N  = Next input file
+                print "Moving to next input file (if there is one.)\n";
+                last;                         # last while snarf_bit loop
+            } elsif ( $responce eq 'q' ) {    # q  = quit
+                print "Quitting.\n";
+                foreach $output_file ( keys %OUTPUT_FILES ) {
+                    print "Closing $output_file\n";
+                    close( $OUTPUT_FILES{$output_file} );
+                }
+                exit 0;
+            } elsif ( $responce eq 'x' ) {    # x  = exit
+                print "Exiting.\n";
+                foreach $output_file ( keys %OUTPUT_FILES ) {
+                    local ($unlink);
+                    if ( &responce("Unlink $output_file? ") ) {
+                        unlink $output_file;
+                    }
+                }
+                exit 0;
+            } elsif ( $responce eq '?' ) {    # ?  = give list of choices
+                print "?  = give list of choices (this message)\n";
+                print "s  = short listing of snarfed_bit\n";
+                print "l  = long  listing of snarfed_bit\n";
+                print "i  = information on   snarfed_bit\n";
+                print "n  = next snarfed_bit\n";
+                print "\d = number of outfile,write snarfed_bit\n";
+                print "L  = List output file choices\n";
+                print "A  = Add new output file\n";
+                print "C  = Clear Default Action\n";
+                print "D  = Establish Default Action\n";
+                print "E  = Establish output file selection rule\n";
+                print "R  = Remove as choice and Close outfile\n";
+                print "I  = Info on input file\n";
+                print "N  = Next input file\n";
+                print "q  = quit\n";
+                print "x  = exit unlinking output files.\n";
+            } elsif ( $responce eq '' ) {    # null command, is there a default_action?
+                if ( defined $default_action && ( $default_action ne '' ) ) {
+                    print "Doing default '$default_action'\n";
+                    $responce = $default_action;
+                    redo;
+                }
+            } else {
+                print "unknow command '$responce'\n";
+            }
+        }    # !$next
+    }    # snarfed_bit loop
+    close(FH);
 }
 
 exit 0;
@@ -233,80 +236,79 @@ exit 0;
 #   ***   SUBROUTINES   ***
 #   ---   ---   ---
 sub initialize {
-  ($sec,$min,$hour,$mday,$this_month,$this_year,$wday,$yday,$isdst)
-  =localtime(time);
-  $last_year=$this_year-1;
-  @mo=('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec');
-  foreach $mo ($[ .. $#mo) { $mo_byname{$mo[$mo]}=$mo; }
-  @day = ('Sun','Mon','Tue','Wed','Thu','Fri','Sat');
-  $day="$day[$wday], $mo[$mon] $mday 19$year";
-  $date="$mday $mo_full[$mon] 19$year";
+    ( $sec, $min, $hour, $mday, $this_month, $this_year, $wday, $yday, $isdst ) = localtime(time);
+    $last_year = $this_year - 1;
+    @mo = ( 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' );
+    foreach $mo ( $[ .. $#mo ) { $mo_byname{ $mo[$mo] } = $mo; }
+    @day  = ( 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' );
+    $day  = "$day[$wday], $mo[$mon] $mday 19$year";
+    $date = "$mday $mo_full[$mon] 19$year";
 
-  $bad=	$false=0;
-  $good=	$true=1;
-  $\=""; $|=1;
+    $bad  = $false = 0;
+    $good = $true  = 1;
+    $\    = "";
+    $|    = 1;
 
-  $snarf_routine=\&snarf_by_line;
-  $print_snarfed=1;
-  $must_write=1;
-  $next_if_written=1;
-  $default_action='';
+    $snarf_routine   = \&snarf_by_line;
+    $print_snarfed   = 1;
+    $must_write      = 1;
+    $next_if_written = 1;
+    $default_action  = '';
 
-  $sort_message="Choice (#,s,l,i,n,L,A,C,D,E,R,I,N,q,x,?):";
+    $sort_message = "Choice (#,s,l,i,n,L,A,C,D,E,R,I,N,q,x,?):";
 }
 
-
 sub responce {
-  local($string,$regexp)=(@_);
-  if ($string) {
-    print STDERR "$string";
-  } else {
-    print STDERR "yes|no";
-  }
-  $responce=<STDIN>;
-  chomp $responce;
-  if ($regexp) {
-    return ($responce=~/$regexp/i);
-  } else {
-    return ($responce=~/^y/i);
-  }
+    local ( $string, $regexp ) = (@_);
+    if ($string) {
+        print STDERR "$string";
+    } else {
+        print STDERR "yes|no";
+    }
+    $responce = <STDIN>;
+    chomp $responce;
+    if ($regexp) {
+        return ( $responce =~ /$regexp/i );
+    } else {
+        return ( $responce =~ /^y/i );
+    }
 }
 
 sub snarf_by_line {
-  local($filehandle)=@_;
-  local($line);
-  if (eof($filehandle)) {
-    if (wantarray) {
-      return ();
+    local ($filehandle) = @_;
+    local ($line);
+    if ( eof($filehandle) ) {
+        if (wantarray) {
+            return ();
+        } else {
+            return 0;
+        }
     } else {
-      return 0;
+        if (wantarray) {
+            return <$filehandle>;    # will this work?
+        } else {
+            return $_ = <$filehandle>;
+        }
     }
-  } else {
-    if (wantarray) {
-      return <$filehandle>; # will this work?
-    } else {
-      return $_=<$filehandle>;
-    }
-  }
 }
 
 sub snarf_by_paragraph {
-  local($filehandle)=@_;
-  local($paragraph);
-  $/=''; #enable paragraph mode
-  if (eof($filehandle)) {
-    if (wantarray) {
-      return ();
+    local ($filehandle) = @_;
+    local ($paragraph);
+    $/ = '';                         #enable paragraph mode
+    if ( eof($filehandle) ) {
+        if (wantarray) {
+            return ();
+        } else {
+            return 0;
+        }
     } else {
-      return 0;
+        if (wantarray) {
+            return <$filehandle>;    # will this work?
+        } else {
+            return $_ = <$filehandle>;
+        }
     }
-  } else {
-    if (wantarray) {
-      return <$filehandle>; # will this work?
-    } else {
-      return $_=<$filehandle>;
-    }
-  }
 }
 
 __END__
