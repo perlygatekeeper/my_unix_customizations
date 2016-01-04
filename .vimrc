@@ -144,6 +144,13 @@ nnoremap <C-L> :nohlsearch<Cr>:call matchdelete(cc)<Cr><C-L>
 " Map <leader>+pipe to turn column highlighting back on
 nnoremap <leader>\| :call matchadd('ColorColumn', '\%79v', 100, cc)<Cr>
 
+" Easy space insert
+nnoremap <Space> i<Space><Esc>
+" Easy underscore insert
+nnoremap _ i_<Esc>
+" Easy blank line after cursor-line
+nnoremap <Cr> o<Esc>k
+" doesn't work nnoremap <S-Enter> O<Esc>j
 nnoremap qq :q!|
 nnoremap <leader>vimrc :tabe ~/.vimrc<cr>
 " autocmd bufwritepost .vimrc source $MYVIMRC

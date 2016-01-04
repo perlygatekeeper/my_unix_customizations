@@ -1,0 +1,17 @@
+Ctrl-Y in insert mode copies character at same column from line above.
+Ctrl-Y in insert mode copies character at same column from line above. <- this line made by opening new line and holding down Ctrl-Y
+
+
+
+
+http://vim.wikia.com/wiki/Use_Ctrl-O_instead_of_Esc_in_insert_mode_mappings
+
+In insert mode, pressing Ctrl-O switches to normal mode for one command,
+then switches back to insert mode when the command is finished.
+
+For example, do not write mappings like this:
+
+:imap <F5> <Esc>:set number!<CR>a
+Instead, use:
+
+:imap <F5> <C-o>:set number!<CR>
