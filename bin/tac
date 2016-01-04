@@ -5,7 +5,12 @@
 $name = $0; $name =~ s'.*/''; # remove path--like basename
 $usage = "usage:\n$name [FILENAME ...]";
 
-if (@ARGV) { # files listed on command line (presumably) reverse lines of each one.
+if ( $name =~ /mir(ror)?/i ) {
+  while (<>) {
+    print reverse $_;
+  }
+  print reverse <>;
+} elsif (@ARGV) { # files listed on command line (presumably) reverse lines of each one.
   use File::Tie;
   @ARGV=reverse @ARGV; # reverse list of files as well
   foreach $file (@ARGV) {
@@ -21,3 +26,8 @@ if (@ARGV) { # files listed on command line (presumably) reverse lines of each o
 exit 0;
 
 __END__
+
+
+echo use:    find . -type f -exec grep '^ln' {} \; | sh
+echo tac is the 'real' file
+ln -fs tac mir
