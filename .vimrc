@@ -137,7 +137,7 @@ endif
 let mapleader = "="
 " next few lines highlight column 79 on lines with a character in column 79
 " as an aid to keep comment boxes to 80 columns wide
-highlight ColorColumn ctermbg=darkred
+" highlight ColorColumn ctermbg=darkred
 let cc=matchadd('ColorColumn', '\%79v', 100)
 " Map ^L to do what it does, but also clear search highlighting.
 nnoremap <C-L> :nohlsearch<Cr>:call matchdelete(cc)<Cr><C-L>

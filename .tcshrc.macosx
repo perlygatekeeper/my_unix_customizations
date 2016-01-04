@@ -37,7 +37,7 @@ a search        port search
 # sort | \
 # uniq | \
 # perl -p -0 -e 's,\n/,:/,smg;'
-setenv MANPATH /usr/share/man:/opt/local/share/man:/usr/local/man:/usr/local/share/man:/usr/local/clamXav/share/man:/usr/X11/share/man:/opt/local/libexec/gnubin/man:/Developer/usr/share/man:/Developer/usr/X11/share/man:/Developer/usr/llvm-gcc-4.2/share/man:/Applications/MAMP/Library/share/man:/Developer/Library/Xcode/PrivatePlugIns/Xcode3Core.ideplugin/Contents/SharedSupport/usr/share/man:/System/Library/Java/Support/VisualVM.bundle/Contents/Home/man:/opt/local/Library/Frameworks/Python.framework/Versions/2.7/share/man:/usr/llvm-gcc-4.2/share/man
+setenv MANPATH /usr/share/man:/opt/local/share/man:/usr/local/man:/usr/local/share/man:/usr/local/clamXav/share/man:/usr/X11/share/man:/opt/local/libexec/gnubin/man:/Developer/usr/share/man:/Developer/usr/X11/share/man:/Developer/usr/llvm-gcc-4.2/share/man:/Applications/MAMP/Library/share/man:/Developer/Library/Xcode/PrivatePlugIns/Xcode3Core.ideplugin/Contents/SharedSupport/usr/share/man:/System/Library/Java/Support/VisualVM.bundle/Contents/Home/man:/opt/local/Library/Frameworks/Python.framework/Versions/2.7/share/man:/usr/llvm-gcc-4.2/share/man:/opt/local/share/perl5.20/siteman
 
 # good way to regenerate PATH
 # locate '/bin' '/sbin' | \
