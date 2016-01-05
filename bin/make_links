@@ -1,2 +1,2 @@
   ls -l | grep -- '->' | sort -t\> -k2,2
-  onoff -on __END__ `find . -type f` | cat -v | grep 'ln' 
+  onoff -on __END__ `find . -type f` | cat -v | grep '^ln' 
