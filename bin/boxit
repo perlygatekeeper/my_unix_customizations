@@ -10,13 +10,20 @@ my $author="Dr. Steven Parker";
 my $copyright="$last_mod_date. All rights reserved.";
 
 my $name = $0; $name =~ s'.*/''; # remove path--like basename
-my $usage = "usage:\n$name";
+my $usage  = "$name [ list | styles ] [ show ] [ debug ]\n";
+   $usage .= ' ' x length($name) . " [ tight | spacious .. ] [ ltrim | rtrim | trim ]\n";
+   $usage .= ' ' x length($name) . " [ bold | clipped | comment1 | comment2 | comment3 | default | heavy | light | medium ] \n";
 
-# options?  --style style_name
-#           --styles (will list them)
-#           [ --trim | [ --ltrim | --rtrim ] 
-#           --tight
-#           --spacious
+#################################################
+#                                               #
+#  options?  --style style_name                 #
+#            --styles (will list them)          #
+#            [ --trim | [ --ltrim | --rtrim ]   #
+#            --tight                            #
+#            --spacious                         #
+#                                               #
+#################################################
+
 # TO DO:    --table
 use Getopt::Long;
 my ($debug, $style, $list_styles, $show, $unbox, $trim, $rtrim, $ltrim,);
@@ -27,6 +34,7 @@ $spacious = 0;
 $style = 'default';
 GetOptions ( 'debug'           => \$debug,        # simple
              'style=s'         => \$style,        # string
+             'help|usage'      => sub { print $usage; exit 0; },
              'clipped'         => sub { my ( $style_name, ) = @_; $style = $style_name; },
              'comment1|1'      => sub { my ( $style_name, ) = @_; $style = $style_name; },
              'comment2|2'      => sub { my ( $style_name, ) = @_; $style = $style_name; },
@@ -312,6 +320,28 @@ sub set_styles {
 }
 
 __END__
+Options:
+ style=s         specify a style by name 
+ usage           print a short usage string
+ help            print this message
+ clipped         specify the style to be clipped 
+ comment1|1      specify the style to be comment style 1
+ comment2|2      specify the style to be comment style 2
+ comment3|3      specify the style to be comment style 3
+ light           specify the style to be light  ( all box marks are periods )
+ medium          specify the style to be medium ( all box marks are asterics )
+ heavy           specify the style to be heavy  ( all box marks are at signs )
+ linear          specify the style to be linear ( + - and | - the default stle )
+ bold            specify the style to be bold   ( @ = and H )
+ list|styles     list all available styles by their full name
+ show:i@{0,2}    show an example of boxed text (one or two integers may be specified to define dimensions of text)
+ tight           remove one white space around text to be boxed
+ spacious+       add one or more addition white space around text to be boxed
+ unbox           remove box marks (style may be subsequently specified with another argument
+ trim            remove extra white space from both left and right sides
+ lefttrim|ltrim  remove extra white space from left side of all lines filtered
+ righttrim|rtrim remove extra white space from right side of all lines filtered
+ debug           show debuging information
 
 #  Normal padding
 $horizontal_padding     = 2;
