@@ -142,10 +142,10 @@ sub parse_args {
              'output numerical values in binary',
              'tabular output (the default) (#columns may be specified)',
              'single column output',
-             'incrment debug level');
-  push(@args,'start','end','specials');
+             'increment debug level');
+  push(@args,'start','end');
   push(@help,'starting numerical value for table',
-             '  ending numerical value for table');
+             'ending   numerical value for table');
   push(@args,'specials');
   push(@help,'add control-identities (ie. BEL is ^G and ESC is ^])');
 
@@ -156,6 +156,7 @@ sub parse_args {
 
   while ( @ARGV >= 1 ) {
     print "parsing '$ARGV[0]'" if ($debug);
+    $ARGV[0] =~ s/^--/-/;
     if      ( ($abbrev->{$ARGV[0]} eq '-help' )
            || ($abbrev->{$ARGV[0]} eq '-?' ) ) {
       help($usage);
@@ -237,7 +238,7 @@ sub parse_args {
       }
 
     } elsif ( $ARGV[0] =~ /^.$/ ) { # single character
-      push(@characters,"$ARGV[0]");
+      push(@characters,$ARGV[0]);
       shift(@ARGV);
 
     } else {
