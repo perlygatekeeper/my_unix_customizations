@@ -34,7 +34,8 @@ $spacious = 0;
 $style = 'default';
 GetOptions ( 'debug'           => \$debug,        # simple
              'style=s'         => \$style,        # string
-             'help|usage'      => sub { print $usage; exit 0; },
+             'usage'           => sub { print $usage; exit 0; },
+             'help'            => sub { &help; exit 0; },
              'clipped'         => sub { my ( $style_name, ) = @_; $style = $style_name; },
              'comment1|1'      => sub { my ( $style_name, ) = @_; $style = $style_name; },
              'comment2|2'      => sub { my ( $style_name, ) = @_; $style = $style_name; },
@@ -319,7 +320,11 @@ sub set_styles {
   return $styles;
 }
 
-__END__
+sub help {
+print STDERR <<'EOH';
+
+boxit [ OPTIONS ] [ filename ... ]
+
 Options:
  style=s         specify a style by name 
  usage           print a short usage string
@@ -342,6 +347,9 @@ Options:
  lefttrim|ltrim  remove extra white space from left side of all lines filtered
  righttrim|rtrim remove extra white space from right side of all lines filtered
  debug           show debuging information
+EOH
+}
+__END__
 
 #  Normal padding
 $horizontal_padding     = 2;
