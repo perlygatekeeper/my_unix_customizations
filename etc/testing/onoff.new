@@ -239,7 +239,7 @@ sub parse_args_inde {
             $conf->{stop_lines}{$1}++;
             print "user has requested printing of line $1\n" if ($debug);
             shift(@ARGV);
-        } elsif ( $ARGV[0] =~ m'^-?([^.]*)\.\.+([^.]*)$' ) {                                    # N to M
+        } elsif ( $ARGV[0] =~ m'^-?([^.]*)\.\.+([^.]*)$' ) {                                # N to M
             my $front=$1;
             my $back=$2;
             if ($front eq '' and $back eq '') {
@@ -338,11 +338,15 @@ What should happen if...
     b) onoff 'one' 'teen'
 
 Notes:
-1) Lead, Linger and Context will only be allowed in numbered cases in the special Single Number case.
-2) For now, only one regular expression or regular expression pair will be allowed.
-3) Include starts and stops will be on by default.  May add way to change this behavior in the future.
+ 1) Lead, Linger and Context will only be allowed in numbered cases in the special Single Number case.
+ 2) For now, only one regular expression or regular expression pair will be allowed.
+ 3) Include starts and stops will be on by default.  May add way to change this behavior in the future.
+    a) print on start trigger (print lines matching start triggers),
+       stop printing after (print lines matching stop triggers).
+    b) start printing after could be handled with a negative lead 
 
-4) Should starts and stops be independant or in pairs?
+
+ 4) Should starts and stops be independant or in pairs?
     a) Pairs allows for multiple different start-stop regexp's.
        Also, each trigger pair could have it's only lead or linger or both.
        Print all lines between 'Steve' and line 400, possible with paired triggers.
@@ -352,11 +356,11 @@ Notes:
 	   the printing started by trigger 5 could be stoped by any of the stop triggers.
 	   duplication of this with forced paired triggers would require 7x3=21 different pairs.
 
-5) Can a start trigger also be a stop trigger?
-6) While lingering, should start conditions be searched for?
-7) What if lead lines include a stop trigger?
-8) Can we have our cake and eat it too, can we have independent start/stop triggers AND paired triggers?
-9) Should pairs be replaced with independant sets of clusters
+ 5) Can a start trigger also be a stop trigger?
+ 6) While lingering, should start conditions be searched for?
+ 7) What if lead lines include a stop trigger?
+ 8) Can we have our cake and eat it too, can we have independent start/stop triggers AND paired triggers?
+ 9) Should pairs be replaced with independant sets of clusters
 10) Should we allow multiple conditions, like print between lines mathcing 'start' to 'stop' but only if within the first 100 lines.
 
 
