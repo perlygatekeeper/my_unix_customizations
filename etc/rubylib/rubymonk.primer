@@ -1,5 +1,8 @@
--=- Introduction To Ruby Objects -=-
+https://rubymonk.com/learning/books/1-ruby-primer
 
+=== Ruby Primer ===
+
+-=- Introduction To Ruby Objects -=-
 0.0 Introduction to Objects
     Everything is an object
     self											# returns main
@@ -511,139 +514,62 @@
  -=- Classes and Object Oriented Programming in Ruby
 5.0 Classes
     Grouping Objects
-    puts 1.class
-    puts "".class
-    puts [].class
-
-    STDOUT:
-
-    Fixnum
-    String
-    Array
-    -----------------------------
-    puts 1.is_a?(Integer)
-    puts 1.is_a?(String)
-    
-    STDOUT:
-
-    true
-    false
-    -----------------------------
-    Classes are people too
-    1.class.class
-    STDOUT:
-
-    Class
-    -----------------------------
-    What do classes do?
-    Object.new
-    STDOUT:
-
-    an instance of Object is created ✔
-
+	puts 1.is_a?(Integer)						# returns true
+    puts 1.is_a?(String)						# returns false
+	-----------------------------
+	Classes are people too
+	class.class									# returns 'Class'
+	-----------------------------
+	What do classes do?
+	Object.new									# returns "an instance of the object is created"
+	-----------------------------
 5.1 Building your own class
-    Getting classy
-
-    class Rectangle
-    end
-    STDOUT:
-
-    nil
-    a class of type Rectangle is created ✔
-    -----------------------------
-    State and behaviour
-
-    class Rectangle
-      def perimeter
-      end
-    end
-    STDOUT:
-
-    nil
-    a class of type Rectangle is created ✔
-    class Rectangle has a method perimeter ✔
-    -----------------------------
-    class Rectangle
-      def perimeter
-        2 * (@length + @breadth)
-      end
-    end
-    STDOUT:
-
-    nil
-    a class of type Rectangle is created ✔
-    class Rectangle has a method perimeter ✔
-    calling the instance method perimeter on class Rectangle should return a NoMethodError ✔
-    -----------------------------
-
-	!!! @ sigals are used for instance variables !!!
-    You'll notice that the variable names length and breadth have an @
-	symbol placed in front of them. This is a convention which designates them
-	as being a part of the state of the class, or to use jargon, they are the
-	"instance variables of the class." This means that every instance of the
-	class Rectangle will have its own unique copies of these variables and is
-	in effect, a distinct rectangle.
-    -----------------------------
-    class Rectangle
-      def initialize(length, breadth)
-        @length = length
-        @breadth = breadth
-      end
-    
-      def perimeter
-        2 * (@length + @breadth)
-      end
-    
-      def area
-        @length * @breath
-      end
-    end
-    STDOUT:
-
-    area of square of length 4 should be 16 ✔
-    area of rectangle with length=5, breadth=8 should be 40 ✔
-
-
-
+	Getting classy
+	State and behaviour
+	
  -=- Introduction to Ruby Methods -=-
 6.1 Being Methodical
-    What are methods, really?
-
-    -----------------------------
-    Objectifying methods
-
-    -----------------------------
-    Make it so
-
-    -----------------------------
-    Beam me up, Scotty
-
+	What are methods, really?
+	-----------------------------
+	Objectifying methods
+	-----------------------------
+	Make it so
+	-----------------------------
+	Beam me up, Scotty
 6.2 Calling a method
-    Cooperative objects
-
-    -----------------------------
-    Arraying your arguments
-
-    -----------------------------
-    Naming parameters
-
-    -----------------------------
-    A not-so-gentle workout
-
-
-
-
+	Cooperative objects
+	-----------------------------
+	Arraying your arguments
+	-----------------------------
+	Naming parameters
+	-----------------------------
+	A not-so-gentle workout
 
  -=- Introduction to Lambdas and Blocks
 7.1 Lambdas In Ruby
-7.2 Blocks in Ruby
-
+	Lambdas
+7.2 Blocks In Ruby
+	Lambdas vs. Blocks
+	-----------------------------
+	Skipping the details
+	
  -=- Introduction to Modules -=-
 8.1 Getting Modular
+	Mixing it up
+	-----------------------------
+	Some hierarchy and a little exercise
 8.2 Modules as Namespaces
+	Collision course
+	-----------------------------
+	Constant lookup
 
  -=- Introduction to I/O -=-
 9.1 Streams
+	I/O streams and the IO class
+	-----------------------------
+	Standard Output, Input, and Error	
+	
 9.2 Using the `File` Class
-
-
+	Opening and closing
+	-----------------------------
+	Reading and writing

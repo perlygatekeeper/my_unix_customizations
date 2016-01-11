@@ -1,0 +1,95 @@
+https://rubymonk.com/learning/books/4-ruby-primer-ascent
+
+=== Ruby Primer Ascent ===
+
+-=- Blocks -=-
+
+0.0 Introducing Blocks
+	Diving into blocks
+    -----------------------------
+	What are blocks?
+    -----------------------------
+	Block your code!
+0.1 Yield
+	Yielding to Blocks
+	-----------------------------
+	Magic Blocks
+	-----------------------------
+	Is it a given?
+	-----------------------------
+	Faster, Faster!
+	-----------------------------
+	Practice makes perfect
+
+0.2 Implicit and Explicit Blocks
+	Converting implicit blocks to explicit
+
+0.3 The Devil and the Details: Syntax
+	Introducing the do-end delimiter
+
+0.4 Blocks, Procs, and Lambdas
+	Lambda vs. Proc
+	-----------------------------
+	How are these objects different?
+	-----------------------------
+	Choices, choices
+
+
+-=- Classes: Inheritance -=-
+
+1.0 Classification
+1.1 Understanding Inheritance
+1.2 Inheriting Class
+1.3 Redefining, overriding, and super
+
+-=- More Classes -=-
+
+2.0 Instance Variables and Accessors
+2.1 Class Variables and Methods
+2.2 Equality of Objects
+2.3 Displaying Objects: puts and p, to_s and inspect
+2.4 Serializing
+
+-=- Advanced Arrays -=-
+
+3.0 Ripping the Guts
+3.1 Using the API
+3.2 Stacks and Queues
+3.3 Alternative Uses
+
+-=- Advanced Modules -=-
+
+4.1 The `included` Callback and the `extend` Method
+4.2 Wrapping Up Modules
+
+-=- Exceptions -=-
+
+5.0 Handling and Raising
+5.1 Tidying Things Up
+5.2 Throw and Catch
+
+-=- Declaring Data -=-
+
+6.1 Literals
+6.2 Variables
+6.3 Constants
+
+-=- Collections -=-
+
+7.0 Enumerators and Enumerables
+7.1 Iterate, Filtrate and Transform
+7.2 Building Collections
+7.3 Object References
+
+-=- Finding and Fixing Bugs -=-
+
+8.1 The Debugging Primaries
+8.2 Logging
+8.3 Benchmarking Ruby Code
+
+-=- Ruby's Object Model -=-
+
+9.2 What is an object?
+9.3 Behaviour
+9.4 Singleton methods and metaclasses
+9.5 Cloning and freezing objects

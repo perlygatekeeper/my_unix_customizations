@@ -88,6 +88,8 @@ set autoindent
 set copyindent
 set shiftwidth=4
 set tabstop=4
+"set shiftwidth=8
+"set tabstop=8
 set smarttab
 set backspace=indent,eol,start
 set pastetoggle=<F2>
