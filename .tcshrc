@@ -1,4 +1,4 @@
-# SDP: last modification date 2/24/2011
+# SDP: last modification date 01/14/2016
 #umask 022
 
 # Only execute this block if this an interactive shell (behave like .login)
