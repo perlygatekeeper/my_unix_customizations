@@ -162,8 +162,8 @@ augroup myvimrc
 augroup END
 
 " Colorscheme stuff
-colorscheme tibet
-set background=dark
+colorscheme whitedust
+set background=light
 nnoremap <leader>0 :set background=dark<Cr>
 nnoremap <leader>1 :set background=light<Cr>
 nnoremap <leader>- :colorscheme default<Cr>

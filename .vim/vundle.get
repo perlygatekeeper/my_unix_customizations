@@ -1,1 +1,3 @@
  git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+ # :PluginInstall  then wait patiently for it to install the packages it finds in .vimrc
+ # leave the PluginInstall window with :exit or Ctrl-W + l then :only
