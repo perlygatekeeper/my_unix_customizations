@@ -154,6 +154,7 @@ nnoremap _ i_<Esc>
 nnoremap <Cr> o<Esc>k
 " doesn't work nnoremap <S-Enter> O<Esc>j
 nnoremap qq :q!|
+nnoremap # 0i# <Esc>j
 nnoremap <leader>vimrc :tabe ~/.vimrc<cr>
 " autocmd bufwritepost .vimrc source $MYVIMRC
 augroup myvimrc
