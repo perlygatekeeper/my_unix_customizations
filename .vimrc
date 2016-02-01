@@ -154,6 +154,7 @@ nnoremap _ i_<Esc>
 nnoremap <Cr> o<Esc>k
 " doesn't work nnoremap <S-Enter> O<Esc>j
 nnoremap qq :q!|
+nnoremap # 0i# <Esc>j
 nnoremap <leader>vimrc :tabe ~/.vimrc<cr>
 " autocmd bufwritepost .vimrc source $MYVIMRC
 augroup myvimrc
@@ -162,8 +163,8 @@ augroup myvimrc
 augroup END
 
 " Colorscheme stuff
-colorscheme tibet
-set background=dark
+colorscheme whitedust
+set background=light
 nnoremap <leader>0 :set background=dark<Cr>
 nnoremap <leader>1 :set background=light<Cr>
 nnoremap <leader>- :colorscheme default<Cr>
