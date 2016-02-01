@@ -1,0 +1,35 @@
+#!/usr/bin/env perl
+# A perl script to unfold perl statements of the form
+# STATEMENT if ( EXPRESSION );
+
+my $name = $0; $name =~ s'.*/''; # remove path--like basename
+
+use strict;
+use warnings;
+
+while (<>) {
+    my ( $indent, $statement, $condition );
+    if ( /^(\s*)(.*?)\s*(if\s+\([^*(]+\))\s*;/ ) {
+        ( $indent, $statement, $condition ) = ( $1, $2, $3 );
+        $indent ||= "    ";
+        print "$indent$condition {\n$indent$indent$statement;\n$indent}\n";
+    } else {
+        print;
+    }
+}
+
+exit 0;
+
+__END__
+print "$special_line" if ($special_line);
+    print STDERR "Got a octal number.\n" if ($debug) ;
+
+
+    if ($special_line) {
+        print "$special_line";
+    }
+    if ($debug) {
+        print STDERR "Got a octal number.\n";
+    }
+
+
