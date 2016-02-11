@@ -1,0 +1,3162 @@
+#!/usr/bin/env perl
+# A perl script to unfold perl statements of the form
+# STATEMENT if ( EXPRESSION );
+
+my $name = $0; $name =~ s'.*/''; # remove path--like basename
+
+use strict;
+use warnings;
+
+while (<>) {
+    my ( $indent, $statement, $condition );
+    if ( /^(\s*)(.*?)\s*(if\s+\([^*(]+\))\s*;/ ) {
+        ( $indent, $statement, $condition ) = ( $1, $2, $3 );
+        $indent ||= "    ";
+        print "$indent$condition {\n$indent$indent$statement;\n$indent}\n";
+    } else {
+        print;
+    }
+}
+
+exit 0;
+
+__END__
+print "$special_line" if ($special_line);
+    print STDERR "Got a octal number.\n" if ($debug) ;
+
+all.cmd:@echo @comp > diff.cmd
+all.cmd:@echo @fc > sdiff.cmd
+amiatty:if (-t) {
+ascii:&specials(); # apply this if, when I split names and specials routines if ($add_specials);
+ascii:&ascii_numbers(@ascii_numbers) if (@ascii_numbers);
+ascii:&characters(@characters)       if (@characters);
+ascii:&output($type)                 if (not $output);
+ascii:#   if ($number =~ /^\d+$/) {                # decimal number
+ascii:#   } elsif ($number =~ /^0x[\da-f]{2}$/i) { # hexadecimal number
+ascii:    if ($special or $name or $long_name) {
+ascii:# elsif ($type =~ /hexadecimal/i)	{ $format='0x%02x'; $spaces=" " x 4; }
+ascii:  $type=shift;
+ascii:     if ($type =~ /octal/i)       { $format='%03o';   $spaces=" " x 3; }
+ascii:  elsif ($type =~ /hexadecimal/i) { $format='%02x';   $spaces=" " x 2; }
+ascii:  elsif ($type =~ /decimal/i)     { $format='%3d';    $spaces=" " x 3; }
+ascii:  elsif ($type =~ /binary/i)      { $format='%8s';    $spaces=" " x 8; }
+ascii:    if ($add_specials) {
+ascii:      if ($special_line) {
+ascii:      } elsif ($special) { # first one
+ascii:        printf "%d\t%d\n", $column, (($column-1)%$columns) if ($debug);
+ascii:    if (not $column%$columns) {
+ascii:  print "$special_line" if ($special_line);
+ascii:    if ($number>255)	{ $num_digits=16; } 
+ascii:    if ($number>65535)	{ $num_digits=32; } 
+ascii:    if ($use_unpack) {
+ascii:        if ($number & 2**$digit) {
+ascii:  if (wantwarray) {
+ascii:             'tabular output (the default) (#columns may be specified)',
+ascii:    print "parsing '$ARGV[0]'" if ($debug);
+ascii:    if      ( ($abbrev->{$ARGV[0]} eq '-help' )
+ascii:      shift(@ARGV);
+ascii:    } elsif ( $abbrev->{$ARGV[0]} eq '-debug' ) {
+ascii:      shift(@ARGV);
+ascii:    } elsif ( $abbrev->{$ARGV[0]} eq '-octal' ) {
+ascii:      shift(@ARGV);
+ascii:    } elsif ( $abbrev->{$ARGV[0]} eq '-hexadecimal' ) {
+ascii:      shift(@ARGV);
+ascii:    } elsif ( $abbrev->{$ARGV[0]} eq '-decimal' ) {
+ascii:      shift(@ARGV);
+ascii:    } elsif ( $abbrev->{$ARGV[0]} eq '-binary' ) {
+ascii:      shift(@ARGV);
+ascii:    } elsif ( $abbrev->{$ARGV[0]} eq '-single' ) {
+ascii:      shift(@ARGV);
+ascii:    } elsif ( $abbrev->{$ARGV[0]} eq '-columns' ) {
+ascii:      shift(@ARGV);
+ascii:      if ($ARGV[0] =~ /\d+/) {
+ascii:        shift(@ARGV);
+ascii:    } elsif ( $abbrev->{$ARGV[0]} eq '-start' ) {
+ascii:      shift(@ARGV);
+ascii:      if ( $ARGV[0] =~ /^[1-9]\d*$|^0$/ ) { # decimal number
+ascii:        $start=$ARGV[0]; shift(@ARGV);
+ascii:      } elsif ( $ARGV[0] =~ /^0[xX][\dA-Fa-f]+$/ ) { # hexadecimal number
+ascii:        $start=unpack("h",$ARGV[0]); shift(@ARGV);
+ascii:      } elsif ( $ARGV[0] =~ /^0[0-7]+$/ ) { # octal number
+ascii:        $start=unpack("o",$ARGV[0]); shift(@ARGV);
+ascii:    } elsif ( $abbrev->{$ARGV[0]} eq '-end' ) {
+ascii:      shift(@ARGV);
+ascii:      if ( $ARGV[0] =~ /^\d+$|^0[xX][\dA-Fa-f]+$/ ) { # dec/oct/hex number
+ascii:        $end=0+$ARGV[0]; shift(@ARGV);
+ascii:    } elsif ( $abbrev->{$ARGV[0]} eq '-specials' ) {
+ascii:      shift(@ARGV);
+ascii:    } elsif ( $ARGV[0] =~ /^0b[01]+$/ ) { # octal number
+ascii:      shift(@ARGV);
+ascii:    } elsif ( $ARGV[0] =~ /^0[0-7]+$/ ) { # octal number
+ascii:        print STDERR "Got a octal number.\n" if ($debug);
+ascii:      shift(@ARGV);
+ascii:    } elsif ( $ARGV[0] =~ /^(0[xX]|%)[\dA-Fa-f]+$/ ) { # hexadecimal number
+ascii:        print STDERR "Got a hexadecimal number.\n" if ($debug);
+ascii:      shift(@ARGV);
+ascii:    } elsif ( $ARGV[0] =~ /^[1-9]\d*$/ ) { # decimal number
+ascii:        print STDERR "Got a decimal number.\n" if ($debug);
+ascii:      shift(@ARGV);
+ascii:    } elsif ( $abbrev->{$ARGV[0]} eq '-character' ) {
+ascii:      shift(@ARGV);
+ascii:      if ($ARGV[0] =~ /^.$/) {
+ascii:        shift(@ARGV);
+ascii:    } elsif ( $ARGV[0] =~ /^.$/ ) { # single character
+ascii:      shift(@ARGV);
+ascii:      shift(@ARGV);
+ascii:    } # end if .. elsif .. else's
+ascii:  if ($table and not $columns) {
+ascii:  if (@help) {
+ascii:    printf "%2d:  %03o %02x '%s'\n", $_, $_, $_, $specials{$_} if ($debug > 1);
+ascii:  $names{"^N"}="SO";  $long_names{"^N"}= $long_names{$names{"^N"}}="Shift out";
+ascii:  $names{"^O"}="SI";  $long_names{"^O"}= $long_names{$names{"^O"}}="Shift in";
+ascii:SO	Shift out
+ascii:SI	Shift in
+ascii:N SO	Shift out
+ascii:O SI	Shift in
+b2tort2b:if (@ARGV < 2) { 
+b2tort2b:if ($ARGV[0] eq '-b') {
+b2tort2b:  if ($ARGV[1] eq '-f') {
+b2tort2b:     if (!@in) {
+b2tort2b:elsif ($ARGV[0] eq '-t') {
+b2tort2b:  if ($ARGV[1] eq '-f') {
+b2tort2b:     if (!@in) {
+bak:if (not @ARGV or $ARGV[0] =~ /^--?h(elp)?/i ) {
+bak:if ($ARGV[0] =~ /-v(ersion)?/i ) {
+bak:  shift;
+bak:if ($ARGV[0] =~ /-o(verwrite)?/i ) {
+bak:  shift;
+bak:if ($ARGV[0] =~ /-d(ate)?/i ) {
+bak:  shift;
+bak:  if ( -f $file ) {
+bak:    if ($use_date) {
+bak:    } elsif ($overwrite) {
+bak:    } elsif ($use_version) {
+bak:      if ( -f "$file.bak" ) {
+bak:        if      ( $response =~ /O/i ) {
+bak:        } elsif ( $response =~ /U/i ) {
+bak:        } elsif ( $response =~ /V/i ) {
+bak:          if (not $backup= &obtain_version($file) ) {
+bak:        } elsif ( $response =~ /I/i ) {
+bak:	  if ($ext) {
+bak:	    if (! $ext) { $ext = $oldext; }
+bak:        } elsif ( $response =~ /A/i ) {
+bak:    if ($backup) {
+bak:  if ($prompt) {
+bak:  if ($exit_regexp and $response=~/$exit_regexp/i) {
+bak:  } elsif ($regexp) {
+bak:    if ($regexp =~ /\(.*\)/) {
+bak:  if (open(V,"<$file")) {
+bak:      if ($_=/^\s*\$version\s*=\s*(\S+)/i) {
+beep:if (@ARGV[0]) {
+beep:  $nap_time= shift;
+beep:if (@ARGV) {
+beep:    shift;
+box:  next if ($blank and $line=~/^\s*$/);
+box:  if ($lws) {
+box:  if ($blank and $tracking_blank_lines) { # we have found a blank line in the past and
+box:    if ($line=~/^\s*$/) { # we have second or latter blank line.
+box:      if ($replace) {
+box:      if (not $replace or $tracking_blank_lines>2) {
+box:      if ($replace) {
+box:        if ($#blank_lines==0) { # only one blank line, replace with upper or middle line
+box:          if (not $first_line) {
+box:          if ($first_line) {
+box:          # $blank_lines[0] is replaced with lower hor. line if not first line
+box:    if ($blank and $line=~/^\s*$/) {
+box:#     if (not $first_line) {
+box:      if ($replace) {
+box:        if ($first_line) {
+box:      if (not $first_line) {
+box:if ($replace) {
+box:  if (@blank_lines) {
+box:} elsif (not $blank) {
+box:  if (($ws,$rol)=($line=~/^($lws)(.*)/) ) {
+box:  if ($corners) {
+box:  if (&debug_query('options')) {
+box:    if      ( ($abbrev->{$ARGV[0]} eq '-help' )
+box:      shift(@ARGV);
+box:    } elsif ( $abbrev->{$ARGV[0]} eq '-backspaces' ) {
+box:      shift(@ARGV);
+box:    } elsif ( $abbrev->{$ARGV[0]} eq '-vertical' ) {
+box:      shift(@ARGV); shift(@ARGV);
+box:    } elsif ( $abbrev->{$ARGV[0]} eq '-horizontal' ) {
+box:      shift(@ARGV); shift(@ARGV);
+box:    } elsif ( $abbrev->{$ARGV[0]} eq '-starting' ) {
+box:      shift(@ARGV); shift(@ARGV);
+box:    } elsif ( $abbrev->{$ARGV[0]} eq '-corners' ) {
+box:      shift(@ARGV);
+box:    } elsif ( $abbrev->{$ARGV[0]} eq '-blank' ) {
+box:      shift(@ARGV);
+box:    } elsif ( $abbrev->{$ARGV[0]} eq '-replace' ) {
+box:      shift(@ARGV);
+box:    } elsif ( $abbrev->{$ARGV[0]} eq '-clipped' ) {
+box:      shift(@ARGV);
+box:      shift(@ARGV);
+box:  if (@help) {
+boxit:if ( not exists $styles->{$style} ) {
+boxit:if ( $debug ) { print STDERR "style is >$style<\n"; }
+boxit:if ( $debug ) { print STDERR "before main loop\n"; }
+boxit:if ( $debug and $show ) {
+boxit:  print "show has  " . scalar(@$show) . " elements\n" if ( ref($show) eq 'ARRAY' );
+boxit:  print Dumper($show) if ( ref($show) eq 'ARRAY' );
+boxit:if ( $show and scalar(@$show) ) { 
+boxit:  if ( $debug ) { print STDERR "in 'show' block\n"; }
+boxit:  if ( ($length * $height) > 26 ) {
+boxit:  if ( ($length * $height) > 26 ) {
+boxit:} elsif ( $list_styles ) {
+boxit:  if ( $debug ) { print STDERR "in 'list-styles' block\n"; }
+boxit:  if ( $debug ) { print STDERR "in 'filter' block\n"; }
+boxit:    if ( $trim or $ltrim ) { s/^\s*//; }
+boxit:    if ( $trim or $rtrim ) { s/\s*$//; }
+boxit:    next if (/^\s*$/); # skip white and blank lines.
+boxit:    if ( $debug ) {
+boxit:  if ($unbox) {
+boxit:    if ( $debug ) {
+boxit:    if ( $debug ) {
+boxit:    if ( $debug ) { print STDERR "we are boxing\n"; }
+boxit:if ( $debug ) { print STDERR "after main loop\n"; }
+boxit:# if ( $lines->[0] =~ qr($a) ) {
+boxit:  print STDERR " starting with " . scalar (@$lines) . " lines\n" if ($debug);
+boxit:  print STDERR " left with " . scalar (@$lines) . " lines\n" if ($debug);
+boxit:# if ($debug) {
+boxit:#   print STDERR "bottom regexp is ($bottom_line)\n" if ($debug);
+boxit:#   print STDERR "top    regexp is ($top_line)\n" if ($debug);
+boxit:#   print STDERR "blank  regexp is ($blank_line)\n" if ($debug);
+boxit:    if ( $trim or $ltrim ) { $line =~ s/^\s*//; }
+boxit:    if ( $trim or $rtrim ) { $line =~ s/\s*$//; }
+boxit:    $line =~ s/^$left_margin// if $left_margin; # trim left margin
+boxit: style=s         specify a style by name 
+boxit: clipped         specify the style to be clipped 
+boxit: comment1|1      specify the style to be comment style 1
+boxit: comment2|2      specify the style to be comment style 2
+boxit: comment3|3      specify the style to be comment style 3
+boxit: light           specify the style to be light  ( all box marks are periods )
+boxit: medium          specify the style to be medium ( all box marks are asterics )
+boxit: heavy           specify the style to be heavy  ( all box marks are at signs )
+boxit: linear          specify the style to be linear ( + - and | - the default stle )
+boxit: bold            specify the style to be bold   ( @ = and H )
+boxit: show:i@{0,2}    show an example of boxed text (one or two integers may be specified to define dimensions of text)
+boxit: unbox           remove box marks (style may be subsequently specified with another argument
+boxit2:  next if (/^\s*$/); # skip white and blank lines.
+boxit2:  $line =~ s/^$left_margin// if $left_margin; # trim left margin
+cap:if      ( $name =~ /upper/ ) {
+cap:} elsif ( $name =~ /lower/ ) {
+cap:} elsif ( $name =~ /cap/ ) {
+cap:} elsif ( $name =~ /rot13/ ) {
+cap:} elsif ( $name =~ /rot661/ ) {
+comment:    if      ( ($abbrev{$ARGV[0]} eq '-help' )
+comment:      shift(@ARGV);
+comment:    } elsif ( $abbrev{$ARGV[0]} eq '-arg1' ) {
+comment:      print "user specified arg1\n";
+comment:      shift(@ARGV);
+comment:    } elsif ( $abbrev{$ARGV[0]} eq '-arg2' ) {
+comment:      print "user specified arg2\n";
+comment:      shift(@ARGV);
+comment:    } elsif ( $abbrev{$ARGV[0]} eq '-arg3' ) {
+comment:      print "user specified arg3\n";
+comment:      shift(@ARGV);
+comment:    } elsif ( $abbrev{$ARGV[0]} eq '-arg4' ) {
+comment:      print "user specified arg4\n";
+comment:      shift(@ARGV); shift(@ARGV);
+comment:#     unshift(@ARGV);
+comment:      unshift(@ARGV,'-title');
+comment:  if (@help) {
+comment:--			comments: SQL, Haskel, Euphoria, Ada, AppleScript, Eiffel, Lua, VHDL, SGML
+count_punctuation:if ( $ARGV[0] eq '-?' || $ARGV[0] eq '-i' ) { do help($usage); }
+count_punctuation:  if ($line=~/^$/)	     { $count[0]++; }
+count_punctuation:  if ($line!~/^\s*#/) {
+count_punctuation:      if ($line_report and $count) {
+count_punctuation:  if ( eof ) {
+count_punctuation:    if (@files) {
+count_tags:if ( $ARGV[0] eq '-?' || $ARGV[0] eq '-i' ) { help($usage); }
+count_tags:# if ($line=~/$reg_exp[0]/) { print $line; }
+count_tags:  if ($line!~/^\s*#/) {
+count_tags:  if ( eof ) {
+count_tags:    if (@files) {
+countdown:if      ( @ARGV >  3 ) { # 4 or more args are not allowed
+countdown:} elsif ( @ARGV == 0 ) { # no    args, so assume 10  to 0 by 1's
+countdown:} elsif ( @ARGV == 1 ) { # one   arg,  so assume ARG to 0 by 1's.
+countdown:} elsif ( @ARGV == 2 ) { # two   args, so assume ARG1 to ARG2.
+countdown:} elsif ( @ARGV == 3 ) { # three args, so assume ARG1 to ARG2 by ARG3. 
+countdown:  if ( &sgn($by) != &sgn( $end - $start ) ) {
+countdown:if ( $start == $end ) {
+countdown:	die("countdown: 'start' & 'end' must be different!\n");
+countdown:if ( $by == 0 ) {
+countdown:  if    ($_[0] < 0 ) { return -1; }
+countdown:  elsif ($_[0] > 0 ) { return +1; }
+cp_base:if ($ARGV[0]=~/-i(nt(ernal)?)?/) {
+cp_base:  shift;
+cp_base:if ($ARGV[0]=~/-f(orce)?/) {
+cp_base:  shift;
+cp_base:if ($ARGV[0] =~ /^--?h(elp)?/ or scalar(@ARGV) != 2) {
+cp_base:  if (@ARGV) { print join(", ", @ARGV) . "\n"; }
+cp_base:shift(@files);shift(@files); # for . and .. entries
+cp_base:if (not @files) {
+cp_base:    $to_file.=".$ext" if $ext;
+cp_base:    if (not $force and -f $to_file) {
+cp_base:      if (not &response("File '$to_file' exits, overright? [y/N/q]", "^y", "q(uit)?|e(xit)?")) {
+cp_base:    if ($internal) {
+cp_base:  if ($string) {
+cp_base:  if ($regexp) {
+cp_base:  } elsif ($exit_regexp and $response=~/$exit_regexp/i) {
+cpan:    if 0; # not running under some shell
+crack:$usage = "usage:\n$name [-t target_string] [-r target_string] [-m modifier_char]";
+crack:  if    ( ( $ARGV[0] eq '-r' ) || ( $ARGV[0] eq '-replacestring' ) ) {
+crack:    shift; shift; }
+crack:  elsif ( ( $ARGV[0] eq '-t' ) || ( $ARGV[0] eq '-targetstring' ) ) {
+crack:    shift; shift; }
+crack:  elsif ( ( $ARGV[0] eq '-m' ) || ( $ARGV[0] eq '-modifier' ) ) {
+crack:    shift; shift; }
+crack:  elsif ( ( $ARGV[0] eq '-?' ) || ( $ARGV[0] eq '-usage' ) ) {
+crack:  elsif ( ( $ARGV[0] eq '-d' ) || ( $ARGV[0] eq '-default' ) ) {
+crack:    shift; }
+crack:  elsif ( ( $ARGV[0] eq '-v' ) || ( $ARGV[0] eq '-verbose' ) ) {
+crack:    shift; }
+crack:    if ( !$crackstring ) {
+crack:      shift;
+crack:    } elsif ( !$replacestring ) {
+crack:      shift;
+crack:if ($verbose) {
+crack:  if ($verbose >=2) {
+crack:   if ($occurance) {
+crack:#    octal or hex number if only one arg 
+crack:# OR    decimal   number if argument 2 = "d" or "D"
+crack:   if ($_[1] eq "d") { return pack('C1',$_[0]); }
+crack:elsif ($_[1] eq "D") { return pack('C1',$_[0]); }
+crack:    if ($replacestring =~ s/([^\\]?)\\o/\1__UNIQUE_STRING__/g)
+crank:$usage.= "       [-m|modifier modifier_char(s)]\n";
+crank:$modifiers="g";
+crank:$roman_justification= "left";
+crank:  if ( ( $ARGV[0] eq '-r' ) || ( $ARGV[0] eq '-replacestring' ) ) {
+crank:    shift; shift; }
+crank:  elsif ( ( $ARGV[0] eq '-t' ) || ( $ARGV[0] eq '-targetstring' ) ) {
+crank:    shift; shift; }
+crank:  elsif ( ( $ARGV[0] eq '-m' ) || ( $ARGV[0] eq '-modifier' ) ) {
+crank:    shift; shift; }
+crank:  elsif ( ( $ARGV[0] eq '-?' ) || ( $ARGV[0] eq '-usage' ) ) {
+crank:    help($usage); shift; }
+crank:  elsif ( ( $ARGV[0] eq '-d' ) || ( $ARGV[0] eq '-default' ) ) {
+crank:    shift; }
+crank:  elsif ( ( $ARGV[0] eq '-printf' ) || ( $ARGV[0] eq '-format' ) ) {
+crank:    shift; shift; }
+crank:  elsif ( $ARGV[0] eq '-roman_left' ) {
+crank:    $roman_justification= "left";
+crank:    shift; }
+crank:  elsif ( $ARGV[0] eq '-roman_right' ) {
+crank:    $roman_justification= "right";
+crank:    shift; }
+crank:  elsif ( ( $ARGV[0] eq '-roman' ) || ( $ARGV[0] eq '-roman_length' ) ) {
+crank:    shift; shift; }
+crank:  elsif ( ( $ARGV[0] eq '-s' ) || ( $ARGV[0] eq '-start_value' ) ) {
+crank:    shift; shift; }
+crank:  elsif ( ( $ARGV[0] eq '-i' ) || ( $ARGV[0] eq '-increment' ) ) {
+crank:    shift; shift; }
+crank:    if ( !$crackstring ) {
+crank:      shift;
+crank:    } elsif ( !$replacestring ) {
+crank:      shift;
+crank:# print "\$line =~ s/${crackstring}/${replacestring}/${modifiers};\n" ;
+crank:  eval "\$line =~ s/${crackstring}/${replacestring}/${modifiers};" ;
+crank:# print "\$line =~ s/${crackstring}/${replacestring}/${modifiers};\n" ;
+crank:  if ($replacestring =~ /__LINE__/) {
+crank:  if ( ! $increment ) {
+crank:    if (defined($occurance)) {
+crank:    if ($ROMAN) {
+crank:    if ($roman) {
+crank:    if ($ALPHABETIC) {
+crank:    if ($alphabetic) {
+crank:    if (defined($occurance)) {
+crank:    if ($ROMAN) {
+crank:    if ($roman) {
+crank:    if ($ALPHABETIC) {
+crank:    if ($alphabetic) {
+crank:print "Useful modifiers are:";
+crank:  return $false if ( ($#_=0) || ($_[0]=~/^$/) );
+crank:# octal or hex number if only one arg
+crank:# OR decimal number if argument 2 = "d" or "D"
+crank:   if ($_[1] eq "d") { return pack('C1',$_[0]); }
+crank:elsif ($_[1] eq "D") { return pack('C1',$_[0]); }
+crank:    if ( $increment && defined($start_value) ) { $start_value-=$increment; }
+crank:    if ($replacestring =~ s/([^\\]?)\\o/\1__UNIQUE_STRING__/g)
+crank:    if ($replacestring =~ s/([^\\]?)\\I/\1__ROMAN__/g)
+crank:    if ($replacestring =~ s/([^\\]?)\\i/\1__roman__/g)
+crank:    if ($replacestring =~ s/([^\\]?)\\A/\1__ALPHABETIC__/g)
+crank:    if ($replacestring =~ s/([^\\]?)\\a/\1__alphabetic__/g)
+crank:  if ($numeral > $maxium_for_length[$length]) {
+crank:  if ( $numernal < 10000 ) {
+crank:       $thousands[$thousands].$hundreds[$hundreds].'IC' if ( $numernal == 99 );
+crank:       $thousands[$thousands].'IM' if ( $numernal == 999 );
+crank:     $roman_string='Ix' if ( $numernal == 9999 );
+crank:     $roman_string=~tr/a-zA-Z/A-Za-z/ if ( ! $capitals );
+crank:     if ( $roman_justification eq "left") {
+crank:    return("*" x $length) if ( $length < 3 );
+crank:    return("RBN") if ( $length < 17 );
+crk:$usage = "usage:\n$name [-t target_string] [-r target_string] [-m modifier_char]";
+crk:  if    ( ( $ARGV[0] eq '-r' ) || ( $ARGV[0] eq '-replacestring' ) ) {
+crk:    shift; shift; }
+crk:  elsif ( ( $ARGV[0] eq '-t' ) || ( $ARGV[0] eq '-targetstring' ) ) {
+crk:    shift; shift; }
+crk:  elsif ( ( $ARGV[0] eq '-m' ) || ( $ARGV[0] eq '-modifier' ) ) {
+crk:    shift; shift; }
+crk:  elsif ( ( $ARGV[0] eq '-?' ) || ( $ARGV[0] eq '-usage' ) ) {
+crk:  elsif ( ( $ARGV[0] eq '-d' ) || ( $ARGV[0] eq '-default' ) ) {
+crk:    shift; }
+crk:  elsif ( ( $ARGV[0] eq '-v' ) || ( $ARGV[0] eq '-verbose' ) ) {
+crk:    shift; }
+crk:    if ( !$crackstring ) {
+crk:      shift;
+crk:    } elsif ( !$replacestring ) {
+crk:      shift;
+crk:if ($verbose) {
+crk:  if ($verbose >=2) {
+crk:   if ($occurance) {
+crk:#    octal or hex number if only one arg 
+crk:# OR    decimal   number if argument 2 = "d" or "D"
+crk:   if ($_[1] eq "d") { return pack('C1',$_[0]); }
+crk:elsif ($_[1] eq "D") { return pack('C1',$_[0]); }
+crk:    if ($replacestring =~ s/([^\\]?)\\o/\1__UNIQUE_STRING__/g)
+crk+:$usage.= "       [-m|modifier modifier_char(s)]\n";
+crk+:$modifiers="g";
+crk+:$roman_justification= "left";
+crk+:  if ( ( $ARGV[0] eq '-r' ) || ( $ARGV[0] eq '-replacestring' ) ) {
+crk+:    shift; shift; }
+crk+:  elsif ( ( $ARGV[0] eq '-t' ) || ( $ARGV[0] eq '-targetstring' ) ) {
+crk+:    shift; shift; }
+crk+:  elsif ( ( $ARGV[0] eq '-m' ) || ( $ARGV[0] eq '-modifier' ) ) {
+crk+:    shift; shift; }
+crk+:  elsif ( ( $ARGV[0] eq '-?' ) || ( $ARGV[0] eq '-usage' ) ) {
+crk+:    help($usage); shift; }
+crk+:  elsif ( ( $ARGV[0] eq '-d' ) || ( $ARGV[0] eq '-default' ) ) {
+crk+:    shift; }
+crk+:  elsif ( ( $ARGV[0] eq '-printf' ) || ( $ARGV[0] eq '-format' ) ) {
+crk+:    shift; shift; }
+crk+:  elsif ( $ARGV[0] eq '-roman_left' ) {
+crk+:    $roman_justification= "left";
+crk+:    shift; }
+crk+:  elsif ( $ARGV[0] eq '-roman_right' ) {
+crk+:    $roman_justification= "right";
+crk+:    shift; }
+crk+:  elsif ( ( $ARGV[0] eq '-roman' ) || ( $ARGV[0] eq '-roman_length' ) ) {
+crk+:    shift; shift; }
+crk+:  elsif ( ( $ARGV[0] eq '-s' ) || ( $ARGV[0] eq '-start_value' ) ) {
+crk+:    shift; shift; }
+crk+:  elsif ( ( $ARGV[0] eq '-i' ) || ( $ARGV[0] eq '-increment' ) ) {
+crk+:    shift; shift; }
+crk+:    if ( !$crackstring ) {
+crk+:      shift;
+crk+:    } elsif ( !$replacestring ) {
+crk+:      shift;
+crk+:# print "\$line =~ s/${crackstring}/${replacestring}/${modifiers};\n" ;
+crk+:  eval "\$line =~ s/${crackstring}/${replacestring}/${modifiers};" ;
+crk+:# print "\$line =~ s/${crackstring}/${replacestring}/${modifiers};\n" ;
+crk+:  if ($replacestring =~ /__LINE__/) {
+crk+:  if ( ! $increment ) {
+crk+:    if (defined($occurance)) {
+crk+:    if ($ROMAN) {
+crk+:    if ($roman) {
+crk+:    if ($ALPHABETIC) {
+crk+:    if ($alphabetic) {
+crk+:    if (defined($occurance)) {
+crk+:    if ($ROMAN) {
+crk+:    if ($roman) {
+crk+:    if ($ALPHABETIC) {
+crk+:    if ($alphabetic) {
+crk+:print "Useful modifiers are:";
+crk+:  return $false if ( ($#_=0) || ($_[0]=~/^$/) );
+crk+:# octal or hex number if only one arg
+crk+:# OR decimal number if argument 2 = "d" or "D"
+crk+:   if ($_[1] eq "d") { return pack('C1',$_[0]); }
+crk+:elsif ($_[1] eq "D") { return pack('C1',$_[0]); }
+crk+:    if ( $increment && defined($start_value) ) { $start_value-=$increment; }
+crk+:    if ($replacestring =~ s/([^\\]?)\\o/\1__UNIQUE_STRING__/g)
+crk+:    if ($replacestring =~ s/([^\\]?)\\I/\1__ROMAN__/g)
+crk+:    if ($replacestring =~ s/([^\\]?)\\i/\1__roman__/g)
+crk+:    if ($replacestring =~ s/([^\\]?)\\A/\1__ALPHABETIC__/g)
+crk+:    if ($replacestring =~ s/([^\\]?)\\a/\1__alphabetic__/g)
+crk+:  if ($numeral > $maxium_for_length[$length]) {
+crk+:  if ( $numernal < 10000 ) {
+crk+:       $thousands[$thousands].$hundreds[$hundreds].'IC' if ( $numernal == 99 );
+crk+:       $thousands[$thousands].'IM' if ( $numernal == 999 );
+crk+:     $roman_string='Ix' if ( $numernal == 9999 );
+crk+:     $roman_string=~tr/a-zA-Z/A-Za-z/ if ( ! $capitals );
+crk+:     if ( $roman_justification eq "left") {
+crk+:    return("*" x $length) if ( $length < 3 );
+crk+:    return("RBN") if ( $length < 17 );
+direct_xsession_to:$remote_host  = "$ARGV[0]"; shift;
+direct_xsession_to:$rsh_username = "$ARGV[0]"; shift; # this will be null string if only 1 argument
+direct_xsession_to:				   # only works if there IS a first char
+direct_xsession_to:$remote_command="$ARGV[0]"; shift; # this will be null string if only 2 arguments
+direct_xsession_to:# DISPLAY needed only if display not determined on remote host
+direct_xsession_to:if (! $remote_command) {
+direct_xsession_to:  if      ($name =~ /xsession/) {
+direct_xsession_to:  } elsif ($name =~ /xterm/) {
+direct_xsession_to:    if ( $remote_host =~ /^spec|^tamic|^hires/i ) {
+direct_xsession_to:if ($debug) {
+direct_xsession_to:if ($name !~ /direct/i) {
+direct_xsession_to:  if ($debug) {
+direct_xsession_to:  if ($debug) {
+direct_xsession_to:if ($debug) {
+direct_xsession_to:  my($command)=shift;
+direct_xsession_to:  if ($execute) {
+direct_xsession_to:    if ($debug) {
+direct_xsession_to:#    if ($?DISPLAY) then
+direct_xsession_to:#    endif
+direct_xsession_to:#    if ($?REMOTEHOST) then
+direct_xsession_to:#    endif
+direct_xsession_to:# redirect errors to a file in user's home directory if we can
+direct_xsession_to:    if ( cp /dev/null "$errfile" 2> /dev/null )
+direct_xsession_to:if [ -x "$HOME/.xsession" ]; then
+direct_xsession_to:elif [ -x "$HOME/.Xclients" ]; then
+direct_xsession_to:elif [ -x /etc/X11/xinit/Xclients ]; then
+dlink:   perl -lne 'print; foreach $c (split(//,$_)) { $i.=$c; if (length($i)==4) {print $i; $i=""}}'
+dos2unix:if ($name=~/dos2unix/i) {
+dos2unix:} elsif ($name=~/unix2dos/i) {
+dos2unix:               The input file you specified does  not  exist,  or
+dos2unix:               The output file you specified is  either  invalid,
+drwho:  next if ($ignore{$MACHINES[$mach]});
+drwho:  if ($MACHINES[$mach] eq $hostname) {
+drwho:    if ( &ping_first($MACHINES[$mach]) ) {
+drwho:if ( $tardis ) {
+drwho:    if ( -x $_) { $command=$_; last; }
+drwho:  if ( ( $? ) || ( $responce =~ /no answer from/ ) ) {
+drwho:             'ignore the specified machines');
+drwho:    if      ( ($abbrev->{$ARGV[0]} eq '-help' )
+drwho:      shift(@ARGV);
+drwho:    } elsif ( $abbrev->{$ARGV[0]} eq '-who' ) {
+drwho:      shift(@ARGV);
+drwho:    } elsif ( $abbrev->{$ARGV[0]} eq '-w' ) {
+drwho:    } elsif ( $abbrev->{$ARGV[0]} eq '-finger' ) {
+drwho:    } elsif ( $abbrev->{$ARGV[0]} eq '-command' ) {
+drwho:      shift(@ARGV); shift(@ARGV);
+drwho:    } elsif ( ( $abbrev->{$ARGV[0]} eq '-tardis' )
+drwho:      shift(@ARGV);
+drwho:    } elsif ( $abbrev->{$ARGV[0]} eq '-machines' ) {
+drwho:      shift(@ARGV);
+drwho:        shift(@ARGV);
+drwho:    } elsif ( $abbrev->{$ARGV[0]} eq '-ignore' ) {
+drwho:      shift(@ARGV);
+drwho:          if ( ( $ARGV[0] =~ /$MACHINES[$i]/i )
+drwho:             shift(@ARGV);
+drwho:      shift(@ARGV);
+drwho:  if (@help) {
+drwho.old:  next if ($ignore{$MACHINES[$mach]});
+drwho.old:  if ($MACHINES[$mach] eq $hostname) {
+drwho.old:    if ( &ping_first($MACHINES[$mach]) ) {
+drwho.old:if ( $tardis ) {
+drwho.old:    if ( -x $_) { $command=$_; last; }
+drwho.old:  if ( ( $? ) || ( $responce =~ /no answer from/ ) ) {
+drwho.old:             'ignore the specified machines');
+drwho.old:    if      ( ($abbrev->{$ARGV[0]} eq '-help' )
+drwho.old:      shift(@ARGV);
+drwho.old:    } elsif ( $abbrev->{$ARGV[0]} eq '-who' ) {
+drwho.old:      shift(@ARGV);
+drwho.old:    } elsif ( $abbrev->{$ARGV[0]} eq '-w' ) {
+drwho.old:    } elsif ( $abbrev->{$ARGV[0]} eq '-finger' ) {
+drwho.old:    } elsif ( $abbrev->{$ARGV[0]} eq '-command' ) {
+drwho.old:      shift(@ARGV); shift(@ARGV);
+drwho.old:    } elsif ( ( $abbrev->{$ARGV[0]} eq '-tardis' )
+drwho.old:      shift(@ARGV);
+drwho.old:    } elsif ( $abbrev->{$ARGV[0]} eq '-machines' ) {
+drwho.old:      shift(@ARGV);
+drwho.old:        shift(@ARGV);
+drwho.old:    } elsif ( $abbrev->{$ARGV[0]} eq '-ignore' ) {
+drwho.old:      shift(@ARGV);
+drwho.old:	  if ( ( $ARGV[0] =~ /$MACHINES[$i]/i )
+drwho.old:             shift(@ARGV);
+drwho.old:      shift(@ARGV);
+drwho.old:  if (@help) {
+elim:$elim=$ARGV[0]; shift;
+elim:if (not $elim) {
+elim:    next if (/^$|^\s*#/); #skip blank and commented lines.
+elim:  print if (not /[$elim]/);
+encrypt_otp.pl:pod2usage(-exitval => 0, -verbose => 2) if $man;
+encrypt_otp.pl:    	print STDERR $i . " chomp \n" if ($debug);
+encrypt_otp.pl:        if ($debug) {
+encrypt_otp.pl:    	if ( $length and $length < 16 ) {
+encrypt_otp.pl:        print STDERR $rand_numbers_line if ($debug);
+encrypt_otp.pl:        	printf STDERR "%02d ->%d,%d<-\n", $_, ord($r), ord($m) if ($debug>1);
+encrypt_otp.pl:        if ($debug) {
+encrypt_otp.pl:	    if ($debug) {
+encrypt_otp.pl:    if ($debug) {
+encrypt_otp.pl:    if ($debug) {
+encrypt_otp.pl:    if ($debug) {
+encrypt_otp.pl:file for the given pad or may be explicitly specified with the --offset option.
+eo:if ($name=~/^o/i) { # must be odd then even (odd starts with 1st element or element 0
+eo:    if ($ARGV[0]=~/-i(nstall)?/)  { &install(); exit 0; }
+eo:    if ($ARGV[0]=~/^\d+$/)  { $every=$ARGV[0]; shift; }
+eo:    if ($ARGV[0]=~/^\d+$/)  { $start=$ARGV[0]; shift; $start--; }
+eo:    if ($ARGV[0]=~/^\-\-$/) { last; }
+eo:    $i++; last if $i>10;
+eo:    if (-f $alias) { unlink($alias); }
+eo:if (@ARGV) {
+eo:  } elsif ($name=~/^o/i) { # must be odd then even (odd starts with 1st element or element 0
+even_odd:if ($name=~/^o/i) { # must be odd then even (odd starts with 1st element or element 0
+even_odd:    if ($ARGV[0]=~/-i(nstall)?/)  { &install(); exit 0; }
+even_odd:    if ($ARGV[0]=~/^\d+$/)  { $every=$ARGV[0]; shift; }
+even_odd:    if ($ARGV[0]=~/^\d+$/)  { $start=$ARGV[0]; shift; $start--; }
+even_odd:    if ($ARGV[0]=~/^\-\-$/) { last; }
+even_odd:    $i++; last if $i>10;
+even_odd:    if (-f $alias) { unlink($alias); }
+even_odd:if (@ARGV) {
+even_odd:  } elsif ($name=~/^o/i) { # must be odd then even (odd starts with 1st element or element 0
+every_start:if ($name=~/^o/i) { # must be odd then even (odd starts with 1st element or element 0
+every_start:    if ($ARGV[0]=~/-i(nstall)?/)  { &install(); exit 0; }
+every_start:    if ($ARGV[0]=~/^\d+$/)  { $every=$ARGV[0]; shift; }
+every_start:    if ($ARGV[0]=~/^\d+$/)  { $start=$ARGV[0]; shift; $start--; }
+every_start:    if ($ARGV[0]=~/^\-\-$/) { last; }
+every_start:    $i++; last if $i>10;
+every_start:    if (-f $alias) { unlink($alias); }
+every_start:if (@ARGV) {
+every_start:  } elsif ($name=~/^o/i) { # must be odd then even (odd starts with 1st element or element 0
+fileages:# A perl script to display information on the ages of files in the specified/current directory
+fileages:if (@ARGV) {
+fileages:  if (-d $ARGV[0]) {
+fileages:    shift @ARGV;
+fileages:  shift(@files);shift(@files); # for . and .. entries
+find2perl:      if $running_under_some_shell;
+find2perl:# Modified September 26, 1993 to provide proper handling of years after 1999
+find2perl:# Modified April 7, 1998 with nasty hacks to implement the troublesome -follow
+find2perl:# Modified 1999-06-10, 1999-07-07 to migrate to cleaner perl5 usage
+find2perl:# Modified 2000-01-28 to use the 'follow' option of File::Find
+find2perl:    push(@roots, shift);
+find2perl:    $_ = shift;
+find2perl:    if ($_ eq '(') {
+find2perl:    } elsif ($_ eq ')') {
+find2perl:    } elsif ($_ eq 'follow') {
+find2perl:    } elsif ($_ eq '!') {
+find2perl:    } elsif ($_ eq 'name') {
+find2perl:        $out .= &tab . '/' . &fileglob_to_re(shift) . "/s";
+find2perl:    } elsif ($_ eq 'perm') {
+find2perl:        my $onum = shift;
+find2perl:        if ($onum =~ s/^-//) {
+find2perl:    } elsif ($_ eq 'type') {
+find2perl:        (my $filetest = shift) =~ tr/s/S/;
+find2perl:    } elsif ($_ eq 'print') {
+find2perl:    } elsif ($_ eq 'print0') {
+find2perl:    } elsif ($_ eq 'fstype') {
+find2perl:        my $type = shift;
+find2perl:        if ($type eq 'nfs') {
+find2perl:    } elsif ($_ eq 'user') {
+find2perl:        my $uname = shift;
+find2perl:    } elsif ($_ eq 'group') {
+find2perl:        my $gname = shift;
+find2perl:    } elsif ($_ eq 'nouser') {
+find2perl:    } elsif ($_ eq 'nogroup') {
+find2perl:    } elsif ($_ eq 'links') {
+find2perl:        $out .= &tab . &n('$nlink', shift);
+find2perl:    } elsif ($_ eq 'inum') {
+find2perl:        $out .= &tab . &n('$ino', shift);
+find2perl:    } elsif ($_ eq 'size') {
+find2perl:        $_ = shift;
+find2perl:        if (s/c\z//) {
+find2perl:        } elsif (s/k\z//) {
+find2perl:    } elsif ($_ eq 'atime') {
+find2perl:        $out .= &tab . &n('int(-A _)', shift);
+find2perl:    } elsif ($_ eq 'mtime') {
+find2perl:        $out .= &tab . &n('int(-M _)', shift);
+find2perl:    } elsif ($_ eq 'ctime') {
+find2perl:        $out .= &tab . &n('int(-C _)', shift);
+find2perl:    } elsif ($_ eq 'exec') {
+find2perl:            { push(@cmd, shift) }
+find2perl:        shift;
+find2perl:        if ($cmd[0] =~m#^(?:(?:/usr)?/bin/)?rm$#
+find2perl:            if (@cmd == 2) {
+find2perl:            } elsif (!@ARGV) {
+find2perl:    } elsif ($_ eq 'ok') {
+find2perl:            { push(@cmd, shift) }
+find2perl:        shift;
+find2perl:    } elsif ($_ eq 'prune') {
+find2perl:    } elsif ($_ eq 'xdev') {
+find2perl:    } elsif ($_ eq 'newer') {
+find2perl:        my $file = shift;
+find2perl:    } elsif ($_ eq 'eval') {
+find2perl:        my $prog = shift;
+find2perl:    } elsif ($_ eq 'depth') {
+find2perl:    } elsif ($_ eq 'ls') {
+find2perl:    } elsif ($_ eq 'tar') {
+find2perl:        my $file = shift;
+find2perl:    } elsif (/^(n?)cpio\z/) {
+find2perl:        my $file = shift;
+find2perl:    if (@ARGV) {
+find2perl:        if ($ARGV[0] eq '-o') {
+find2perl:            $statdone = 0 if $indent_depth == 1 && exists $init{delayedstat};
+find2perl:            shift;
+find2perl:            shift if $ARGV[0] eq '-a';
+find2perl:        if 0; #\$running_under_some_shell
+find2perl:# Set the variable \$File::Find::dont_use_nlink if you're using AFS,
+find2perl:if (exists $init{ls}) {
+find2perl:if (exists $init{user} || exists $init{ls} || exists $init{tar}) {
+find2perl:        if exists $init{user};
+find2perl:        if exists $init{ls} || exists $init{tar};
+find2perl:if (exists $init{group} || exists $init{ls} || exists $init{tar}) {
+find2perl:        if exists $init{group};
+find2perl:        if exists $init{ls} || exists $init{tar};
+find2perl:print $initnewer, "\n" if $initnewer ne '';
+find2perl:print $initfile, "\n" if $initfile ne '';
+find2perl:if (exists $init{declarestat}) {
+find2perl:if ( $follow_in_effect ) {
+find2perl:if (exists $init{doexec}) {
+find2perl:    my $ok = shift;
+find2perl:    if ($ok) {
+find2perl:if (exists $init{ls}) {
+find2perl:    my $rdev = shift;
+find2perl:    substr($perms, 2, 1) =~ tr/-x/Ss/ if -u _;
+find2perl:    substr($perms, 5, 1) =~ tr/-x/Ss/ if -g _;
+find2perl:    substr($perms, 8, 1) =~ tr/-x/Tt/ if -k _;
+find2perl:    if    (-f _) { $perms = '-' . $perms; }
+find2perl:    elsif (-d _) { $perms = 'd' . $perms; }
+find2perl:    elsif (-l _) { $perms = 'l' . $perms; $pname .= ' -> ' . readlink($_); }
+find2perl:    elsif (-c _) { $perms = 'c' . $perms; $size = sizemm($rdev); }
+find2perl:    elsif (-b _) { $perms = 'b' . $perms; $size = sizemm($rdev); }
+find2perl:    elsif (-p _) { $perms = 'p' . $perms; }
+find2perl:    elsif (-S _) { $perms = 's' . $perms; }
+find2perl:    if (-M _ > 365.25 / 2) {
+find2perl:if (exists $init{cpio} || exists $init{tar}) {
+find2perl:if (exists $init{cpio}) {
+find2perl:    if ( ! defined $fname ) {
+find2perl:        if (-f _) {
+find2perl:    if ($nc eq 'n') {
+find2perl:        $cpout{$fh} .= "\0" if length($cpout{$fh}) & 1;
+find2perl:    if ($text ne '') {
+find2perl:    } elsif ($size) {
+find2perl:if (exists $init{tar}) {
+find2perl:    if ($nlink > 1) {
+find2perl:        if ($linkname = $linkseen{$fh, $dev, $ino}) {
+find2perl:            if (length($linkname) > 100) {
+find2perl:    if ($typeflag eq '0') {
+find2perl:        if (-f _) {
+find2perl:            if (defined $linkname) { $typeflag = '2' }
+find2perl:            elsif (-c _) { $typeflag = '3' }
+find2perl:            elsif (-b _) { $typeflag = '4' }
+find2perl:            elsif (-d _) { $typeflag = '5' }
+find2perl:            elsif (-p _) { $typeflag = '6' }
+find2perl:    if (length($fname) > 100) {
+find2perl:        if (!defined($fname) || length($prefix) > 155) {
+find2perl:    $size = 0 if $typeflag ne '0';
+find2perl:    $tarout{$fh} .= "\0" x (512 - $l) if $l;
+find2perl:    if ($size) {
+find2perl:            $tarout{$fh} .= "\0" x (512 - $slop) if $slop;
+find2perl:        $len += 10240 if $len < 1024;
+find2perl:    if (!$statdone) {
+find2perl:        if ($_ =~ /^(?:name|print|prune|exec|ok|\(|\))/) {
+find2perl:            if (exists $init{saw_or}) {
+find2perl:    $tabstring =~ s/^\s+/ / if $out =~ /!$/;
+find2perl:    my $x = shift;
+find2perl:    my $string = shift;
+find2perl:True if _both_ PREDICATE1 and PREDICATE2 are true; PREDICATE2 is not
+find2perl:evaluated if PREDICATE1 is false.
+find2perl:True if either one of PREDICATE1 or PREDICATE2 is true; PREDICATE2 is
+find2perl:not evaluated if PREDICATE1 is true.
+find2perl:File name matches specified GLOB wildcard pattern.  GLOB may need to be
+find2perl:The bits specified in PERM are all set in file's permissions.
+find2perl:True if USER is owner of file.
+find2perl:True if file's group is GROUP.
+find2perl:True if file's owner is not in password database.
+find2perl:True if file's group is not in group database.
+find2perl:True if (hard) link count of file matches N (see below).
+find2perl:True if file's size matches N (see below) N is normally counted in
+find2perl:512-byte blocks, but a suffix of "c" specifies that size should be
+find2perl:counted in characters (bytes) and a suffix of "k" specifes that
+find2perl:True if last-access time of file matches N (measured in days) (see
+find2perl:True if last-changed time of file's inode matches N (measured in days,
+find2perl:True if last-modified time of file matches N (measured in days, see below).
+find2perl:True if last-modified time of file matches N.
+find2perl:Like -exec, but first prompts user; if user's response does not begin
+findhere:if   [ `basename $0` = "findhere" ] ; then
+findhere:elif [ `basename $0` = "findhome" ] ; then
+findhere:elif [ `basename $0` = "findname" ] ; then
+findhome:if   [ `basename $0` = "findhere" ] ; then
+findhome:elif [ `basename $0` = "findhome" ] ; then
+findhome:elif [ `basename $0` = "findname" ] ; then
+findname:if   [ `basename $0` = "findhere" ] ; then
+findname:elif [ `basename $0` = "findhome" ] ; then
+findname:elif [ `basename $0` = "findname" ] ; then
+fractional_inches_and_millimeters:print "1\n" if ($debug);
+fractional_inches_and_millimeters:print "1 - \$f hash has " . scalar(keys %$f) . " keys now\n" if ($debug);
+fractional_inches_and_millimeters:print "2\n" if ($debug);
+fractional_inches_and_millimeters:  print "2 - $n\n" if ($debug);
+fractional_inches_and_millimeters:print "3\n" if ($debug);
+fractional_inches_and_millimeters:print "4\n" if ($debug);
+fractional_inches_and_millimeters:print "5\n" if ($debug);
+func:if ($name=~/sub/) {
+func:    if (/^\s*sub /) {
+func:} elsif ( $name =~ /func/ ) {
+func:    if (/^\s*function\s*\S+\s*\(\s*(\$|\))/) {
+funnel:  if ( $ARGV[0] eq '-e' ) {
+funnel:    shift;
+funnel:  } elsif ( $ARGV[0] =~ '-([^?d]\S*)') {
+funnel:    push(@FILES,'-'); shift;
+funnel:  } elsif ( $ARGV[0] eq '-d' ) {
+funnel:    shift;
+funnel:  } elsif ( $ARGV[0] eq '-?' ) {
+funnel:    if ( ( -r $ARGV[0] ) || ( $ARGV[0] == '-' ) ) {
+funnel:      $stdin++ if ($ARGV[0] =~ /^-$/);
+funnel:      push(@FILES,shift);
+funnel:      shift;
+funnel:if ( ! $stdin) {
+funnel:if ($debug) {
+funnel:while ( $FILE=shift(@FILES) ) {
+funnel:  if ($FILE eq '-') {
+funnel:    if ($STOP[$fileno]) {
+funnel:    if ( $STOP[$fileno] && ( $_=~/^$STOP[$fileno]$/ ) ) {
+funnel:        if ($debug);
+funnel:    print STDERR if ($stderr);
+GET:    if 0; # not running under some shell
+GET:             [-i <if-modified-since>] [-c <content-type>] [-C <credentials>]
+GET:Force request through, even if the program believes that the method is
+GET:Set the If-Modified-Since header in the request. If I<time> it the
+GET:name of a file, use the modification timestamp for this file. If
+GET:Send this HTTP header with each request. You can specify several, e.g.:
+GET:Authentication.  If the document is protected and you did not specify
+GET:If you specify the I<text> format then the HTML will be formatted as
+GET:plain latin1 text.  If you specify the I<ps> format then it will be
+GET:modify it under the same terms as Perl itself.
+GET:$progname =~ s/\.\w*$//; # strip extension, if any
+GET:# specific.  You might use the -f option to force a method through.
+GET:# user/password if document is protected.
+GET:	if ($main::options{'C'}) {
+GET:	} elsif (-t) {
+GET:    'f', # make request even if method is not in %allowed_methods
+GET:    'i=s', # if-modified-since
+GET:if ($options{'v'}) {
+GET:modify it under the same terms as Perl itself.
+GET:usage() if $options{'h'} || !@ARGV;
+GET:LWP::Debug::level('+') if $options{'x'};
+GET:$method = uc($options{'m'}) if defined $options{'m'};
+GET:if ($options{'f'}) {
+GET:    if ($options{'c'}) {
+GET:} elsif (!defined $allowed_methods{$method}) {
+GET:if ($method eq "HEAD") {
+GET:if (defined $options{'t'}) {
+GET:    if (defined $2) {
+GET:        $timeout *= 60   if $2 eq "m";
+GET:        $timeout *= 3600 if $2 eq "h";
+GET:if (defined $options{'i'}) {
+GET:    if (-e $options{'i'}) {
+GET:if ($allowed_methods{$method} eq "C") {
+GET:        if -t;
+GET:        if defined $options{'c'};
+GET:$request->header('If-Modified-Since', $options{'i'}) if defined $options{'i'};
+GET:    $ua->agent($header_value) if lc($header_name) eq "user-agent"; # Ugh!
+GET:if ($options{'c'}) { # will always be set for request that wants content
+GET:while ($url = shift) {
+GET:	if ($url =~ /^\w+:/ || $options{'b'}) {  # is there any scheme specification
+GET:	    $url = $url->abs($options{'b'}) if $options{'b'};
+GET:    if ($@) {
+GET:    $ua->proxy($url->scheme, $options{'p'}) if $options{'p'};
+GET:    if ($options{'u'} || $options{'U'}) {
+GET:        print $response->request->headers_as_string, "\n" if $options{'U'};
+GET:    if ($options{'S'}) {
+GET:    } elsif ($options{'s'}) {
+GET:    if ($options{'e'}) {
+GET:    if ($response->is_success) {
+GET:	    if ($options{'o'} &&
+GET:    -f            make request even if $progname believes method is illegal
+GET:    -b <base>     Use the specified URL as base
+GET:    -i <time>     Set the If-Modified-Since header on the request
+GET:    -H <header>   send this HTTP header (you can specify several)
+get_remote_host:print FILE "USER=",$user,"\n" if ($debug);
+get_remote_host:print FILE "LOGIN:\n",$login,"\n" if ($debug);
+get_remote_host:print FILE "pre-rname: $rname\n" if ($debug);
+get_remote_host:if ($rname =~ /Must be attached to terminal/i ) {
+get_remote_host:  if ($#me==0) {
+get_remote_host:    print FILE "pre-rname: $rname\n" if ($debug);
+get_remote_host:    print FILE "More than one (actually: '$#me') who results.\n" if ($debug);
+get_remote_host:print FILE "post-rname: $rname\n" if ($debug);
+get_remote_host:if ($opt_x) {
+getem.pl:  if ( not $mech->content =~ /$user/ ) {
+getem.pl:  if ( -f $gallery_file ) {
+getem.pl:    if ($fh->open("< $gallery_file")) {
+getem.pl:	  print "Loaded " . scalar(@lines) . " lines.\n" if ( $debug =~ /lines/ );
+getem.pl:	  print "code is " . length($code) . " bytes long.\n" if ( $debug =~ /code/ );
+getem.pl:	  print "code (" . substr($code,0,100) . ")\n" if ( $debug =~ /code/ );
+getem.pl:	  if ( not eval "$code" ) { print "eval of \$code failed: '$@'\n"; }
+getem.pl:      print "debugging \$image_links is a " . ref($image_links) . ".\n" if ($debug=~/cache_load/);;
+getem.pl:	  if ($debug=~/character_count/);
+getem.pl:	  if (@page_links) {
+getem.pl:	if (defined $img_link) {
+getem.pl:	  next if (not @$all_images);
+getem.pl:	if ( -f $filename ) {
+getenvs.pl: open(BINARY, shift) || die "Can't open file: $!\n";
+getenvs.pl:    if ($k + 1 == length($tmpread[$j])) {
+getenvs.pl:      if ($s[$l] eq $tmpread[$j]) {
+getenvs.pl:      if ($s[$l] eq $tmpread[$j] || $s[$l] eq " $tmpread[$j]") {
+getenvs.pl:     if (!$m && substr($tmpread[$j], 0, 3) ne "SIG" && substr($tmpread[$j], 0, 2) ne "__" &&
+getenvs.pl:      if (!$result) {
+getenvs.pl: if ($result) {
+getenvs.pl: $char = substr(shift, 0, 1);
+getenvs.pl: if (ord($char) > 64 && ord($char) < 91 || ord($char) > 47 && ord($char) < 58 || ord($char) == 45 || ord($char) == 95) {
+gifinfo:# A perl script to spit info on a gif file
+gifinfo:$GIFTOPNM= (-f '/usr/common/bin/netpbm/giftopnm') ?
+gifinfo:               '/usr/common/bin/netpbm/giftopnm' : `which giftopnm`;
+gifinfo:$PPMTOGIF= (-f '/usr/common/bin/netpbm/ppmtogif') ?
+gifinfo:               '/usr/common/bin/netpbm/ppmtogif' : `which ppmtogif`;
+gifinfo:if ( $ARGV[0] eq '-colors' ) {
+gifinfo:  $colors=shift;
+gifinfo: $command="$GIFTOPNM |$PPMHIST $_ |" if ($colors);
+gifinfo: print "about to run $command\n" if ($debug);
+gifinfo:   if (($width,$height,$interlaced) =
+gifinfo:     ppmtogif - convert a portable pixmap into a GIF file
+gifinfo:     ppmtogif [-interlace] [-sort] [-map mapfile] [ - transparent
+gifinfo:     giftopnm - convert a GIF file into a portable anymap
+gifinfo:     giftopnm [-verbose] [-comments] [-image N] [GIFfile]
+gifinfo:     a specified number
+gifinfo:giftopnm -verbose lipidat.gif > /dev/null
+gifinfo:giftopnm: reading 467 by 136 GIF image
+gifinfo:giftopnm: writing a PPM file
+gifinfo:giftopnm -verbose $htdocs/../icons/OSU.171x171.gif >/dev/null
+gifinfo:giftopnm: reading 171 by 171 interlaced GIF image
+gifinfo:giftopnm: writing a PPM file
+gifsize:# Program name: gifsize
+gifsize:foreach $gif (@ARGV)
+gifsize:($width, $height, $type) = &gifsize ($gif) ;
+gifsize:? print "<img src=\"$gif\" width=$width height=$height border=0>\n"
+gifsize:: print "$gif is not a GIF.\n" ;
+gifsize:sub gifsize
+gifsize:local ($gif) = @_ ;
+gifsize:local ($w, $w2, $h, $h2, $gifwidth, $gifsize, $type) = () ;
+gifsize:open (GIF, $gif) ; read (GIF, $type, 3) ;
+gifsize:} # end of sub gifsize
+gis.pl:# Scrape images.google.com for images matching a specific    #
+gis.pl:# Validate input and display help if needed.
+gis.pl:&help if ($opt{'help'} || !$opt{'query'});
+gis.pl:# $test is used to see if we need another page.              #
+gis.pl:   $start += 20 if ($start<=200);
+gis.pl:   $done = 1 if ($test == $start);
+gis.pl:   # If we see the "nav_next.gif" image, we know we should go
+gis.pl:   if ($attr->{'src'} && ($attr->{'src'} eq "/nav_next.gif" )) {
+gis.pl:      print "BAM! found nav_next.gif, so there will be another page.\n";
+gis.pl:   my $f = shift;
+gis.pl:specified on the commandline.  Images are downloaded and placed
+gis.pl.mine:# Scrape images.google.com for images matching a specific    #
+gis.pl.mine:# Validate input and display help if needed.
+gis.pl.mine:&help if ($opt{'help'} || !$opt{'query'});
+gis.pl.mine:# $test is used to see if we need another page.              #
+gis.pl.mine:   # If we see the "nav_next.gif" image, we know we should go
+gis.pl.mine:   if ($attr->{'src'} && ($attr->{'src'} eq "/nav_next.gif" )) {
+gis.pl.mine:   my $f = shift;
+gis.pl.mine:specified on the commandline.  Images are downloaded and placed
+gis.pl.orig:# Scrape images.google.com for images matching a specific    #
+gis.pl.orig:# Validate input and display help if needed.
+gis.pl.orig:&help if ($opt{'help'} || !$opt{'query'});
+gis.pl.orig:# $test is used to see if we need another page.              #
+gis.pl.orig:   $done = 1 if $test == $start;
+gis.pl.orig:   # If we see the "nav_next.gif" image, we know we should go
+gis.pl.orig:   if ($attr->{'src'} && ($attr->{'src'} eq "/nav_next.gif" )) {
+gis.pl.orig:   my $f = shift;
+gis.pl.orig:specified on the commandline.  Images are downloaded and placed
+glue:# number of lines may be specified or the number coming through
+glue:if ( $line_break ) {
+glue:    if ( $_ !~ /$break_reg/ ) {
+glue:    if ( $new_column_flag ) {
+glue:        if ( $_ !~ /$break_reg/ ) {
+glue:      if ( /$break_reg/ ) {
+glue:# (if the last line wasn't itself a break line)
+glue:  if ( ! $break_line) {
+glue:      if ( ($index>=$column_start[$column+1])
+glue:      print "$delimitstring" if ($column<$numcolumns);
+glue:# Load lines (and count if necessary).
+glue:    if ( $numlines && ( $i >= $numlines ) ) { last; }
+glue:	# print "'$ARGV[0]'\n"; $count++; exit if ($count>=10);
+glue:    if    ( $ARGV[0] eq '-d' ) {
+glue:      shift @ARGV; shift @ARGV;
+glue:    } elsif ( ( $ARGV[0] eq '-g' ) || ( $ARGV[0] eq '-n' ) ) {
+glue:      shift @ARGV; shift @ARGV;
+glue:    } elsif ( $ARGV[0] eq '-c' ) {
+glue:      shift @ARGV; shift @ARGV;
+glue:    } elsif ( $ARGV[0] eq '-b' ) {
+glue:      shift @ARGV;
+glue:    } elsif ( $ARGV[0] eq '-w' ) {
+glue:      shift @ARGV;
+glue:    } elsif ( $ARGV[0] eq '-?' ) {
+glue:#    octal or hex number if only one arg
+glue:# OR    decimal   number if argument 2 = "d" or "D"
+glue:     if ($_[1]=="d") { return pack('C1',$_[0]); }
+glue:  elsif ($_[1]=="D") { return pack('C1',$_[0]); }
+glue:  $max=shift;
+glue:    $max=($entry>$max)?$entry:$max if ($entry ne '');
+grepl:$regexp=shift;
+grepl:  if ($gotonexteof) {
+grepl:      if (not eof) {
+grepl:    if (/$regexp/i) {
+hash_check.pl:# demonstrating the differences.
+hash_check.pl:		if ( exists  $hash_ref->{$key_to_check}) { print "exists.\n"; }
+hash_check.pl:		if ( defined $hash_ref->{$key_to_check}) { print "defined.\n"; }
+hash_check.pl:		if (         $hash_ref->{$key_to_check}) { print "is true.\n"; }
+hash_check.pl:		if ( $hash_ref->{$key_to_check}  > 0   ) { print "is  > 0 .\n"; }
+hash_check.pl:		if ( $hash_ref->{$key_to_check} >= 0   ) { print "is >= 0 .\n"; }
+hash_check.pl:		if ( $hash_ref->{$key_to_check} == 0   ) { print "is == 0 .\n"; }
+hash_check.pl:		if ( $hash_ref->{$key_to_check} != 0   ) { print "is != 0 .\n"; }
+hash_check.pl:		if ( $hash_ref->{$key_to_check} eq ''  ) { print "is eq ''.\n"; }
+hash_check.pl:		if ( $hash_ref->{$key_to_check} ne ''  ) { print "is ne ''.\n"; }
+HEAD:    if 0; # not running under some shell
+HEAD:             [-i <if-modified-since>] [-c <content-type>] [-C <credentials>]
+HEAD:Force request through, even if the program believes that the method is
+HEAD:Set the If-Modified-Since header in the request. If I<time> it the
+HEAD:name of a file, use the modification timestamp for this file. If
+HEAD:Send this HTTP header with each request. You can specify several, e.g.:
+HEAD:Authentication.  If the document is protected and you did not specify
+HEAD:If you specify the I<text> format then the HTML will be formatted as
+HEAD:plain latin1 text.  If you specify the I<ps> format then it will be
+HEAD:modify it under the same terms as Perl itself.
+HEAD:$progname =~ s/\.\w*$//; # strip extension, if any
+HEAD:# specific.  You might use the -f option to force a method through.
+HEAD:# user/password if document is protected.
+HEAD:	if ($main::options{'C'}) {
+HEAD:	} elsif (-t) {
+HEAD:    'f', # make request even if method is not in %allowed_methods
+HEAD:    'i=s', # if-modified-since
+HEAD:if ($options{'v'}) {
+HEAD:modify it under the same terms as Perl itself.
+HEAD:usage() if $options{'h'} || !@ARGV;
+HEAD:LWP::Debug::level('+') if $options{'x'};
+HEAD:$method = uc($options{'m'}) if defined $options{'m'};
+HEAD:if ($options{'f'}) {
+HEAD:    if ($options{'c'}) {
+HEAD:} elsif (!defined $allowed_methods{$method}) {
+HEAD:if ($method eq "HEAD") {
+HEAD:if (defined $options{'t'}) {
+HEAD:    if (defined $2) {
+HEAD:        $timeout *= 60   if $2 eq "m";
+HEAD:        $timeout *= 3600 if $2 eq "h";
+HEAD:if (defined $options{'i'}) {
+HEAD:    if (-e $options{'i'}) {
+HEAD:if ($allowed_methods{$method} eq "C") {
+HEAD:        if -t;
+HEAD:        if defined $options{'c'};
+HEAD:$request->header('If-Modified-Since', $options{'i'}) if defined $options{'i'};
+HEAD:    $ua->agent($header_value) if lc($header_name) eq "user-agent"; # Ugh!
+HEAD:if ($options{'c'}) { # will always be set for request that wants content
+HEAD:while ($url = shift) {
+HEAD:	if ($url =~ /^\w+:/ || $options{'b'}) {  # is there any scheme specification
+HEAD:	    $url = $url->abs($options{'b'}) if $options{'b'};
+HEAD:    if ($@) {
+HEAD:    $ua->proxy($url->scheme, $options{'p'}) if $options{'p'};
+HEAD:    if ($options{'u'} || $options{'U'}) {
+HEAD:        print $response->request->headers_as_string, "\n" if $options{'U'};
+HEAD:    if ($options{'S'}) {
+HEAD:    } elsif ($options{'s'}) {
+HEAD:    if ($options{'e'}) {
+HEAD:    if ($response->is_success) {
+HEAD:	    if ($options{'o'} &&
+HEAD:    -f            make request even if $progname believes method is illegal
+HEAD:    -b <base>     Use the specified URL as base
+HEAD:    -i <time>     Set the If-Modified-Since header on the request
+HEAD:    -H <header>   send this HTTP header (you can specify several)
+hexdump.pl:#modify it under the terms of the GNU General Public License as
+hexdump.pl:#with this program; if not, write to the Free Software Foundation,
+hexdump.pl:#Funny identifiers at the top of file
+hexdump.pl:in $ARG which you can modify with standard perl commands.
+hexdump.pl:free software; you can redistribute it and/or modify it under the same
+hexdump.pl:my $msg = shift; # optional arg, why are we here...
+hexdump.pl:$verb = 1	if $debug;
+hexdump.pl:if ( $EVAL_CODE )
+hexdump.pl:elsif ( $USE_EXTENSION )
+hexdump.pl:	if ( !$RAW and $dec > 32 and $dec < 128 )
+hexdump.pl:	if ( $i == $WIDTH/2 -1 )		# additional break
+hexdump.pl:	if ( $OFFSET_HEX )
+hexdump.pl:	print "$str\n"	if $RAW;
+hexdump.pl:	print $OUT $strOut if not $RAW;
+hexdump.pl:if ( $USE_EXTENSION )
+igrep:if (!@ccinc) {
+igrep:} elsif (@ccinc[0] eq '+') {
+igrep:  if (/^-/){
+igrep:  if (!defined($search)){
+igrep:if (!@Files) {
+igrep:    if (/^\s*#\s*include\s*<(\S+)>/){
+igrep:if (! $all_found) {
+igrep:  if ($file !~ m,^/,){
+igrep:      if (-f $dir.$file){
+igrep:  if (!defined($usedfile{$file})){
+igrep:    if (! -f $file){
+in:  if ($arg=~/^-?\s*[0-9]+$/) {
+in:    shift;
+in:if (not $indent) { while (<>) { print; } exit 0; }
+in:if ($indent<0) {
+in:  if ($last_line) {
+in:    if ($indent<0) {	# indent is negative, remove white space if possible
+in:      if ($ws eq '') {		# no white space to remove
+in:      } elsif ($ws=~/\t$/) {	# white space ends with a tab
+in:      } elsif ($ws=~/  ?$/) {	# white space ends with at least one space
+in:    exit 0 if (not $line=<>);
+in:  if ($last_line) {
+in:      if ($indent<0) {	# indent is negative, remove white space if possible
+in:        if ($1 eq '') {		# no white space to remove
+in:        } elsif ($1=~/\t$/) {	# white space ends with a tab
+in:        } elsif ($1=~/  ?$/) {	# white space ends with at least one space
+in:    exit 0 if (not $line=<>);
+jpeginfo:if ( $ARGV[0] eq '-colors' ) {
+jpeginfo:  $colors=shift;
+jpeginfo: $command="$JPGTOPNM |$PPMHIST $_ |" if ($colors);
+jpeginfo: print "about to run $command\n" if ($debug);
+jpeginfo:   if (($width,$height,$interlaced) =
+jpeginfo:     a specified number
+jpeginfo.orig:if [ $@ ] ; then
+jpeginfo.orig:	  eval "/opt/local/bin/jpegtopnm --verbose $X 2>&1 > /dev/null | perl -ne 'if(/width/){s/^.*: /\047 /; s/, compon.*$/>/; s/,//; print;}' "; \
+letter_count:if (not @ARGV) { push(@ARGV,'/usr/dict/words'); }
+letter_count:#   print "$_: " . scalar(@chars) . "\n" if ($words<100); $words++;
+listmodules:print "'find { wanted => sub { print canonpath \$_ if /\\.pm\\z/ }, no_chdir => 1 }, \@INC'\n";
+listmodules:'find { wanted => sub { print canonpath $_ if /\.pm\z/ }, no_chdir => 1 }, @INC'
+llpath:push(@ARGV,$pwd) if (not @ARGV);
+llpath:while ($path=shift) {
+llpath:  if ($path !~ m,/,) { $path = $pwd . '/' . $path }
+llpath:    last if ( $path !~ m,/, or ( ++$depth >= $maxdepth ) );
+lower:if      ( $name =~ /upper/ ) {
+lower:} elsif ( $name =~ /lower/ ) {
+lower:} elsif ( $name =~ /cap/ ) {
+lower:} elsif ( $name =~ /rot13/ ) {
+lower:} elsif ( $name =~ /rot661/ ) {
+lwp-download:    if 0; # not running under some shell
+lwp-download:The I<lwp-download> program will down load the document specified by the URL
+lwp-download:specified as the second command line argument.
+lwp-download:difference on dosish systems.
+lwp-download:$progname =~ s/\.\w*$//; # strip extension if any
+lwp-download:my $url = URI->new(shift || usage());
+lwp-download:my $argfile = shift;
+lwp-download:	      if ($cd && $cd =~ /\bfilename\s*=\s*(\S+)/) {
+lwp-download:	      # if this fails we try to make something from the URL
+lwp-download:		      $file .= ".$suffix" if $suffix;
+lwp-download:		  } elsif ($rurl->scheme eq 'ftp' ||
+lwp-download:			  $file .= ".$suffix" if $suffix;
+lwp-download:	      # Check if the file is already present
+lwp-download:	      if (-f $file && -t) {
+lwp-download:		  exit if !defined($ans) || !($ans =~ /^y?\n/);
+lwp-download:	  $flength = fbytes($length) if defined $length;
+lwp-download:      if (defined $length) {
+lwp-download:	  if ($dur != $last_dur) {  # don't update too often
+lwp-download:	      $speed = fbytes($size/$dur) . "/sec" if $dur > 3;
+lwp-download:	      $show .= " (at $speed, $secs_left remaining)" if $speed;
+lwp-download:if ($res->is_success || $res->message =~ /^Interrupted/) {
+lwp-download:    print " of ", fbytes($length) if defined($length) && $length != $size;
+lwp-download:    if ($dur) {
+lwp-download:    if ($died || !$res->is_success) {
+lwp-download:	if (-t) {
+lwp-download:	    unlink($file) if defined($ans) && $ans =~ /^y\n/;
+lwp-download:    print "\n" if $shown;
+lwp-download:    my $n = int(shift);
+lwp-download:    if ($n >= 1024 * 1024) {
+lwp-download:    } elsif ($n >= 1024) {
+lwp-download:    my $secs = int(shift);
+lwp-download:    if ($hours) {
+lwp-download:    } elsif ($mins >= 2) {
+lwp-mirror:    if 0; # not running under some shell
+lwp-mirror:document is only transfered if the remote copy is newer than the local
+lwp-mirror:The timeout value specified with the C<-t> option.  The timeout value
+lwp-mirror:$progname =~ s/\.\w*$//; #strip extension if any
+lwp-mirror:if ($opt_v) {
+lwp-mirror:modify it under the same terms as Perl itself.
+lwp-mirror:$url  = shift or usage();
+lwp-mirror:$file = shift or usage();
+lwp-mirror:usage() if $opt_h or @ARGV;
+lwp-mirror:if (defined $opt_t) {
+lwp-mirror:    $timeout *= 60   if ($2 eq "m");
+lwp-mirror:    $timeout *= 3600 if ($2 eq "h");
+lwp-mirror:if ($rc == 304) {
+lwp-mirror:} elsif (!is_success($rc)) {
+lwp-request:    if 0; # not running under some shell
+lwp-request:             [-i <if-modified-since>] [-c <content-type>] [-C <credentials>]
+lwp-request:Force request through, even if the program believes that the method is
+lwp-request:Set the If-Modified-Since header in the request. If I<time> it the
+lwp-request:name of a file, use the modification timestamp for this file. If
+lwp-request:Send this HTTP header with each request. You can specify several, e.g.:
+lwp-request:Authentication.  If the document is protected and you did not specify
+lwp-request:If you specify the I<text> format then the HTML will be formatted as
+lwp-request:plain latin1 text.  If you specify the I<ps> format then it will be
+lwp-request:modify it under the same terms as Perl itself.
+lwp-request:$progname =~ s/\.\w*$//; # strip extension, if any
+lwp-request:# specific.  You might use the -f option to force a method through.
+lwp-request:# user/password if document is protected.
+lwp-request:	if ($main::options{'C'}) {
+lwp-request:	} elsif (-t) {
+lwp-request:    'f', # make request even if method is not in %allowed_methods
+lwp-request:    'i=s', # if-modified-since
+lwp-request:if ($options{'v'}) {
+lwp-request:modify it under the same terms as Perl itself.
+lwp-request:usage() if $options{'h'} || !@ARGV;
+lwp-request:LWP::Debug::level('+') if $options{'x'};
+lwp-request:$method = uc($options{'m'}) if defined $options{'m'};
+lwp-request:if ($options{'f'}) {
+lwp-request:    if ($options{'c'}) {
+lwp-request:} elsif (!defined $allowed_methods{$method}) {
+lwp-request:if ($method eq "HEAD") {
+lwp-request:if (defined $options{'t'}) {
+lwp-request:    if (defined $2) {
+lwp-request:        $timeout *= 60   if $2 eq "m";
+lwp-request:        $timeout *= 3600 if $2 eq "h";
+lwp-request:if (defined $options{'i'}) {
+lwp-request:    if (-e $options{'i'}) {
+lwp-request:if ($allowed_methods{$method} eq "C") {
+lwp-request:        if -t;
+lwp-request:        if defined $options{'c'};
+lwp-request:$request->header('If-Modified-Since', $options{'i'}) if defined $options{'i'};
+lwp-request:    $ua->agent($header_value) if lc($header_name) eq "user-agent"; # Ugh!
+lwp-request:if ($options{'c'}) { # will always be set for request that wants content
+lwp-request:while ($url = shift) {
+lwp-request:	if ($url =~ /^\w+:/ || $options{'b'}) {  # is there any scheme specification
+lwp-request:	    $url = $url->abs($options{'b'}) if $options{'b'};
+lwp-request:    if ($@) {
+lwp-request:    $ua->proxy($url->scheme, $options{'p'}) if $options{'p'};
+lwp-request:    if ($options{'u'} || $options{'U'}) {
+lwp-request:        print $response->request->headers_as_string, "\n" if $options{'U'};
+lwp-request:    if ($options{'S'}) {
+lwp-request:    } elsif ($options{'s'}) {
+lwp-request:    if ($options{'e'}) {
+lwp-request:    if ($response->is_success) {
+lwp-request:	    if ($options{'o'} &&
+lwp-request:    -f            make request even if $progname believes method is illegal
+lwp-request:    -b <base>     Use the specified URL as base
+lwp-request:    -i <time>     Set the If-Modified-Since header on the request
+lwp-request:    -H <header>   send this HTTP header (you can specify several)
+lwp-rget:    if 0; # not running under some shell
+lwp-rget:This program is useful if you want to make a local copy of a
+lwp-rget:Set the authentication credentials to user "USER" and password "PASS" if
+lwp-rget:Limit the recursive level. Embedded images are always loaded, even if
+lwp-rget:follow.	 For instance if we start lwp-rget with the URL
+lwp-rget:Use C<--prefix=''> if you don't want the fetching to be limited by any
+lwp-rget:$progname =~ s/\.\w*$//; #strip extension if any
+lwp-rget:modify it under the same terms as Perl itself.
+lwp-rget:my $start_url = shift || usage();
+lwp-rget:usage() if @ARGV;
+lwp-rget:$SUPPRESS_REFERER++ if ($REFERER || "") eq "NONE";
+lwp-rget:print <<"" if $VERBOSE;
+lwp-rget:    $url = $url->as_string if (ref($url));
+lwp-rget:    # Fix backslashes (\) in URL if $IIS defined
+lwp-rget:    $url = fix_backslashes($url) if (defined $IIS);
+lwp-rget:    $type = 'img' if ($type eq 'body' || $type eq 'td');
+lwp-rget:    print STDERR $out . " " if $VERBOSE;
+lwp-rget:    if ($url->scheme eq 'mailto') {
+lwp-rget:	print STDERR "*skipping mailto*\n" if $VERBOSE;
+lwp-rget:    if ($type ne 'img' and  $url->as_string !~ /^\Q$PREFIX/o) {
+lwp-rget:	print STDERR "*outsider*\n" if $VERBOSE;
+lwp-rget:    # Translate URL to lowercase if $TOLOWER defined
+lwp-rget:    $plain_url = to_lower($plain_url) if (defined $TOLOWER);
+lwp-rget:    if ($seen) {
+lwp-rget:	$seen .= "#$frag" if defined($frag);
+lwp-rget:	print STDERR "$seen (again)\n" if $VERBOSE;
+lwp-rget:    if ($depth > $MAX_DEPTH and $type ne 'img') {
+lwp-rget:	print STDERR "*too deep*\n" if $VERBOSE;
+lwp-rget:    if ($no_docs > $MAX_DOCS) {
+lwp-rget:	print STDERR "*too many*\n" if $VERBOSE;
+lwp-rget:    sleep($SLEEP) if $SLEEP;
+lwp-rget:    $req->header ('Accept', '*/*') if (defined $IIS);  # GIF/JPG from IIS 2.0
+lwp-rget:    $req->authorization_basic(split (/:/, $AUTH)) if (defined $AUTH);
+lwp-rget:    $req->referer($referer) if $referer && !$SUPPRESS_REFERER;
+lwp-rget:    if ($res->is_success) {
+lwp-rget:	if ($ct eq "text/html") {
+lwp-rget:	    # don't loose everything if this program is killed before
+lwp-rget:	print STDERR $res->code . " " . $res->message . "\n" if $VERBOSE;
+lwp-rget:    $url = $url->as_string if (ref($url));
+lwp-rget:    if ($url =~ m/^([^#]*#)(.+)$/)
+lwp-rget:    $url = $url->as_string if (ref($url));
+lwp-rget:    if ($url =~ m/^([^#]*#)(.+)$/)
+lwp-rget:    $url = $url->as_string if (ref($url));
+lwp-rget:    if ($url =~ m/([^#]+)(#.*)/)
+lwp-rget:    if (ref($url))
+lwp-rget:    if ($url =~ m/([^#]+)(#.*)/)
+lwp-rget:    if ($was_object == 1)
+lwp-rget:    $url = $url->as_string if (ref($url));
+lwp-rget:    if ($url =~ m/([^#]+)(#.*)/)
+lwp-rget:    my $path = shift(@dirs);   # build it as we go
+lwp-rget:	if ( ! -d $path) {
+lwp-rget:    # Translate spaces in URL to underscores (_) if $NOSPACE defined
+lwp-rget:    $url = translate_spaces($url) if (defined $NOSPACE);
+lwp-rget:    # Translate URL to lowercase if $TOLOWER defined
+lwp-rget:    $url = to_lower($url) if (defined $TOLOWER);
+lwp-rget:    if (!$HIER) {
+lwp-rget:    } elsif (! -d $dirname) {
+lwp-rget:    if ($KEEPEXT{lc($type)}) {
+lwp-rget:	$file .= ".$suffix" if $suffix;
+lwp-rget:	# Check if it is unique
+lwp-rget:    my $name = shift;
+mailsort:unshift (@ARGV, '-') unless @ARGV;
+mailsort:while ($ARGV=shift) {
+mailsort:    if ( $true ) {
+mailsort:        if ($response =~ "l" ) {
+mailsort:  if ($string) {
+mailsort:   if ($regexp) {
+mailsort:  if (eof($filehandle)) {
+mailsort:    if (wantarray) {
+mailsort:  push(@message,$first) if ($first);
+mailsort:#   if (/^[A-Z]\w+:/) { $header.=("\n" . $_);}
+mailsort:#   last if /^$/;			#last if blank (null) line
+mailsort:    if ($line=~/^[A-Z]\w+:/) { $header.=("\n" . $line);}
+mailsort:    last if ($line=~/^$/);	#last if blank (null) line
+mailsort:# if (! $first) { print "---\n", join("\n",@message), "---\n"; }
+mailsort:  ($first)=	($header=~/\n(From\s+.*)\n/) if (!$first);
+mailsort:  if ( $date ) {
+mailsort:    last if (($first)=($line=~/^(From\s+.*)/));
+mailsort:    if (! $readdressee) {
+mailsort:    if ( $line =~ /----- Message body suppressed -----/ ) {
+mailsort:  if (wantarray) {
+makeline:  if ($ARGV[0] =~ /^-?\d{1,4}/ ) {
+makeline:    shift;
+makeline:    shift;
+makeline:if (not @separator) { push(@separator, "#"); }
+makeline:  if (! $position_given) { $position=length($line)+1; $position_given++; }
+makeline:  if ( $len <  ($position-1) ) {
+makeline:  if ( $len == ($position-1) ) {
+mkcall:# lines containing a sub and the subsequent my(VAR LIST)=@_; or my(VAR LIST)=shift;
+mkcall:  if ( /^\s*sub\s*(\S+)/ ) {  # subroutine definition
+mkcall:  if ( /^\s*(my|local)\s*\((\S+)\)\s*=\s*(\@\_|shift)\s*;/ ) {  # arguments
+mkforeach:  if ( ($indent,$symbol,$array_or_hash_name) = ($_ =~ /^(\s*)([%@])(\S+)\s*$/) ) {
+mkforeach:    if ($symbol = /\%/) { $symbol="keys %"; }
+mkforeach:    elsif ($symbol = /\@/) { $symbol="\@"; }
+mkforeach:    if ( $debug ) {
+mksub:# subsequent my(VAR LIST)=@_; or my(VAR LIST)=shift; line.
+mksub:if ($ARGV[0]=~/-d/i) { shift; $delete_lines=1; }
+mksub:  if ( not $subroutine and $_=~/&([^ (]+)\s*\(([^)]+)\)/ ) {
+mksub:if (not $delete_lines) {
+module_version:  if ( exists $ENV{$environment_variable} ) {
+module_version:  if ($returned =~ /Can't/ ) {
+module_version:	if ( $cant and $inc ) {
+modules_installed:        print canonpath $_ . "\n" if /\.pm\z/
+modules_installed:'find { wanted => sub { print canonpath $_ if /\.pm\z/ }, no_chdir => 1 }, @INC'
+mounttest:    if ($debug);
+mounttest:  if (-f '/usr/local/bin/host') {
+mounttest:  } elsif (-f '/usr/bin/host') {
+mounttest:  warn ('no host command found') if (not $HOST);
+mounttest:    if ($debug);
+mounttest:  if (!$ip_name) {
+mounttest:  if (!$ip_name) {
+mounttest:  if (!$ip_number) {
+mounttest:  if (wantarray) {
+mvall:if ($ARGV[0]=~/-v(er(bose)?)?/) {
+mvall:  shift;
+mvall:if ($ARGV[0]=~/-i(nsensitive)?/) {
+mvall:  shift;
+mvall:if ($ARGV[0]=~/-g(lobal)?/) {
+mvall:  shift;
+mvall:if ($ARGV[0]=~/-f(orce)?/) {
+mvall:  shift;
+mvall:if ($ARGV[0] =~ /^--?h(elp)?/ or scalar(@ARGV) != 2) {
+mvall:  if (@ARGV) { print join(", ", @ARGV) . "\n"; }
+mvall:if (not @names) {
+mvall:    if ( $global or $case_insensitive ) {
+mvall:	if ( $new_name eq $name ) {
+mvall:	  print "File '$name' unaffected by ($search:$replace) transformation, ignoring...\n" if ($verbose);
+mvall:    if ( not $force and -f $new_name ) {
+mvall:      if ( &response("File '$new_name' exits, overright with '$name'? [y/N/q]", "^y", "q(uit)?|e(xit)?") ) {
+mvall:    } elsif ( not $force ) {
+mvall:      if ( &response("Shall I rename '$name' to '$new_name' [y/N/q] ", "^y", "q(uit)?|e(xit)?") ) {
+mvall:      printf "Moved %20s -> %20s\n", $name, $new_name if ($verbose);
+mvall:  if ($string) {
+mvall:  if ($regexp) {
+mvall:  } elsif ($exit_regexp and $response=~/$exit_regexp/i) {
+mydiff:echo /usr/bin/diff -w -B $*
+mygroup:$username = $ARGV[0] || $ENV{'USER'}  || $ENV{'LOGIN'}  || 'No username found nor specified';
+mygroup:  if ($result=~/support/) {
+mygroup:  } elsif ($result=~/\b([^_]+)_group/) {
+myman:if ( ( -f "$ARGV[0]" ) && ( -r "$ARGV[0]" ) ) {
+myman:    if (( -f "$ARGV[0].$extension" ) && ( -r "$ARGV[0].$extension" )) {
+myman:  if (! $manfile) {
+myman:#if (( `grep -c '^\.\\\" t' $manfile` >= 1 ) ||     ( $force_tbl eq 1 )) {
+myman:if ( $macros =~ /^'\\" ([terv]+)/ ) {
+myman:  if ( $macros =~ /t/ ) {
+myman:  if ( $macros =~ /e/ ) {
+myman:  if ( $macros =~ /r/ ) {
+myman:  if ( $macros =~ /v/ ) {
+myman.pl:if ( ( -f "$ARGV[0]" ) && ( -r "$ARGV[0]" ) ) {
+myman.pl:    if (( -f "$ARGV[0].$extension" ) && ( -r "$ARGV[0].$extension" )) {
+myman.pl:  if (! $manfile) {
+myman.pl:#if (( `grep -c '^\.\\\" t' $manfile` >= 1 ) ||     ( $force_tbl eq 1 )) {
+myman.pl:if ( $macros =~ /^'\\" ([terv]+)/ ) {
+myman.pl:  if ( $macros =~ /t/ ) {
+myman.pl:  if ( $macros =~ /e/ ) {
+myman.pl:  if ( $macros =~ /r/ ) {
+myman.pl:  if ( $macros =~ /v/ ) {
+nbl:if ($white) {
+nbl:  if ($comment) {
+nbl:  if ($comment) {
+nbl:if ($name eq 'nbl') { $nbl=1; }
+nbl:  next if ( $nbl and ( ( $comment_check and ($_ =~ $comment_check) ) or ($_ =~ $blank_check) ) );
+nbl:  next if ( $comment_check and $cskip and ($_ =~ $comment_check) );
+nbl:  next if ( $bskip and ($_ =~ $blank_check) );
+nbl:  # if no-blank-lines, we needn't track either blank_skip nor comment_skip
+nbl:  $nbl or $bskip = ( $_ =~ $blank_check ); # short-circuit if we are not printing blank lines
+nbl:  $nbl or $cskip = ( $comment_check and ($_ =~ $comment_check)); # short-circuit if we are not printing blank lines
+nbl:    if      ( ($abbrev->{$ARGV[0]} eq '-help' )
+nbl:      shift(@ARGV);
+nbl:    } elsif ( $abbrev->{$ARGV[0]} eq '-whitespace' ) {
+nbl:      shift(@ARGV);
+nbl:    } elsif ( $abbrev->{$ARGV[0]} eq '-comments' ) {
+nbl:      shift(@ARGV);
+nbl:      shift(@ARGV);
+nbl:  if (@help) {
+nbl:#  if (/^$/) {$blank++;}
+nbl:#  print if ($blank<2);
+nbl:#         if ( blank == 0 )
+nbl:#         { if ( newline ~ /^$/ )
+nbl:#         { if ( newline !~ /^$/ )
+ndiff:# Ndiff
+ndiff:# differences.
+ndiff:# Ndiff is distributed under the same license as Nmap. See the file COPYING or
+ndiff:# David Fifield
+ndiff:    """A single port, consisting of a port specification, a state, and a service
+ndiff:    version. A specification, or "spec," is the 2-tuple (number, protocol). So
+ndiff:    port name if -sV wasn't used."""
+ndiff:        if self.name is None:
+ndiff:        if self.product is not None:
+ndiff:        if self.version is not None:
+ndiff:        if self.extrainfo is not None:
+ndiff:        """Return an id that is used to determine if hosts are "the same" across
+ndiff:        if len(self.addresses) > 0:
+ndiff:        if len(self.hostnames) > 0:
+ndiff:        """Return a human-readable identifier for this host."""
+ndiff:            addrs = [addr for addr in self.addresses if addr[0] == address_type]
+ndiff:            if len(addrs) > 0:
+ndiff:        if len(self.hostnames) > 0:
+ndiff:        if hostname is not None:
+ndiff:            if address is not None:
+ndiff:        elif address is not None:
+ndiff:        return [p for p in self.ports.values() if p.state != Port.UNKNOWN]
+ndiff:        if address not in self.addresses:
+ndiff:        if hostname not in self.hostnames:
+ndiff:# What follows are all the possible diff hunk types. Each is capable of redering
+ndiff:class DiffHunk(object):
+ndiff:    """A DiffHunk is a single unit of a diff. Each one represents one atomic
+ndiff:class HostStateChangeHunk(DiffHunk):
+ndiff:class HostAddressAddHunk(DiffHunk):
+ndiff:class HostAddressRemoveHunk(DiffHunk):
+ndiff:class HostHostnameAddHunk(DiffHunk):
+ndiff:class HostHostnameRemoveHunk(DiffHunk):
+ndiff:class HostOsAddHunk(DiffHunk):
+ndiff:class HostOsRemoveHunk(DiffHunk):
+ndiff:class PortIdChangeHunk(DiffHunk):
+ndiff:class PortStateChangeHunk(DiffHunk):
+ndiff:        if self.a_port.state != Port.UNKNOWN:
+ndiff:        if self.b_port.state != Port.UNKNOWN:
+ndiff:        if service.name is not None:
+ndiff:        if service.product is not None:
+ndiff:        if service.version is not None:
+ndiff:        if service.extrainfo is not None:
+ndiff:        if not self.a_port.service == self.b_port.service:
+ndiff:def partition_port_state_changes(diff):
+ndiff:    for hunk in diff:
+ndiff:        if not isinstance(hunk, PortStateChangeHunk):
+ndiff:def consolidate_port_state_changes(diff, threshold = 0):
+ndiff:    hunks moved to the list of lists are removed from diff in place. This is to
+ndiff:    partition = partition_port_state_changes(diff)
+ndiff:        if len(group) > threshold:
+ndiff:                diff.remove(hunk)
+ndiff:class ScanDiff(object):
+ndiff:    """A complete diff of two scans. It is a container for two scans and the
+ndiff:    diff between them, which is a list of (scan, host_diff) tuples as returned
+ndiff:    by scan_diff."""
+ndiff:        """Create a ScanDiff from the "before" scan_a and the "after" scan_b."""
+ndiff:        self.diff = scan_diff(scan_a, scan_b)
+ndiff:        """Print this diff in a human-readable text form."""
+ndiff:        if self.scan_a.start_date is not None:
+ndiff:        if self.scan_b.start_date is not None:
+ndiff:        for host, h_diff in self.diff:
+ndiff:            h_diff_copy = h_diff[:]
+ndiff:            cons_port_state_changes = consolidate_port_state_changes(h_diff_copy, PORT_STATE_CHANGE_CONSOLIDATION_THRESHOLD)
+ndiff:            for hunk in h_diff_copy:
+ndiff:                if verbose or len(port_list_string) <= \
+ndiff:                    if a_state == Port.UNKNOWN:
+ndiff:                    if a_state == Port.UNKNOWN:
+ndiff:        document = impl.createDocument(None, u"nmapdiff", None)
+ndiff:        scandiff_elem = document.createElement(u"scandiff")
+ndiff:        if self.scan_a.start_date is not None:
+ndiff:            scandiff_elem.setAttribute(u"a-start", a_start_date_str)
+ndiff:        if self.scan_b.start_date is not None:
+ndiff:            scandiff_elem.setAttribute(u"b-start", b_start_date_str)
+ndiff:        root.appendChild(scandiff_elem)
+ndiff:        for host, h_diff in self.diff:
+ndiff:            scandiff_elem.appendChild(host_elem)
+ndiff:            for hunk in h_diff:
+ndiff:def port_diff(a, b):
+ndiff:    """Diff two Ports. The return value is a list of DiffHunks."""
+ndiff:    diff = []
+ndiff:    if a.spec != b.spec:
+ndiff:        diff.append(hunk)
+ndiff:    if not (a.state == b.state and a.service == b.service):
+ndiff:        diff.append(hunk)
+ndiff:    return diff
+ndiff:def addresses_diff(a, b):
+ndiff:    """Diff two lists of addresses. The return value is a list of DiffHunks."""
+ndiff:    diff = []
+ndiff:        diff.append(hunk)
+ndiff:        diff.append(hunk)
+ndiff:    return diff
+ndiff:def hostnames_diff(a, b):
+ndiff:    """Diff two lists of hostnames. The return value is a list of DiffHunks."""
+ndiff:    diff = []
+ndiff:        diff.append(hunk)
+ndiff:        diff.append(hunk)
+ndiff:    return diff
+ndiff:def host_diff(a, b):
+ndiff:    """Diff two Hosts. The return value is a list of DiffHunks."""
+ndiff:    diff = []
+ndiff:    if a.state != b.state:
+ndiff:        diff.append(hunk)
+ndiff:    diff.extend(addresses_diff(a.addresses, b.addresses))
+ndiff:    diff.extend(hostnames_diff(a.hostnames, b.hostnames))
+ndiff:        diff.extend(port_diff(a.ports[spec], b.ports[spec]))
+ndiff:        diff.append(HostOsRemoveHunk(os))
+ndiff:        diff.append(HostOsAddHunk(os))
+ndiff:    return diff
+ndiff:def scan_diff(a, b):
+ndiff:    """Diff two scans. The return value is a list of tuples. Each tuple has the
+ndiff:    form (scan, host_diff), where scan is either a or b, whichever is present in
+ndiff:    one of the scans (preferring a if both are present), and host_diff is the
+ndiff:    host diff as returned by host_diff."""
+ndiff:    diff = []
+ndiff:        h_diff = host_diff(host_a or Host(), host_b or Host())
+ndiff:        if len(h_diff) > 0:
+ndiff:            diff.append((host_a or host_b, h_diff))
+ndiff:    return diff
+ndiff:    into a list of numbers. Raises ValueError if the port list is somehow
+ndiff:    if port_list == u"":
+ndiff:        if u"-" in chunk:
+ndiff:            if start >= end:
+ndiff:        if i - start == 1:
+ndiff:        elif i - start == 1:
+ndiff:        """Return the name of the element containing the current one, or None if
+ndiff:        if len(self.element_stack) == 0:
+ndiff:        if name == u"nmaprun":
+ndiff:            if attrs.has_key(u"start"):
+ndiff:        elif name == u"scaninfo":
+ndiff:        elif name == u"host":
+ndiff:        elif name == u"status":
+ndiff:        elif name == u"address":
+ndiff:        elif name == u"hostname":
+ndiff:        elif name == u"extraports":
+ndiff:            if state in self.current_extraports:
+ndiff:        elif name == u"port":
+ndiff:        elif name == u"state":
+ndiff:            if self.current_port is None:
+ndiff:            if not attrs.has_key(u"state"):
+ndiff:        elif name == u"service":
+ndiff:            if self.current_port is None:
+ndiff:        elif name == u"osmatch":
+ndiff:            if not attrs.has_key(u"name"):
+ndiff:        elif name == u"finished":
+ndiff:            if attrs.has_key(u"time"):
+ndiff:        if name == u"nmaprun":
+ndiff:        elif name == u"host":
+ndiff:            if len(self.current_extraports) == 1:
+ndiff:                        if spec in known_specs:
+ndiff:        elif name == u"port":
+ndiff:Compare two Nmap XML files and display a list of their differences.
+ndiff:Differences include host state changes, port state changes, and changes to
+ndiff:        if o == "-h" or o == "--help":
+ndiff:        elif o == "-v" or o == "--verbose":
+ndiff:        elif o == "--text":
+ndiff:            if output_format is not None and output_format != "text":
+ndiff:        elif o == "--xml":
+ndiff:            if output_format is not None and output_format != "xml":
+ndiff:    if len(input_filenames) != 2:
+ndiff:    if output_format is None:
+ndiff:    diff = ScanDiff(scan_a, scan_b)
+ndiff:    if output_format == "text":
+ndiff:        diff.print_text(verbose = verbose)
+ndiff:    elif output_format == "xml":
+ndiff:        diff.print_xml()
+ndiff:if __name__ == "__main__":
+netget:if ( ! $host ) {
+netget:if ($url_type) {
+netget:if ($debug) {
+netget:while ( $FILE=shift(@FILES) ) {
+netget:  if ($FILE eq '-') {
+netget:    if ($debug) {
+netget:    if (/^\+|^\>/) {
+netget:      next if (/^\>/);
+netget:      print DOT_WHERE $_ if ($verbose);
+netget:    if (/^%[h]/i) {
+netget:    if ( ($hist) = ($_=~/^\s*!(\d+)/) ) {
+netget:      if ( ($hist <= $#max_hist) && ( $hist >= ($#history-$max_hist) ) ) {
+netget:    if ($back=($_=~s/!!||%[p]\s*(\d+)//ig)) {
+netget:	if ($1) { $back = $1; }
+netget:	if ( ($back <= $max_hist) && ($#history >= $back) ) {
+netget:    if (/^\s*%[rc]\s*(\S*)[:\s]*(\S*)/i) {
+netget:      if ($url_type) {
+netget:      unshift(@FILES,"$outfile","-");
+netget:    if ($debug && ($_ =~ /status/i) ) {
+netget:    if ($_ =~ /bye/) {
+netget:    unshift(@history, $previous);
+netget:    if ($#history > $max_hist) {
+netget:  if (! $debug) {
+netget:             "specify the hostname",
+netget:             "specify the remote directory (/pub)",
+netget:             "specify the username (ftp || \$USER)",
+netget:             "specify the passwd (username\@local.host.name)",
+netget:  if (!@ARGV) { push(@ARGV,'-pull'); }
+netget:    if      ( ($abbrev->{$ARGV[0]} eq '-help' )
+netget:      shift(@ARGV);
+netget:    } elsif   ( $abbrev->{$ARGV[0]} eq '-verbose' ) {
+netget:      shift(@ARGV);
+netget:    } elsif ( $abbrev->{$ARGV[0]} eq '-pull' ) {
+netget:        next if (/^$|^\s*#/); #skip blank and commented lines.
+netget:	if ( $_ =~ m"ftp://([^/]+)(/?.*)"i ) {
+netget:        } elsif ( $_ =~ /^\s*([^: ]+):(\S+)/) {
+netget:      if ($found) {
+netget:      shift(@ARGV);
+netget:    } elsif ( $abbrev->{$ARGV[0]} eq '-host' ) {
+netget:      shift(@ARGV); shift(@ARGV);
+netget:    } elsif ( $abbrev->{$ARGV[0]} eq '-directory' ) {
+netget:      shift(@ARGV); shift(@ARGV);
+netget:    } elsif ( $abbrev->{$ARGV[0]} eq '-user' ) {
+netget:      if ( $ARGV[1] && ( $ARGV[1] !~ /^-/ ) ) {
+netget:        shift(@ARGV); shift(@ARGV);
+netget:        shift(@ARGV);
+netget:    } elsif ( $abbrev->{$ARGV[0]} eq '-debug' ) {
+netget:        shift(@ARGV);
+netget:    } elsif ( $abbrev->{$ARGV[0]} eq '-passwd' ) {
+netget:      shift(@ARGV); shift(@ARGV);
+netget:      if      ( $ARGV[0] =~ m"ftp://([^/]+)(/?.*)"i ) {
+netget:        shift(@ARGV);
+netget:      } elsif ( $ARGV[0] =~ /([^:]+):([^:]+)/) {
+netget:        shift(@ARGV);
+netget:        if ( ! $host ) {
+netget:        shift(@ARGV);
+netget:    } # end main if
+netget:  if (@help) {
+netget2:if ($url_type eq 'ftp') {
+netget2:  while ( $FILE=shift(@FILES) ) {
+netget2:    if ($FILE eq '-') {
+netget2:      if (/^\+|^\>/) {
+netget2:        next if (/^\>/);
+netget2:        print DOT_WHERE $_ if ($verbose);
+netget2:      if (/^%[h]/i) {					# PRINT HISTORY
+netget2:      } elsif ( ($hist) = ($_=~/^\s*!(\d+)/) ) {	# !# - csh-like history retrieval
+netget2:        if ( ($hist <= $max_hist) && ( $hist >= ($#history-$max_hist) ) ) {
+netget2:      } elsif ($back=($_=~s/!!|^P|%[p]\s*(\d+)/^P/ig)) {
+netget2:	  if ($1) { $back = $1; }
+netget2:	  if ( ($back <= $max_hist) && ($#history >= $back) ) {
+netget2:      } elsif (/^\s*%[rc]\s*([^:]+)?[:\s]?(\S*)/i) {	# %r or %c - reconnect or connect
+netget2:        unshift(@FILES,"$outfile","-");
+netget2:      if ($_ =~ /bye/) {				# if command was bye
+netget2:#     unshift(@history, {'number'=>$command,
+netget2:      unshift(@history, $previous);	# push this command onto the history stack
+netget2:      if ($#history > $max_hist) {
+netget2:  close(COMMAND);		# if we got here, we didn't say bye, maybe hit ^D?
+netget2:  if ($url_type eq 'ftp') {
+netget2:  } elsif ($url_type eq 'http') {
+netget2:             "specify the hostname",
+netget2:             "specify the remote directory (/pub)",
+netget2:             "specify the username [ftp] || \$USER)",
+netget2:             "specify the passwd [username\@local.host.name]",
+netget2:  if (!@ARGV) { push(@ARGV,'-pull'); }		# DEFAULT ACTION IS TO PULL URL FROM .WHERE FILE
+netget2:    if      ( ($abbrev->{$ARGV[0]} eq '-help' )
+netget2:      shift(@ARGV);
+netget2:    } elsif   ( $abbrev->{$ARGV[0]} eq '-verbose' ) {		# VERBOSE
+netget2:      shift(@ARGV);
+netget2:    } elsif ( $abbrev->{$ARGV[0]} eq '-pull' ) {			# PULL
+netget2:        next if (/^$|^\s*#/); #skip blank and commented lines.
+netget2:	if ( $_ =~ m"ftp://([^/]+)(/?.*)"i ) {
+netget2:        } elsif ( $_ =~ /^\s*([^: ]+):(\S+)/) {
+netget2:      if ($found) {
+netget2:      shift(@ARGV);
+netget2:    } elsif ( $abbrev->{$ARGV[0]} eq '-host' ) {			# HOST
+netget2:      shift(@ARGV); shift(@ARGV);
+netget2:    } elsif ( $abbrev->{$ARGV[0]} eq '-directory' ) {		# DIRECTORY
+netget2:      shift(@ARGV); shift(@ARGV);
+netget2:    } elsif ( $abbrev->{$ARGV[0]} eq '-username' ) {		# USERNAME
+netget2:      if ( $ARGV[1] && ( $ARGV[1] !~ /^-/ ) ) {
+netget2:        shift(@ARGV); shift(@ARGV);
+netget2:        shift(@ARGV);
+netget2:    } elsif ( $abbrev->{$ARGV[0]} eq '-debug' ) {			# DEBUG
+netget2:        shift(@ARGV);
+netget2:    } elsif ( $abbrev->{$ARGV[0]} eq '-passwd' ) {		# DEBUG
+netget2:      shift(@ARGV); shift(@ARGV);
+netget2:      if  ( $ARGV[0] =~ m,ftp://([^/]+):?([0-9]+)?(/?.*),i ) {	# FTP URL
+netget2:        shift(@ARGV);
+netget2:      } elsif ( $ARGV[0] =~					# HTTP URL
+netget2:        shift(@ARGV);
+netget2:      } elsif ( $ARGV[0] =~ /([^:]+):([^:]+)/) {		# FTP HOST:DIR
+netget2:        shift(@ARGV);
+netget2:        if ( ! $host ) {
+netget2:        shift(@ARGV);
+netget2:    } # end main if
+netget2:  if ( ! $host ) {
+netget2:  if (@help) {
+newmod:# A perl script to change modification date in scripts
+nosemi:  next LINE if (/;(\s+|\s*#.*)?$/);				# skip good lines that end in ;'s
+nosemi:  next LINE if (/(\{|\})\s*(#.*)?$/);				# skip lines that end in { or }
+nosemi:  next LINE if (/^\s*$|^\s*#/);					# skip white, blank and commented lines.
+nosemi:  next LINE if (/^\s*elsif\s*\([^)]+]\)\s*$/);			# skip if & elsif lines
+nosemi:  next LINE if (/^\s*else\s*$/);				# skip else lines
+nosemi:  next LINE if (/(.|,)(\s*#.*)?$/);				# skip lines that end in , or .
+nosemi:  last LINE if (/^__END__$/);					# __END__ and the like
+not:    next LINE if ($_=~/$regexp/);
+notags:# if ( /^\s*$|^$/ ) { print; next; }
+nth:$N=shift;
+nth:Fifth   of Ten
+nth:Fifth   of Ten
+nth:Fifth   of Ten
+nth:Fifth   of Ten
+nth:Fifth   of Ten
+odd_even:if ($name=~/^o/i) { # must be odd then even (odd starts with 1st element or element 0
+odd_even:    if ($ARGV[0]=~/-i(nstall)?/)  { &install(); exit 0; }
+odd_even:    if ($ARGV[0]=~/^\d+$/)  { $every=$ARGV[0]; shift; }
+odd_even:    if ($ARGV[0]=~/^\d+$/)  { $start=$ARGV[0]; shift; $start--; }
+odd_even:    if ($ARGV[0]=~/^\-\-$/) { last; }
+odd_even:    $i++; last if $i>10;
+odd_even:    if (-f $alias) { unlink($alias); }
+odd_even:if (@ARGV) {
+odd_even:  } elsif ($name=~/^o/i) { # must be odd then even (odd starts with 1st element or element 0
+oe:if ($name=~/^o/i) { # must be odd then even (odd starts with 1st element or element 0
+oe:    if ($ARGV[0]=~/-i(nstall)?/)  { &install(); exit 0; }
+oe:    if ($ARGV[0]=~/^\d+$/)  { $every=$ARGV[0]; shift; }
+oe:    if ($ARGV[0]=~/^\d+$/)  { $start=$ARGV[0]; shift; $start--; }
+oe:    if ($ARGV[0]=~/^\-\-$/) { last; }
+oe:    $i++; last if $i>10;
+oe:    if (-f $alias) { unlink($alias); }
+oe:if (@ARGV) {
+oe:  } elsif ($name=~/^o/i) { # must be odd then even (odd starts with 1st element or element 0
+onoff:print Dumper($conf) if ($debug);
+onoff:print Dumper($conf) if ($debug);
+onoff:if ( $conf->{use_paired_triggers} ) { 
+onoff:	print Dumper($conf) if ($debug);
+onoff:	my $conf = shift;
+onoff:	my $conf = shift;
+onoff:	    if ( $conf->{linger} or $conf->{lead} ) {
+onoff:		if ($file eq '-') {
+onoff:			if ($printing) {  # --- PRINTING ---
+onoff:				if ( $conf->{stop_lines}{$.} or
+onoff:					if ($conf->{print_stops}) {
+onoff:						$lines->{printed}++; printf "%5d ", $lines->{total} if ($conf->{number}); print;
+onoff:					if ($printing) {                                                  # printing will either be the value for lingering, or 0 or 1 depending on print_stops 
+onoff:							$lines->{printed}++; printf "%5d ", $lines->{total} if ($conf->{number}); print;
+onoff:					$lines->{printed}++; printf "%5d ", $lines->{total} if ($conf->{number}); print;
+onoff:				if ( $conf->{start_lines}{$.} or
+onoff:					if ( $conf->{lead} ) {                                            # we are to print $conf->{lead} lines before each start trigger line
+onoff:							$lines->{printed}++; printf "%5d ", ($lines->{total} - @{$lines->{remembered}}) if ($conf->{number}); print shift(@{$lines->{remembered}});
+onoff:					$lines->{printed}++; printf "%5d ", $lines->{total} if ($conf->{number}); print;
+onoff:			    } elsif ( $conf->{regexp} and $_ =~ $conf->{regexp} ) {               # look for a single-line trigger
+onoff:					if ( $conf->{lead} ) {                                            # we are to print $conf->{lead} lines before each start trigger line
+onoff:							$lines->{printed}++; printf "%5d ", ($lines->{total} - @{$lines->{remembered}}) if ($conf->{number}); print shift(@{$lines->{remembered}});
+onoff:					$lines->{printed}++; printf "%5d ", $lines->{total} if ($conf->{number}); print;
+onoff:					if ($printing) {                                                  # printing will be the value for lingering
+onoff:							$lines->{printed}++; printf "%5d ", $lines->{total} if ($conf->{number}); print;
+onoff:					if ( $conf->{lead} ) {                                            # we are to print $conf->{lead} lines before each start trigger line
+onoff:						if ( @{$lines->{remembered}} > $conf->{lead} ) {              # remembering too many lines, only need $conf->{lead}
+onoff:							shift(@{$lines->{remembered}});	                          # forget oldest remembered line
+onoff:    my $conf = shift;
+onoff:	push(@help,'regexp to identify a single-line print trigger, context may still apply',
+onoff:			   'regexp to identify a single-line print trigger, context may still apply',
+onoff:			   'regexp to identify a single-line print trigger, context may still apply',);
+onoff:		if ( $abbrev->{$ARGV[0]} ) {                       # have a valid argument, find which one
+onoff:			if ( $abbrev->{$ARGV[0]} eq '-help' or  $abbrev->{$ARGV[0]} eq '-?' ) {
+onoff:				shift(@ARGV);
+onoff:			} elsif ( $abbrev->{$ARGV[0]} eq '-debug' ) {
+onoff:				print "user specified debugging flag set\n";
+onoff:				shift(@ARGV);
+onoff:			} elsif ( $abbrev->{$ARGV[0]} eq '-number' ) {
+onoff:				print "user asked us to number the output lines\n" if ($conf->{debug});
+onoff:				shift(@ARGV);
+onoff:			} elsif ( $abbrev->{$ARGV[0]} eq '-regexp' or  $abbrev->{$ARGV[0]} eq '-find' or  $abbrev->{$ARGV[0]} eq '-grep' ) {
+onoff:				print "user specified '$ARGV[1]' as regexp to print\n" if ($debug);
+onoff:				shift(@ARGV); shift(@ARGV);
+onoff:			} elsif ( $abbrev->{$ARGV[0]} eq '-on' or  $abbrev->{$ARGV[0]} eq '-start' or  $abbrev->{$ARGV[0]} eq '-begin' ) {
+onoff:				print "user specified '$ARGV[1]' as regexp to be added to triggers to start printing\n" if ($debug);
+onoff:				shift(@ARGV); shift(@ARGV);
+onoff:			} elsif ( $abbrev->{$ARGV[0]} eq '-off' or  $abbrev->{$ARGV[0]} eq '-stop' or  $abbrev->{$ARGV[0]} eq '-end' ) {
+onoff:				print "user specified '$ARGV[1]' as regexp to be added to triggers to stop printing\n" if ($debug);
+onoff:				shift(@ARGV); shift(@ARGV);
+onoff:			} elsif ( $abbrev->{$ARGV[0]} eq '-lead' ) {
+onoff:				print "user specified '$ARGV[1]' as number of lines to print before each trigger regexp\n" if ($debug);
+onoff:				shift(@ARGV); shift(@ARGV);
+onoff:			} elsif ( $abbrev->{$ARGV[0]} eq '-linger' ) {
+onoff:				print "user specified '$ARGV[1]' as number of lines to print after each terminate regexp\n" if ($debug);
+onoff:				shift(@ARGV); shift(@ARGV);
+onoff:			} elsif ( $abbrev->{$ARGV[0]} eq '-context' ) {
+onoff:				print "user specified '$ARGV[1]' as number of lines to print before each trigger regexp\n" if ($debug);
+onoff:				print "and the same number of lines to print after each terminate regexp\n" if ($debug);
+onoff:				shift(@ARGV); shift(@ARGV);
+onoff:			} elsif ( $abbrev->{$ARGV[0]} eq '-file' ) {
+onoff:				push(@{$conf->{files}},"$ARGV[1]") if $ARGV[1];
+onoff:				print "add '$ARGV[1]' to list of files to scan\n" if ($debug);
+onoff:				shift(@ARGV); shift(@ARGV);
+onoff:		} elsif ( $ARGV[0] =~ m'^-?(\d+)\.\.+(\d+)$' ) {                                    # N to M
+onoff:			print "user has requested printing of lines $1 to $2 inclusive\n" if ($debug);
+onoff:			shift(@ARGV);
+onoff:		} elsif ( $ARGV[0] =~ m'^-?(\d+)\.\.+$' ) {                                         # N on
+onoff:			print "user has requested printing of lines starting at $1\n" if ($debug);
+onoff:			shift(@ARGV);
+onoff:		} elsif ( $ARGV[0] =~ m'^-?\.\.+(\d+)$' ) {                                         #   to M
+onoff:			print "user has requested printing of lines up to $1\n" if ($debug);
+onoff:			shift(@ARGV);
+onoff:		} elsif ( $ARGV[0] =~ m'^-?(\d+)$' ) {                                              # just print line N
+onoff:			print "user has requested printing of line $1\n" if ($debug);
+onoff:			shift(@ARGV);
+onoff:		} elsif ( $ARGV[0] =~ m'^-?([^.]*)\.\.+([^.]*)$' ) {                                    # N to M
+onoff:			if ($front eq '' and $back eq '') {
+onoff:			} elsif ($front eq '') { # ..SOMETHING (not a number)
+onoff:			} elsif ($back eq '') { # SOMETHING.. (not a number)
+onoff:				if ( $front=~/^\d+$/ ) {
+onoff:				if ( $back=~/^\d+$/ ) {
+onoff:			shift(@ARGV);
+onoff:			warn("$conf->{name}: Unknown option '$ARGV[0]'; assuming file to scan...\n") if ($conf->{debug});
+onoff:			push(@{$conf->{files}},shift(@ARGV));
+onoff:		if (@start_regexps) {
+onoff:		if (@stop_regexps) {
+onoff:		if (@regexps) {
+onoff:	if ($conf->{debug}) {
+onoff:	# if (@$ranges) { @$conf->{ranges} = sort { ( $conf->{ranges}->[$a]{start} <=> $conf->{ranges}->[$b]{start} ) || ( $conf->{ranges}->[$a]{end} <=> $conf->{ranges}->[$b]{end} ) } @$ranges }
+onoff:	if (@{$conf->{explanations}}) {
+onoff:	my $conf = shift;
+onoff:	print "set start  to '$conf->{start_regexp}'\n" if ($conf->{start_regexp});
+onoff:	print "set starts at: " . join(', ', keys %{$conf->{start_lines}}) .	"\n" if ($conf->{start_lines});;
+onoff:	print "set stop   to '$conf->{stop_regexp}'\n" if ($conf->{stop_regexp});
+onoff:	print "set stops  at: " . join(', ', keys %{$conf->{stop_lines}}) .	"\n" if ($conf->{stop_lines});;
+onoff:What should happen if...
+onoff:	a) Pairs allows for multiple different start-stop regexp's.  
+onoff:    15	fifteen
+onoff:    50	fifty
+onoff:    51	fifty one
+onoff:    52	fifty two
+onoff:    53	fifty three
+onoff:    54	fifty four
+onoff:    55	fifty five
+onoff:    56	fifty six
+onoff:    57	fifty seven
+onoff:    58	fifty eight
+onoff:    59	fifty nine
+oobl:if ($white) {
+oobl:  if ($comment) {
+oobl:  if ($comment) {
+oobl:if ($name eq 'nbl') { $nbl=1; }
+oobl:  next if ( $nbl and ( ( $comment_check and ($_ =~ $comment_check) ) or ($_ =~ $blank_check) ) );
+oobl:  next if ( $comment_check and $cskip and ($_ =~ $comment_check) );
+oobl:  next if ( $bskip and ($_ =~ $blank_check) );
+oobl:  # if no-blank-lines, we needn't track either blank_skip nor comment_skip
+oobl:  $nbl or $bskip = ( $_ =~ $blank_check ); # short-circuit if we are not printing blank lines
+oobl:  $nbl or $cskip = ( $comment_check and ($_ =~ $comment_check)); # short-circuit if we are not printing blank lines
+oobl:    if      ( ($abbrev->{$ARGV[0]} eq '-help' )
+oobl:      shift(@ARGV);
+oobl:    } elsif ( $abbrev->{$ARGV[0]} eq '-whitespace' ) {
+oobl:      shift(@ARGV);
+oobl:    } elsif ( $abbrev->{$ARGV[0]} eq '-comments' ) {
+oobl:      shift(@ARGV);
+oobl:      shift(@ARGV);
+oobl:  if (@help) {
+oobl:#  if (/^$/) {$blank++;}
+oobl:#  print if ($blank<2);
+oobl:#         if ( blank == 0 )
+oobl:#         { if ( newline ~ /^$/ )
+oobl:#         { if ( newline !~ /^$/ )
+perl_installed:  if ($search and $module!~/$search/i) {
+POST:    if 0; # not running under some shell
+POST:             [-i <if-modified-since>] [-c <content-type>] [-C <credentials>]
+POST:Force request through, even if the program believes that the method is
+POST:Set the If-Modified-Since header in the request. If I<time> it the
+POST:name of a file, use the modification timestamp for this file. If
+POST:Send this HTTP header with each request. You can specify several, e.g.:
+POST:Authentication.  If the document is protected and you did not specify
+POST:If you specify the I<text> format then the HTML will be formatted as
+POST:plain latin1 text.  If you specify the I<ps> format then it will be
+POST:modify it under the same terms as Perl itself.
+POST:$progname =~ s/\.\w*$//; # strip extension, if any
+POST:# specific.  You might use the -f option to force a method through.
+POST:# user/password if document is protected.
+POST:	if ($main::options{'C'}) {
+POST:	} elsif (-t) {
+POST:    'f', # make request even if method is not in %allowed_methods
+POST:    'i=s', # if-modified-since
+POST:if ($options{'v'}) {
+POST:modify it under the same terms as Perl itself.
+POST:usage() if $options{'h'} || !@ARGV;
+POST:LWP::Debug::level('+') if $options{'x'};
+POST:$method = uc($options{'m'}) if defined $options{'m'};
+POST:if ($options{'f'}) {
+POST:    if ($options{'c'}) {
+POST:} elsif (!defined $allowed_methods{$method}) {
+POST:if ($method eq "HEAD") {
+POST:if (defined $options{'t'}) {
+POST:    if (defined $2) {
+POST:        $timeout *= 60   if $2 eq "m";
+POST:        $timeout *= 3600 if $2 eq "h";
+POST:if (defined $options{'i'}) {
+POST:    if (-e $options{'i'}) {
+POST:if ($allowed_methods{$method} eq "C") {
+POST:        if -t;
+POST:        if defined $options{'c'};
+POST:$request->header('If-Modified-Since', $options{'i'}) if defined $options{'i'};
+POST:    $ua->agent($header_value) if lc($header_name) eq "user-agent"; # Ugh!
+POST:if ($options{'c'}) { # will always be set for request that wants content
+POST:while ($url = shift) {
+POST:	if ($url =~ /^\w+:/ || $options{'b'}) {  # is there any scheme specification
+POST:	    $url = $url->abs($options{'b'}) if $options{'b'};
+POST:    if ($@) {
+POST:    $ua->proxy($url->scheme, $options{'p'}) if $options{'p'};
+POST:    if ($options{'u'} || $options{'U'}) {
+POST:        print $response->request->headers_as_string, "\n" if $options{'U'};
+POST:    if ($options{'S'}) {
+POST:    } elsif ($options{'s'}) {
+POST:    if ($options{'e'}) {
+POST:    if ($response->is_success) {
+POST:	    if ($options{'o'} &&
+POST:    -f            make request even if $progname believes method is illegal
+POST:    -b <base>     Use the specified URL as base
+POST:    -i <time>     Set the If-Modified-Since header on the request
+POST:    -H <header>   send this HTTP header (you can specify several)
+pp:   if    ( $ARGV[0] eq '-m'    ) { $man = $true; shift; }
+pp:   elsif ( $ARGV[0] eq '-p5'   ) { $p5l = $true; shift; }
+pp:   elsif ( $ARGV[0] =~ /-ll?p/ ) { $llp = $true; shift; }
+pp:   elsif ( $ARGV[0] =~ /-ll/   ) { $ll  = $true; shift; }
+pp:   else { shift; print $usage; }
+pp:if    ($man) { $path = $ENV{'MANPATH'}  || ''; }
+pp:elsif ($p5l) { $path = $ENV{'PERL5LIB'} || ''; }
+pp:elsif ($llp) { $path = $ENV{'LD_LIBRARY_PATH'}  || ''; }
+pp:if ( $ll ) {
+primes:if ($ARGV[0] and $ARGV[0]=~/^\d+$/) { $MAX=$ARGV[0]; shift; }
+primes:if ( $preload ) {
+primes:    next if (/^$|^\s*#/); # skip blank and commented lines.
+primes:  # s/^#//; # activate this line (and comment previous one) if you'd rather have the known primes on comment lines
+primes:    last if ($primes[$#primes] > $MAX)
+primes:if ( not @primes ) { push( @primes, 2, 3 ) }
+primes:if ( $MAX > $primes[$#primes] ) {
+primes:      last if ($prime>$sqrt);
+primes:      if ($div == int($div)) {
+primes:    if ($is_prime) { push(@primes,$prime_canidate); }
+primes:  last if ($prime>$MAX);
+primes:  printf "\n" if (not ($i%$N));
+primes:  # Second, the first_generator would need to be modifed to give the next set of 4 prime canidates after the largest known prime in @primes
+primes:  # member of a set of four, we will have to detect that and handle it, ie. if our largest known prime at the end of @primes is 53, then
+primes.wheel:if ($ARGV[0] and $ARGV[0]=~/^\d+$/) { $MAX=$ARGV[0]; shift; }
+primes.wheel:if ( $preload ) {
+primes.wheel:    next if (/^$|^\s*#/); # skip blank and commented lines.
+primes.wheel:  # s/^#//; # activate this line (and comment previous one) if you'd rather have the known primes on comment lines
+primes.wheel:    last if ($primes[$#primes] > $MAX)
+primes.wheel:if ( $MAX > $primes[$#primes] ) {
+primes.wheel:	    next if ( $prime < 11 );
+primes.wheel:        last if ( $prime > $sqrt );
+primes.wheel:        if ($div == int($div)) {
+primes.wheel:      if ( $is_prime ) { push( @primes, $prime_canidate ); }
+primes.wheel:  last if ($prime>$MAX);
+primes.wheel:  printf "\n" if (not ($i%$N));
+primes.wheel:  # Second, the first_generator would need to be modifed to give the next set of 4 prime canidates after the largest known prime in @primes
+primes.wheel:  # member of a set of four, we will have to detect that and handle it, ie. if our largest known prime at the end of @primes is 53, then
+printpath:   if    ( $ARGV[0] eq '-m'    ) { $man = $true; shift; }
+printpath:   elsif ( $ARGV[0] eq '-p5'   ) { $p5l = $true; shift; }
+printpath:   elsif ( $ARGV[0] =~ /-ll?p/ ) { $llp = $true; shift; }
+printpath:   elsif ( $ARGV[0] =~ /-ll/   ) { $ll  = $true; shift; }
+printpath:   else { shift; print $usage; }
+printpath:if    ($man) { $path = $ENV{'MANPATH'}  || ''; }
+printpath:elsif ($p5l) { $path = $ENV{'PERL5LIB'} || ''; }
+printpath:elsif ($llp) { $path = $ENV{'LD_LIBRARY_PATH'}  || ''; }
+printpath:if ( $ll ) {
+ptar:    if 0; # not running under some shell
+ptar:my $switches = shift @ARGV;
+ptar:if (!$switches) {
+ptar:    if ($_ eq "x") {
+ptar:    elsif ($_ eq "t") {
+ptar:    elsif ($_ eq "c") {
+ptar:    elsif ($_ eq "z") {
+ptar:    elsif ($_ eq "f") {
+ptar:        $tarfile = shift @ARGV;
+ptar:    elsif ($_ eq "v") {
+ptar:    elsif ($_ eq "d") {
+ptar:    elsif ($_ eq "-") {
+ptar:if ($extract+$list+$create>1) {
+ptar:elsif ($list) {
+ptar:elsif ($extract) {
+ptar:elsif ($create) {
+ptar:                print $File::Find::name,"\n" if $verbose}, @ARGV);
+relink:if (-l $link) { print "$link is already a link.\n"; exit 0; }
+relink:if (! -f $real_file) { print "couldn't find $real_file.\n"; exit 0; }
+relink:if (-f $link) { unlink $link;}
+renum:if   [ \( $# -eq 0 \) -o \
+renum:elif [ \( ${1:-NOARG} = "-roman" \) -o \
+renum:elif [ \( ${1:-NOARG} = "I" \) -o \
+renum:elif [ \( ${1:-NOARG} = "-roman_right" \) -o \
+renum:elif [ \( ${1:-NOARG} = "I+" \) -o \
+renum:elif [ \( ${1:-NOARG} = "-alphabetic" \) -o \
+renum:elif [ \( ${1:-NOARG} = "A" \) -o \
+rest:  if ($ARGV[0]=~/-m(ove)?/i)    { $move++;	shift @ARGV; next; }
+rest:  if ($ARGV[0]=~/-v(erbose)?/i) { $verbose++;	shift @ARGV; next; }
+rest:  push(@files,$ARGV[0]) if (-f $ARGV[0]);
+rest:  shift @ARGV;
+rest:if (not @ARGV) {
+rest:  next if (not -f $bak_file);
+rest:  if ($move) {
+rest:    if ($verbose) {
+rest:    if ($verbose) {
+Binary file rev_bytes matches
+rip_pkg.pl:if ( $#ARGV != 0 ) {
+rip_pkg.pl:if ( not -f $pkg_file ) {
+rip_pkg.pl:  if ( $first_line !~ /package datastream/i ) {
+rip_pkg.pl:    if ( $line =~ /end of header/ ) {
+rip_pkg.pl:	print STDERR "1" if ($debug);
+rip_pkg.pl:	if ( $line =~ /PKG=(\S+)/ ) {
+rip_pkg.pl:	if ( $first_line ) {
+rip_pkg.pl:    if ( $line =~ /^(\0*$magic[[:xdigit:]]+TRAILER!!!\0+)(.*)$/ ) {
+rip_pkg.pl:# if ( $count > 1 and $count < 15 ) {
+rip_pkg.pl:# if ( $line =~ /$magic/ ) {
+rip_pkg.pl:	print STDERR "3" if ($debug and $count < 100);;
+rip_pkg.pl:    if ( $line =~ /^(\0*$magic[[:xdigit:]]+TRAILER!!!\0+)$/ ) {
+rip_pkg.pl:print STDERR "\n" if ($debug);;
+rip_pkg.pl:if ( $pkg_name ) {
+rip_pkg.pl:  print STDERR "package name is found to be ($pkg_name)\n" if ($debug);
+rip_pkg.pl:  if ( not -d $pkg_name ) {
+rip_pkg.pl:    print STDERR "making directory for ($pkg_name)\n" if ($debug);
+rip_pkg.pl:if ($debug) {
+rip_pkg.pl:if ( -d "reloc" ) {
+rip_pkg.pl:if (not $preserve) {
+rip_pkg.pl:  unlink("$pkg_file.cpio1")   if ( -f "$pkg_file.cpio1");
+rip_pkg.pl:  unlink("$pkg_file.cpio2")   if ( -f "$pkg_file.cpio2");
+rip_pkg.pl:  unlink("$pkg_file.headers") if ( -f "$pkg_file.headers");
+rot13:if      ( $name =~ /upper/ ) {
+rot13:} elsif ( $name =~ /lower/ ) {
+rot13:} elsif ( $name =~ /cap/ ) {
+rot13:} elsif ( $name =~ /rot13/ ) {
+rot13:} elsif ( $name =~ /rot661/ ) {
+rot661:if      ( $name =~ /upper/ ) {
+rot661:} elsif ( $name =~ /lower/ ) {
+rot661:} elsif ( $name =~ /cap/ ) {
+rot661:} elsif ( $name =~ /rot13/ ) {
+rot661:} elsif ( $name =~ /rot661/ ) {
+RPN:              # pop's  -> shift's
+RPN:              # push's -> unshift's
+RPN:              # added ifelse function
+RPN:if ($ARGV[0] =~ /^--v(ersion)?/i) {
+RPN:  printf "$name written by $author, version $version, last modified $last_mod_date.\n";
+RPN:# print STDERR "Ready for input...\n" if (-t);
+RPN:  if ($input!~/\S/) {
+RPN:  if ($input=~m/^\s*(([-+]?\d+)\s*\.\.\s*([-+]?\d+))/) { # line N .. M
+RPN:    if ($2==$3) {
+RPN:      unshift (@{$stack_ref},$2);
+RPN:    } elsif ($2<$3) {
+RPN:      unshift (@{$stack_ref},reverse eval "$2 .. $3");
+RPN:    } elsif ($2>$3) {
+RPN:      unshift (@{$stack_ref},eval "$3 .. $2");
+RPN:  } elsif ($num_type = &isanumber($input)) { # a line of numbers
+RPN:    print STDERR "nubmer type '$num_type'\n" if ($debug);
+RPN:      if      ( $num_type =~ /dec/ ) {
+RPN:        unshift (@{$stack_ref},$item);
+RPN:      } elsif ( $num_type =~ /hex/ ) {
+RPN:        unshift (@{$stack_ref},hex($item));
+RPN:      } elsif ( $num_type =~ /oct/ ) {
+RPN:        unshift (@{$stack_ref},oct($item));
+RPN:      } elsif ( $num_type =~ /bin/ ) {
+RPN:        unshift (@{$stack_ref},$decnum);
+RPN:        if (not &execute($item)) {
+RPN:  } elsif ($input=~s/^\s*(['"])(.*?)\1?\s*$/\2/) { # line with a 'string or "string
+RPN:    unshift (@{$stack_ref},$input);
+RPN:  # will see if it's a command and if so will execute it
+RPN:  if ($commands{$abbrevs{$command}}) {
+RPN:    if ($debug) {
+RPN:    if (not $commands{$abbrevs{$command}}->{'code'}
+RPN:    print "about to execute code for '$abbrevs{$command}'\n" if ($debug);
+RPN:  if ($abbrev=$arg_array->[0]) {
+RPN:    if ($command=$abbrevs{$abbrev}) {
+RPN:    } elsif ($arg_array->[0] =~ /type/i) {
+RPN:        next if ($commands{$possible}->{'type'} !~ m,$arg_array->[1],);
+RPN:        if ($header) {
+RPN:      if ($abbrev=$arg_array->[0]) {
+RPN:          next if ($possible !~ /^$abbrev/);
+RPN:  if ( $commands{$a}->{'type'} eq $commands{$b}->{'type'} ) {
+RPN:  print "is '" . $query . "' a number?\n" if ($debug);
+RPN:  if      ( $query =~ /^\s*[-+]?0b[01]+\b/ ) {
+RPN:  } elsif ( $query =~ /^\s*[-+]?0[0-7]+\b/ ) {
+RPN:  } elsif ( $query =~ /^\s*[-+]?0[xX][0-9a-fA-F]+\b/ ) {
+RPN:  } elsif ( $query =~ /^\s*[-+]?[0-9]+\.?[0-9]*\b/) {   # decimal integer or floating point
+RPN:  } elsif ( $query =~ /^[-+]?\.?[0-9]+\b/) {   # decimal integer or floating point
+RPN:  } elsif ( $query =~ /^\s*[-+]?[0-9]*\.[0-9]*[eE][-+]?[0-9][0-9]?\b/ ) { # exponential notation
+RPN:  $commands{'if'}=
+RPN:     'aliases'=>['ifthen'],
+RPN:	     "INDENTRPN function is executed if the boolean was true",
+RPN:		   my($test)=shift(@{$s});
+RPN:		   my($input)=shift(@{$s});
+RPN:                   if ( $test and not &execute($input) ) {
+RPN:  $commands{'ifelse'}=
+RPN:     'aliases'=>['ifthen'],
+RPN:	     "INDENTfirst RPN function is executed if the boolean was true\n".
+RPN:	     "INDENTsecond RPN function is executed if the boolean was false",
+RPN:		   my($test)=shift(@{$s});
+RPN:		   my($input1)=shift(@{$s});
+RPN:		   my($input2)=shift(@{$s});
+RPN:                   if ( ($test and not &execute($input2)) or (not &execute($input2)) ) {
+RPN:                   if ( not &execute(shift @{$s}) ) {
+RPN:     'help'=>'prints help on given command or all commands if none is specified',
+RPN:		   if (@{$args_array}) {
+RPN:		       if ($constants->{lc $_}->{'value'}) { unshift (@{$s},$constants->{lc $_}->{'value'}); }
+RPN:		     if (%{$constants}) {
+RPN:     'help'=>'moves to a different stack, or reports present stack, name and depth',
+RPN:		   if ($args_array->[0] =~ /^[a-zA-Z]/) {  # new stack
+RPN:		     if (ref($stacks{$stack_name}) eq 'ARRAY') { # point stack_ref to that array
+RPN:		   } elsif ($args_array->[0]) { # list all stacks matching first arg
+RPN:		     if ($args_array->[0] !~ /^\?|\*$/) { # list all stacks
+RPN:			 if (not $regexp or $stack =~ m,$regexp,);
+RPN:     'code'=>sub { my($s)=shift; unshift(@{$s},scalar(@{$s})); }
+RPN:     'code'=>sub { my($s)=shift; shift(@{$s}); }
+RPN:     'code'=>sub { my($s)=shift; @{$s}=(); }
+RPN:     'help'=>'pops two numbers off the stack and pushes their difference',
+RPN:     'help'=>'shifts two numbers off the stack and pushes their sum',
+RPN:     'help'=>'shifts two numbers off the stack and pushes the modulus',
+RPN:     'help'=>'shifts two numbers off the stack and pushes their product',
+RPN:     'help'=>'shifts two numbers off the stack and pushes X ^ Y',
+RPN:     'help'=>'shifts two numbers off the stack and pushes their quotient',
+RPN:     'help'=>'shifts two numbers off the stack and pushes their integer quotient and modulus',
+RPN:    if ($aliases=$commands{$command}->{'aliases'}) {
+RPN:  if (-s $hist_save) {
+RPN:    if (-s $file) {
+RPN:  if (-f $stack_save) {
+RPN:      if (($stack ne $stack_name) and not scalar(@{$stacks{$stack}})) {
+RPN:    if ($something_to_write) {
+RPN:  if (@hist) {
+RPN:      chomp($hist); next if not $hist;
+RPN:  # peek prints the top of stack but doesn't shift it off
+RPN:  if      ($cmd =~ /printf/i) {
+RPN:    printf "$arg_str\n", shift(@{$s});
+RPN:  } elsif ($cmd =~ /print$/i) {
+RPN:    print STDERR shift(@{$s}) . "\n";
+RPN:  } elsif ($cmd =~ /peekall$/i) {
+RPN:  } elsif ($cmd =~ /peekf$/i) {
+RPN:  } elsif ($cmd =~ /peek$/i) {
+RPN:  } elsif ($cmd =~ /hexadecimal/i) {
+RPN:    if (abs($s->[0])<=255) {
+RPN:  } elsif ($cmd =~ /decimal/i) {
+RPN:  } elsif ($cmd =~ /octal/i) {
+RPN:  } elsif ($cmd =~ /binary/i) {
+RPN:    if ($s->[0]=~/^\d+/) {
+RPN:	  if ( $arg_array->[0] =~ /^([1-9][0-9]?)$/ ) {
+RPN:#    last if ($place>9);
+RPN:#    if ($number&$check) {
+RPN:  if ( ($depth=scalar(@{$s})) < 1 ) {
+RPN:    $val=shift(@{$s});
+RPN:  if      ($cmd =~ m,fahrenheit_celsius,i) {
+RPN:  } elsif ($cmd =~ m,celsius_fahrenheit,i) {
+RPN:  } elsif ($cmd =~ m,kilometer_mile,i) {
+RPN:  } elsif ($cmd =~ m,mile_kilometer,i) {
+RPN:  } elsif ($cmd =~ m,centimeter_inch,i) {
+RPN:  } elsif ($cmd =~ m,inch_centimeter,i) {
+RPN:  } elsif ($cmd =~ m,gram_ounce,i) {
+RPN:  } elsif ($cmd =~ m,ounce_gram,i) {
+RPN:  } elsif ($cmd =~ m,kilogram_pound,i) {
+RPN:  } elsif ($cmd =~ m,pound_kilogram,i) {
+RPN:  unshift(@{$s},@results);
+RPN:  if ( ($depth=scalar(@{$s})) < 1 ) {
+RPN:    $val=shift(@{$s});
+RPN:  if      ($cmd =~ m,negate,i) {
+RPN:    unshift(@results,-1 * $val );
+RPN:  } elsif ($cmd =~ m,increment,i) {
+RPN:    unshift(@results, ++$val );
+RPN:  } elsif ($cmd =~ m,decrement,i) {
+RPN:    unshift(@results, --$val );
+RPN:  } elsif ($cmd =~ m,duplicate,i) {
+RPN:    unshift(@results, $val, $val );
+RPN:  } elsif ($cmd =~ m,copy,i) {
+RPN:    if ($arg_array->[0]=~/^\d+$/) {
+RPN:      unshift(@results, ($val) x $arg_array->[0]);
+RPN:  } elsif ($cmd =~ m,^squareroot$,i) {
+RPN:    if ($val < 0) {
+RPN:      unshift(@results,sqrt($val) );
+RPN:  } elsif ($cmd =~ m,^square$,i) {
+RPN:      unshift(@results,($val*$val) );
+RPN:  } elsif ($cmd =~ m,^cube$,i) {
+RPN:      unshift(@results,($val*$val*$val) );
+RPN:  } elsif ($cmd =~ m,log10$,i) {
+RPN:    unshift(@results, log($val)/log(10) );
+RPN:  } elsif ($cmd =~ m,log$,i) {
+RPN:    unshift(@results, log($val) );
+RPN:  } elsif ($cmd =~ m,exp,i) {
+RPN:    unshift(@results, exp($val) );
+RPN:  } elsif ($cmd =~ m,cosine,i) {
+RPN:    unshift(@results, cos($val) );
+RPN:  } elsif ($cmd =~ m,tangent,i) {
+RPN:    unshift(@results, tan($val) );
+RPN:  } elsif ($cmd =~ m,function,i) {
+RPN:    if ($func) {
+RPN:      unshift(@results, eval "$func(\$val);" );
+RPN:  } elsif ($cmd =~ m,operator,i) {
+RPN:    if ($op) {
+RPN:      unshift(@results, eval "\$val$op;" );
+RPN:  unshift(@{$s},@results);
+RPN:  print STDERR "called routing 'n_arguments'\n" if ($debug);
+RPN:  my($range)=($arg_array->[0]=~/\d+/) ? shift(@{$arg_array}) : shift(@{$s});
+RPN:  if ($cmd=~m'rotate'i) { # this has to be set since it may change the depth
+RPN:			  # of the stack, if rotates arguments were on the stack.
+RPN:    $movement=($arg_array->[0]=~/\d+/) ? shift(@{$arg_array}) : shift(@{$s});
+RPN:  printf STDERR "stack needs %d arguments, stack has %d\n", $range, $depth if ($debug);
+RPN:  if ( $depth < $range ) {
+RPN:  if      ($cmd =~ m,sum,i) {
+RPN:      $sum += shift(@{$s});
+RPN:    unshift(@{$s},$sum);
+RPN:  } elsif ($cmd =~ m,rotate,i) {
+RPN:    printf "rotating '%d' elements '%d' deeper\n", $range, $movement if ($debug);
+RPN:    if (not $movement=$movement%$range) {
+RPN:    unshift(@{$s},splice(@{$s},($range-($movement%$range)),$movement%$range));
+RPN:  } elsif ($cmd =~ m,average|maximum|minimum,i) {
+RPN:    if ($cmd =~ m,ave,) {
+RPN:    } elsif ($cmd =~ m,min,) {
+RPN:        if (not $result or ($entry < $result)) {
+RPN:    } elsif ($cmd =~ m,max,) {
+RPN:        if (not $result or ($entry > $result)) {
+RPN:    unshift(@{$s},$result);
+RPN:  } elsif ($cmd=~m'transfer|slide'i) {
+RPN:    my($new_stack)=shift(@{$arg_array});
+RPN:    if (not $new_stack) {
+RPN:    if (not $stacks{$new_stack} ) {
+RPN:    if ($cmd=~m'transfer'i) {
+RPN:      unshift(@{$stacks{$new_stack}}, splice(@{$s}, 0, $range));
+RPN:    } elsif ($cmd=~m'slide'i) {
+RPN:      unshift(@{$stacks{$new_stack}}, reverse splice(@{$s}, 0, $range));
+RPN:  if ( ($depth=scalar(@{$s})) < 2 ) {
+RPN:  $val1=shift(@{$s});
+RPN:  $val2=shift(@{$s});
+RPN:  if      ($cmd =~ m,add|\+,i) {
+RPN:    unshift(@results,($val2 + $val1) );
+RPN:  } elsif ($cmd =~ m,subtract|\-,i) {
+RPN:    unshift(@results,($val2 - $val1) );
+RPN:  } elsif ($cmd =~ m,multiply|\*,i) {
+RPN:    unshift(@results,($val2 * $val1) );
+RPN:  } elsif ($cmd =~ m,divide,i) {
+RPN:    if ($val1 == 0) {
+RPN:      unshift(@results,($val2 / $val1) );
+RPN:  } elsif ($cmd =~ m,/,i) {	 		# integer divide
+RPN:    unshift(@results,int($val2 / $val1), ($val2 % $val1) );
+RPN:  } elsif ($cmd =~ m,exponentiate|\*\*|\^,i) {
+RPN:    unshift(@results,($val2 ** $val1) );
+RPN:  } elsif ($cmd =~ m,modulo|\%,i) {
+RPN:    unshift(@results,($val2 % $val1) );
+RPN:  } elsif ($cmd =~ m,^(<=?|>=?|==|<=>|!=)$,i) {
+RPN:    unshift(@results,eval("($val2 $cmd $val1) + 0"));
+RPN:  } elsif ($cmd =~ m,^([lg][te]|eq|cmp|ne)$,i) {
+RPN:    unshift(@results,eval("($val2 $cmd $val1) . ''"));
+RPN:  } elsif ($cmd =~ m,concatenate,i) {
+RPN:    unshift(@results,sprintf("%s%s",$val2,$val1));
+RPN:  } elsif ($cmd =~ m,exchange,i) {
+RPN:    unshift(@results,$val2,$val1 );
+RPN:    unshift(@{$s},$val1,$val2);
+RPN:  unshift(@{$s},@results);
+RPN:shift
+RPN:unshift_size
+RPN:if_then
+RPN:if_then_else
+RPN:if_then_elsif_else
+showtable:#    This program is free software; you can redistribute it and/or modify
+showtable:#    along with this program; if not, write to the Free Software
+showtable:unshift(@INC,'.');
+showtable:unshift(@INC,'blib/lib') if -d 'blib/lib';	# for testing
+showtable:    my $fmt = shift;
+showtable:    err @_ if $#_ >= 0;
+showtable:		signs, or underlines (if they occur, they will be part of
+showtable:  -w(idth)=NN	Define the maximum width of the table; if this not given,
+showtable:while ($_ = shift(@ARGV)) {
+showtable:    if (/^-d(\W+)?$/) {				# -dSTR
+showtable:	$break_str = $1 || shift || usage "$PROG: Missing argument to -d\n";
+showtable:    if (/^-f(\d.*)/) {				# -fN1,N2,...
+showtable:    usage if !index('-help',$_);
+showtable:    if (!index('-strip',$_)) {			# -strip
+showtable:    } elsif (!index('-nostrip',$_)) {		# -nostrip
+showtable:    } elsif (!index('-table',$_) || !index('-simple',$_)) {	# -table, -simple
+showtable:    } elsif (!index('-list', $_)) {		# -list
+showtable:    } elsif (!index('-box',$_)) {		# -box
+showtable:    } elsif (!index('-html',$_)) {		# -html
+showtable:    } elsif (!index('-noescape',$_)) {		# -noescape
+showtable:    } elsif (!index('-noheaders',$_)) {		# -noheaders
+showtable:    } elsif (!index('-nodashes',$_)) {		# -nodashes
+showtable:    } elsif (/^(-\w+)(?:[:=](.*))?/) {		# -OPTION=VALUE
+showtable:        if (!index('-titles',$_)) {		# -titles=NN, -titles=NAME,..
+showtable:	    if ($value =~ /^\d/ || $value eq '') { # -titles=NN?
+showtable:	} elsif (!index('-input',$_)) {		# -input=TYPE?
+showtable:	    if (!index('box',$value)) { 	# -input=box?
+showtable:	    } elsif (!index('list',$value))	{# -input=list?
+showtable:	    } elsif (!index('table', $value)) {	# -input=table?
+showtable:	    } elsif (!index('simple', $value)) {# -input=simple?
+showtable:	} elsif (!index('-fields',$_)) {	# -fields=Name1, Name2, ...
+showtable:	} elsif (!index('-break',$_)) {		# -break=STR
+showtable:	    if ($break_str =~ /\\/) {		# any escape sequences?
+showtable:        } elsif (!index('-width',$_)) {		# -width=NUM
+showtable:	} elsif (!index('-cwidths',$_)) {	# -cwidths=N1,N2,...,NM
+showtable:	    if (grep(!/^(\.?\d+|\d+%)?$/,@Cwidths)) {
+showtable:	} elsif (!index('-titleformats',$_) || !index('-tformats',$_)) {
+showtable:		next if /^<?($HTML_Elements)/i;	# HTML element ok?
+showtable:	} elsif (!index('-dataformats',$_) || !index('-dformats',$_)) {
+showtable:		next if /^<?(?:$HTML_Elements)/i;	# HTML element ok?
+showtable:	} elsif (!index('-urls',$_)) {
+showtable:	    my @urldefs = split(/[,|]/, $value);	# get the different URLs
+showtable:		if ($col ne '' && $url ne '') {	# both defined?
+showtable:		} elsif ($col ne '' || $url ne '') {
+showtable:	} elsif (!index('-attributes',$_)) {
+showtable:    } elsif (/^-/) {	
+showtable:    } elsif (-f) {		# does the file exist?
+showtable:ShowData if $nofile;
+showtable:    local $_ = shift;
+showtable:    &PlainText if $Show_Mode eq 'HTML';	# remove HTML effects if -html
+showtable:    # reset titles if they are coming from the data stream
+showtable:    #@Titles = () if $Titles > 0;	
+showtable:    if ($InputType eq 'list') {
+showtable:    if (@Fields) {
+showtable:	    if ($f =~ /^\d+$/) {		# a numeric index?
+showtable:		push(@fields,$f) if $f <= $maxcols && $f >= 0;
+showtable:	    if (($fx = $fields{$f}) ne '') {
+showtable:    # user-given titles to override the built-in titles (if any).
+showtable:    if ($No_Header) {				# if no headers, no titles
+showtable:    } elsif ($#Titles >= 0) {			# map @Titles onto @titles
+showtable:	    if (($t = $Titles[$c]) ne '') {	# user-given title
+showtable:	    } elsif ($titles[$c] eq '') {	# otherwise, use default title
+showtable:    # Scan the column widths, where none are given, and if a total width
+showtable:    if ($cols_left > 0) {			# cols == 0 means no limit
+showtable:	$cols_left -= $maxcols * 3 + 2 if $Show_Mode eq 'Box';
+showtable:	$cols_left -= $maxcols * 2 - 1 if $Show_Mode eq 'Table';
+showtable:	    if ($w ne '') {			# is there a value?
+showtable:		if ($w =~ /[.%]/ || ($w > 0 && $w < 1.0)) {
+showtable:		    $w = $1 / 100.0 if $w =~ /^(\d+)%/; # convert NN% to fraction
+showtable:		$cols_left = 0 if $cols_left < 0;# keep sane
+showtable:	    if (defined($row->[$c])) {
+showtable:# if there are titles and a separator row, or explicitly with
+showtable:    if ($Titles > 0) {
+showtable:	# if there are multiple lines of titles, combine them
+showtable:	$maxcols = $#$data if $#$data > $maxcols;
+showtable:# boxed input, and the bars are removed.  Also, if "|<" or ">|"
+showtable:	    $InputType = 'box' if /^\s*([\+:|*])[-+=:*|_]*$1\s*$/;
+showtable:	next if !$No_Dashes && /^[-_=+ \t]*$/;
+showtable:	if (/^\s*([|:]).*$1\s*$/ && $InputType eq 'box') {
+showtable:	    s/^\s*\Q$bar\E<?\s*//;	# remove leading bar (if any)
+showtable:	    s/\s*>?\Q$bar\E\s*$//;	# remove trailing bar (if any)
+showtable:	    if ($NoStrip_Spaces) {	# nostrip?
+showtable:	    if ($break_str eq " \t" or $break_str eq "\t ") {
+showtable:	    } elsif ($Strip_Spaces) {
+showtable:	    if ($InputType eq 'table') {	# check for table wraps
+showtable:		$append  |= grep(s/^<//,@data);	# see if any appends
+showtable:		$continue = grep(s/>$//,@data);	# see if any continuations
+showtable:	if ($append) {
+showtable:	    last if /^\s*$/;	# stop on the row boundary
+showtable:	    if ($key ne '') {
+showtable:	    if (exists $row{$column}) {
+showtable:	$maxcol = $#row if $#row > $maxcol;
+showtable:    $maxcol = $#titles if $#titles > $maxcol;
+showtable:    my $max = shift;
+showtable:    foreach (@_) { $max = $_ if $_ > $max; }
+showtable:Do not strip blanks from the input.  Useful if there is formatted or aligned
+showtable:uniformly.  
+showtable:value is either "C<COLUMNS>", if defined, or 80, if not.  Whith B<-html>
+showtable:Set individual column widths to the specified values.  Empty column
+showtable:For example, here is a title format specification for three columns,
+showtable:Multiple B<-url> options may be given, if desired, rather than
+showtable:allowing embedded "<", ">" characters, if any, to be displayed
+shuffle:  print $lines[$#lines] if ( ! ($#lines%2));  # print last line if even number
+shuffle.new:if       ( $name = 'shuffle' ) {
+shuffle.new:  print $lines[$#lines] if ( ! ($#lines%2));  # print last line if even number
+shuffle.new:} elsif  ( $name = 'eo' ) {
+shuffle.new:} elsif  ( $name = 'oe' ) {
+snippet.split:	next if (/^\s*$|^#/); # skip white, blank and commented lines.
+snippet.split:    if (/^snippet (\S+)/) {
+snippet.split:		print STDERR "\nmaking $outfile\n" if ($debug);
+STDOUTERR:# A perl script to write identifiers to STDERR and STDOUT
+sub_print.pl:  last if ($subline,$subname)=($_=~/^(\s*sub\s*(\S+)\s*\{.*)/);
+sub_print.pl:# print "\n>>$#subs<<\n" if ($debug);
+sub_print.pl:# print '.', $i++ if ($debug);
+sub_print.pl:    if ($_=~/^\}/) {  # last line of a subroutine; look for first line of next one.
+sub_print.pl:# print "Skipping...\n"; $subs++ if ($debug);
+sub_print.pl:        last if ($subline,$subname)=($_=~/^(\s*sub\s*(\S+)\s*\{.*)/);
+sub_print.pl:	if (/^__END__$/) {
+sub_print.pl:  $done=1 if eof;
+sub_print.pl:if ($ARGV=~/-s/i) {
+sub_print.pl:    if ($sub->{"name"} !~ /main/i) {
+sub_print.pl:      if ($lines_left >= $sub->{"length"}) {
+sub_print.pl:  print "subs count $subs\n" if ($debug);
+subgauss.pl:if (not -f $com_file) {
+subgauss.pl:if (not $queue) {
+subgauss.pl:      "to queue '$queue'.\n" if ($debug);
+subgauss.pl:if ($PBS) {
+subgauss.pl:# print "Creating Job File as '$jobfile'.\n" if ($verbose || $debug);
+subgauss.pl:  print JOBFILE "if -x /usr/local/gaussian/g98/bsd/g98.login source  /usr/local/gaussian/g98/bsd/g98.login\n";
+subgauss.pl:  if ($PBS) {
+subgauss.pl:  if ($queue{$possible_queue}) {
+subgauss.pl:    print "full queue: '$queue'\n" if ($debug);
+subgauss.pl:  } elsif ( $queue{$prefixed="$host_abbrevs{$HOST}" . "_$possible_queue"}) {
+subgauss.pl:    print "the prefixed queue: '$queue'\n" if ($debug);
+subgauss.pl:# check for small queue (specified with an 's'), eg. md_small
+subgauss.pl:  } elsif ( $queue{$small="$host_abbrevs{$HOST}" . "_${possible_queue}mall"}) {
+subgauss.pl:    print "the small queue: '$queue'\n" if ($debug);
+subgauss.pl:    print "suspected queue '$possible_queue'... wasn't\n" if ($debug);
+subgauss.pl:  if ($PBS) {
+subgauss.pl:  if ($PBS) {
+subgauss.pl:  print "queues: " . join (", ", @queues) . "\n" if ($debug);
+subgauss.pl:  if ($PBS) {
+subgauss.pl:    if      ( ($ARGV[0] eq '-help' )
+subgauss.pl:      shift(@ARGV);
+subgauss.pl:    } elsif ( -f $ARGV[0] or -f "$ARGV[0].com" ) {
+subgauss.pl:      if (-f "$file.com") {
+subgauss.pl:      shift(@ARGV);
+subgauss.pl:    } elsif ( $ARGV[0] =~ /-pri/i and ($ARGV[1]>0 && $ARGV[1]<=63)) {
+subgauss.pl:      print "user specified inter-queue priority\n" if ($debug);
+subgauss.pl:      shift(@ARGV); shift(@ARGV);
+subgauss.pl:    } elsif ( ($ARGV[0]>4 && $ARGV[0]<=63)) { # reserve numerals 1 2 and 3 as possible queue names
+subgauss.pl:      shift(@ARGV);
+subgauss.pl:      if ($queue) { push(@what,$queue); }
+subgauss.pl:      shift(@ARGV);
+subgauss.pl:    }  # end if
+subgauss.pl:  print "file:  '$file'\n"  if ($debug);
+subgauss.pl:  print "queue: '$queue'\n" if ($debug);
+subgauss.pl:  if (@help) {
+subgauss.pl:  print "$command\n" if (not $noecho);
+subgauss.pl:  system($command)   if ($do);
+subgauss.pl:  if ($proc =~ /pbs/) {
+subgauss.pl:     print "PBS queueing system.\n" if ($debug);
+subgauss.pl:     print "NQS queueing system.\n" if ($debug);
+subs:if ($name=~/sub/) {
+subs:    if (/^\s*sub /) {
+subs:} elsif ( $name =~ /func/ ) {
+subs:    if (/^\s*function\s*\S+\s*\(\s*(\$|\))/) {
+sumlses:if ( $ARGV[0] =~ /^-s/i ) {
+sumlses:  $sort=1; shift;
+sumlses:  next if /^d|^total/;
+sumlses:  if ($_ =~ m/^l/) {
+sumlses:  next if ($'=~/\b[A-Z]\S+$/);
+sumlses:  if ($sort) {
+sumlses:    $sum->badd($size1) if (not $size1->is_nan());
+sumlses:#   $sum->badd($size) if (not $size->is_nan());
+sumlses:if ($sort) {
+sumlses:    $sum->badd($size) if (not $size->is_nan());
+tac:if ( $name =~ /mir(ror)?/i ) {
+tac:} elsif (@ARGV) { # files listed on command line (presumably) reverse lines of each one.
+tac.system:if ( not -f $tac_command )  {
+tac.system:if (not $tac_command) {
+tac.system:  if (@ARGV) {
+tac.system:  if (@ARGV) {
+tcshrc2bash_aliases.pl:    if ( /^[^#]*history\s*=\s*(\d+)/     ) { print OUTFILE "HISTSIZE=$1\n";     $histsize++;}
+tcshrc2bash_aliases.pl:    if ( /^[^#]*savehist\s*=[\s(]*(\d+)/ ) { print OUTFILE "HISTFILESIZE=$1\n"; $histfilesize++;}
+tcshrc2bash_aliases.pl:  print OUTFILE "HISTSIZE=2048\n"     if (not $histsize);
+tcshrc2bash_aliases.pl:  print OUTFILE "HISTFILESIZE=2048\n" if (not $histfilesize);
+termcap_descript:  if ( $ARGV[0] eq '-e' ) {
+termcap_descript:    shift; shift;
+termcap_descript:      shift;
+termcap_descript:  } # end if 
+termcap_descript:  elsif ( $ARGV[0] eq '-f' ) {
+termcap_descript:    shift; shift; }
+termcap_descript:  elsif ( $ARGV[0] eq '-n' ) { shift; $explaination_flag=0; }
+termcap_descript:  elsif ( $ARGV[0] eq '-l' ) { shift; $locate_only_flag=1; }
+termcap_descript:  elsif ( $ARGV[0] eq '-t' ) {
+termcap_descript:    shift;
+termcap_descript:if ( $entry == 0  )  { $entries[$entry]=$ENV{"TERM"}; }
+termcap_descript:if ( $termcap =~ "^\$" )  { $termcap=$ENV{"TERMCAP"}; }
+termcap_descript:if ( $termcap =~ "^\$" )  { # didn't find "TERMCAP" in environment
+termcap_descript:  if ( $termcap =~ /^\// ) { # TERMCAP was a path to a file
+termcap_descript:  } # end if/else
+termcap_descript:} # end if/else
+termcap_descript:if (@entries >1) {
+termcap_descript:} # end if
+termcap_descript:if ($file_flag) {
+termcap_descript:if ($file_flag) {
+termcap_descript:    if ($found) {
+termcap_descript:      if ("$test" ne "\\" ) {       # NEW test for 'OFF' condition
+termcap_descript:	if ($locate_only_flag) { print $_.$test."\n"; }
+termcap_descript:      } # end if
+termcap_descript:      if ($locate_only_flag) { print $_."\n"; }
+termcap_descript:      if ($_ =~ /^[^\s#]*.*$entries[$entry]\|/) {   # test for 'ON' condition
+termcap_descript:        if ($locate_only_flag) { print $_."\n"; }
+termcap_descript:      } # end if
+termcap_descript:    } # end if/else
+termcap_descript:} # end if/else
+termcap_descript:if ($locate_only_flag) { next; }
+termcap_descript:if ($explaination_flag) {
+termcap_descript:  if (! @explain) {
+termcap_descript:      if ($_=~/^(..)\S*\s*/) {
+termcap_descript:  } # end if
+termcap_descript:if ( ($i>0) && ( "$cap" eq substr($caps[$i],0,2) ) ) { next; }
+termcap_descript:if (length($caps[$i])>14) { $caps[$i].="\n"; $caps[$i].= " " x 14 ; }
+termcap_descript:} # end if
+termcap_descript:if ($tc_flag) {
+termcap_descript:if ($tc_flag && $explaination_flag) {
+termcap_descript:} # end if
+termcap_descript:    next if (/^\s*$|^\s*#/); # skip white, blank and commented lines.
+termcap_descript:!1      str            sent by shifted save key
+termcap_descript:!2      str            sent by shifted suspend key
+termcap_descript:!3      str            sent by shifted undo key
+termcap_descript:#1      str            sent by shifted help key
+termcap_descript:#2      str            sent by shifted home key
+termcap_descript:#3      str            sent by shifted input key
+termcap_descript:#4      str            sent by shifted left-arrow key
+termcap_descript:%a      str            sent by shifted message key
+termcap_descript:%b      str            sent by shifted move key
+termcap_descript:%c      str            sent by shifted next-object key
+termcap_descript:%d      str            sent by shifted options key
+termcap_descript:%e      str            sent by shifted previous-object key
+termcap_descript:%f      str            sent by shifted print or copy key
+termcap_descript:%g      str            sent by shifted redo key
+termcap_descript:%h      str            sent by shifted replace key
+termcap_descript:%i      str            sent by shifted right-arrow key
+termcap_descript:%j      str            sent by shifted resume key
+termcap_descript:&0      str            sent by shifted cancel key
+termcap_descript:&9      str            sent by shifted beg(inning) key
+termcap_descript:*0      str            sent by shifted find key
+termcap_descript:*1      str            sent by shifted cmd (command) key
+termcap_descript:*2      str            sent by shifted copy key
+termcap_descript:*3      str            sent by shifted create key
+termcap_descript:*4      str            sent by shifted delete-char key
+termcap_descript:*5      str            sent by shifted delete-line key
+termcap_descript:*7      str            sent by shifted end key
+termcap_descript:*8      str            sent by shifted clear-line key
+termcap_descript:*9      str            sent by shifted exit key
+termcap_descript:bc      str     (o)    backspace if not ^H
+termcap_descript:if      str            name of file containing initialization string
+termcap_descript:km      bool           has a "meta" key (shift, sets parity bit)
+termcap_descript:l0-l9   str            labels on function keys 0-9 if not f0-f9
+termcap_descript:la      str            label on function key 10 if not f10
+termcap_descript:lm      num            lines of memory if > li (0 means varies)
+termcap_descript:nl      str     (o)    NEWLINE character if not
+TitleCase.pl:my @small_words = qw( (?<!q&)a an and as at(?!&t) but by en for if in of on or the to v[.]? via vs[.]? );
+ul.pl:  if ($backspaces) {
+ul.pl:    if      ( ($abbrev->{$ARGV[0]} eq '-help' )
+ul.pl:      shift(@ARGV);
+ul.pl:    } elsif ( $abbrev->{$ARGV[0]} eq '-underline' ) {
+ul.pl:      shift(@ARGV); shift(@ARGV);
+ul.pl:    } elsif ( $abbrev->{$ARGV[0]} eq '-starting' ) {
+ul.pl:      shift(@ARGV); shift(@ARGV);
+ul.pl:    } elsif ( $abbrev->{$ARGV[0]} eq '-backspaces' ) {
+ul.pl:      shift(@ARGV);
+ul.pl:      shift(@ARGV);
+ul.pl:  if (@help) {
+unfold_xif:# STATEMENT if ( EXPRESSION );
+unfold_xif:    if ( /^(\s*)(.*?)\s*(if\s+\([^*(]+\))\s*;/ ) {
+unhist:	next if m/^#+\d{10}$/; # skip time-mark lines in tcsh's .history files
+unhist:   860	16:20	git diff lib/read-only/index.js
+uninc:  if ($_=~m~<!--(#include virtual="(/include/[^"]+)") -->~) {
+uninc:<IMG SRC="/NS/Asset/searchform.gif">
+unix2dos:if ($name=~/dos2unix/i) {
+unix2dos:} elsif ($name=~/unix2dos/i) {
+unix2dos:               The input file you specified does  not  exist,  or
+unix2dos:               The output file you specified is  either  invalid,
+unlink:# if ( /^\s*$|^$/ ) { print; next; }
+unman:  if (/^Reformatting page/) {
+unman:    while(<>) { last if (/^.+$/); }
+unman:  if (/^.+$/ || $last=~/^.+$/ ) { print; }
+Binary file Unquarantine.scpt matches
+unwebify:# if ( /^\s*$|^$/ ) { print; next; }
+unwrap:  if ($pieces) { 
+unwrap:    if ( -f $file ) {
+unwrap:      if      (-f $file.aa) {
+unwrap:      } elsif (-f $file.AA) {
+unwrap:      } elsif (-f $file.01) {
+unwrap:	if ($aa =~ /[A-Za-z]/ ) {
+unwrap:      if ( $? ) {
+unwrap:      if ( $remove ) {
+unwrap:  } elsif ( ! -f $file ) {
+unwrap:      if ( -f "${file}${ext}" ) { $file .= $ext;  $found=$true; last; }
+unwrap:    if ( ! $found ) {
+unwrap:  if ( $file =~ /\.uu$/ ) {
+unwrap:    if ($not_really) {
+unwrap:      if ($remove && (! $preserve) ) {
+unwrap:        if ($not_really) {
+unwrap:  if ( $GTAR && ( $file =~ /\.tar.gz$|.tgz$|.tar.z$/ ) ) {
+unwrap:    if ($not_really) {
+unwrap:      if ($remove && (! $preserve) ) {
+unwrap:      if ($safe) {
+unwrap:        if ($remove && (! $preserve) ) {
+unwrap:  if ( $file =~ /\.tgz$/ ) {
+unwrap:  if ( $file =~ /\.gz$/ ) {
+unwrap:    if ($not_really) {
+unwrap:  if ( $file =~ /\.z$/ ) {
+unwrap:    if ($not_really) {
+unwrap:    if ($remove && (! $preserve) ) {
+unwrap:      if ($not_really) {
+unwrap:  if ( $file =~ /\.Z$/ ) {
+unwrap:    if ($not_really) {
+unwrap:    if ($remove && (! $preserve) ) {
+unwrap:      if ($not_really) {
+unwrap:  if ( $file =~ /\.tar$/ ) {
+unwrap:    if      ( $CSD && ( ! -d $CSD ) && ( ! -f $CSD ) ) {
+unwrap:    } elsif ( $CSD && ( -d $CSD ) ) {
+unwrap:    } elsif ( ( $CSD ) && ( -f $CSD ) ) {
+unwrap:      if ( ( $CSD eq $CSD2 ) ) {
+unwrap:    } elsif ( ! $CSD ) {
+unwrap:    if ($chioces && ($chioces=~/\|$/) ) {		# determine choices.
+unwrap:      if  ( ( ! -d $CSD2 ) && ( ! -f $CSD2 ) ) {
+unwrap:      } elsif ( -d $CSD2 ) {
+unwrap:      } elsif ( -f $CSD2 ) {
+unwrap:        if  ( $choices eq '[No|' ) {
+unwrap:    if ($chioces) {		# choose.
+unwrap:      if ($chioces=~/Y/) {
+unwrap:      if      ( $responce =~ /^n/i ) {
+unwrap:      } elsif ( $responce =~ /^m/i ) {
+unwrap:      } elsif ( $responce =~ /^u/i ) {
+unwrap:      } elsif ( $responce =~ /^c/i ) {
+unwrap:	print "Directory to use (if it doesn't yet exist it will be made)? ";
+unwrap:	if      (   -d $DIR) {
+unwrap:	} elsif ( ! -f $DIR) {
+unwrap:      } elsif ( $responce !~ /^y/i ) {
+unwrap:      } else {	#responce will match /^y/i if we get here.
+unwrap:    if ($MKDIR) {
+unwrap:      if ($not_really) {
+unwrap:    if ($not_really) {
+unwrap:    if ($remove && (! $preserve) ) {
+unwrap:      if ($not_really) {
+unwrap:  } elsif ( $unshar ) {
+unwrap:    if ($not_really) {
+unwrap:      if ($UNSHAR) {
+unwrap:      if ($remove && (! $preserve) ) {
+unwrap:        if ($not_really) {
+unwrap:             'change remove files if no errors',
+unwrap:	     'next arg a file (useful if -aa is to have argument)',
+unwrap:    if      ( ($abbrev->{$ARGV[0]} eq '-help' )
+unwrap:      shift(@ARGV);
+unwrap:    } elsif ( $abbrev->{$ARGV[0]} eq '-not_really' ) {
+unwrap:      shift(@ARGV);
+unwrap:    } elsif ( $abbrev->{$ARGV[0]} eq '-remove' ) {
+unwrap:      shift(@ARGV);
+unwrap:    } elsif ( $abbrev->{$ARGV[0]} eq '-preserve' ) {
+unwrap:      shift(@ARGV);
+unwrap:    } elsif ( $abbrev->{$ARGV[0]} eq '-UNSHAR' ) {
+unwrap:      shift(@ARGV);
+unwrap:    } elsif ( $abbrev->{$ARGV[0]} eq '-unshar' ) {
+unwrap:      shift(@ARGV);
+unwrap:    } elsif ( $abbrev->{$ARGV[0]} eq '-safe' ) {
+unwrap:      shift(@ARGV);
+unwrap:    } elsif ( $abbrev->{$ARGV[0]} eq '-aa' ) {
+unwrap:      shift(@ARGV);
+unwrap:      if ( @ARGV[0] && (! -f @ARGV[0]) && ( @ARGV[0] !~ /^-/ ) ) {
+unwrap:        shift(@ARGV);
+unwrap:      shift(@ARGV);
+unwrap:#               with the '.tar' extention (if any) removed
+unwrap:  print "ARG!" if (!@results);
+unwrap:  if ($results[0]!~m'/') { return ''; }
+unwrap:    next if ($results[$i]=~/^\s*$/);
+unwrap:    if ($results[$i]!~/^$search/) {
+unwrap:    if ($results[$i]=~/\.\./) {
+unwrap:  if ($common_sd =~ /\./ ) { # check for all ./common_sd/files
+unwrap:      next if ($results[$i]=~/^\s*$/);
+unwrap:      if ($results[$i]!~/^\.\/$search/) {
+unwrap:    last if ($mode,$uudecoded_file)=($_=~/^begin ([0-7]{3}) (\S+)$/); 
+unwrap:  if ( ! $uudecoded_file) {
+unwrap:    last if /^end/;
+unwrap:    next if /^[ a-z]/;
+unwrap:  #  print "$.: count '$count'\tcode '$code'\n" if ($.<=10);
+unwrap:# modified to be a sub by steve parker on Wed May 19 1993
+unwrap:#       if ( m|^#!\s*/bin/sh$|) {
+unwrap:#        if ($piece) { print SHAR; }
+unwrap:        last if /^[#:]/;
+unwrap:        next if /^[#:]/;
+unwrap:        $endmark = $1 if s/<<\s*(\S+)//;
+unwrap:        if ($endmark) {
+unwrap:        if (s/^echo //) {
+unwrap:        elsif (/^export\s+PATH|^PATH\s*=/) {
+unwrap:        elsif (/^mkdir /) {
+unwrap:    	die "Reference to parent directory" if m|\.\./|;
+unwrap:    	die "Reference to absolute directory" if m|\s[/~]|;
+unwrap:    	if (s/;(.*)//) {
+unwrap:    	redo if $rem;
+unwrap:        elsif (/^cat\s+(>+)\s*(\S+)\s*$/) {
+unwrap:    	die "Reference to parent directory" if $filename =~ m|\.\./|;
+unwrap:    	die "Reference to absolute directory" if $filename =~ m|^[/~]|;
+unwrap:    	    last if $_ eq $endmark;
+unwrap:        elsif (/^sed\s+(.*\S)\s+(>+)\s*(\S+)\s*$/ ||
+unwrap:    	if (substr($1,0,1) eq '>') {
+unwrap:    	die "Reference to parent directory" if $filename =~ m|\.\./|;
+unwrap:    	die "Reference to absolute directory" if $filename =~ m|^\s*[/~]|;
+unwrap:    	die "Illegal sed command" if $sedcmd =~ /[|;`<\$]/;
+unwrap:    	die "Can't do multiple commands" if $sedcmd =~ /;/;
+unwrap:    	$loop = "while (\$_ = <ARGV>) { print \$_;last if \$_ eq \$endmark; $sedcmd; print FILE;}";
+unwrap:        elsif (/^exit/) {
+unwrap:    	    last if /^exit/;
+unwrap:    	if ($_) {
+unwrap:    	if ($lines > 21 || !open(TTY,'/dev/tty')) {
+unwrap:    	    system '.r' if $ans =~ /^y/i;
+unwrap.new:#               ie. with the '.tar' extention (if any) removed
+unwrap.new:  if ($pieces) { 
+unwrap.new:  } elsif ( ! -f $file ) {
+unwrap.new:    if ($file=&search_for_file($file)) { next; }
+unwrap.new:  if ( $file =~ /\.uu$/ ) {
+unwrap.new:  if ( $GTAR && ( $file =~ /\.tar$|\.tar.gz$|\.tgz$|\.tar\.z$|\.tar\.Z$/ ) ) {
+unwrap.new:  my($file)=shift;
+unwrap.new:  print "Extracting contents of TAR-ball in '$file'...\n" if ($verbose);
+unwrap.new:  # if not flagged explicitly as 'safe' 
+unwrap.new:  # determine extraction location (make it if necessary)
+unwrap.new:  if (not $safe and not ($CSD=&check_for_CSD($file)) ) {
+unwrap.new:  if ($safe) {
+unwrap.new:  if ( $file =~ /\.tar$/ ) {
+unwrap.new:    if      ( $CSD && ( ! -d $CSD ) && ( ! -f $CSD ) ) {
+unwrap.new:    } elsif ( $CSD && ( -d $CSD ) ) {
+unwrap.new:    } elsif ( ( $CSD ) && ( -f $CSD ) ) {
+unwrap.new:      if ( ( $CSD eq $CSD2 ) ) {
+unwrap.new:    } elsif ( ! $CSD ) {
+unwrap.new:    if ($chioces && ($chioces=~/\|$/) ) {		# determine choices.
+unwrap.new:      if  ( ( ! -d $CSD2 ) && ( ! -f $CSD2 ) ) {
+unwrap.new:      } elsif ( -d $CSD2 ) {
+unwrap.new:      } elsif ( -f $CSD2 ) {
+unwrap.new:        if  ( $choices eq '[No|' ) {
+unwrap.new:    if ($chioces) {		# choose.
+unwrap.new:      if ($chioces=~/Y/) {
+unwrap.new:      if      ( $responce =~ /^n/i ) {
+unwrap.new:      } elsif ( $responce =~ /^m/i ) {
+unwrap.new:      } elsif ( $responce =~ /^u/i ) {
+unwrap.new:      } elsif ( $responce =~ /^c/i ) {
+unwrap.new:	print "Directory to use (if it doesn't yet exist it will be made)? ";
+unwrap.new:	if      (   -d $DIR) {
+unwrap.new:	} elsif ( ! -f $DIR) {
+unwrap.new:      } elsif ( $responce !~ /^y/i ) {
+unwrap.new:      } else {	#responce will match /^y/i if we get here.
+unwrap.new:    if ($MKDIR) {
+unwrap.new:      if ($not_really) {
+unwrap.new:    if ($not_really) {
+unwrap.new:  if ( $file =~ /\.gz$/ ) {
+unwrap.new:    if ($not_really) {
+unwrap.new:  if ( $file =~ /\.z$/ ) {
+unwrap.new:    if ($not_really) {
+unwrap.new:  if ( $file =~ /\.Z$/ ) {
+unwrap.new:    if ($not_really) {
+unwrap.new:  } elsif ( $unshar ) {
+unwrap.new:    if ($not_really) {
+unwrap.new:      if ($UNSHAR) {
+unwrap.new:  my($file)=shift;
+unwrap.new:  print "Recombobulating pieces/parts into file '$file'...\n" if ($verbose);
+unwrap.new:  if ( -f $file ) {
+unwrap.new:    if      (-f $file.aa) {
+unwrap.new:    } elsif (-f $file.AA) {
+unwrap.new:    } elsif (-f $file.01) {
+unwrap.new:      if ($aa =~ /[A-Za-z]/ ) {
+unwrap.new:    if ( $? ) {
+unwrap.new:  my($file)=shift;
+unwrap.new:    if ( -f "${file}${ext}" ) { $file .= $ext;  $found=$true; last; }
+unwrap.new:  if ( ! $found ) {
+unwrap.new:    if ($remove && (! $preserve) ) {
+unwrap.new:      if ($not_really) {
+unwrap.new:        print "Would have removed '$file'.\n" if ($verbose);
+unwrap.new:        print "Removing file '$file'...\n" if ($verbose);
+unwrap.new:  my($file)=shift;
+unwrap.new:  print "UUdecoding file '$file'...\n" if ($verbose);
+unwrap.new:  if ($not_really) {
+unwrap.new:             'change remove files if no errors',
+unwrap.new:	     'next arg a file (useful if -aa is to have argument)',
+unwrap.new:    if      ( ($abbrev->{$ARGV[0]} eq '-help' )
+unwrap.new:      shift(@ARGV);
+unwrap.new:    } elsif ( $abbrev->{$ARGV[0]} eq '-not_really' ) {
+unwrap.new:      shift(@ARGV);
+unwrap.new:    } elsif ( $abbrev->{$ARGV[0]} eq '-remove' ) {
+unwrap.new:      shift(@ARGV);
+unwrap.new:    } elsif ( $abbrev->{$ARGV[0]} eq '-preserve' ) {
+unwrap.new:      shift(@ARGV);
+unwrap.new:    } elsif ( $abbrev->{$ARGV[0]} eq '-UNSHAR' ) {
+unwrap.new:      shift(@ARGV);
+unwrap.new:    } elsif ( $abbrev->{$ARGV[0]} eq '-unshar' ) {
+unwrap.new:      shift(@ARGV);
+unwrap.new:    } elsif ( $abbrev->{$ARGV[0]} eq '-safe' ) {
+unwrap.new:      shift(@ARGV);
+unwrap.new:    } elsif ( $abbrev->{$ARGV[0]} eq '-aa' ) {
+unwrap.new:      shift(@ARGV);
+unwrap.new:      if ( @ARGV[0] && (! -f @ARGV[0]) && ( @ARGV[0] !~ /^-/ ) ) {
+unwrap.new:        shift(@ARGV);
+unwrap.new:      shift(@ARGV);
+unwrap.new:    if (not -f $UNZIP) { $UNZIP=`which gunzip`; chomp $UNZIP; }
+unwrap.new:    if (not -f $UNCOMPRESS) { $UNCOMPRESS=`which uncompress`; chomp $UNCOMPRESS; }
+unwrap.new:    if (not -f $CAT) { $CAT=`which cat`; chomp $CAT; }
+unwrap.new:    if (not -f $UUDECODE) { $UUDECODE=`which uudecode`; chomp $UUDECODE; }
+unwrap.new:  my($command)=shift;
+unwrap.new:  print "Checking for 'Comman SubDirectory'\n" if ($verbose);
+unwrap.new:  if (not $command) {$command="$TAR tf $file |"; }
+unwrap.new:  print "ARG!" if (!@results);
+unwrap.new:  if ($results[0]!~m'/') { return ''; }
+unwrap.new:    next if ($results[$i]=~/^\s*$/);
+unwrap.new:    if ($results[$i]!~/^$search/) {
+unwrap.new:    if ($results[$i]=~/\.\./) {
+unwrap.new:  if ($common_sd =~ /\./ ) { # check for all ./common_sd/files
+unwrap.new:      next if ($results[$i]=~/^\s*$/);
+unwrap.new:      if ($results[$i]!~/^\.\/$search/) {
+unwrap.new:    last if ($mode,$uudecoded_file)=($_=~/^begin ([0-7]{3}) (\S+)$/); 
+unwrap.new:  if ( ! $uudecoded_file) {
+unwrap.new:    last if /^end/;
+unwrap.new:    next if /^[ a-z]/;
+unwrap.new:  #  print "$.: count '$count'\tcode '$code'\n" if ($.<=10);
+unwrap.new:# modified to be a sub by steve parker on Wed May 19 1993
+unwrap.new:#       if ( m|^#!\s*/bin/sh$|) {
+unwrap.new:#        if ($piece) { print SHAR; }
+unwrap.new:        last if /^[#:]/;
+unwrap.new:        next if /^[#:]/;
+unwrap.new:        $endmark = $1 if s/<<\s*(\S+)//;
+unwrap.new:        if ($endmark) {
+unwrap.new:        if (s/^echo //) {
+unwrap.new:        elsif (/^export\s+PATH|^PATH\s*=/) {
+unwrap.new:        elsif (/^mkdir /) {
+unwrap.new:    	die "Reference to parent directory" if m|\.\./|;
+unwrap.new:    	die "Reference to absolute directory" if m|\s[/~]|;
+unwrap.new:    	if (s/;(.*)//) {
+unwrap.new:    	redo if $rem;
+unwrap.new:        elsif (/^cat\s+(>+)\s*(\S+)\s*$/) {
+unwrap.new:    	die "Reference to parent directory" if $filename =~ m|\.\./|;
+unwrap.new:    	die "Reference to absolute directory" if $filename =~ m|^[/~]|;
+unwrap.new:    	    last if $_ eq $endmark;
+unwrap.new:        elsif (/^sed\s+(.*\S)\s+(>+)\s*(\S+)\s*$/ ||
+unwrap.new:    	if (substr($1,0,1) eq '>') {
+unwrap.new:    	die "Reference to parent directory" if $filename =~ m|\.\./|;
+unwrap.new:    	die "Reference to absolute directory" if $filename =~ m|^\s*[/~]|;
+unwrap.new:    	die "Illegal sed command" if $sedcmd =~ /[|;`<\$]/;
+unwrap.new:    	die "Can't do multiple commands" if $sedcmd =~ /;/;
+unwrap.new:    	$loop = "while (\$_ = <ARGV>) { print \$_;last if \$_ eq \$endmark; $sedcmd; print FILE;}";
+unwrap.new:        elsif (/^exit/) {
+unwrap.new:    	    last if /^exit/;
+unwrap.new:    	if ($_) {
+unwrap.new:    	if ($lines > 21 || !open(TTY,'/dev/tty')) {
+unwrap.new:    	    system '.r' if $ans =~ /^y/i;
+updown:  next if (/^\s*$/); # skip blank or white lines
+updown:  next if (/^\s*#/ and not $ignore_comments); # skip commented lines unless otherwise directed.
+updown:    if      ( ($abbrev->{$ARGV[0]} eq '-help' )
+updown:      shift(@ARGV);
+updown:    } elsif ( $abbrev->{$ARGV[0]} eq '-open' ) {
+updown:      if ($open eq '{') { $close='}'; }
+updown:      if ($open eq '<') { $close='>'; }
+updown:      if ($open eq '\(') { $close='\)'; }
+updown:      if ($open eq '[') { $close=']'; }
+updown:      shift(@ARGV); shift(@ARGV);
+updown:    } elsif ( $abbrev->{$ARGV[0]} eq '-ignore_comments' ) {
+updown:      shift(@ARGV);
+updown:    } elsif ( $abbrev->{$ARGV[0]} eq '-close' ) {
+updown:      if ($close eq '}') { $open='{'; }
+updown:      if ($close eq '>') { $open='<'; }
+updown:      if ($close eq '\)') { $open='\('; }
+updown:      if ($close eq ']') { $open='['; }
+updown:      shift(@ARGV); shift(@ARGV);
+updown:    } elsif ( $abbrev->{$ARGV[0]} eq '--') {
+updown:      shift(@ARGV);
+updown:    } elsif ( $ARGV[0]!~/^-/ ) {
+updown:      shift(@ARGV);
+updown:  if (@help) {
+upper:if      ( $name =~ /upper/ ) {
+upper:} elsif ( $name =~ /lower/ ) {
+upper:} elsif ( $name =~ /cap/ ) {
+upper:} elsif ( $name =~ /rot13/ ) {
+upper:} elsif ( $name =~ /rot661/ ) {
+url_decode:    shift() if ref($_[0]);
+url_decode:    my $todecode = shift;
+vimat:if (not -e $vim) {
+vimat:    if ( -e $v ) {
+vimat:  my $arg=shift @ARGV;
+vimat:  if ( $processing and $arg =~ /^-?-?f/i ) {
+vimat:    push(@$files,{ name => shift @ARGV} );
+vimat:  } elsif ( $arg eq '--' ) {		# allow the '--' arg so you can have a filename beginning w/ -f
+vimat:  } elsif ( $arg =~ /(\d+):(\S+)/ ) {
+vimat:  } elsif ( $arg =~ /(\S+):(\d+)/ ) {
+vimat:  } elsif ( $arg =~ /^-?-?(\d+)/ ) {
+vimat:    $files->[$#{$files}]{position} = shift @ARGV;
+vimat:  # } elsif ( not @$files and -e $arg ) {
+vimat:  } elsif ( -e $arg ) {
+vimat:    if ( $arg =~ /::/ ) {
+vimat:      $arg .= ".pm" if ( $arg !~ /\.pm$/ );
+vimat:      push(@$files,{ name => $arg } ) if ( -e $arg or -d $dir );
+wds:if [ "`tty`" = "not a tty" ] ; then
+wds:if [ $# -eq 0 ] ; then
+wds:elif [ \( $1 = '-?' \) -o \( $1 = '?' \) ] ; then
+wds:elif [ $1 = '-c' ] ; then
+wds:  shift
+web_tags:printf STDERR "number of lines is %d\n", $#lines+1 if ($debug);
+web_tags:if ($#lines>0)  {
+web_tags:    next if ($line !~ /^\s*\<.*\>\s*$/);
+web_tags:  printf STDERR "single line: '%s'\n", $lines[0] if ($debug);
+web_tags:  printf STDERR "pieces: '%s', '%s', '%s', '%s'\n", $1, $2, $3, $4 if ($debug);
+webify:# if (m|([-a-z_A-Z0-9.]+\@[-a-zA-Z0-9.]+[-a-zA-Z0-9])|) {
+withwithout:# modified to maintain order of arguments for matching or 
+withwithout:  if ($ARGV[0]=~/^--$/) {
+withwithout:    shift @ARGV;
+withwithout:  $regexp=shift @ARGV;
+withwithout:  if ($regexp=~/^-f$/) {
+withwithout:    $regexpfile= shift @ARGV;
+withwithout:      if ($regexp=~/^-/) {
+withwithout:        print STDERR "Will look for lines NOT matching '$regexp'\n" if ($debug);
+withwithout:        print STDERR "Will look for lines     matching '$regexp'\n" if ($debug);
+withwithout:  } elsif ($regexp=~/^-/) {
+withwithout:    print STDERR "Will look for lines NOT matching '$regexp'\n" if ($debug);
+withwithout:    print STDERR "Will look for lines     matching '$regexp'\n" if ($debug);
+withwithout:  if ($something) {
+withwithout:    print STDERR " $something we will be look for '" . $search->{'regexp'} . "' at least\n." if ($debug);
+withwithout:if ( not $something ) {  # if nothing, look for non-blank lines (even white space will do)
+withwithout:      if ( not $target->{'match'} and $_=~/$target->{'regexp'}/ ) { # if we don't want it and it matches
+withwithout:      if ( $target->{'match'} and $_=~/$target->{'regexp'}/ ) { # if we want it and it matches
+withwithout:  if ($debug) {
+withwithout:    print "$print: $_" if $print;
+withwithout:    print if $print;
+words:if [ "`tty`" = "not a tty" ] ; then
+words:if [ $# -eq 0 ] ; then
+words:elif [ \( $1 = '-?' \) -o \( $1 = '?' \) ] ; then
+words:elif [ $1 = '-c' ] ; then
+words:  shift
+wts:printf STDERR "number of lines is %d\n", $#lines+1 if ($debug);
+wts:if ($#lines>0)  {
+wts:    next if ($line !~ /^\s*\<.*\>\s*$/);
+wts:  printf STDERR "single line: '%s'\n", $lines[0] if ($debug);
+wts:  printf STDERR "pieces: '%s', '%s', '%s', '%s'\n", $1, $2, $3, $4 if ($debug);
+wwo:# modified to maintain order of arguments for matching or 
+wwo:  if ($ARGV[0]=~/^--$/) {
+wwo:    shift @ARGV;
+wwo:  $regexp=shift @ARGV;
+wwo:  if ($regexp=~/^-f$/) {
+wwo:    $regexpfile= shift @ARGV;
+wwo:      if ($regexp=~/^-/) {
+wwo:        print STDERR "Will look for lines NOT matching '$regexp'\n" if ($debug);
+wwo:        print STDERR "Will look for lines     matching '$regexp'\n" if ($debug);
+wwo:  } elsif ($regexp=~/^-/) {
+wwo:    print STDERR "Will look for lines NOT matching '$regexp'\n" if ($debug);
+wwo:    print STDERR "Will look for lines     matching '$regexp'\n" if ($debug);
+wwo:  if ($something) {
+wwo:    print STDERR " $something we will be look for '" . $search->{'regexp'} . "' at least\n." if ($debug);
+wwo:if ( not $something ) {  # if nothing, look for non-blank lines (even white space will do)
+wwo:      if ( not $target->{'match'} and $_=~/$target->{'regexp'}/ ) { # if we don't want it and it matches
+wwo:      if ( $target->{'match'} and $_=~/$target->{'regexp'}/ ) { # if we want it and it matches
+wwo:  if ($debug) {
+wwo:    print "$print: $_" if $print;
+wwo:    print if $print;
+X_to:$remote_host  = "$ARGV[0]"; shift;
+X_to:$rsh_username = "$ARGV[0]"; shift; # this will be null string if only 1 argument
+X_to:				   # only works if there IS a first char
+X_to:$remote_command="$ARGV[0]"; shift; # this will be null string if only 2 arguments
+X_to:# DISPLAY needed only if display not determined on remote host
+X_to:if (! $remote_command) {
+X_to:  if      ($name =~ /xsession/) {
+X_to:  } elsif ($name =~ /xterm/) {
+X_to:    if ( $remote_host =~ /^spec|^tamic|^hires/i ) {
+X_to:if ($debug) {
+X_to:if ($name !~ /direct/i) {
+X_to:  if ($debug) {
+X_to:  if ($debug) {
+X_to:if ($debug) {
+X_to:  my($command)=shift;
+X_to:  if ($execute) {
+X_to:    if ($debug) {
+X_to:#    if ($?DISPLAY) then
+X_to:#    endif
+X_to:#    if ($?REMOTEHOST) then
+X_to:#    endif
+X_to:# redirect errors to a file in user's home directory if we can
+X_to:    if ( cp /dev/null "$errfile" 2> /dev/null )
+X_to:if [ -x "$HOME/.xsession" ]; then
+X_to:elif [ -x "$HOME/.Xclients" ]; then
+X_to:elif [ -x /etc/X11/xinit/Xclients ]; then
+xsession_to:$remote_host  = "$ARGV[0]"; shift;
+xsession_to:$rsh_username = "$ARGV[0]"; shift; # this will be null string if only 1 argument
+xsession_to:				   # only works if there IS a first char
+xsession_to:$remote_command="$ARGV[0]"; shift; # this will be null string if only 2 arguments
+xsession_to:# DISPLAY needed only if display not determined on remote host
+xsession_to:if (! $remote_command) {
+xsession_to:  if      ($name =~ /xsession/) {
+xsession_to:  } elsif ($name =~ /xterm/) {
+xsession_to:    if ( $remote_host =~ /^spec|^tamic|^hires/i ) {
+xsession_to:if ($debug) {
+xsession_to:if ($name !~ /direct/i) {
+xsession_to:  if ($debug) {
+xsession_to:  if ($debug) {
+xsession_to:if ($debug) {
+xsession_to:  my($command)=shift;
+xsession_to:  if ($execute) {
+xsession_to:    if ($debug) {
+xsession_to:#    if ($?DISPLAY) then
+xsession_to:#    endif
+xsession_to:#    if ($?REMOTEHOST) then
+xsession_to:#    endif
+xsession_to:# redirect errors to a file in user's home directory if we can
+xsession_to:    if ( cp /dev/null "$errfile" 2> /dev/null )
+xsession_to:if [ -x "$HOME/.xsession" ]; then
+xsession_to:elif [ -x "$HOME/.Xclients" ]; then
+xsession_to:elif [ -x /etc/X11/xinit/Xclients ]; then
+xterm_ctl:	     "put X [$maxspots] different things to the screen",
+xterm_ctl:	     "put X [$maxspots] different things into a circle on the screen",
+xterm_ctl:    if      ( ($abbrev->{$ARGV[0]} eq '-help' )
+xterm_ctl:      print "$abbrev->{$ARGV[0]} $abbrev->{$ARGV[0]}'\n" if ($verbose);
+xterm_ctl:      shift(@ARGV); next;
+xterm_ctl:    } elsif ( $abbrev->{$ARGV[0]} eq '-icon' ) {
+xterm_ctl:      print "changing icon lable to '$ARGV[1]'\n" if ($verbose);
+xterm_ctl:      shift(@ARGV); shift(@ARGV); next;
+xterm_ctl:    } elsif ( $abbrev->{$ARGV[0]} eq '-noclear' ) {
+xterm_ctl:      print "will not clear first\n" if ($verbose);
+xterm_ctl:      shift(@ARGV); next;
+xterm_ctl:    } elsif ( $abbrev->{$ARGV[0]} eq '-title' ) {
+xterm_ctl:      print "changing both icon & window lables to '$ARGV[1]'\n" if ($verbose);
+xterm_ctl:      shift(@ARGV); shift(@ARGV); next;
+xterm_ctl:    } elsif ( $abbrev->{$ARGV[0]} eq '-name' ) {
+xterm_ctl:      print "changing window lable to '$ARGV[1]'\n" if ($verbose);
+xterm_ctl:      shift(@ARGV); shift(@ARGV); next;
+xterm_ctl:    } elsif ( $abbrev->{$ARGV[0]} eq '-font' ) {
+xterm_ctl:      print "changing font to '$ARGV[1]'\n" if ($verbose);
+xterm_ctl:      shift(@ARGV); shift(@ARGV); next;
+xterm_ctl:    } elsif ( $abbrev->{$ARGV[0]} eq '-reset' ) {
+xterm_ctl:      print "Doing a full reset:\n" if ($verbose);
+xterm_ctl:      shift(@ARGV); next;
+xterm_ctl:    } elsif ( $abbrev->{$ARGV[0]} eq '-size' ) {
+xterm_ctl:      print "Changing screen size (currently unimplimented):\n" if ($verbose);
+xterm_ctl:      shift(@ARGV); next;
+xterm_ctl:    } elsif ( $abbrev->{$ARGV[0]} eq '-es' ) {
+xterm_ctl:      print "Doing a screen alignment test:\n" if ($verbose);
+xterm_ctl:      shift(@ARGV); next;
+xterm_ctl:    } elsif ( $abbrev->{$ARGV[0]} eq '-test' ) {
+xterm_ctl:      print "Please Send Device Attributes (DA)\n" if ($verbose);
+xterm_ctl:      print "\nESC [ ? 1 ; 2 c means " if ($verbose);
+xterm_ctl:      print "``I am a VT100 with Advanced Video Option.''\n" if ($verbose);
+xterm_ctl:      print "Requesting Terminal Parameters (DECREQTPARM).\n" if ($verbose);
+xterm_ctl:      shift(@ARGV); next;
+xterm_ctl:    } elsif ( $abbrev->{$ARGV[0]} eq '-tek' ) {
+xterm_ctl:      print "Switching to Tektronics mode.\n" if ($verbose);
+xterm_ctl:      shift(@ARGV); next;
+xterm_ctl:    } elsif ( $abbrev->{$ARGV[0]} eq '-teksave' ) {
+xterm_ctl:      print "Saving Tektronics screen to COPYyy-mm-dd.hh:mm:ss.\n" if ($verbose);
+xterm_ctl:      shift(@ARGV); next;
+xterm_ctl:    } elsif ( $abbrev->{$ARGV[0]} eq '-vt100' ) {
+xterm_ctl:      print "Switching to vt100 mode.\n" if ($verbose);
+xterm_ctl:      shift(@ARGV); next;
+xterm_ctl:    } elsif ( $abbrev->{$ARGV[0]} eq '-real' ) {
+xterm_ctl:      print "Entering normal operational mode " if ($verbose);
+xterm_ctl:      shift(@ARGV); next;
+xterm_ctl:    } elsif ( $abbrev->{$ARGV[0]} eq '-debug' ) {
+xterm_ctl:      shift(@ARGV); next;
+xterm_ctl:    } elsif ( $abbrev->{$ARGV[0]} eq '-quiet' ) {
+xterm_ctl:      shift(@ARGV); next;
+xterm_ctl:    } elsif ( $abbrev->{$ARGV[0]} eq '-verbose' ) {
+xterm_ctl:      shift(@ARGV); next;
+xterm_ctl:    } elsif ( $abbrev->{$ARGV[0]} eq '-cls' ) {
+xterm_ctl:      print "Clearing Screen.\n" if ($verbose);
+xterm_ctl:      shift(@ARGV); next;
+xterm_ctl:    } elsif ( $abbrev->{$ARGV[0]} eq '-tekcls' ) {
+xterm_ctl:      print "Clearing Screen.\n" if ($verbose);
+xterm_ctl:      shift(@ARGV); next;
+xterm_ctl:    } elsif ( $abbrev->{$ARGV[0]} eq '-80' ) {
+xterm_ctl:      print "switching to 80 columns\n" if ($verbose);
+xterm_ctl:      shift(@ARGV); next;
+xterm_ctl:    } elsif ( $abbrev->{$ARGV[0]} eq '-132' ) {
+xterm_ctl:      print "switching to 132 columns\n" if ($verbose);
+xterm_ctl:      shift(@ARGV); next;
+xterm_ctl:    } elsif ( $abbrev->{$ARGV[0]} eq '-jump' ) {
+xterm_ctl:      print "switching to jump (fast) scrolling\n" if ($verbose);
+xterm_ctl:      shift(@ARGV); next;
+xterm_ctl:    } elsif ( $abbrev->{$ARGV[0]} eq '-smooth' ) {
+xterm_ctl:      print "switching to smooth (slow) scrolling\n" if ($verbose);
+xterm_ctl:      shift(@ARGV); next;
+xterm_ctl:    } elsif ( $abbrev->{$ARGV[0]} eq '-normal_buffer' ) {
+xterm_ctl:      print "Using normal screen buffer\n" if ($verbose);
+xterm_ctl:      shift(@ARGV); next;
+xterm_ctl:    } elsif ( $abbrev->{$ARGV[0]} eq '-alternate_buffer' ) {
+xterm_ctl:      print "Using alternate screen buffer\n" if ($verbose);
+xterm_ctl:      shift(@ARGV); next;
+xterm_ctl:    } elsif ( $abbrev->{$ARGV[0]} eq '-reverse_video' ) {
+xterm_ctl:      print "Using Reverse Video\n" if ($verbose);
+xterm_ctl:      shift(@ARGV); next;
+xterm_ctl:    } elsif ( $abbrev->{$ARGV[0]} eq '-normal_video' ) {
+xterm_ctl:      print "Using Normal Video\n" if ($verbose);
+xterm_ctl:      shift(@ARGV); next;
+xterm_ctl:    } elsif ( $abbrev->{$ARGV[0]} eq '-star' ) {
+xterm_ctl:      shift(@ARGV);
+xterm_ctl:      if ( ($ARGV[0] =~ /\d+/ ) && ( $ARGV[0] >= 0 ) && ( $ARGV[0] <= 131 ) ) {
+xterm_ctl:        shift(@ARGV);
+xterm_ctl:      if ( ($ARGV[0] =~ /\d+/ ) && ( $ARGV[0] >= 0 ) && ( $ARGV[0] <= 23 ) ) {
+xterm_ctl:        shift(@ARGV);
+xterm_ctl:      if ( ($ARGV[0] =~ /^.$/ ) ) {
+xterm_ctl:        shift(@ARGV);
+xterm_ctl:    } elsif ( $abbrev->{$ARGV[0]} eq '-pops' ) {
+xterm_ctl:      shift(@ARGV);
+xterm_ctl:      print "will put" if ($verbose);
+xterm_ctl:      if ( $ARGV[0] !~ /^-/ ) {
+xterm_ctl:        if ( ( $ARGV[0] =~ /\d+/ ) && ( $ARGV[0] >= 0 ) ) {
+xterm_ctl:          shift(@ARGV);
+xterm_ctl:          print " $pops 'pops' on screen" if ($verbose);
+xterm_ctl:	  print " $maxpops 'pops' on screen" if ($verbose);
+xterm_ctl:      print "${ESC}[H${ESC}[2J" if (! $noclear); # clear home
+xterm_ctl:      print "\n" if ($verbose);
+xterm_ctl:	last if ( ($pops    && ($pops_out >  $pops) )
+xterm_ctl:    } elsif ( $abbrev->{$ARGV[0]} eq '-stars' ) {
+xterm_ctl:      shift(@ARGV);
+xterm_ctl:      print "will put" if ($verbose);
+xterm_ctl:      if ( $ARGV[0] !~ /^-/ ) {
+xterm_ctl:        if ( ( $ARGV[0] =~ /\d+/ ) && ( $ARGV[0] >= 0 ) ) {
+xterm_ctl:          shift(@ARGV);
+xterm_ctl:          print " $stars 'stars' on screen" if ($verbose);
+xterm_ctl:	  print " $maxstars 'stars' on screen" if ($verbose);
+xterm_ctl:      print "${ESC}[H${ESC}[2J" if (! $noclear); # clear home
+xterm_ctl:      print "\n" if ($verbose);
+xterm_ctl:	last if ( ($stars    && ($stars_out >  $stars) )
+xterm_ctl:	if (!$star_there[$x,$y]) {
+xterm_ctl:    } elsif ( $abbrev->{$ARGV[0]} eq '-circle' ) {
+xterm_ctl:      shift(@ARGV);
+xterm_ctl:      print "will put" if ($verbose);
+xterm_ctl:      if ( $ARGV[0] !~ /^-/ ) {
+xterm_ctl:        if ( ( $ARGV[0] =~ /\d+/ ) && ( $ARGV[0] >= 0 ) ) {
+xterm_ctl:          shift(@ARGV);
+xterm_ctl:          print " $spots 'things' on screen" if ($verbose);
+xterm_ctl:	  print " $maxspots 'things on screen" if ($verbose);
+xterm_ctl:          shift(@ARGV);
+xterm_ctl:	  print " from this string '$things'" if ($verbose);
+xterm_ctl:      print "${ESC}[H${ESC}[2J" if (! $noclear); # clear home
+xterm_ctl:      print "\n" if ($verbose);
+xterm_ctl:      next if ($debug);
+xterm_ctl:	last if ( ($spots    && ($spots_out >  $spots) )
+xterm_ctl:	next if ( (($x-$center_x)**2+$ratio*($y-$center_y)**2) >= $radius2 ); 
+xterm_ctl:    } elsif ( $abbrev->{$ARGV[0]} eq '-sparkle' ) {
+xterm_ctl:      shift(@ARGV);
+xterm_ctl:      print "will put" if ($verbose);
+xterm_ctl:      if ( $ARGV[0] and $ARGV[0] !~ /^-/ ) {
+xterm_ctl:        if ( ( $ARGV[0] =~ /\d+/ ) && ( $ARGV[0] >= 0 ) ) {
+xterm_ctl:          shift(@ARGV);
+xterm_ctl:          print " $spots 'things' on screen" if ($verbose);
+xterm_ctl:	  print " $maxspots 'things on screen" if ($verbose);
+xterm_ctl:          shift(@ARGV);
+xterm_ctl:	  print " from this string '$things'" if ($verbose);
+xterm_ctl:      print "${ESC}[H${ESC}[2J" if (! $noclear); # clear home
+xterm_ctl:      print "\n" if ($verbose);
+xterm_ctl:      next if ($debug);
+xterm_ctl:	last if ( ($spots    && ($spots_out >  $spots) )
+xterm_ctl:    } elsif ( $abbrev->{$ARGV[0]} eq '-flash' ) {
+xterm_ctl:#     print "${ESC}[H${ESC}[2J" if (! $noclear); # clear home
+xterm_ctl:      shift(@ARGV);
+xterm_ctl:      print "will flash" if ($verbose);
+xterm_ctl:      if ( ($ARGV[0] =~ /\d+/ ) && ( $ARGV[0] >= 0 ) ) {
+xterm_ctl:        shift(@ARGV);
+xterm_ctl:        print " $loops times" if ($verbose);
+xterm_ctl:        if ( ($ARGV[0] =~ /\d+/ ) && ( $ARGV[0] >= 0 ) ) {
+xterm_ctl:          shift(@ARGV);
+xterm_ctl:          print " with a '$delay' second delay." if ($verbose);
+xterm_ctl:          print " as fast as possible." if ($verbose);
+xterm_ctl:	if ($verbose) {
+xterm_ctl:	  if ($maxflash) {
+xterm_ctl:      print "\n" if ($verbose);
+xterm_ctl:	last if ( ($loops    && ($on_off >  $loops) )
+xterm_ctl:	sleep $delay if ($delay);
+xterm_ctl:	if ($on_off%2) {
+xterm_ctl:    } elsif ( $abbrev->{$ARGV[0]} eq '-scroll' ) {
+xterm_ctl:      shift(@ARGV);
+xterm_ctl:      if ( ($ARGV[0] =~ /\d+/ ) && ( $ARGV[0] >= 0 ) && ( $ARGV[0] <= 24 ) ) {
+xterm_ctl:        shift(@ARGV);
+xterm_ctl:      if ( ($ARGV[0] =~ /\d+/ ) && ( $ARGV[0] > $top ) && ( $ARGV[0] <= 24 ) ) {
+xterm_ctl:        shift(@ARGV);
+xterm_ctl:    } elsif ( $abbrev->{$ARGV[0]} !~ /^-/ ) {
+xterm_ctl:      unshift(@ARGV,'-title'); next;
+xterm_ctl:      shift(@ARGV); next;
+xterm_ctl:  if (@help) {
+xterm_ctl:  $control{'n'}= $shift_out= $SO=	"\016";
+xterm_ctl:  $control{'o'}= $shift_in=  $SI=	"\017";
+xterm_ctl:#         \E        end case modification
+xterm_ctl:  $control{'n'}= $shift_out= $SO=	"SO";
+xterm_ctl:  $control{'o'}= $shift_in=  $SI=	"SI";
+xterm_ctl:  $control{'n'}= $shift_out= $SO=	'^N';
+xterm_ctl:  $control{'o'}= $shift_in=  $SI=	'^O';
+xterm_ctl:km             bool           has a "meta" key (shift, sets parity bit)
+xterm_ctl:               University of California, Berkeley
+xterm_ctl:the function is specified by DEC or ISO 6429, the  code  assigned
+xterm_ctl:character sets are specified by ISO 2022; see that document for a
+xterm_ctl:SO         Shift Out (Ctrl-N) -> Switch to Alternate  Charac-
+xterm_ctl:SI         Shift In (Ctrl-O) -> Switch to Standard  Character
+xterm_ctl:ESC N Single Shift Select of  G2  Character  Set  (SS2):
+xterm_ctl:ESC O Single Shift Select of  G3  Character  Set  (SS3):
+xterm_ctl:abled)  by a different parameter in the DECSET (or DECRST) escape
+xterm_ctl:enabled by specifying parameter 9 to DECSET.   On  button  press,
+xterm_ctl:press  and  release.   Modifier  information is also sent.  It is
+xterm_ctl:enabled by specifying parameter 1000 to DECSET.  On button  press
+xterm_ctl:modifiers were down when the button was  pressed  and  are  added
+xterm_ctl:together.   4=Shift, 8=Meta, 16=Control.  Cx and Cy are the x and
+xterm_ctl:Mouse hilite tracking notifies  a  program  of  a  button  press,
+xterm_ctl:specifying parameter 1001 to DECSET.  Warning: use of  this  mode
+xterm_ctl:released,  xterm  reports the ending position one of two ways: if
+xterm_termcap.pl:# Output Routines, if $FH is undefined these just return the string
+xterm_to:$remote_host  = "$ARGV[0]"; shift;
+xterm_to:$rsh_username = "$ARGV[0]"; shift; # this will be null string if only 1 argument
+xterm_to:				   # only works if there IS a first char
+xterm_to:$remote_command="$ARGV[0]"; shift; # this will be null string if only 2 arguments
+xterm_to:# DISPLAY needed only if display not determined on remote host
+xterm_to:if (! $remote_command) {
+xterm_to:  if      ($name =~ /xsession/) {
+xterm_to:  } elsif ($name =~ /xterm/) {
+xterm_to:    if ( $remote_host =~ /^spec|^tamic|^hires/i ) {
+xterm_to:if ($debug) {
+xterm_to:if ($name !~ /direct/i) {
+xterm_to:  if ($debug) {
+xterm_to:  if ($debug) {
+xterm_to:if ($debug) {
+xterm_to:  my($command)=shift;
+xterm_to:  if ($execute) {
+xterm_to:    if ($debug) {
+xterm_to:#    if ($?DISPLAY) then
+xterm_to:#    endif
+xterm_to:#    if ($?REMOTEHOST) then
+xterm_to:#    endif
+xterm_to:# redirect errors to a file in user's home directory if we can
+xterm_to:    if ( cp /dev/null "$errfile" 2> /dev/null )
+xterm_to:if [ -x "$HOME/.xsession" ]; then
+xterm_to:elif [ -x "$HOME/.Xclients" ]; then
+xterm_to:elif [ -x /etc/X11/xinit/Xclients ]; then
