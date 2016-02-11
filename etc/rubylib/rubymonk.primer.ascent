@@ -10,16 +10,87 @@ https://rubymonk.com/learning/books/4-ruby-primer-ascent
 	What are blocks?
     -----------------------------
 	Block your code!
+	Addition       = lambda { |a, b| return a + b }
+	Subtraction    = lambda { |a, b| return a - b } # I added the lamdba's for here down
+	Multiplication = lambda { |a, b| return a * b }
+	Division       = lambda { |a, b| return a / b }
+	 
+	 STDOUT:
+
+	 Addition.call(5, 6) gives 11 ✔
+	 Addition.call(0, 0) gives 0 ✔
+	 Addition.call(-51, 1001) gives 950 ✔
+	 Subtraction.call(5, 6) gives -1 ✔
+	 Subtraction.call(0, 0) gives 0 ✔
+	 Subtraction.call(-51, 1001) gives -1052 ✔
+	 Multiplication.call(2, 5) gives 10 ✔
+	 Multiplication.call(0, 5) gives 0 ✔
+	 Multiplication.call(-1000, 2) gives -2000 ✔
+	 Division.call(10, 5) gives 2 ✔
+	 Division.call(0, 5) gives 0 ✔
+	 Division.call(1, 0) raises error ✔
+
 0.1 Yield
 	Yielding to Blocks
 	-----------------------------
 	Magic Blocks
 	-----------------------------
 	Is it a given?
+	With implicit blocks, it's hard to be sure if a block has actually passed.
+	Doing a yield when there's no block can have unfortunate consequences
+	- an exception (a LocalJumpError) with the message "no block given" is raised .
+	IMPORTANT:  block_given? method
+
+	def foo
+	  yield if block_given?
+	end
+
+	STDOUT:
+
+	calling foo without a block doesn't blow up with a LocalJumpError ✔
 	-----------------------------
 	Faster, Faster!
+require "benchmark"
+
+def calculation_with_explicit_block_passing(a, b, operation)
+ operation.call(a, b)
+end
+
+def calculation_with_implicit_block_passing(a, b)
+ yield(a, b)
+end
+
+Benchmark.bmbm(10) do |report|
+ report.report("explicit") do
+   addition = lambda { |a, b| a + b }
+   1000.times { calculation_with_explicit_block_passing(5, 5, addition) }
+ end
+
+ report.report("implicit") do
+   1000.times { calculation_with_implicit_block_passing(5, 5) { |a, b| a + b } }
+ end
+end
+STDOUT:
+
+Rehearsal ---------------------------------------------
+explicit    0.000000   0.000000   0.000000 (  0.000385)
+implicit    0.000000   0.000000   0.000000 (  0.000226)
+------------------------------------ total: 0.000000sec
+
+                user     system      total        real
+explicit    0.000000   0.000000   0.000000 (  0.000446)
+implicit    0.000000   0.000000   0.000000 (  0.000226)
 	-----------------------------
 	Practice makes perfect
+def prettify_it
+  "The result of the block was: #{yield}"
+end
+
+STDOUT:
+
+calling the method prettify_it without an implicitly passed block results in a LocalJumpError because yield is invoked without a block being present ✔
+calling prettify_it { "Hello, world" } returns "The result of the block was: Hello, world" ✔
+calling prettify_it { 1 + 1 } returns "The result of the block was: 2" ✔
 
 0.2 Implicit and Explicit Blocks
 	Converting implicit blocks to explicit
@@ -38,58 +109,208 @@ https://rubymonk.com/learning/books/4-ruby-primer-ascent
 -=- Classes: Inheritance -=-
 
 1.0 Classification
+	A quick recap
+	-----------------------------
+	Is it a thing?
+
+
 1.1 Understanding Inheritance
+	Inherited behaviour
+	-----------------------------
+	Meet the superclass
+
 1.2 Inheriting Class
+	Your first inheritance
+
 1.3 Redefining, overriding, and super
+	Redefining methods
+	-----------------------------
+	Overriding methods
+	-----------------------------
+	Super Powered
 
 -=- More Classes -=-
 
 2.0 Instance Variables and Accessors
+	Instance Variables
+	-----------------------------
+	Getter and Setter methods
+	-----------------------------
+	Making life easy through attr_accessors
+
 2.1 Class Variables and Methods
+	Things that we already know
+	-----------------------------
+	Using class variables to store application configuration
+	-----------------------------
+	Class variables and inheritance
+
 2.2 Equality of Objects
+	The equality operator is a method
+	-----------------------------
+	Object equality, the eql? method and hash codes
+	-----------------------------
+	Wrapping up Object Equality in Ruby
+
 2.3 Displaying Objects: puts and p, to_s and inspect
+	puts and p
+	-----------------------------
+	inspect vs to_s
+
 2.4 Serializing
+	Serializing? Cerealizing? What?
+	-----------------------------
+	Dumping and loading
+	-----------------------------
+	Press "start" to save your game
+
 
 -=- Advanced Arrays -=-
 
 3.0 Ripping the Guts
+	Lining 'em up
+	-----------------------------
+	Destructurin'
+	-----------------------------
+	The splat
+
 3.1 Using the API
+	Greatest class of all time
+
 3.2 Stacks and Queues
+	Stacking
+	-----------------------------
+	Queueing
+
 3.3 Alternative Uses
+	Disjoint Arrays
+	-----------------------------
+	Fake matrix
+
 
 -=- Advanced Modules -=-
 
 4.1 The `included` Callback and the `extend` Method
+	The `included` callback
+	-----------------------------
+	Welcome to Module#extend
+	-----------------------------
+	Using `extend` for adding class level methods
+
 4.2 Wrapping Up Modules
+	The `extended` callback
+	-----------------------------
+	Namespacing non-OO code using module level methods
+
 
 -=- Exceptions -=-
 
 5.0 Handling and Raising
+	What is an exception?
+	-----------------------------
+	begin, rescue, end
+	-----------------------------
+	ensure
+	-----------------------------
+	raise
+
 5.1 Tidying Things Up
+	Capture and control flow
+	-----------------------------
+	Propagation
+	-----------------------------
+	Hierarchy and the Exception class
+
 5.2 Throw and Catch
+	Why not `raise' and `rescue'?
+	-----------------------------
+	Jump out!
+	-----------------------------
+	Jump out with a payload
+	-----------------------------
+	Consider the alternatives
+
 
 -=- Declaring Data -=-
 
 6.1 Literals
+	Review
+	-----------------------------
+	A few new tricks
+	-----------------------------
+	Collections
+
 6.2 Variables
+	Scope
+	-----------------------------
+	Globals
+
 6.3 Constants
+	A loose definition
+	-----------------------------
+	Classes and modules: less special than they look
+
 
 -=- Collections -=-
 
 7.0 Enumerators and Enumerables
+	Garrison
+
 7.1 Iterate, Filtrate and Transform
+	Move and change
+	-----------------------------
+	Don't ask to ask
+	-----------------------------
+	Growth, decay and transformation
+
 7.2 Building Collections
+	What is a Collection anyway?
+	-----------------------------
+	that magic thing: 'each'. make it your own.
+	-----------------------------
+	What comes after #each ?
+	-----------------------------
+	Coming full circle
+
 7.3 Object References
+	A different perspective on enumerables
 
 -=- Finding and Fixing Bugs -=-
 
 8.1 The Debugging Primaries
+	puts and p
+
 8.2 Logging
+	The `caller` method
+	-----------------------------
+	Logging
+
 8.3 Benchmarking Ruby Code
+	How much time did it take?
 
 -=- Ruby's Object Model -=-
 
 9.2 What is an object?
+	What is an object?
+	-----------------------------
+	Object Identity
+
 9.3 Behaviour
+	Object Behaviour
+	-----------------------------
+	Superclass
+	-----------------------------
+	Ancestors
+	-----------------------------
+	BasicObject
+
 9.4 Singleton methods and metaclasses
+	Who holds the behaviour?
+	-----------------------------
+	Singleton methods
+
 9.5 Cloning and freezing objects
+	Cloning objects
+	-----------------------------
+	Freezing objects
+
