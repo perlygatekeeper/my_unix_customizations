@@ -6,18 +6,28 @@
 $name = $0; $name =~ s'.*/''; # remove path--like basename
 $usage = "usage:\n$name [-opt1] [-opt2] [-opt3]";
 
+use strict;
+# use warnings;
+
+my %hash;
+
 $hash{'number'}=2;
 $hash{'string'}='a string';
 $hash{'zero'}=0;
 $hash{'null_string'}='';
 $hash{'undef'}=undef;
 
-check(\%hash,'number');
-check(\%hash,'string');
-check(\%hash,'zero');
-check(\%hash,'null_string');
-check(\%hash,'undef');
-check(\%hash,'not_a_key');
+# check(\%hash,'number');
+# check(\%hash,'string');
+# check(\%hash,'zero');
+# check(\%hash,'null_string');
+# check(\%hash,'undef');
+# check(\%hash,'not_a_key');
+
+foreach my $key ( keys %hash, 'not_a_key' ) {
+	# print "$key\n";
+	check(\%hash,$key);
+}
 
 print "now I am going to undef  the key 'string'...\n\n"; undef  $hash{'string'};
 check(\%hash,'string');

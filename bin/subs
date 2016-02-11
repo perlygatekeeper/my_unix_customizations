@@ -11,7 +11,7 @@ if ($name=~/sub/) {
     if (/^\s*sub /) {
   #   print;
   #   print scalar <>;
-      ($sub=$_) =~ s/ {.*\n//;
+      ($sub=$_) =~ s/ \{.*\n//;
       ($args= scalar <>) =~ s/^\s+(my|local)|=.*//g;
       printf "%-30s %s", $sub, $args;
     } 
