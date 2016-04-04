@@ -1,0 +1,77 @@
+#!/usr/bin/env perl
+# A perl script to fold perl statements of the form
+# if ( EXPRESSION ) {
+#   STATEMENT_01;
+#   STATEMENT_02;
+#   STATEMENT_03;
+#   .
+#   .
+# }
+# STATEMENT_01 if ( EXPRESSION );
+# STATEMENT_02 if ( EXPRESSION );
+# STATEMENT_03 if ( EXPRESSION );
+#   .
+#   .
+#
+#   Presently only handles one if () {} block
+
+my $name = $0; $name =~ s'.*/''; # remove path--like basename
+
+use strict;
+use warnings;
+
+$/=''; #enable paragraph mode & mulitline pattern matching.
+
+while (<>) {
+    my ( $indent, $statements, $condition );
+    if ( /^(\s*)\s*if\s+(\([^)]+\))\s*\{([^}]+)\}/gsm ) {
+        ( $indent, $condition, $statements ) = ( $1, $2, $3 );
+        $indent ||= "";
+        $statements ||= "";
+        $condition ||= "";
+        $indent ||= "";
+        foreach my $statement ( split(/\r?\n\s*/, $statements ) ) {
+            $statement =~ s/;\s*$//;
+            chomp $statement;
+            $statement =~ s/^\s*|\s*$//g;
+            next unless ($statement =~ /./);
+            print "$indent$statement if $condition;\n";
+	}
+    } else {
+        print;
+    }
+}
+
+exit 0;
+
+__END__
+
+    if ($special_line) {
+        print "$special_line";
+        print "$special_line and more";
+        print "$special_line and even more";
+    }
+
+BECOMES
+
+    print "$special_line" if ($special_line);
+    print "$special_line and more" if ($special_line);
+    print "$special_line and even more" if ($special_line);
+
+
+
+
+
+
+print "$special_line" if ($special_line);
+    print STDERR "Got a octal number.\n" if ($debug) ;
+
+BECOMES
+
+
+    if ($special_line) {
+        print "$special_line";
+    }
+    if ($debug) {
+        print STDERR "Got a octal number.\n";
+    }

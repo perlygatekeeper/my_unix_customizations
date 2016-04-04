@@ -1,0 +1,94 @@
+# SDP: last modification date 3/30/2015
+a inst          apt-cyg install
+a search        apt-cyg find
+a lspkg         apt-cyg show
+a packages      apt-cyg show
+a installed     apt-cyg show
+
+# find package to which a file belongs
+a whichpkg      apt-cyg packageof
+# or a whichpkg      cygcheck --find-package
+
+# list contents of installed package
+a pkgcontents   cygcheck --list-package
+
+a cygs		"alias | grep cyg | perl -lane 'printf qq(%-12s\t%s\n), shift @F, join(q( ),@F);'"
+
+# setenv WORDS /usr/
+
+# changing my shell
+# from http://superuser.com/questions/351435/zsh-with-cygwin
+# mkpasswd(1):  -c, --current print current user
+# mkpasswd -c  | perl -pe 's,/bin/bash,/usr/bin/tcsh,' | tee -a /etc/passwd
+
+# use getfacl/setfacl to set group permissions:
+# setfacl -s 'u::rw-,g::r--,o::---' FILENAME or
+# setfacl -s 'user::rw-,group::r--,other::---' FILENAME or
+# copy mode from another file:
+# getfacl FILE_TO_BE_COPIED | setfacl -f - FILL_TO_RECEIVE
+
+setenv PAGER "/usr/bin/less.exe -r"
+
+# http://serverfault.com/questions/83456/cygwin-package-management
+
+# List all installed packages
+#
+#   cygcheck --check-setup --dump-only
+#
+#   without --dump-only the command will take few minutes to complete because it
+#   will TEST all packages. You should see an OK for each package if everything is fine ;)
+
+# List files belonging to a package
+#
+#   For package bash do:
+#
+#   cygcheck --list-package bash
+# 
+#   it works for installed packages only
+
+# Tell which package a file belongs to:
+#
+#   For file /usr/bin/bash.exe
+#
+#   cygcheck --find-package /usr/bin/bash.exe
+#   it works for installed packages only
+
+# Install a new package
+#
+# Considering you have already run setup GUI and have valid mirror(s),
+# local package directory and other options set, you could run to install abook:
+#
+# /path/to/setup-1.7.exe --quiet-mode --download --local-install --packages abook
+# it will also automatically update all your installed packages to the latest version available
+# you could also select the mirror and other options in command line, see /path/to/setup-1.7.exe --help
+# I know the new version of cygwin 1.7 (beta version, but pretty stable)
+# which currently uses setup 2.649 supports these options, but I didn't tested on 1.6
+#
+# Uninstall a package
+#
+# As far as I know, only the GUI supports this option.
+#
+# Get info about an installed package (deps, version, etc)
+#
+# The version is listed together to each package on the listing (first item).
+# Deps are really tricky to find: when setup runs, it creates on the local
+# package directory one entry for each mirror. There you can find the list of
+# all packages available on that mirror (setup.ini for version 1.6 and
+# setup-2.ini for version 1.7) with the package name preceded by a @ and deps
+# preceded by requires:. If, for any reason, the mirror you are using is
+# outdated, setup displays a warning message when downloading info.
+#
+# edited Aug 24 '12 at 16:54
+#
+# Marve
+# answered Nov 11 '09 at 1:33
+#
+# user25713
+# 30912
+#   	 	
+#  +1 Very helpful answer, thanks! Anthony Aug 1 '12 at 23:19
+#   	 	  	 	
+#  At least as of version 2.8, there is a -x --remove-packages option as well to remove packages
+#  via the command line. Howler Oct 14 '13 at 18:54
+#
+# setfacl -s 'u::rwx,g::---,o::---' /tmp/uscreens/S-parks17
