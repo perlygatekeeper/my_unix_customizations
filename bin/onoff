@@ -453,3 +453,15 @@ Notes:
    107	hundred seven
    108	hundred eight
    109	hundred nine
+
+NO onoff 1../__END__/ unfold_xif                      N..regexp doesn't work?
+   onoff -start 1 -end /__END__/ unfold_xif           no //'s in regexp
+   onoff -start 1 -end '__END__' unfold_xif           -start REGEXP  so started on first line with a '1' in it
+NO onoff --help                                       no --'s, use -\? instead
+NO onoff 1 -stop '__END__' unfold_xif                 gave only line one
+NO onoff 1.. -stop '__END__'+2 unfold_xif             no +2's
+   onoff 1.. -stop '__END__' unfold_xif
+NO onoff 1.. -stop '__END__' --linger 2 unfold_xif    no --'s
+   onoff -\?
+   onoff 1.. -stop '__END__' -linger 2 unfold_xif
+   onoff 1.. -stop '__END__' -linger 4 unfold_xif

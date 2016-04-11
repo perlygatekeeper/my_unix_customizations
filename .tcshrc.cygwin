@@ -2,10 +2,24 @@
 a inst          apt-cyg install
 a search        apt-cyg find
 a lspkg         apt-cyg show
-a whichpkg      apt-cyg packageof
+a packages      apt-cyg show
 a installed     apt-cyg show
 
+# find package to which a file belongs
+a whichpkg      apt-cyg packageof
+# or a whichpkg      cygcheck --find-package
+
+# list contents of installed package
+a pkgcontents   cygcheck --list-package
+
+a cygs		"alias | grep cyg | perl -lane 'printf qq(%-12s\t%s\n), shift @F, join(q( ),@F);'"
+
 # setenv WORDS /usr/
+
+# changing my shell
+# from http://superuser.com/questions/351435/zsh-with-cygwin
+# mkpasswd(1):  -c, --current print current user
+# mkpasswd -c  | perl -pe 's,/bin/bash,/usr/bin/tcsh,' | tee -a /etc/passwd
 
 # use getfacl/setfacl to set group permissions:
 # setfacl -s 'u::rw-,g::r--,o::---' FILENAME or
@@ -41,32 +55,40 @@ setenv PAGER "/usr/bin/less.exe -r"
 
 # Install a new package
 #
-# Considering you already run setup GUI and have valid mirror(s), local package directory and other options set, you could run to install abook:
+# Considering you have already run setup GUI and have valid mirror(s),
+# local package directory and other options set, you could run to install abook:
 #
 # /path/to/setup-1.7.exe --quiet-mode --download --local-install --packages abook
 # it will also automatically update all your installed packages to the latest version available
 # you could also select the mirror and other options in command line, see /path/to/setup-1.7.exe --help
-# I know the new version of cygwin 1.7 (beta version, but pretty stable) which currently uses setup 2.649 supports these options, but I didn't tested on 1.6
+# I know the new version of cygwin 1.7 (beta version, but pretty stable)
+# which currently uses setup 2.649 supports these options, but I didn't tested on 1.6
+#
 # Uninstall a package
 #
 # As far as I know, only the GUI supports this option.
 #
 # Get info about an installed package (deps, version, etc)
 #
-# The version is listed together to each package on the listing (first item). Deps are really tricky to find: when setup runs, it creates on the local package directory one entry for each mirror. There you can find the list of all packages available on that mirror (setup.ini for version 1.6 and setup-2.ini for version 1.7) with the package name preceded by a @ and deps preceded by requires:. If, for any reason, the mirror you are using is outdated, setup displays a warning message when downloading info.
-# shareimprove this answer
+# The version is listed together to each package on the listing (first item).
+# Deps are really tricky to find: when setup runs, it creates on the local
+# package directory one entry for each mirror. There you can find the list of
+# all packages available on that mirror (setup.ini for version 1.6 and
+# setup-2.ini for version 1.7) with the package name preceded by a @ and deps
+# preceded by requires:. If, for any reason, the mirror you are using is
+# outdated, setup displays a warning message when downloading info.
+#
 # edited Aug 24 '12 at 16:54
 #
 # Marve
-# 1448	
 # answered Nov 11 '09 at 1:33
 #
 # user25713
 # 30912
 #   	 	
-#   	 	+1 Very helpful answer, thanks! – Anthony Aug 1 '12 at 23:19
+#  +1 Very helpful answer, thanks! Anthony Aug 1 '12 at 23:19
 #   	 	  	 	
-#   	 	  	 	At least as of version 2.8, there is a -x --remove-packages option as well to remove packages via the command line. – Howler Oct 14 '13 at 18:54
-#   	 	  	 	add a comment
+#  At least as of version 2.8, there is a -x --remove-packages option as well to remove packages
+#  via the command line. Howler Oct 14 '13 at 18:54
 #
 # setfacl -s 'u::rwx,g::---,o::---' /tmp/uscreens/S-parks17

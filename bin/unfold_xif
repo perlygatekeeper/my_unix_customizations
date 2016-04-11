@@ -1,6 +1,15 @@
 #!/usr/bin/env perl
 # A perl script to unfold perl statements of the form
-# STATEMENT if ( EXPRESSION );
+# STATEMENT_01 if ( EXPRESSION_01 );
+# STATEMENT_02 if ( EXPRESSION_02 );
+#   .
+#   .
+# if ( EXPRESSION_01 ) {
+#   STATEMENT_01;
+# }
+# if ( EXPRESSION_02 ) {
+#   STATEMENT_02;
+# }
 
 my $name = $0; $name =~ s'.*/''; # remove path--like basename
 
@@ -21,9 +30,12 @@ while (<>) {
 exit 0;
 
 __END__
+The following two lines filtered via unfold_xif:
+
 print "$special_line" if ($special_line);
     print STDERR "Got a octal number.\n" if ($debug) ;
 
+become:
 
     if ($special_line) {
         print "$special_line";
@@ -31,5 +43,4 @@ print "$special_line" if ($special_line);
     if ($debug) {
         print STDERR "Got a octal number.\n";
     }
-
 
