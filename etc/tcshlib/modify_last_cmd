@@ -1,0 +1,113 @@
+Repeat the last command with all words 'a' changed to 'b'.
+
+
+prompt> ll [ab]*
+-rw-r--r-- 1 parks17 Domain Users 0 Apr  8 16:15 a
+-rw-r--r-- 1 parks17 Domain Users 0 Apr  8 16:15 b
+
+prompt> mv a a.out
+prompt> !!:gas/a/b/ <----------------------- change word in last command
+mv b b.out
+
+prompt> ll [ab]*
+-rw-r--r-- 1 parks17 Domain Users 0 Apr  8 16:15 a.out
+-rw-r--r-- 1 parks17 Domain Users 0 Apr  8 16:15 b.out
+
+NOTE:
+
+!!     -> complete last command (not just a word from it)
+:      -> modifier follows
+g      -> apply following modifier to all words
+a      -> apply following modifier a word as many times as possible (until it stops changing)
+s/a/b/ -> substitute a for b (a may be a regexp)
+
+g and/or a MUST be before s, as they affect how s (and other modifiers) work.
+
+prompt> !!:gas/a/b/:p  OR
+prompt> !!:p:gas/a/b/ <----------------------- change word in last command but DON'T run it
+
+------------------------------------------------------------------------
+We  might  follow
+
+mail -s "I forgot my password" rot
+
+with `!:s/rot/root' to correct  the  spelling of `root'
+(but  see  Spelling  correction  for a different approach).
+
+There is a special  abbreviation  for  substitutions.   `^',
+when  it  is  the  first  character  on  an  input  line, is
+equivalent to `!:s^'.
+
+^ == !:s^
+
+Thus we might have  said
+
+^rot^root   <--------------------------------- fix one occurance of one word of the previous command
+
+to  make  the  spelling  correction in the previous example.
+This is the only history substitution which does not  expli-
+citly begin with `!'.
+
+
+So
+
+prompt> mail -s "I forgot my password" rot
+Mail: bad user 'rot'.
+
+prompt> ^rot^root
+mail -s "I forgot my password" root
+Mail: mail sent.
+
+
+In the following command:  !# is the current command
+:1 is the first argument and .orig is a string literal)
+
+prompt> cp wumpus.man !#:1.orig <----------- reference argument on the CURRENT command
+
+will copy wumpus.man to wumpus.man.orig
+
+
+
+We  could say  `echo  hello out there', then `echo !*:u' to capitalize `hello',
+`echo !*:au' to say it out loud, or  `echo  !*:agu' to  really  shout.   We
+might  follow `mail -s "I forgot my password" rot' with `!:s/rot/root' to
+correct  the  spelling of  `root'  (but  see  Spelling  correction  for a
+different approach).  
+
+prompt> echo hello out there
+hello out there
+
+prompt> echo !*:u    <----- uppercase the first character of the first argument
+echo Hello out there
+Hello out there
+
+prompt> echo !*:au   <----- uppercase ALL of the characters of the first argument
+echo HELLO out there
+HELLO out there
+
+prompt> echo !*:agu  <----- uppercase ALL of the characters of ALL of the arguments
+echo HELLO OUT THERE
+HELLO OUT THERE
+
+
+   ----------   histlit  ----------
+histlit shell variable being set allows history items to be recalled
+literally, ie. with no substitutions pre-applied.
+
+prompt> set histlit=1
+
+prompt> echo $histlit
+1
+
+prompt> echo hello out there
+hello out there
+
+prompt> echo !*:agu <---- command recalled from history literally (as typed, before any expansions).
+echo HELLO OUT THERE
+HELLO OUT THERE
+
+prompt> unset histlit
+
+prompt> echo HELLO OUT THERE
+HELLO OUT THERE
+
