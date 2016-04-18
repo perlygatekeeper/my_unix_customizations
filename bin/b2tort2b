@@ -57,8 +57,7 @@ if ($ARGV[0] eq '-b') {
      @in = $::ARGV[1];
   }
   &tobinary(@in);
-}
-elsif ($ARGV[0] eq '-t') {
+} elsif ($ARGV[0] eq '-t') {
   if ($ARGV[1] eq '-f') {
      $file = $::ARGV[2];
      open(F, "<$file") || die "Error: unable to open $file - $!\n";
@@ -78,3 +77,5 @@ else {
  &help();
  exit(1);
 }
+
+__END__
