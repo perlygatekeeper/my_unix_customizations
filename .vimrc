@@ -27,7 +27,6 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'tpope/vim-speeddating'
 Plugin 'scrooloose/nerdtree'
-Plugin 'bling/vim-airline'
 Plugin 'Spaceghost/vim-matchit'
 Plugin 'michaeljsmith/vim-indent-object'
 Plugin 'tommcdo/vim-exchange'
@@ -139,7 +138,7 @@ endif
 let mapleader = "="
 " next few lines highlight column 79 on lines with a character in column 79
 " as an aid to keep comment boxes to 80 columns wide
-" highlight ColorColumn ctermbg=darkred
+highlight ColorColumn ctermbg=lightred
 let cc=matchadd('ColorColumn', '\%79v', 100)
 " Map ^L to do what it does, but also clear search highlighting.
 nnoremap <C-L> :nohlsearch<Cr>:call matchdelete(cc)<Cr><C-L>
@@ -151,8 +150,9 @@ nnoremap <Space> i<Space><Esc>
 " Easy underscore insert
 nnoremap _ i_<Esc>
 " Easy blank line after cursor-line
-nnoremap <Cr> o<Esc>k
+"nnoremap <Cr> o<Esc>k
 " doesn't work nnoremap <S-Enter> O<Esc>j
+nnoremap <S-Enter> O<Esc>j
 nnoremap qq :q!|
 nnoremap # 0i# <Esc>j
 nnoremap <leader>vimrc :tabe ~/.vimrc<cr>
