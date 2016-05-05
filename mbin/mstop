@@ -1,4 +1,0 @@
-#!/bin/sh
-sudo /etc/init.d/varnish  stop
-sudo /etc/init.d/manta    stop
-sudo /etc/init.d/manta_cp stop

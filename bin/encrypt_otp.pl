@@ -144,7 +144,7 @@ encrypt_otp.pl --man  to print full manual
 =head1 DESCRIPTION
 
 encrypt_otp.pl will encrypt or decrypt input given to it, either via the
---infile option or STDIN.  It will do so using the choose one-time-pad, which
+--infile option or STDIN.  It will do so using the chosen one-time-pad, which
 are stored in the subdirectory 'randomness' and named random-bytes-DD.txt where
 DD is the zero-padded, decimal number of the pad, which may be set via the
 --pad_number option.

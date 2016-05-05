@@ -1,5 +1,5 @@
 #!/usr/bin/env perl
-# An earlier attempt at a perl filter to put a box around text.
+# DEPRCATED! An earlier attempt at a perl filter to put a box around text.
 
 $name = $0;
 $name =~ s'.*/''; # remove path--like basename

@@ -42,7 +42,6 @@ $copyright="$last_mod_date. All rights reserved.";
 #               ie. with the '.tar' extention (if any) removed
 # CHOSEN     == as input by the user at execution time.
 
-
 foreach $file (@files) {
   if ($pieces) { 
     &pieces($file);

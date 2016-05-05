@@ -150,8 +150,9 @@ nnoremap <Space> i<Space><Esc>
 " Easy underscore insert
 nnoremap _ i_<Esc>
 " Easy blank line after cursor-line
-nnoremap <Cr> o<Esc>k
+"nnoremap <Cr> o<Esc>k
 " doesn't work nnoremap <S-Enter> O<Esc>j
+nnoremap <S-Enter> O<Esc>j
 nnoremap qq :q!|
 nnoremap # 0i# <Esc>j
 nnoremap <leader>vimrc :tabe ~/.vimrc<cr>

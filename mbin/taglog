@@ -1,2 +1,0 @@
-#!/bin/bash
-/usr/bin/sudo /bin/bash -c '/bin/echo -e "-----\n\n" >> /var/log/apache2/'`/bin/hostname`'_manta_error.'`date -u "+%Y%m%d%H"`
