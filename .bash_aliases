@@ -75,4 +75,16 @@ a       pidw='ps axuww| grep \!* | grep -v grep'
 a       slay='(set j=`ps -ax|grep \!*|head -1`;kill -9  $j[1]) >& /dev/null'
 a        zap='(set j=`ps -ax|grep \!*|head -1`;kill -1  $j[1]) >& /dev/null'
 a       term='(set j=`ps -ax|grep \!*|head -1`;kill -15 $j[1]) >& /dev/null'
+
+a d2h="perl -e 'printf qq|%X\n|, int( shift )'"
+a d2o="perl -e 'printf qq|%o\n|, int( shift )'"
+a d2b="perl -e 'printf qq|%b\n|, int( shift )'"
+
+a h2d="perl -e 'printf qq|%d\n|, hex( shift )'"
+a h2o="perl -e 'printf qq|%o\n|, hex( shift )'"
+a h2b="perl -e 'printf qq|%b\n|, hex( shift )'"
+
+a o2h="perl -e 'printf qq|%X\n|, oct( shift )'"
+a o2d="perl -e 'printf qq|%d\n|, oct( shift )'"
+a o2b="perl -e 'printf qq|%b\n|, oct( shift )'"
 # export TERM=xtermc

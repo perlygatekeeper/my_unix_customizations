@@ -25,7 +25,8 @@ a lsdir		'ls -l | grep drw'
 a cx		"chmod +x"
 a mcd		"mkdir \!:1; cd \!:1;"
 a orig 		'cp \!* \!*.orig'
-a odiff     'diff -b -w \!* \!*.orig'
+a odiff         'diff -b -w \!* \!*.orig'
+a sdiff         'sdiff -B -b -W -w `tput cols`'
 a ..		"cd .."
 a .			"source"
 a c			'clear'
@@ -62,6 +63,18 @@ a str		'strings - \!* | less'
 a vrc		'vim ~/.tcshrc'
 a vvrc		'vim ~/.vimrc'
 a src		'source ~/.tcshrc'
+
+a d2h           "perl -e 'printf qq|%#X\n|, int( shift )'"
+a d2o           "perl -e 'printf qq|%#o\n|, int( shift )'"
+a d2b           "perl -e 'printf qq|%#b\n|, int( shift )'"
+
+a h2d           "perl -e 'printf qq|%d\n|,  hex( shift )'"
+a h2o           "perl -e 'printf qq|%#o\n|, hex( shift )'"
+a h2b           "perl -e 'printf qq|%#b\n|, hex( shift )'"
+
+a o2h           "perl -e 'printf qq|%#X\n|, oct( shift )'"
+a o2d           "perl -e 'printf qq|%d\n|,  oct( shift )'"
+a o2b           "perl -e 'printf qq|%#b\n|, oct( shift )'"
 
 setenv LSCOLORS "Gxfxcxdxbxegedabagacad"
 setenv PAGER	"/usr/bin/less -r "

@@ -2,14 +2,14 @@
 # A perl script to swap first to words every line.
 
 my $name = $0; $name =~ s'.*/''; # remove path--like basename
-my $usage = "usage:\n$name [-opt1] [-opt2] [-opt3]";
+my $usage = "usage:\n$name";
 
 use strict;
 use warnings;
 
 while (<>) {
 # s/^(\W*)(\w+)(\W+)(\w+)(\W.*)$/.$1.$4.$3.$2.$5./;
-  s/^(\s*)(\S+)(\s+)(\S+)(\s*)$/$1$4$3$2$5/;
+  s/^([#]?)(\s*)(\S+)(\s+)(\S+)(\s*)/ $1 . $2 . $5 . $4 . $3 . $6/xe;
   print;
 }
 
@@ -30,3 +30,8 @@ robin			bird
 eagle			bird
 hawk			bird
 sparrow			bird
+
+
+
+#   Vamshi/Mark  2012/04/02  Added Environment variable substitution for file names
+#   2012/04/02  Vamshi/Mark  Added Environment variable substitution for file names
