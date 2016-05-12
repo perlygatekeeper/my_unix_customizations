@@ -7,11 +7,11 @@ gg: cursor to top of file. After using gg (for example, to edit some import
 	clipboard.
 
 gj and gk: cursor to next row, cursor to previous row ("make j and k do the
-		   right thing"). The j and k commands are defined as "move to next
+		   right thing"). the j and k commands are defined as "move to next
 		   line" and "move to previous line", not "move to next screen row" and
-		   "move to previous screen row". This is an important distinction to
-		   make when long lines are wrapped, and I find "move to next/previous
-		   screen row" is a more reasonable default. Protip: use noremap j gj
+		   "move to previous screen row". this is an important distinction to
+		   make when long lines are wrapped, and i find "move to next/previous
+		   screen row" is a more reasonable default. protip: use noremap j gj
 		   and noremap k gk in your vimrc.
 
 
@@ -33,12 +33,12 @@ gq leaves cursor where movement command lands and is therefore able to be used w
 '.' repeat. as with gqj for line-by-line formatting or gq} for paragraph by paragraph
 formatting.
 
-gv ?
+gv reselect last visual block
 gV ?
 
 gh, gH, g ctrl-H  start select mode in character, line and block modes respectively
 
-10g 
+10gg      goto line 10 
 
 gr{char}  virtual replace N characters with {char}
 
