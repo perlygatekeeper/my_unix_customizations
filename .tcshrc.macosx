@@ -46,6 +46,6 @@ setenv MANPATH /usr/share/man:/opt/local/share/man:/usr/local/man:/usr/local/sha
 setenv PATH /Users/steve/bin:/sbin:/bin:/opt/local/bin:/usr/bin:/usr/sbin:/usr/libexec:/usr/X11/bin:/usr/local/bin:/System/Library/Perl/Extras/bin:/opt/local/lib/mysql5/bin:/opt/local/lib/postgresql90/bin:/opt/local/share/java/apache-ant/bin:/opt/local/apache2/bin:/opt/local/libexec/perl5.12/sitebin:/Developer/usr/bin:/Developer/Makefiles/bin:/opt/local/libexec/perl5.16
 setenv PATH /usr/local/git/bin:/opt/local/bin:/opt/local/sbin:$PATH
 
-setenv PERL5LIB "/Users/Steve/Projects/Thingiverse/lib"
+setenv PERL5LIB "/Users/Steve/Projects/Programming/Thingiverse/lib"
 
 setenv WORDS /usr/share/dict/web2

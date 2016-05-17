@@ -16,12 +16,12 @@ while (<>) {
 exit 0;
 
 __END__
-dog				mammal
-cat				mammal
+dog			mammal
+cat			mammal
 elephant		mammal
 anteater		mammal
 wasp			insect
-ant				insect
+ant			insect
 honey_bee		insect
 beetle			insect
 roach			insect

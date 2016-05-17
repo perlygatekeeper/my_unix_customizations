@@ -115,3 +115,12 @@ if ( -f ~/.tcshrc.home && -f ~/.home ) then
     source ~/.tcshrc.home
 endif
 endif
+
+##
+# Your previous /Users/Steve/.tcshrc file was backed up as /Users/Steve/.tcshrc.macports-saved_2016-04-22_at_00:56:06
+##
+
+# MacPorts Installer addition on 2016-04-22_at_00:56:06: adding an appropriate PATH variable for use with MacPorts.
+setenv PATH "/opt/local/bin:/opt/local/sbin:$PATH"
+# Finished adapting your PATH environment variable for use with MacPorts.
+
