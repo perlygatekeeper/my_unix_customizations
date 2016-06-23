@@ -3,16 +3,41 @@
 # A perl script to change character sequence 
 # 342 200 231 which looks like this '’'
 #
-$name = $0; $name =~ s'.*/''; # remove path--like basename
-$usage = "usage:\n$name [-opt1] [-opt2] [-opt3]";
+use strict;
+use warnings;
+
+my $name = $0; $name =~ s'.*/''; # remove path--like basename
+my $usage = "usage:\n$name [-opt1] [-opt2] [-opt3]";
+my $config_value;
 
 while (<>) {
-  s/\342\200\231/'/g;
-  s/\302\267/*/g;
-  print;
+# s/\342\200\231/'/g;
+# s/\302\267/*/g;
+  print convert_word_chars($_);
 }
 
 exit 0;
+
+sub convert_word_chars {
+    my($s) = @_;
+    return '' unless $s;
+    if ($config_value =~ m'smart_replace' ) { # html character entity replacements
+        $s =~ s/\342\200\231/’/g;
+        $s =~ s/\342\200\230/‘/g;
+        $s =~ s/\342\200\246/…/g;
+        $s =~ s/\342\200\223/-/g;
+        $s =~ s/\342\200\224/—/g;
+        $s =~ s/\342\200\234/“/g;
+        $s =~ s/\342\200\235/”/g;
+    } else { # ascii equivalent replacements
+        $s =~ s/\342\200[\230\231]/'/g;
+        $s =~ s/\342\200\246/.../g;
+        $s =~ s/\342\200\223/-/g;
+        $s =~ s/\342\200\224/--/g;
+        $s =~ s/\342\200[\234\235]/"/g;
+    }
+    $s;
+}
 
 __END__
 print "\342\200\231";

@@ -6,10 +6,10 @@ if ( $?prompt ) then
 
 # SHELL-RELATED ALIASES
 alias a		alias
-a u			unalias
-a h			history
-a j			jobs
-a d			dirs -v
+a u		unalias
+a h		history
+a j		jobs
+a d		dirs -v
 a po		popd
 a pu		pushd
 a rot		pushd +1
@@ -28,8 +28,8 @@ a orig 		'cp \!* \!*.orig'
 a odiff         'diff -b -w \!* \!*.orig'
 a sdiff         'sdiff -B -b -W -w `tput cols`'
 a ..		"cd .."
-a .			"source"
-a c			'clear'
+a .		"source"
+a c		'clear'
 a day		"date '+%a %h %d %Y'"
 a bye		exit
 a logout	exit
@@ -128,12 +128,3 @@ if ( -f ~/.tcshrc.home && -f ~/.home ) then
     source ~/.tcshrc.home
 endif
 endif
-
-##
-# Your previous /Users/Steve/.tcshrc file was backed up as /Users/Steve/.tcshrc.macports-saved_2016-04-22_at_00:56:06
-##
-
-# MacPorts Installer addition on 2016-04-22_at_00:56:06: adding an appropriate PATH variable for use with MacPorts.
-setenv PATH "/opt/local/bin:/opt/local/sbin:$PATH"
-# Finished adapting your PATH environment variable for use with MacPorts.
-

@@ -1,10 +1,31 @@
+# --------------------------------------------------------------------------------------------------------
+# -G  colorized output
+# -f  output not sorted (turns on -a opt)
+# -B  print non-printable chars as \xxx
+# -b  like -B but use C-x if possible
+# -a  include directory entries that begin with .
+# -l  long listing
+# -O  include the file flags in a long (-l) output.
+# -@  display extended attribute keys and sizes in long (-l) output.
+# -e  print the Access Control List (ACL) associated with the file, if present, in long (-l) output.
+
 a ls       '\ls -GFb'
 a ll       '\ls -GFbalO'
 a la       '\ls -GFbalO@e'
 
+# --------------------------------------------------------------------------------------------------------
 # xattr is the command to list and modify Extended attributes on mac files
 # com.apple.quarentine 
 # xattr file or xattr -l file
+# xattr delete ATTR file
+
+# --------------------------------------------------------------------------------------------------------
+# macport commands:
+#  provides
+#    Determines which port owns a given file and can take either a relative or absolute path. For example:
+
+#          port provides /opt/local/etc/irssi.conf
+#          port provides include/tiff.h
 
 # installed
 #    Show the installed versions and variants for portname.  If no portname is given, all installed ports are shown.
@@ -15,19 +36,13 @@ a la       '\ls -GFbalO@e'
 #  contents
 #    Lists the files installed by portname.
 
-#  provides
-#    Determines which port owns a given file and can take either a relative or absolute path. For example:
-
-#          port provides /opt/local/etc/irssi.conf
-#          port provides include/tiff.h
-
-
 a installed     port installed
 a contents      port contents
 a files         port provides
 a inst          sudo port install
 a search        port search
 
+# --------------------------------------------------------------------------------------------------------
 # good way to regenerate MANPATH:
 # locate 'cat' 'man' | \
 # egrep '/(cat|man)/\1' | \
@@ -39,13 +54,29 @@ a search        port search
 # perl -p -0 -e 's,\n/,:/,smg;'
 setenv MANPATH /usr/share/man:/opt/local/share/man:/usr/local/man:/usr/local/share/man:/usr/local/clamXav/share/man:/usr/X11/share/man:/opt/local/libexec/gnubin/man:/Developer/usr/share/man:/Developer/usr/X11/share/man:/Developer/usr/llvm-gcc-4.2/share/man:/Applications/MAMP/Library/share/man:/Developer/Library/Xcode/PrivatePlugIns/Xcode3Core.ideplugin/Contents/SharedSupport/usr/share/man:/System/Library/Java/Support/VisualVM.bundle/Contents/Home/man:/opt/local/Library/Frameworks/Python.framework/Versions/2.7/share/man:/usr/llvm-gcc-4.2/share/man:/opt/local/share/perl5.20/siteman
 
+# --------------------------------------------------------------------------------------------------------
 # good way to regenerate PATH
 # locate '/bin' '/sbin' | \
 # wwo -'\.cpan' -'Frameworks' -'Platforms' -'DrupalStack'| \
 # grep 'bin$'
-setenv PATH /Users/steve/bin:/sbin:/bin:/opt/local/bin:/usr/bin:/usr/sbin:/usr/libexec:/usr/X11/bin:/usr/local/bin:/System/Library/Perl/Extras/bin:/opt/local/lib/mysql5/bin:/opt/local/lib/postgresql90/bin:/opt/local/share/java/apache-ant/bin:/opt/local/apache2/bin:/opt/local/libexec/perl5.12/sitebin:/Developer/usr/bin:/Developer/Makefiles/bin:/opt/local/libexec/perl5.16
-setenv PATH /usr/local/git/bin:/opt/local/bin:/opt/local/sbin:$PATH
+#setenv PATH "~/bin:/sbin:/bin:/opt/local/bin:/usr/bin:/usr/sbin:/usr/libexec:/usr/X11/bin:/usr/local/bin:/System/Library/Perl/Extras/bin:/opt/local/lib/mysql5/bin:/opt/local/lib/postgresql90/bin:/opt/local/share/java/apache-ant/bin:/opt/local/apache2/bin:/opt/local/libexec/perl5.12/sitebin:/Developer/usr/bin:/Developer/Makefiles/bin:/opt/local/libexec/perl5.16"
+setenv PATH "/Users/stevenparker/bin:/sbin:/bin:/usr/local/git/bin:/opt/local/bin:/opt/local/sbin:/usr/bin:/usr/sbin:/usr/libexec"
 
-setenv PERL5LIB "/Users/Steve/Projects/Programming/Thingiverse/lib"
+# --------------------------------------------------------------------------------------------------------
+# setenv PERL5LIB "/Users/Steve/Projects/Programming/Thingiverse/lib"
 
 setenv WORDS /usr/share/dict/web2
+
+# --------------------------------------------------------------------------------------------------------
+# FROM: http://unix.stackexchange.com/questions/9665/create-tar-archive-of-a-directory-except-for-hidden-files
+# There is, however an undocumented(?) way to make the system-supplied Mac OS X
+# archivers behave like they do on other Unixy systems: the COPYFILE_DISABLE
+# environment variable. Setting this variable (to any value, even the empty
+# string), will prevent the archivers from generating ._* archive members to
+# represent any extended information associated with the archived files. Its
+# presence will also prevent the archivers from trying to interpret such
+# archive members as extended information.
+
+# COPYFILE_DISABLE=1 tar czf new.tar.gz …
+# COPYFILE_DISABLE=1 tar xzf unixy.tar.gz …
+setenv COPYFILE_DISABLE 1

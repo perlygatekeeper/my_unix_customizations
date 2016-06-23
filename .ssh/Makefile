@@ -1,3 +1,3 @@
 keys:
-	ssh-keygen -t rsa -C "parks17@nationwide.com"
+	ssh-keygen -t rsa -C "parker.12@osu.edu"
 
