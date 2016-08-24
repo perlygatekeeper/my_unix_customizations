@@ -1,6 +1,6 @@
 a ginfo 'echo "Branches:"; git branch -v; echo "\nRemotes:"; git remote -v; echo "\nStatus:"; git status'
 a gic	'git commit'
-a gicam	'git commit -a -m "$@"'
+a gicam	'git commit -a -m "\!:*"'
 a gich	'git checkout'
 a gib	'git branch'
 a gibv	'git branch -v'

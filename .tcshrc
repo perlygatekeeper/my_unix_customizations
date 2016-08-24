@@ -118,6 +118,9 @@ endif
 if ( -f ~/.tcshrc.ubuntu && -f ~/.ubuntu ) then
     source ~/.tcshrc.ubuntu
 endif
+if ( -f ~/.tcshrc.splunk && -f ~/.splunk ) then
+    source ~/.tcshrc.splunk
+endif
 if ( -f ~/.tcshrc.git && -f ~/.git_aliases ) then
     source ~/.tcshrc.git
 endif

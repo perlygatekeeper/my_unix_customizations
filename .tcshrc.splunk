@@ -1,0 +1,85 @@
+# Useful Splunk aliases.  Steve Parker. Version 1.2  Aug 23 2016
+setenv SPLUNK_HOME      "/opt/splunk"
+setenv SPLUNK           "${SPLUNK_HOME}/bin/splunk"
+setenv SPLUNK_AS_SPLUNK "sudo -u splunk ${SPLUNK}"
+setenv SC               "${SPLUNK_HOME}/etc/system/local/serverclass.conf"
+setenv DA               "${SPLUNK_HOME}/etc/deployment_apps/"
+
+a da             "cd ${DA}"
+a vsc            "sudo -u splunk /usr/bin/vim ${SC}"
+a splnk-it	 "sudo -u splunk"
+a vsplnk	 "sudo -u splunk /usr/bin/vim ${SPLUNK_HOME}/etc/"'\!:1'
+a splnk		 "${SPLUNK_AS_SPLUNK}"
+a splnk-btools	 "${SPLUNK_AS_SPLUNK} btool "
+a splnk-mon      "${SPLUNK_AS_SPLUNK}  enable maintenance-mode"
+a splnk-moff     "${SPLUNK_AS_SPLUNK} disable maintenance-mode"
+a splnk-diag     "${SPLUNK_AS_SPLUNK} diag"
+a splnk-conf     "${SPLUNK_AS_SPLUNK} show config"
+a splnk-XXXX     "${SPLUNK_AS_SPLUNK} XXXX OBJECT"
+a splnk-rr       "${SPLUNK_AS_SPLUNK} rolling-restart cluster-peers"
+a splnk-acb      "${SPLUNK_AS_SPLUNK} apply cluster-blundle"
+a splnk-scbs     "${SPLUNK_AS_SPLUNK} show cluster-blundle-status"
+a splnk-redeploy "${SPLUNK_AS_SPLUNK} reload deploy-server"
+a splnk-start    "${SPLUNK_AS_SPLUNK} start   splunkd"
+a splnk-restart  "${SPLUNK_AS_SPLUNK} restart splunkd"
+a splnk-stop     "${SPLUNK_AS_SPLUNK} stop    splunkd"
+a splnk-status   "${SPLUNK_AS_SPLUNK} status  splunkd"
+
+#         start,stop,restart  [splunkd|splunkweb]
+#         refresh             deploy-clients
+#         reload              deploy-server
+#         rolling-restart     cluster-peers|shcluster-members
+
+#         diag                NONE
+#         show                config
+#         status              [splunkd|splunkweb]
+
+# Syntax:
+# 	./splunk [command] [object] [-parameter <value>]...
+# Supported commands and objects:
+#         [command]           [objects]
+#         add                 [exec|forward-server|index|licenser-pools|licenses|master|monitor|oneshot|
+#                             saved-search|search-server|tcp|udp|user]
+#         anonymize           source
+#         apply               cluster-bundle
+#         clean               [all|eventdata|globaldata|inputdata|userdata|kvstore]
+#         create              app
+#         createssl           NONE                    
+#         diag                NONE
+#         disable             [app|boot-start|deploy-client|deploy-server|
+#                             dist-search|index|listen|local-index|maintenance-mode|shcluster-maintenance-mode|webserver|web-ssl]
+#         display             [app|boot-start|deploy-client|deploy-server|
+#                             dist-search|index|jobs|listen|local-index]
+#         edit                [app|cluster-config|shcluster-config|exec|index|licenser-localslave|licenses|
+#                             licenser-groups|master|monitor|saved-search|search-server|tcp|udp|user]
+#         enable              [app|boot-start|deploy-client|deploy-server|dist-search|
+#                             index|listen|local-index|maintenance-mode|shcluster-maintenance-mode|webserver|web-ssl]
+#         export              [eventdata|userdata]
+#         find                logs
+#         help                NONE
+#         import              userdata
+#         install             app
+#         list                [cluster-buckets|cluster-config|cluster-generation|cluster-peers|deploy-clients|excess-buckets|
+#                             shcluster-artifacts|shcluster-config|shcluster-members|
+#                             exec|forward-server|index|jobs|licenser-groups|licenser-localslave|licenser-messages|
+#                             licenser-pools|licenser-slaves|licenser-stacks|licenses|master|master-info|monitor|peer-buckets|peer-info|
+#                             saved-search|search-server|tcp|udp|user]
+#         login,logout        NONE
+#         offline             NONE
+#         package             app
+#         refresh             deploy-clients
+#         reload              [ad|auth|deploy-server|index|listen|monitor|registry|script|tcp|udp|perfmon|wmi]
+#         remove              [app|cluster-peers|excess-buckets|exec|forward-server|index|jobs|licenser-pools|licenses|master|monitor|
+#                             saved-search|search-server|tcp|udp|user]
+#         rolling-restart     cluster-peers|shcluster-members
+#         rtsearch            [app|batch|detach|earliest_time|header|id|max_time|maxout|output|preview|timeout|
+#                             uri|wrap]
+#         search              [app|batch|detach|earliest_time|header|id|index_earliest|index_latest|latest_time|
+#                             max_time|maxout|output|preview|timeout|uri|wrap]
+#         set                 [datastore-dir|deploy-poll|default-hostname|default-index|
+#                             minfreemb|servername|server-type|splunkd-port|web-port|kvstore-port]
+#         show                [config|datastore-dir|deploy-poll|default-hostname|default-index|
+#                             jobs|minfreemb|servername|splunkd-port|web-port|kvstore-port]
+#         spool               NONE
+#         start,stop,restart  [splunkd|splunkweb]
+#         status              [splunkd|splunkweb]
