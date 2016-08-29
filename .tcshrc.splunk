@@ -3,7 +3,7 @@ setenv SPLUNK_HOME      "/opt/splunk"
 setenv SPLUNK           "${SPLUNK_HOME}/bin/splunk"
 setenv SPLUNK_AS_SPLUNK "sudo -u splunk ${SPLUNK}"
 setenv SC               "${SPLUNK_HOME}/etc/system/local/serverclass.conf"
-setenv DA               "${SPLUNK_HOME}/etc/deployment_apps/"
+setenv DA               "${SPLUNK_HOME}/etc/deployment-apps/"
 
 a da             "cd ${DA}"
 a vsc            "sudo -u splunk /usr/bin/vim ${SC}"
