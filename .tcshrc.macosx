@@ -44,7 +44,7 @@ setenv MANPATH "/usr/share/man:/opt/local/share/man:/usr/local/man:/usr/local/sh
 # wwo -'\.cpan' -'Frameworks' -'Platforms' -'DrupalStack'| \
 # grep 'bin$'
 setenv PATH "/sbin:/bin:/usr/bin:/usr/sbin:/usr/libexec:/usr/X11/bin:/usr/local/bin:/System/Library/Perl/Extras/bin:/opt/local/lib/mysql5/bin:/opt/local/lib/postgresql90/bin:/opt/local/share/java/apache-ant/bin:/opt/local/apache2/bin:/Developer/usr/bin:/Developer/Makefiles/bin:/opt/local/libexec/perl5.20"
-setenv PATH "/Users/stevenparker/bin:/usr/local/git/bin:/opt/local/bin:/opt/local/sbin:$PATH"
+setenv PATH "${HOME}/bin:/usr/local/git/bin:/opt/local/bin:/opt/local/sbin:$PATH"
 
 #setenv PERL5LIB "~/Projects/Programming/Thingiverse/lib"
 
