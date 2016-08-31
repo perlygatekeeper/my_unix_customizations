@@ -46,7 +46,7 @@ if ( $ll ) {
   $orig_path =~ s':' 'g;
   print qx(echo $orig_path | xargs ls -ld);
 } else {
-  print $path . "";
+  print $path . "\n\n";
 }
 
 #   ***   EXIT GRACEFULLY   ***

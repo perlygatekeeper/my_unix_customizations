@@ -1,0 +1,12 @@
+searching with position set to someplace other than the start of the matching string:
+
+[num]         [num] lines downwards, in column 1
++[num]        [num] lines downwards, in column 1
+-[num]        [num] lines upwards, in column 1
+e[+num]       [num] characters to the right of the end of the match
+e[-num]       [num] characters to the left of the end of the match
+s[+num]       [num] characters to the right of the start of the match
+s[-num]       [num] characters to the left of the start of the match
+b[+num]       [num] identical to s[+num] above (mnemonic: begin)
+b[-num]       [num] identical to s[-num] above (mnemonic: begin)
+;{pattern}    perform another search, see |//;|

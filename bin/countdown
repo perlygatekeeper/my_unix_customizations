@@ -4,7 +4,7 @@
  
 #   ***   Define Usage String   ***
 $name =~ s'.*/'';
-$usage = "usage: $name  [ start(10) ] [ end(1) ] [ by(1*sign(end-start)) ]\n";
+$usage = "usage: $name [ -f(ormat)? 'PREFIX%02dSUFFIX' ] [ start(10) ] [ end(1) ] [ by(1*sign(end-start)) ]\n";
 
 #   ***   Define Values & Flags   ***
 # DEFAULT is countdown from 10 to 0
@@ -13,6 +13,9 @@ $end   =  0;
 $by    = -1;
 
 #   ***   Parse Command Line Argument(s)   ***
+if ( $ARGV[0] == '-f' ) {
+	shift; $sprintf=shift;
+}
 if      ( @ARGV >  3 ) { # 4 or more args are not allowed
   die("$usage");
 } elsif ( @ARGV == 0 ) { # no    args, so assume 10  to 0 by 1's
@@ -40,11 +43,18 @@ if ( $by == 0 ) {
 	warn("countdown: 'by' option must be nonzero!\n");
 	$by = &sgn($end-$start);
 }
+$sprintf ||= "%d\n";
 
 #   ***   MAIN LOOP   ***
 
 $test = &sgn($by);
-for ( $i = $start; ($test * $i) <= $test * $end; $i += $by ) { print $i."\n"; }
+for ( $i = $start; ($test * $i) <= $test * $end; $i += $by ) {
+  printf $sprintf, $i;
+}
+
+if ( $sprintf !~ /\\n/ ) {
+  print "\n";
+}
 
 exit 0;
 
