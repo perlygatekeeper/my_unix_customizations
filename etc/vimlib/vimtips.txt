@@ -9,14 +9,14 @@ __BEGIN__
 ------------------------------------------------------------------------------
 " new items marked [N] , corrected items marked [C]
 " *best-searching*
-/joe/e                      : cursor set to End of match
-3/joe/e+1                   : find 3rd joe cursor set to End of match plus 1 [C]
-/joe/s-2                    : cursor set to Start of match minus 2
-/joe/+3                     : find joe move cursor 3 lines down
+/joe/e                      : cursor set to End of match                             <<< new for Steve.
+3/joe/e+1                   : find 3rd joe cursor set to End of match plus 1 [C]     <<< new for Steve.
+/joe/s-2                    : cursor set to Start of match minus 2                   <<< new for Steve.
+/joe/+3                     : find joe move cursor 3 lines down                      <<< new for Steve.
 /^joe.*fred.*bill/          : find joe AND fred AND Bill (Joe at start of line)
 /^[A-J]/                    : search for lines beginning with one or more A-J
-/begin\_.*end               : search over possible multiple lines
-/fred\_s*joe/               : any whitespace including newline [C]
+/begin\_.*end               : search over possible multiple lines                    <<< new for Steve.
+/fred\_s*joe/               : any whitespace including newline [C]                   <<< new for Steve.
 /fred\|joe                  : Search for FRED OR JOE
 /.*fred\&.*joe              : Search for FRED AND JOE in any ORDER!
 /\<fred\>/                  : search for fred but not alfred or frederick [C]
@@ -24,6 +24,7 @@ __BEGIN__
 /\D\d\d\d\d\D               : Search for exactly 4 digit numbers
 /\<\d\{4}\>                 : same thing
 /\([^0-9]\|^\)%.*%          : Search for absence of a digit or beginning of line
+
 " finding empty lines
 /^\n\{3}                    : find 3 empty lines
 /^str.*\nstr                : find 2 successive lines starting with str
