@@ -5,6 +5,7 @@ setenv SPLUNK_AS_SPLUNK "sudo -u splunk ${SPLUNK}"
 setenv SC               "${SPLUNK_HOME}/etc/system/local/serverclass.conf"
 setenv DA               "${SPLUNK_HOME}/etc/deployment-apps/"
 
+a findconf       "sudo -u splunk find ${SPLUNK_HOME}/etc -type f -name '*.conf' -exec grep \!* /dev/null {} \;"
 a da             "cd ${DA}"
 a vsc            "sudo -u splunk /usr/bin/vim ${SC}"
 a splnk-it	 "sudo -u splunk"

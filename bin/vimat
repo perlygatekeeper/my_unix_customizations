@@ -1,13 +1,15 @@
 #!/usr/bin/env perl
-#
-# A perl script to start vim on a file at a certain line, input
-# will can either
-# FILENAME LINE#
-# LINE# FILENAME
-# or FILENAME:LINE#
-#
+# A perl script to start vim on a file at a certain line
+# useful input option  FILENAME:LINE# since grep -n returns this format:
+# grep -n GIFTOPNM gifinfo /dev/null
+# gifinfo:16:$GIFTOPNM= (-f '/usr/common/bin/netpbm/giftopnm') ?
+# gifinfo:24:chomp $GIFTOPNM;
+# gifinfo:41:#system("$GIFTOPNM -verbose -comments $_  2>&1 >/dev/null");
+# gifinfo:44: $command="$GIFTOPNM -verbose -comments $_ 2>&1 >/dev/null |";
+# gifinfo:45: $command="$GIFTOPNM |$PPMHIST $_ |" if ($colors);
+
 my $name = $0; $name =~ s'.*/''; # remove path--like basename
-my $usage = "usage:\n$name [-opt1] [-opt2] [-opt3]";
+my $usage = "usage:\n$name [ FILENAME LINE# ] [ LINE#:FILENAME ] [ FILENAME:LINE# ]";
 
 use strict;
 use warnings;
@@ -38,7 +40,7 @@ while (@ARGV) {
   } elsif ( $arg =~ /(\S+):(\d+)/ ) {
     push(@$files,{ position => $2, name => $1 } );
   } elsif ( $arg =~ /^-?-?(\d+)/ ) {
-    $files->[$#{$files}]{position} = shift @ARGV;
+    $files->[$#{$files}]{position} = $1;
   # } elsif ( not @$files and -e $arg ) {
   } elsif ( -e $arg ) {
     push(@$files,{ name => $arg } );
@@ -73,3 +75,8 @@ system($command);
 exit 0;
 
 __END__
+
+echo use:    find . -type f -exec grep '^ln' {} \; | sh
+echo vimat is the 'real' file
+ln -fs vimat startvim
+ln -fs vimat vimstart
