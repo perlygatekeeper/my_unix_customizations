@@ -2,13 +2,216 @@
 #
 # A perl script to change character sequence 
 # 342 200 231 which looks like this '’'
+# keywords: utf8 utf-8 ascii windows
 #
 $name = $0; $name =~ s'.*/''; # remove path--like basename
 $usage = "usage:\n$name [-opt1] [-opt2] [-opt3]";
 
 while (<>) {
-  s/\342\200\231/'/g;
-  s/\302\267/*/g;
+  if (/\302/) {
+    s/\302\240/ /g;                # nbsp to sp
+    s/\302\267/*/g;
+    s,\302\274,1/4,g;              # VUGLAR FRACTION ONE QUARTERS
+    s,\302\275,1/2,g;              # VUGLAR FRACTION ONE HALF
+    s,\302\276,3/4,g;              # VUGLAR FRACTION THREE QUARTERS
+    s,\302\253,<<,g;               # LEFT-POINTING DOUBLE ANGLE QUOTATION MARK
+    s,\302\273,>>,g;               # RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK
+    s,\302\251,(C),g;              # COPYRIGHT SIGN
+    s,\302\256,(R),g;              # REGISTERED SIGN
+    s/\302\260/^o/g;               # DEGREE SIGN
+    s/\302\271/^1/g;               # SUPERSCRIPT ONE
+    s/\302\262/^2/g;               # SUPERSCRIPT TWO
+    s/\302\263/^3/g;               # SUPERSCRIPT THREE
+  }
+
+  if (/\342/) {
+    s/\342\200[\230-\233]/'/g;     # VARIOUS SINGLE QUOTES
+    s/\342\200[\234-\237]/"/g;     # VARIOUS DOUBLE QUOTES
+    s/\342\200[\220-\223]/-/g;     # HYPHEN, NON-BREAKING HYPHEN, FIGURE DASH, EN DASH
+    s/\342\200\224/--/g;           # EM DASH
+    s/\342\200\225/----/g;         # HORIZONTAL BAR
+    s/\342\200\242/*/g;            # BULLET
+    s/\342\200\244/./g;            # ONE DOT LEADER
+    s/\342\200\245/../g;           # TWO DOT LEADER
+    s/\342\200\246/.../g;          # THREE DOT LEADER
+    s/\342\200\247/./g;            # HYPHONATION POINT
+    s/\342\200[\262\265]/'/g;      # PRIME, REVERSED PRIME
+    s/\342\200[\263\266]/''/g;     # DOUBLE PRIME, REVERSED DOUBLE PRIME
+    s/\342\200[\264\267]/'''/g;    # TRIPLE PRIME, REVERSED TRIPLE PRIME
+    s/\342\201\227/''''/g;         # QUADRUPLE PRIME
+
+    s/\342\200\270/^/g;            # CARET
+    s/\342\200\271/</g;            # SINGLE LEFT-POINTING ANGLE QUOTATION MARK
+    s/\342\200\272/>/g;            # SINGLE RIGHT-POINTING ANGLE QUOTATION MARK
+    s/\342\200\273/*/g;            # REFERENCE MARK
+    s/\342\200\274/!!/g;           # DOUBLE EXCLAMATION MARK
+    s/\342\200\275/!?/g;           # INTERROBANG
+    s/\342\201\209/??/g;           # DOUBLE QUESTION MARK
+    s/\342\201\210/?!/g;           # QUESTION EXCLAMATION MARK
+    s/\342\201\211/!?/g;           # EXCLAMATION QUESTION MARK
+    s/\342\201\216/*/g;            # LOW ASTERISK
+    s/\342\201\217/;/g;            # REVERSED SEMICOLON
+    s/\342\201\217/*/g;            # FLOWER PUNCTUATION MARK
+    s/\342\201\260/^0/g;           # SUPERSCRIPT ZERO
+    s/\342\201\261/^i/g;           # SUPERSCRIPT LATIN SMALL LETTER I
+    s/\342\201\262/^2/g;           # SUPERSCRIPT TWO
+    s/\342\201\263/^3/g;           # SUPERSCRIPT THREE
+    s/\342\201\264/^4/g;           # SUPERSCRIPT FOUR
+    s/\342\201\265/^5/g;           # SUPERSCRIPT FIVE
+    s/\342\201\266/^6/g;           # SUPERSCRIPT SIX
+    s/\342\201\267/^7/g;           # SUPERSCRIPT SEVEN
+    s/\342\201\270/^8/g;           # SUPERSCRIPT EIGHT
+    s/\342\201\271/^9/g;           # SUPERSCRIPT NINE
+    s/\342\201\272/^+/g;           # SUPERSCRIPT PLUS SIGN
+    s/\342\201\273/^-/g;           # SUPERSCRIPT MINUS SIGN
+    s/\342\201\274/^=/g;           # SUPERSCRIPT EQUALS  SIGN
+    s/\342\201\275/^(/g;           # SUPERSCRIPT LEFT PARENTHESIS
+    s/\342\201\276/^)/g;           # SUPERSCRIPT RIGHT PARENTHESIS
+    s/\342\201\276/^n/g;           # SUPERSCRIPT LATIN SMALL LETTER N
+    s/\342\202\200/_0/g;           # SUBSCRIPT ZERO
+    s/\342\202\201/_1/g;           # SUBSCRIPT ONE
+    s/\342\202\202/_2/g;           # SUBSCRIPT TWO
+    s/\342\202\203/_3/g;           # SUBSCRIPT THREE
+    s/\342\202\204/_4/g;           # SUBSCRIPT FOUR
+    s/\342\202\205/_5/g;           # SUBSCRIPT FIVE
+    s/\342\202\206/_6/g;           # SUBSCRIPT SIX
+    s/\342\202\207/_7/g;           # SUBSCRIPT SEVEN
+    s/\342\202\210/_8/g;           # SUBSCRIPT EIGHT
+    s/\342\202\211/_9/g;           # SUBSCRIPT NINE
+    s/\342\202\212/_+/g;           # SUBSCRIPT PLUS SIGN
+    s/\342\202\213/_-/g;           # SUBSCRIPT MINUS SIGN
+    s/\342\202\214/_=/g;           # SUBSCRIPT EQUALS  SIGN
+    s/\342\202\215/_(/g;           # SUBSCRIPT LEFT PARENTHESIS
+    s/\342\202\216/_)/g;           # SUBSCRIPT RIGHT PARENTHESIS
+    s/\342\202\220/_a/g;           # SUBSCRIPT LATIN SMALL LETTER A
+    s/\342\202\221/_e/g;           # SUBSCRIPT LATIN SMALL LETTER E
+    s/\342\202\222/_o/g;           # SUBSCRIPT LATIN SMALL LETTER O
+    s/\342\202\223/_x/g;           # SUBSCRIPT LATIN SMALL LETTER X
+    s/\342\202\224/_a/g;           # SUBSCRIPT LATIN SMALL LETTER SCHWA
+    s/\342\202\225/_h/g;           # SUBSCRIPT LATIN SMALL LETTER H
+    s/\342\202\226/_k/g;           # SUBSCRIPT LATIN SMALL LETTER K
+    s/\342\202\227/_l/g;           # SUBSCRIPT LATIN SMALL LETTER L
+    s/\342\202\230/_m/g;           # SUBSCRIPT LATIN SMALL LETTER M
+    s/\342\202\231/_n/g;           # SUBSCRIPT LATIN SMALL LETTER N
+    s/\342\202\232/_p/g;           # SUBSCRIPT LATIN SMALL LETTER P
+    s/\342\202\233/_s/g;           # SUBSCRIPT LATIN SMALL LETTER S
+    s/\342\202\234/_t/g;           # SUBSCRIPT LATIN SMALL LETTER T
+    s/\342\203\241/<->/g;          # COMBINING LEFT RIGHT ARROW ABOVE
+    s/\342\203\245/\\/g;           # COMBINING REVERSE SOLIDUS OVERLAY
+    s/\342\203\246/||/g;           # COMBINING DOUBLE VERTICAL STROKE OVERLAY
+    s/\342\203\250/.../g;          # COMBINING TRIPLE UNDERDOT
+    s/\342\203\252/<-/g;           # COMBINING LEFTWARDS ARROW OVERLAY
+    s,\342\203\253,//,g;           # COMBINING LONG DOUBLE SOLIDUS OVERLAY
+    s/\342\203\260/*/g;            # COMBINING ASTERISK ABOVE
+
+    s,\342\205\220,1/7,;           # VULGAR FRACTION ONE SEVENTH
+    s,\342\205\221,1/9,;           # VULGAR FRACTION ONE NINTH
+    s,\342\205\222,1/10,;          # VULGAR FRACTION ONE TENTH
+    s,\342\206\211,0/3,;           # VULGAR FRACTION ZERO THIRDS
+    s,\342\205\223,1/3,;           # VULGAR FRACTION ONE THIRD
+    s,\342\205\224,2/3,;           # VULGAR FRACTION TWO THIRDS
+    s,\342\205\225,1/5,;           # VULGAR FRACTION ONE FIFTH
+    s,\342\205\226,2/5,;           # VULGAR FRACTION TWO FIFTHS
+    s,\342\205\227,3/5,;           # VULGAR FRACTION THREE FIFTHS
+    s,\342\205\230,4/5,;           # VULGAR FRACTION FOUR FIFTHS
+    s,\342\205\231,1/6,;           # VULGAR FRACTION ONE SIXTH
+    s,\342\205\232,5/6,;           # VULGAR FRACTION FIVE SIXTHS
+    s,\342\205\233,1/8,;           # VULGAR FRACTION ONE EIGHTH
+    s,\342\205\234,3/8,;           # VULGAR FRACTION THREE EIGHTHS
+    s,\342\205\235,5/8,;           # VULGAR FRACTION FIVE EIGHTHS
+    s,\342\205\236,7/8,;           # VULGAR FRACTION SEVEN EIGHTHS
+    s,\342\205\237,1/ ,;           # FRACTION NUMERATOR ONE
+
+    s,\342\205\240,I,g;            # ROMAN NUMERAL ONE
+    s,\342\205\241,II,g;           # ROMAN NUMERAL TWO
+    s,\342\205\242,III,g;          # ROMAN NUMERAL THREE
+    s,\342\205\243,IV,g;           # ROMAN NUMERAL FOUR
+    s,\342\205\244,V,g;            # ROMAN NUMERAL FIVE
+    s,\342\205\245,VI,g;           # ROMAN NUMERAL SIX
+    s,\342\205\246,V,g;            # ROMAN NUMERAL SEVEN
+    s,\342\205\247,V,g;            # ROMAN NUMERAL EIGHT
+    s,\342\205\250,IX,g;           # ROMAN NUMERAL NINE
+    s,\342\205\251,X,g;            # ROMAN NUMERAL TEN
+    s,\342\205\252,XI,g;           # ROMAN NUMERAL ELEVEN
+    s,\342\205\253,XI,g;           # ROMAN NUMERAL TWELVE
+    s,\342\205\254,XII,g;          # ROMAN NUMERAL FIFTY
+    s,\342\205\255,C,g;            # ROMAN NUMERAL ONE HUNDRED
+    s,\342\205\256,D,g;            # ROMAN NUMERAL FIVE HUNDRED
+    s,\342\205\257,M,g;            # ROMAN NUMERAL ONE THOUSAND
+
+    s,\342\205\260,i,g;            # SMALL ROMAN NUMERAL ONE
+    s,\342\205\261,ii,g;           # SMALL ROMAN NUMERAL TWO
+    s,\342\205\262,iii,g;          # SMALL ROMAN NUMERAL THREE
+    s,\342\205\263,iv,g;           # SMALL ROMAN NUMERAL FOUR
+    s,\342\205\264,v,g;            # SMALL ROMAN NUMERAL FIVE
+    s,\342\205\265,vi,g;           # SMALL ROMAN NUMERAL SIX
+    s,\342\205\266,v,g;            # SMALL ROMAN NUMERAL SEVEN
+    s,\342\205\267,v,g;            # SMALL ROMAN NUMERAL EIGHT
+    s,\342\205\270,ix,g;           # SMALL ROMAN NUMERAL NINE
+    s,\342\205\271,x,g;            # SMALL ROMAN NUMERAL TEN
+    s,\342\205\272,xi,g;           # SMALL ROMAN NUMERAL ELEVEN
+    s,\342\205\273,xi,g;           # SMALL ROMAN NUMERAL TWELVE
+    s,\342\205\274,xii,g;          # SMALL ROMAN NUMERAL FIFTY
+    s,\342\205\275,c,g;            # SMALL ROMAN NUMERAL ONE HUNDRED
+    s,\342\205\276,d,g;            # SMALL ROMAN NUMERAL FIVE HUNDRED
+    s,\342\205\277,m,g;            # SMALL ROMAN NUMERAL ONE THOUSAND
+
+    s,\342\206\220,<-,g;            # LEFTWARDS ARROW
+    s,\342\206\222,->,g;            # RIGHTWARDS ARROW
+    s,\342\206\224,<->,g;           # LEFT RIGHT ARROW
+    s,\342\206\232,<-/,g;           # LEFTWARDS ARROW WITH STROKE
+    s,\342\206\233,/->,g;           # RIGHTWARDS ARROW WITH STROKE
+    s,\342\206\234,<~,g;            # LEFTWARDS WAVE ARROW
+    s,\342\206\235,~>,g;            # RIGHTWARDS WAVE ARROW
+    s,\342\206\236,<<-,g;           # LEFTWARDS TWO-HEADED ARROW
+    s,\342\206\240,->>,g;           # RIGHTWARDS TWO-HEADED ARROW
+    s,\342\206\242,<-<,g;           # LEFTWARDS ARROW WITH TAIL
+    s,\342\206\233,>->,g;           # RIGHTWARDS ARROW WITH TAIL
+    s,\342\206\246,<-|,g;           # LEFTWARDS ARROW FROM BAR
+    s,\342\206\237,|->,g;           # RIGHTWARDS ARROW FROM BAR
+    s,\342\207\220,<=,g;            # LEFTWARDS DOUBLE ARROW
+    s,\342\207\222,=>,g;            # RIGHTWARDS DOUBLE ARROW
+    s,\342\207\215,<=/,g;           # LEFTWARDS DOUBLE ARROW WITH STROKE
+    s,\342\207\216,<=/=>,g;         # LEFT RIGHT DOUBLE ARROW WITH STROKE
+    s,\342\207\217,/=>,g;           # RIGHTWARDS DOUBLE ARROW WITH STROKE
+
+    s,\342\207\240,<--,g;           # LEFTWARDS DASHED ARROW
+    s,\342\207\242,-->,g;           # RIGHTWARDS DASHED ARROW
+
+    s,\342\207\267,<-|-,g;          # LEFTWARDS ARROW WITH VERTICAL STROKE
+    s,\342\207\270,-|->,g;          # RIGHTWARDS ARROW WITH VERTICAL STROKE
+    s,\342\207\271,<-|->,g;         # LEFT RIGHT ARROW WITH VERTICAL STROKE
+
+    s,\342\207\272,<-||-,g;         # LEFT RIGHT ARROW WITH DOUBLE VERTICAL STROKE
+    s,\342\207\273,-||->,g;         # RIGHTWARDS ARROW WITH DOUBLE VERTICAL STROKE
+    s,\342\207\274,<-||->,g;        # LEFTWARDS ARROW WITH DOUBLE VERTICAL STROKE
+
+    s,\342\207\244,|<-,g;           # LEFTWARDS ARROW TO BAR
+    s,\342\207\245,->|,g;           # RIGHTWARDS ARROW TO BAR
+
+    s,\342\210\200,for all,g;
+    s,\342\210\203,there exists,g;
+    s,\342\210\204,there does not exist,g;
+    s,\342\210\205,empty set,g;
+    s,\342\210\210,element of,g;
+    s,\342\210\211,not an element of,g;
+    s,\342\210\212,element of,g;
+    s,\342\210\213,contains as member,g;
+    s,\342\210\214,does not contains as member,g;
+    s,\342\210\222,-,g;
+    s,\342\210\225,/,g;
+    s,\342\210\226,\\,g;
+    s,\342\210\227,*,g;
+    s,\342\210\235,proportional to,g;
+    s,\342\210\236,infinity,g;
+    s,\342\210\264,therefore,g;
+    s,\342\210\265,because,g;
+    s,\342\210\266,:,g;
+    s,\342\210\271,->,g;
+    s,\342\210\274,~,g;
+    s,\342\210\275,~,g;
+  }
+
   print;
 }
 
@@ -16,3 +219,85 @@ exit 0;
 
 __END__
 print "\342\200\231";
+
+dhcp-128-146-49-217@~/bin <1061> tail -1 ~/Documents/Log31_wrong.csr | cut -c22- | od -a
+0000000    R   E   Q   U   E   S   T   �  80  94   �  80  94  nl        
+0000016
+dhcp-128-146-49-217@~/bin <1062> tail -1 ~/Documents/Log31_wrong.csr | cut -c22- | od -b
+0000000   122 105 121 125 105 123 124 342 200 224 342 200 224 012        
+0000016
+
+from http://www.perlmonks.org/?node_id=1152777
+
+    if($line =~ /[^[:ascii:]]/){
+      print "Before: $line\n" if $debug;
+      
+      # translations from octal sequence to ascii char
+      $line =~ s/\302\267/./g;         # odd utf 'floating' point to ascii .
+      $line =~ s/\342\200\230/'/g;     # left single curly quote to ascii '
+      $line =~ s/\342\200\231/'/g;     # right single curly quote to ascii '
+      $line =~ s/\342\200\223/-/g;     # em-dash to ascii -
+      $line =~ s/\303\257/i/g;         # double-dot i to ascii i
+      $line =~ s/\302\243/GBP/g;       # pound sign to GBP
+      $line =~ s/\342\200\246/.../g;   # elipsis to ascii ...
+      $line =~ s/\302\256/(a)/g;       # @ to (a)
+      $line =~ s/\303\250/e/g;         # grave e to e
+      $line =~ s/\303\251/e/g;         # acute e to e
+      $line =~ s/\342\211\244/\>\=/g;  # utf >= to ascii >=
+      $line =~ s/\342\211\245/\<\=/g;  # utf <= to ascii <=
+      $line =~ s/\303\264/o/g;         # circumflex o (?!?) to ascii o
+      $line =~ s/\302\240/\s/g;        # nbsp to sp
+      $line =~ s/\302\263/\^3/g;       # superscript 3 to ^3
+      $line =~ s/\302\262/\^2/g;       # superscript 2 to ^2
+      $line =~ s/\302\260/ degrees/g;  # degrees symbol to word ' degrees'
+      $line =~ s/\342\200\235/""/g;    # right double curly quote to ascii " (escaped for csv)
+      $line =~ s/\342\200\234/""/g;    # left double curly quote to ascii " (escaped for csv)
+      $line =~ s/\302\275/1\/2/g;      # utf 1/2 to ascii plain 1/2
+
+
+
+⅐	0342 0205 0220	VULGAR FRACTION ONE SEVENTH
+⅑	0342 0205 0221	VULGAR FRACTION ONE NINTH
+⅒	0342 0205 0222	VULGAR FRACTION ONE TENTH
+⅓	0342 0205 0223	VULGAR FRACTION ONE THIRD
+⅔	0342 0205 0224	VULGAR FRACTION TWO THIRDS
+⅕	0342 0205 0225	VULGAR FRACTION ONE FIFTH
+⅖	0342 0205 0226	VULGAR FRACTION TWO FIFTHS
+⅗	0342 0205 0227	VULGAR FRACTION THREE FIFTHS
+⅘	0342 0205 0230	VULGAR FRACTION FOUR FIFTHS
+⅙	0342 0205 0231	VULGAR FRACTION ONE SIXTH
+⅚	0342 0205 0232	VULGAR FRACTION FIVE SIXTHS
+⅛	0342 0205 0233	VULGAR FRACTION ONE EIGHTH
+⅜	0342 0205 0234	VULGAR FRACTION THREE EIGHTHS
+⅝	0342 0205 0235	VULGAR FRACTION FIVE EIGHTHS
+⅞	0342 0205 0236	VULGAR FRACTION SEVEN EIGHTHS
+
+U+2160	Ⅰ	0342 0205 0240	ROMAN NUMERAL ONE
+U+2161	Ⅱ	0342 0205 0241	ROMAN NUMERAL TWO
+U+2162	Ⅲ	0342 0205 0242	ROMAN NUMERAL THREE
+U+2163	Ⅳ	0342 0205 0243	ROMAN NUMERAL FOUR
+U+2164	Ⅴ	0342 0205 0244	ROMAN NUMERAL FIVE
+U+2165	Ⅵ	0342 0205 0245	ROMAN NUMERAL SIX
+U+2166	Ⅶ	0342 0205 0246	ROMAN NUMERAL SEVEN
+U+2167	Ⅷ	0342 0205 0247	ROMAN NUMERAL EIGHT
+U+2168	Ⅸ	0342 0205 0250	ROMAN NUMERAL NINE
+U+2169	Ⅹ	0342 0205 0251	ROMAN NUMERAL TEN
+U+216A	Ⅺ	0342 0205 0252	ROMAN NUMERAL ELEVEN
+U+216B	Ⅻ	0342 0205 0253	ROMAN NUMERAL TWELVE
+U+216C	Ⅼ	0342 0205 0254	ROMAN NUMERAL FIFTY
+U+216D	Ⅽ	0342 0205 0255	ROMAN NUMERAL ONE HUNDRED
+U+216E	Ⅾ	0342 0205 0256	ROMAN NUMERAL FIVE HUNDRED
+U+216F	Ⅿ	0342 0205 0257	ROMAN NUMERAL ONE THOUSAND
+
+U+20E5	⃥	0342 0203 0245	
+U+20E6	⃦	0342 0203 0246	COMBINING DOUBLE VERTICAL STROKE OVERLAY
+U+20E7	⃧	0342 0203 0247	COMBINING ANNUITY SYMBOL
+U+20E8	⃨	0342 0203 0250	COMBINING TRIPLE UNDERDOT
+U+20E9	⃩	0342 0203 0251	COMBINING WIDE BRIDGE ABOVE
+U+20EA	⃪	0342 0203 0252	COMBINING LEFTWARDS ARROW OVERLAY
+U+20EB	⃫	0342 0203 0253	COMBINING LONG DOUBLE SOLIDUS OVERLAY
+U+20EC	⃬	0342 0203 0254	COMBINING RIGHTWARDS HARPOON WITH BARB DOWNWARDS
+U+20ED	⃭	0342 0203 0255	COMBINING LEFTWARDS HARPOON WITH BARB DOWNWARDS
+U+20EE	⃮	0342 0203 0256	COMBINING LEFT ARROW BELOW
+U+20EF	⃯	0342 0203 0257	COMBINING RIGHT ARROW BELOW
+U+20F0	⃰	0342 0203 0260	COMBINING ASTERISK ABOVE
