@@ -20,8 +20,8 @@ while (<>) {
   s/%([a-fA-F0-9][a-fA-F0-9])/pack("C", hex($1))/esmg;
   s/\&\#(10);//esmg;
   s/\&\#(\d+);/chr($1)/esmg;
-  s,^\s*|[ \t]*$,,smg;
-  s,\s\s+, ,smg;
+# s,^\s*|[ \t]*$,,smg;
+# s,\s\s+, ,smg;
   s,\&,&\n,smg;
   s,\?,?\n,smg;
   print $_;

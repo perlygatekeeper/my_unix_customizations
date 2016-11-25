@@ -88,3 +88,22 @@ a o2h="perl -e 'printf qq|%X\n|, oct( shift )'"
 a o2d="perl -e 'printf qq|%d\n|, oct( shift )'"
 a o2b="perl -e 'printf qq|%b\n|, oct( shift )'"
 # export TERM=xtermc
+#
+#        beginning-of-history (M-<)
+#                     Move to the first line in the history.
+#       end-of-history (M->)
+#              Move to the end of the input history, i.e., the line currently being entered.
+#       reverse-search-history (C-r)
+#              Search backward starting at the current line and moving `up' through the history as necessary.  This is an incremental search.
+#       forward-search-history (C-s)
+#              Search forward starting at the current line and moving `down' through the history as necessary.  This is an incremental search.
+#       non-incremental-reverse-search-history (M-p)
+#              Search backward through the history starting at the current line using a non-incremental search for a string supplied by the user.
+#       non-incremental-forward-search-history (M-n)
+#              Search forward through the history using a non-incremental search for a string supplied by the user.
+#       history-search-forward
+#              Search forward through the history for the string of characters between the start of the current line and the point.  This is a non-incremental search.
+#       history-search-backward
+#              Search backward through the history for the string of characters between the start of the current line and the point.  This is a non-incremental search.
+bind '"\ep": history-search-backward'
+bind '"\en": history-search-forward'
