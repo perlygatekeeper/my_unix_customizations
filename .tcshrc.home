@@ -5,3 +5,9 @@ a ipoodle	ssh steve@192.168.0.102
 a ipoodle	ssh steve@192.168.1.141
 a laptop	ssh steve@192.168.0.104
 a work		ssh sparker@192.168.241.156
+# digital ocean alaiases
+# perlygatekeeper.xyz
+# perlygatekeeper.pw
+# glowingrobot.xyz
+# glowingrobot.space
+a dowww		ssh parker@www.perlygatekeeper.xyz

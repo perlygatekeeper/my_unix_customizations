@@ -1,12 +1,13 @@
 # SDP: last modification date 6/10/2012
 
+a version       lsb_version -a
 a inst          sudo apt-get install
 a search        apt-cache search
-a lspkg			dpkg-query -L 
-a whichpkg		dpkg -S 
+a lspkg		dpkg-query -L 
+a whichpkg	dpkg -S 
 a installed     dpkg -l
-a lspkgs 	    dpkg -l
+a lspkgs 	dpkg -l
 
 a uuids         sudo blkid -c /dev/null
 
-setenv WORDS /usr/
+# setenv WORDS /usr/

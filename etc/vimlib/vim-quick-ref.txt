@@ -125,7 +125,8 @@ N or ?↵         repeat backward last search
 g# g*           same, but also find partial matches
 gd gD           local, global definition of symbol under cursor
 :rs/f/t/x↵      substitute f by t in range r
-x: g-all        occurrences, c-confirm changes
+                x: g-all occurrences,
+                   c-confirm changes
 :rs x↵          repeat substitution with new r & x
 
 Special characters in search patterns

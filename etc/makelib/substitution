@@ -1,4 +1,5 @@
 HTML_FILES= $(TXT_FILES:%txt=%html)
+
   Suffix Replacement Macro References
      Substitutions within macros can be made as follows:
 
