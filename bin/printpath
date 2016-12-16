@@ -15,10 +15,10 @@ my ( $man, $path, $p5l, $llp, $ll );
 
 #   ***   Parse Command Line Argument(s)   ***
 while ( @ARGV >= 1 ) {
-   if    ( $ARGV[0] eq '-m'    ) { $man = $true; shift; }
-   elsif ( $ARGV[0] eq '-p5'   ) { $p5l = $true; shift; }
-   elsif ( $ARGV[0] =~ /-ll?p/ ) { $llp = $true; shift; }
-   elsif ( $ARGV[0] =~ /-ll/   ) { $ll  = $true; shift; }
+   if    ( $ARGV[0] eq '-m'    ) { $man = $true; shift; } # MANPATH
+   elsif ( $ARGV[0] eq '-p5'   ) { $p5l = $true; shift; } # PERL5LIB
+   elsif ( $ARGV[0] =~ /-ll?p/ ) { $llp = $true; shift; } # LD_LIBRARY_PATH
+   elsif ( $ARGV[0] =~ /-ll/   ) { $ll  = $true; shift; } # one PATH component per line (Long Listing)
    else { shift; print $usage; }
 }  # end while
 
@@ -46,7 +46,7 @@ if ( $ll ) {
   $orig_path =~ s':' 'g;
   print qx(echo $orig_path | xargs ls -ld);
 } else {
-  print $path . "\n\n";
+  print $path . "\n";
 }
 
 #   ***   EXIT GRACEFULLY   ***

@@ -33,20 +33,30 @@ a search        port search
 # egrep '/(cat|man)/\1' | \
 # grep -v 'whatis' | \
 # perl -pe 's,/(cat|man)[\dnl].*,,' | \
-# uniq | \
 # sort | \
 # uniq | \
 # perl -p -0 -e 's,\n/,:/,smg;'
-setenv MANPATH "/usr/share/man:/opt/local/share/man:/usr/local/man:/usr/local/share/man:/usr/local/clamXav/share/man:/usr/X11/share/man:/opt/local/libexec/gnubin/man:/Developer/usr/share/man:/Developer/usr/X11/share/man:/Developer/usr/llvm-gcc-4.2/share/man:/Applications/MAMP/Library/share/man:/Developer/Library/Xcode/PrivatePlugIns/Xcode3Core.ideplugin/Contents/SharedSupport/usr/share/man:/System/Library/Java/Support/VisualVM.bundle/Contents/Home/man:/opt/local/Library/Frameworks/Python.framework/Versions/2.7/share/man:/usr/llvm-gcc-4.2/share/man:/opt/local/share/perl5.20/siteman"
+setenv MANPATH "/usr/share/man:/usr/local/share/man:/opt/X11/share/man:/opt/local/libexec/gnubin/man:/opt/local/share/man:/opt/local/share/perl5.24/man:/Users/Steve/perl5/man:/usr/lib/usr/local/share/man"
+setenv MANPATH "${MANPATH}:/Applications/3D Design Apps/Inventor Fusion.app/Contents/Frameworks/LIDS.framework/share/man"
+setenv MANPATH "${MANPATH}:/opt/local/Library/Frameworks/Python.framework/Versions/2.7/share/man"
+setenv MANPATH "${MANPATH}:/opt/local/Library/Frameworks/Python.framework/Versions/3.4/share/man"
+setenv MANPATH "${MANPATH}:/opt/local/Library/Frameworks/Python.framework/Versions/3.5/share/man"
+# setenv MANPATH "${MANPATH}:/Library/Developer/CommandLineTools/usr/share/man:/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/man:/Library/SystemMigration/History/Migration-CA1DC474-A6B8-44D0-B75F-E79EF8208869/QuarantineRoot/usr/share/man:/System/Library/Filesystems/acfs.fs/Contents/man"
+# setenv MANPATH "${MANPATH}:/Applications/DrupalStack.app/Contents/Resources/app/apache2/man:/Applications/DrupalStack.app/Contents/Resources/app/common/man:/Applications/DrupalStack.app/Contents/Resources/app/common/openssl/man:/Applications/DrupalStack.app/Contents/Resources/app/common/share/man:/Applications/DrupalStack.app/Contents/Resources/app/php/php/man:/Applications/GitHub.app/Contents/Resources/git/share/man:/Applications/SourceTree.app/Contents/Resources/git_local/share/man:/Applications/Xcode.app/Contents/Developer/Platforms/AppleTVSimulator.platform/Developer/SDKs/AppleTVSimulator.sdk/usr/share/man:/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/share/man:/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/share/man:/Applications/Xcode.app/Contents/Developer/Platforms/WatchOS.platform/Developer/usr/share/man:/Applications/Xcode.app/Contents/Developer/Platforms/WatchSimulator.platform/Developer/SDKs/WatchSimulator.sdk/usr/share/man:/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk/usr/share/man:/Applications/Xcode.app/Contents/Developer/Toolchains/Swift_2.3.xctoolchain/usr/share/man:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/share/man:/Applications/Xcode.app/Contents/Developer/usr/share/man:/Applications/Xcode.app/Contents/Developer/usr/share/xcs/xcsd/node_modules/nano/node_modules/follow/node_modules/request/node_modules/http-signature/node_modules/ctype/man:/Applications/Xcode.app/Contents/Developer/usr/share/xcs/xcsd/node_modules/nano/node_modules/request/node_modules/http-signature/node_modules/ctype/man:/Applications/Xcode.app/Contents/Developer/usr/share/xcs/xcsd/node_modules/request/node_modules/http-signature/node_modules/ctype/man"
 
 # good way to regenerate PATH
 # locate '/bin' '/sbin' | \
 # wwo -'\.cpan' -'Frameworks' -'Platforms' -'DrupalStack'| \
 # grep 'bin$'
-setenv PATH "/sbin:/bin:/usr/bin:/usr/sbin:/usr/libexec:/usr/X11/bin:/usr/local/bin:/System/Library/Perl/Extras/bin:/opt/local/lib/mysql5/bin:/opt/local/lib/postgresql90/bin:/opt/local/share/java/apache-ant/bin:/opt/local/apache2/bin:/Developer/usr/bin:/Developer/Makefiles/bin:/opt/local/libexec/perl5.20"
-setenv PATH "${HOME}/bin:/usr/local/git/bin:$PATH"
-# MacPorts Installer addition on 2016-10-13_at_20:41:15: adding an appropriate PATH variable for use with MacPorts.
+setenv PATH "/bin:/sbin:/opt/X11/bin:/usr/bin:/usr/sbin:/usr/libexec:/usr/local/bin"
+setenv PATH "${HOME}/bin:$PATH"
 setenv PATH "/opt/local/bin:/opt/local/sbin:$PATH"
+setenv PATH "${PATH}:/Library/Developer/CommandLineTools/usr/bin"
+setenv PATH "${PATH}:/Users/Steve/Projects/DistZilla/Dist-Zilla/Dist-Zilla-5.032/bin"
+setenv PATH "${PATH}:/Users/Steve/Projects/DistZilla/Dist-Zilla/bin"
+
+# MacPorts Installer addition on 2016-10-13_at_20:41:15: adding an appropriate PATH variable for use with MacPorts.
+# setenv PATH "/opt/local/bin:/opt/local/sbin:$PATH"
 
 #setenv PERL5LIB "~/Projects/Programming/Thingiverse/lib"
 
