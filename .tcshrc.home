@@ -1,10 +1,11 @@
 # communication aliases
 # a fox		ssh -X -Y -L 8080:128.146.39.23:80 -L 4443:128.146.39.23:443 -l tmonnett fox.mps.ohio-state.edu
 a home		ssh parker@192.168.0.100
-a ipoodle	ssh steve@192.168.0.102
-a ipoodle	ssh steve@192.168.1.141
+# a ipoodle	ssh steve@192.168.0.102
+# a ipoodle	ssh steve@192.168.1.141
+a ipoodle	ssh parker@192.168.1.141
 a laptop	ssh steve@192.168.0.104
-a work		ssh sparker@192.168.241.156
+# a work		ssh sparker@192.168.241.156
 # digital ocean alaiases
 # perlygatekeeper.xyz
 # perlygatekeeper.pw
