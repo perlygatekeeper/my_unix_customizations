@@ -28,14 +28,14 @@ elsif ($llp) { $path = $ENV{'LD_LIBRARY_PATH'}  || ''; }
 else         { $path = $ENV{'PATH'}; };
 
 # print ">$path<\n\n";
-#
+
 my $orig_path = $path;
 
 if ( $path =~ m,cygdrive, ) {
     $path =~ s':' 'g;
     $path =~ s, /(cygdrive|home|usr|bin|lib|drives),\n/$1,g;
 } else {
-    $path =~ s'[  \t\n]+''ge;
+    $path =~ s,[\t\n]+,,ge;
     $path =~ s':?$'$newline'e;
     $path =~ s':'$newline'ge;
     $path =~ s'\n\n+'$newline'mge;
@@ -46,7 +46,8 @@ if ( $ll ) {
   $orig_path =~ s':' 'g;
   print qx(echo $orig_path | xargs ls -ld);
 } else {
-  print $path . "\n";
+  print $path;
+  print "\n" if ( $path !~ /\n$/ );
 }
 
 #   ***   EXIT GRACEFULLY   ***
