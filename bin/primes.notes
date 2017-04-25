@@ -1,4 +1,4 @@
-wheel base 10
+wheel base 10 ( flawed wheel )
 
   1  2  3  4  5  6  7  8  9  0
  11 12 13 14 15 16 17 18 19 10
@@ -42,7 +42,9 @@ That's 13 more numbers when looking for primes < 100.
  91   (93)         97   (99)  
 
 
+Conclusion wheel based on 10 (2*5) is flawed, should be 30 (2*3*5)
 
+================================================================================
 
 Wheel based on 2*3*5*7 = 210 analysis
 primes below 210:

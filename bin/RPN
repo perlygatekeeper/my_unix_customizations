@@ -49,10 +49,13 @@ $debug=0;
 $prompt = "Input [" . ((defined $stack_ref->[0])? $stack_ref->[0] : $empty) . "] ";
 my $num_type;
 while ( defined ($input = $term->readline($prompt)) ) {
+  print STDERR "read a line.\n" if ( $debug );
   if ($input!~/\S/) {
     next;
   }
-  chomp($_); $term->addhistory($_);
+# chomp($_); $term->add_history($_); # ARGGGG!  What a stupid mistake! it was $input not $_!
+  chomp($input); $term->add_history($input);
+  print STDERR "added line to history.\n" if ( $debug );
   if ($input=~m/^\s*(([-+]?\d+)\s*\.\.\s*([-+]?\d+))/) { # line N .. M
     if ($2==$3) {
       unshift (@{$stack_ref},$2);
