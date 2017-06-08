@@ -11,9 +11,10 @@ $usage = "usage: $name [ -f(ormat)? 'PREFIX%02dSUFFIX' ] [ start(10) ] [ end(1) 
 $start = 10;
 $end   =  0;
 $by    = -1;
+$debug =  0;
 
 #   ***   Parse Command Line Argument(s)   ***
-if ( $ARGV[0] == '-f' ) {
+if ( $ARGV[0] eq '-f' ) {
 	shift; $sprintf=shift;
 }
 if      ( @ARGV >  3 ) { # 4 or more args are not allowed
@@ -44,6 +45,10 @@ if ( $by == 0 ) {
 	$by = &sgn($end-$start);
 }
 $sprintf ||= "%d\n";
+print STDERR "sprintf: $sprintf\n" if ($debug);
+print STDERR "start:   $start\n" if ($debug);
+print STDERR "end:     $end\n" if ($debug);
+print STDERR "by:      $by\n" if ($debug);
 
 #   ***   MAIN LOOP   ***
 
