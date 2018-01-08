@@ -61,3 +61,4 @@ setenv PATH "${PATH}:/Users/Steve/Projects/DistZilla/Dist-Zilla/bin"
 #setenv PERL5LIB "~/Projects/Programming/Thingiverse/lib"
 
 setenv WORDS /usr/share/dict/web2
+alias inkscape "/Applications/Inkscape.app/Contents/Resources/bin/inkscape"

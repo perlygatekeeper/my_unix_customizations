@@ -1,6 +1,11 @@
 #!/usr/bin/env perl
 #
-# A perl-5 script to printout an ascii table
+# A perl-5 script to printout an
+# ASCII ( American Standard Code for Information Interchange ) table
+#
+# Later may be modified to also be able to print out an
+# EBCDIC (Extended Binary Coded Decimal Interchange Code) table 
+# and perhaps MORSE CODE as well.
 #
 $name = $0; $name =~ s'.*/''; # remove path--like basename
 $usage = "usage:\n$name [-octal || -hexadecimal || -decimal] [-columns [#] || -single] [-specials]";
@@ -424,3 +429,4 @@ Z SUB	Substitute
 ^ RS	Record separator
 ^ US	Unit   separator
   SP	Space
+
