@@ -1,4 +1,4 @@
-#!/usr/bin/env perl
+#!/usr/bin/env perl -i
 #
 # A perl script to emulate part of the dos2unix command
 #

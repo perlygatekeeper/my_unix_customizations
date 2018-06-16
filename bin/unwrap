@@ -304,7 +304,7 @@ foreach $file (@files) {
         print @results;
       } else {
         open(UNSHAR,"$file") || die("$name: Cannot open '$file': $!\n");
-        do unshar(*UNSHAR);
+        unshar(*UNSHAR);
       }
       if ($remove && (! $preserve) ) {
         if ($not_really) {
@@ -343,7 +343,7 @@ sub parse_args {
   while ( @ARGV >= 1 ) {
     if      ( ($abbrev->{$ARGV[0]} eq '-help' )
            || ($abbrev->{$ARGV[0]} eq '-?' ) ) {
-      do help($usage);
+      help($usage);
       shift(@ARGV);
 
     } elsif ( $abbrev->{$ARGV[0]} eq '-not_really' ) {

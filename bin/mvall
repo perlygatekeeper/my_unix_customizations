@@ -1,8 +1,18 @@
 #!/usr/bin/env perl
 # A perl script to copy all files FILE1's to FILE2's
-$name = $0; $name =~ s'.*/''; # remove path--like basename
-$usage = "usage:\n$name [-global] [-insensitive] [-force] (do not ask before overwriting) FILEBASE1 FILEBASE2";
 
+use strict;
+use warnings;
+
+my $name = $0; $name =~ s'.*/''; # remove path; like `basename' command
+my $usage = "usage:\n$name [-global] [-insensitive] [-force] (do not ask before overwriting) FILEBASE1 FILEBASE2";
+
+my $verbose ='';
+my $case_insensitive ='';
+my $global ='';
+my $force ='';
+my $search ='';
+my $replace ='';
 if ($ARGV[0]=~/-v(er(bose)?)?/) {
   $verbose++;
   shift;
@@ -30,9 +40,9 @@ if ($ARGV[0] =~ /^--?h(elp)?/ or scalar(@ARGV) != 2) {
 
 use File::Copy;
 
-$dir=".";
-opendir(DIR,$dir) || die "Can't open dir $dir: $!\n";
-@names = readdir(DIR);
+my $dir=".";
+ opendir(DIR,$dir) || die "Can't open dir $dir: $!\n";
+my @names = readdir(DIR);
 closedir(DIR);
 @names = grep(/^[^.]/,@names); # for . and .. entries and other dot files
 print "OK, found " . scalar(@names) . " files to rename using '$search' and '$replace'.\n";
@@ -41,16 +51,13 @@ if (not @names) {
   print "Nothing to do.\n";
   print "$usage\n"
 } else {
-  foreach $name (@names) {
-    if ( $global or $case_insensitive ) {
-      eval "(\$new_name = \$name) =~ s/$search/$replace/$global$case_insensitive";
-    } else {
-      ($new_name = $name) =~ s/$search/$replace/e;
+  foreach my $name (@names) {
+    my $new_name;
+    eval "(\$new_name = \$name) =~ s/$search/$replace/$global$case_insensitive";
+    if ( $new_name eq $name ) {
+      print "File '$name' unaffected by ($search:$replace) transformation, ignoring...\n" if ($verbose);
+      next;
     }
-	if ( $new_name eq $name ) {
-	  print "File '$name' unaffected by ($search:$replace) transformation, ignoring...\n" if ($verbose);
-	  next;
-	}
     if ( not $force and -f $new_name ) {
       if ( &response("File '$new_name' exits, overright with '$name'? [y/N/q]", "^y", "q(uit)?|e(xit)?") ) {
 	    move($name, $new_name);
@@ -77,21 +84,92 @@ if (not @names) {
 exit 0;
 
 sub response {
-  local($string,$regexp,$exit_regexp)=(@_);
+  my($string,$regexp,$exit_regexp)=(@_);
   if ($string) {
     print $string;
   } else {
     print "yes|no";
   }
-  $response=<STDIN>;
-  if ($regexp) {
-    return ($response=~/$regexp/i);
-  } elsif ($exit_regexp and $response=~/$exit_regexp/i) {
+  my $response=<STDIN>; chomp $response;
+  if ( $exit_regexp and $response =~ /$exit_regexp/i ) {
     print "Quitting $name in response to user input '$response'\n";
-    exit;
+    exit 0;
+  } elsif ($regexp) {
+    return ($response=~/$regexp/i);
   } else {
     return ($response=~/^y/i);
   }
 }
 
 __END__
+TO RENAME ALL LEFT TO RIGHT
+unnamed.jpg     	gear.jpg  	
+unnamed (1).jpg 	gear1.jpg 	
+unnamed (10).jpg	gear10.jpg	
+unnamed (11).jpg	gear11.jpg	
+unnamed (12).jpg	gear12.jpg	
+unnamed (13).jpg	gear13.jpg	
+unnamed (14).jpg	gear14.jpg	
+unnamed (15).jpg	gear15.jpg	
+unnamed (16).jpg	gear16.jpg	
+unnamed (2).jpg 	gear2.jpg 	
+unnamed (3).jpg 	gear3.jpg 	
+unnamed (4).jpg 	gear4.jpg 	
+unnamed (5).jpg 	gear5.jpg 	
+unnamed (6).jpg 	gear6.jpg 	
+unnamed (7).jpg 	gear7.jpg 	
+unnamed (8).jpg 	gear8.jpg 	
+unnamed (9).jpg 	gear9.jpg 	
+                	          	
+                	          	
+
+
+USE
+
+mvall 'unnamed( .(\d+).)?' 'gear$2'
+
+OR 
+
+mvall 'unnamed(?: .(\d+).)?' 'gear$1'
+
+
+
+
+imbedded flags
+"(?adlupimnsx-imnsx)"
+"(?^alupimnsx)"
+
+"m" Treat the string being matched against as multiple lines. That is, change "^" and "$" from matching the start of the string's first line and the end of its last line
+    to matching the start and end of each line within the string.
+
+"s" Treat the string as single line. That is, change "." to match any character whatsoever, even a newline, which normally it would not match.
+
+    Used together, as "/ms", they let the "." match any character whatsoever, while still allowing "^" and "$" to match, respectively, just after and just before newlines
+    within the string.
+
+"i" Do case-insensitive pattern matching. For example, "A" will match "a" under "/i".
+
+"n" Prevent the grouping metacharacters "()" from capturing. This modifier, new in 5.22, will stop $1, $2, etc... from being filled in.
+"x" and "xx"
+    Extend your pattern's legibility by permitting whitespace and comments. Details in "/x and /xx"
+
+"p" Preserve the string matched such that "${^PREMATCH}", "${^MATCH}", and "${^POSTMATCH}" are available for use after matching.
+
+    In Perl 5.20 and higher this is ignored. Due to a new copy-on-write mechanism, "${^PREMATCH}", "${^MATCH}", and "${^POSTMATCH}" will be available after the match
+    regardless of the modifier.
+
+"aa", "a", "d", "l", and "u" (mutually exclusive)
+    These modifiers, all new in 5.14, affect which character-set rules (Unicode, etc.) are used, as described below in "Character set modifiers".
+
+
+imbedded flags with pattern (non-capturing)
+"(?:pattern)"
+"(?adluimnsx-imnsx:pattern)"
+"(?^aluimnsx:pattern)"
+
+
+Starting in Perl 5.14, a "^" (caret or circumflex accent) immediately after the "?" is a
+shorthand equivalent to "d-imnsx". Flags (except "d") may follow the caret to override it.
+But a minus sign is not legal with it.
+
+
