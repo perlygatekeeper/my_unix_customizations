@@ -1,0 +1,31 @@
+#!/usr/bin/env perl -nlw
+# A perl script to act like grep with support for -v ( print lines that DON'T match regexp )
+# support
+
+my $name = $0; $name =~ s'.*/''; # remove path--like basename
+my $usage = "usage:\n$name [-v] regexp FILENAME [ FILENAME ... ] ";
+
+use strict;
+use warnings;
+
+my $reverse = 0;
+
+if ( $ARGV[0] =~ /^-v/ ) {
+  $reverse = 1;
+  shift;
+}
+my $regexp = shift;
+
+if ( $reverse ) {
+  while ( <> ) {
+    /$regexp/ and print;
+  }
+} else {
+  while ( <> ) {
+    /$regexp/ or print;
+  }
+}
+
+exit 0;
+
+__END__

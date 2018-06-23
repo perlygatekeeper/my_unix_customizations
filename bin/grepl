@@ -1,12 +1,17 @@
 #!/usr/bin/env perl
 #
 # A perl script to mimic grep -l
-#
-$name = $0; $name =~ s'.*/''; # remove path--like basename
-$usage = "usage:\n$name REGEXP FILENAME(S)";
+# list filenames that match
 
-$regexp=shift;
-$eof=0;
+use strict;
+use warnings;
+
+my $name = $0; $name =~ s'.*/''; # remove path--like basename
+my $usage = "usage:\n$name REGEXP FILENAME(S)";
+
+my $regexp=shift;
+my $eof=0;
+my $gotonexteof=0;
 
 while (<>) {
   if ($gotonexteof) {
