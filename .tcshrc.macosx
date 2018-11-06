@@ -2,6 +2,8 @@ a ls       '\ls -GFb'
 a ll       '\ls -GFbalO'
 a la       '\ls -GFbalO@e'
 
+a ldd      'otool -L'
+a trace    'dtruss'
 # xattr is the command to list and modify Extended attributes on mac files
 # com.apple.quarentine 
 # xattr file or xattr -l file

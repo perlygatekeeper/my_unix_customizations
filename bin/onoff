@@ -24,6 +24,7 @@ use Text::Abbrev;
 use Data::Dumper;
 
 my $debug = 0;
+my $counter = 0;
 my $conf={};
 
 print Dumper($conf) if ($debug);
@@ -84,11 +85,11 @@ sub process_inde {
           }
           my $lingering = $conf->{linger};                                   # we have some printing left to do, but always end with printing=0
           if ($lingering) {                                                  # printing will either be the value for lingering, or 0 or 1 depending on print_stops 
-            print "lingering printing active, $printing\n" if ($conf->{debug});
+            print "Lingering printing active, $lingering\n" if ($conf->{debug});
             while ($lingering and $_=<FILE>) {
+              $lines->{printed}++; printf "%5d ", $lines->{total} if ($conf->{number}); print "$lingering " if ($conf->{debug}); print;
               $lingering--;
               $lines->{total}++;
-              $lines->{printed}++; printf "%5d ", $lines->{total} if ($conf->{number}); print;
             }
           }
         } else {
@@ -99,37 +100,45 @@ sub process_inde {
            ( $conf->{start_regexp} and $_ =~ $conf->{start_regexp} ) ) {     # look for a start trigger
           $lines->{starts}++;
           if ( $conf->{lead} ) {                                             # we are to print $conf->{lead} lines before each start trigger line
+            print "Leading printing active: $conf->{lead}\n" if ($conf->{debug});
             while (@{$lines->{remembered}}) {
-              $lines->{printed}++; printf "%5d ", ($lines->{total} - @{$lines->{remembered}}) if ($conf->{number}); print shift(@{$lines->{remembered}});
+              $lines->{printed}++; printf "%5d ", ($lines->{total} - @{$lines->{remembered}}) if ($conf->{number});
+              print shift(@{$lines->{remembered}});
             }
           }
           $lines->{printed}++; printf "%5d ", $lines->{total} if ($conf->{number}); print;
-          $printing=1 unless ( ( $conf->{stop_regexp} and
-                           $_ =~ $conf->{stop_regexp} ) or 
-                               $conf->{stop_lines}{$.} );                    # put us into printing state unless this line also matches stop regexp
-          my $lingering = $conf->{linger};                                   # we have some printing left to do, but always end with printing=0
-          if ($lingering) {                                                  # printing will either be the value for lingering, or 0 or 1 depending on print_stops 
-            print "lingering printing active, $lingering\n" if ($conf->{debug});
-            while ($lingering and $_=<FILE>) {
-              $lingering--;
-              $lines->{total}++;
-              $lines->{printed}++; printf "%5d ", $lines->{total} if ($conf->{number}); print;
+          if ( ( $conf->{stop_regexp} and
+                 $_ =~ $conf->{stop_regexp} ) or 
+                 $conf->{stop_lines}{$.} ) {
+            my $lingering = $conf->{linger};                                 # do we have some printing left to do
+            if ($lingering) {                                                  
+              print "lingering printing active, $lingering\n" if ($conf->{debug});
+              while ($lingering and $_=<FILE>) {
+                $lines->{printed}++; printf "%5d ", $lines->{total} if ($conf->{number}); print "$lingering " if ($conf->{debug}); print;
+                $lingering--;
+                $lines->{total}++;
+              }
             }
+          } else {
+            $printing=1;                                                     # put us into printing state unless this line also matches stop regexp
           }
         } elsif ( $conf->{regexp} and $_ =~ $conf->{regexp} ) {              # look for a single-line trigger
           $lines->{$conf->{regexp}}++;
           if ( $conf->{lead} ) {                                             # we are to print $conf->{lead} lines before each start trigger line
+            print "leading printing active: $conf->{lead}\n" if ($conf->{debug});
             while (@{$lines->{remembered}}) {
-              $lines->{printed}++; printf "%5d ", ($lines->{total} - @{$lines->{remembered}}) if ($conf->{number}); print shift(@{$lines->{remembered}});
+              $lines->{printed}++; printf "%5d ", ($lines->{total} - @{$lines->{remembered}}) if ($conf->{number});
+              print shift(@{$lines->{remembered}});
             }
           }
           $lines->{printed}++; printf "%5d ", $lines->{total} if ($conf->{number}); print;
           my $lingering = $conf->{linger};                                   # we have some printing left to do, but always end with printing=0
           if ($lingering) {                                                  # printing will be the value for lingering
+            print "Lingering Printing active, $lingering\n" if ($conf->{debug});
             while ($lingering and $_=<FILE>) {
+              $lines->{printed}++; printf "%5d ", $lines->{total} if ($conf->{number}); print "$lingering " if ($conf->{debug}); print;
               $lingering--;
               $lines->{total}++;
-              $lines->{printed}++; printf "%5d ", $lines->{total} if ($conf->{number}); print;
             }
           }
         } else {                                                             # not a start trigger but we still need to consider it possibly
@@ -137,11 +146,9 @@ sub process_inde {
             push(@{$lines->{remembered}}, $_);                               # we need to remember this line to print for next start trigger line
             if ( @{$lines->{remembered}} > $conf->{lead} ) {                 # remembering too many lines, only need $conf->{lead}
               shift(@{$lines->{remembered}});                                # forget oldest remembered line
-              $lines->{'not printed'}++;
             }
-          } else {
-            $lines->{'not printed'}++;
           }
+          $lines->{'not printed'}++;
         }
       }
     }
@@ -335,6 +342,8 @@ sub pre_report {
   print "set stops  at: " . join(', ', keys %{$conf->{stop_lines}}) . "\n" if ($conf->{stop_lines});;
   print "\nfiles?\n";
   print "$_\n" foreach (@{$conf->{files}});
+  print "lead, linger: $conf->{lead}, $conf->{linger}\n";
+  print "=" x 40 . "\n";
 }
 
 __END__

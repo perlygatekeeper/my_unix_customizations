@@ -1,4 +1,6 @@
 " @(#)Vimrc 2.0 Steve Parker Mon Apr 13, 2015
+" /* vim: tw=60 ts=2: */
+set modeline
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
@@ -60,7 +62,6 @@ filetype plugin indent on    " required
 " Put your non-Plugin stuff after this line
 " ----------------------------------------------
 set nocompatible   		     	" Use Vim defaults (much better!)
-set backspace=indent,eol,start	" allow backspacing over everything in insert mode
 "
 " or <-lines/register '-prev-files-marks, /-searches, :-command-lines, @-input-lines???
 " c-vim-info-encoding, f-marks
@@ -81,13 +82,14 @@ set wildignore=*.swp,*.bak,*.pyc,*.o
 set visualbell
 set noerrorbells
 
-" horizontal tab set at 4 & tab stop at 4
-"set ht=4
 set autoindent
 set copyindent
-"set shiftwidth=4
-"set tabstop=4
-set shiftwidth=8
+" does the right thing (mostly) in programs
+set smartindent
+" autoindent will be 2 spaces
+set shiftwidth=2
+" don't use actual tab character (ctrl-v)
+set expandtab
 set tabstop=8
 set smarttab
 set backspace=indent,eol,start
@@ -102,7 +104,7 @@ nnoremap >p :set nopaste<Cr>
 set mps=(:),{:},[:],<:>
 set noslowopen
 
-" Hide other buffers instead of abandoning them & display line numbers
+" Hide other buffers instead of abandoning them
 set hidden
 
 " Filetype/Syntax detection

@@ -9,6 +9,7 @@ $/=''; #enable paragraph mode
 
 while (<>) {
 # if ( /^\s*$|^$/ ) { print; next; }
+# s/<p(re)?>/\n\n/smg;
   s/<[^>]+>/ /smg;
   s/\&nbsp;/ /smg;
   s/\&copy;/\@/smg;
@@ -19,8 +20,8 @@ while (<>) {
   s/%([a-fA-F0-9][a-fA-F0-9])/pack("C", hex($1))/smeg;
   s/\&\#(10);//eg;
   s/\&\#(\d+);/chr($1)/smeg;
-  s,^\s*|[ \t]*$,,smg;
-  s,\s\s+, ,smg;
+# s,^\s*|[ \t]*$,,smg;
+# s,\s\s+, ,smg;
   print $_;
 }
 
