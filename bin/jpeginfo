@@ -13,14 +13,14 @@ $debug=0;
 
 $true=1; $false=0;
 
-$JPGTOPNM= (-f '/usr/common/bin/netpbm/jpegtopnm') ?
-               '/usr/common/bin/netpbm/jpegtopnm' : `which jpegtopnm`;
-$PPMTOJPG= (-f '/usr/common/bin/netpbm/ppmtojpeg') ?
-               '/usr/common/bin/netpbm/ppmtojpeg' : `which ppmtojpeg`;
-$PPMHIST = (-f '/usr/common/bin/netpbm/ppmhist' ) ?
-               '/usr/common/bin/netpbm/ppmhist'  : `which ppmhist`;
-$PPMQUANT= (-f '/usr/common/bin/netpbm/ppmquant') ?
-               '/usr/common/bin/netpbm/ppmquant' : `which ppmquant`;
+$JPGTOPNM= (-f '/opt/local/bin/jpegtopnm') ?
+               '/opt/local/bin/jpegtopnm' : `which jpegtopnm`;
+$PPMTOJPG= (-f '/opt/local/bin/ppmtojpeg') ?
+               '/opt/local/bin/ppmtojpeg' : `which ppmtojpeg`;
+$PPMHIST = (-f '/opt/local/bin/ppmhist' ) ?
+               '/opt/local/bin/ppmhist'  : `which ppmhist`;
+$PPMQUANT= (-f '/opt/local/bin/ppmquant') ?
+               '/opt/local/bin/ppmquant' : `which ppmquant`;
 chomp $JPGTOPNM;
 chomp $PPMTOJPG;
 chomp $PPMHIST;

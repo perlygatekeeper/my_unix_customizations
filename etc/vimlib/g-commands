@@ -26,7 +26,7 @@ gw: go wrap. Wrap the selected text (that is, text selected in visual mode).
 gwap: wrap a paragraph
 
 gq: go format. Format the selected text (that is, text selected in visual mode).
-gqap: wrap a paragraph
+gqap: format a paragraph
 
 difference between gw and gq is that gw returns cursor when used with movement command
 gq leaves cursor where movement command lands and is therefore able to be used with

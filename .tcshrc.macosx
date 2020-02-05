@@ -30,6 +30,8 @@ a files         port provides
 a inst          sudo port install
 a search        port search
 
+setenv PERL_RL Gnu
+
 # good way to regenerate MANPATH:
 # locate 'cat' 'man' | \
 # egrep '/(cat|man)/\1' | \

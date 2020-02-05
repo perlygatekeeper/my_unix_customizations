@@ -259,6 +259,8 @@ iab produtc product
 iab resluts results
 iab direcotry directory
 iab St3ve Steve
+iab Dh Drakkenheim
+iab HYB Hundred Years Boar
 
 let g:snipMate = {}
 let g:snipMate.scope_aliases = {} 

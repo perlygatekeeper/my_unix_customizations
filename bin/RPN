@@ -282,7 +282,7 @@ sub initialize {
     };
   $commands{'constant'}=
     {'type'=>'contant',
-     'help'=>'pushes a constant on the stack',
+     'help'=>'lists constants known or pushes a named constant on the stack',
      'code'=>sub { my($s,$cmd,$args,$args_array)=@_;
 		   if (@{$args_array}) {
 		     foreach (@{$args_array}) {
@@ -639,6 +639,18 @@ sub initialize {
      'help'=>"treat number on top of stack as a weight in kilograms and convert it to pounds",
      'code'=> \&convert
     };
+  $commands{'liter_quart'}=
+    {'aliases'=>['ltoq'],
+     'type'=>'conversion',
+     'help'=>"treat number on top of stack as a volume in liters and convert it to quarts",
+     'code'=> \&convert
+    };
+  $commands{'quart_liter'}=
+    {'aliases'=>['qtol'],
+     'type'=>'conversion',
+     'help'=>"treat number on top of stack as a volume in quarts and convert it to liters",
+     'code'=> \&convert
+    };
   $commands{'pound_kilogram'}=
     {'aliases'=>['ptok'],
      'type'=>'conversion',
@@ -860,26 +872,30 @@ sub convert {
   } else {
     $val=shift(@{$s});
   }
-  if      ($cmd =~ m,fahrenheit_celsius,i) {
+  if      ($cmd =~ m,fahrenheit(_celsius)?,i) {
     push(@results,($val-32)/1.8);
-  } elsif ($cmd =~ m,celsius_fahrenheit,i) {
+  } elsif ($cmd =~ m,celsius(_fahrenheit)?,i) {
     push(@results,($val*1.8)+32);
-  } elsif ($cmd =~ m,kilometer_mile,i) {
+  } elsif ($cmd =~ m,kilometer(_mile)?,i) {
     push(@results,$val/1.609);
-  } elsif ($cmd =~ m,mile_kilometer,i) {
+  } elsif ($cmd =~ m,mile(_kilometer)?,i) {
     push(@results,$val*1.609);
-  } elsif ($cmd =~ m,centimeter_inch,i) {
+  } elsif ($cmd =~ m,centimeter(_inch)?,i) {
     push(@results,$val/2.54);
-  } elsif ($cmd =~ m,inch_centimeter,i) {
+  } elsif ($cmd =~ m,inch(_centimeter)?,i) {
     push(@results,$val*2.54);
-  } elsif ($cmd =~ m,gram_ounce,i) {
+  } elsif ($cmd =~ m,gram(_ounce)?,i) {
     push(@results,$val*28.35);
-  } elsif ($cmd =~ m,ounce_gram,i) {
+  } elsif ($cmd =~ m,ounce(_gram)?,i) {
     push(@results,$val/28.35);
-  } elsif ($cmd =~ m,kilogram_pound,i) {
+  } elsif ($cmd =~ m,kilogram(_pound)?,i) {
     push(@results,$val*2.20458553791875);
-  } elsif ($cmd =~ m,pound_kilogram,i) {
+  } elsif ($cmd =~ m,pound(_kilogram)?,i) {
     push(@results,$val/2.20458553791875);
+  } elsif ($cmd =~ m,liter(_quart)?,i) {
+    push(@results,$val*1.05669);
+  } elsif ($cmd =~ m,quart(_liter)?,i) {
+    push(@results,$val/1.05669);
   } else {
     printf STDERR "unknown cmd '%s' given to %s routine.\n", $cmd, 'one argument numeric';
     return;
@@ -1112,14 +1128,11 @@ CONST (e pi sr2 sr3)
 
 EXECUTION:
 exec
-if_then
-if_then_else
-if_then_elsif_else
+if
+if_else
+if_elsif_else
 loop
 
-
-
- 
 To convert a binary number to decimal base, use unpack and pack.
 
 my $binnum = '1101'; # binary number 
