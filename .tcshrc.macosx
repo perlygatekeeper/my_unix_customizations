@@ -45,8 +45,6 @@ setenv MANPATH "${MANPATH}:/Applications/3D Design Apps/Inventor Fusion.app/Cont
 setenv MANPATH "${MANPATH}:/opt/local/Library/Frameworks/Python.framework/Versions/2.7/share/man"
 setenv MANPATH "${MANPATH}:/opt/local/Library/Frameworks/Python.framework/Versions/3.4/share/man"
 setenv MANPATH "${MANPATH}:/opt/local/Library/Frameworks/Python.framework/Versions/3.5/share/man"
-# setenv MANPATH "${MANPATH}:/Library/Developer/CommandLineTools/usr/share/man:/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/man:/Library/SystemMigration/History/Migration-CA1DC474-A6B8-44D0-B75F-E79EF8208869/QuarantineRoot/usr/share/man:/System/Library/Filesystems/acfs.fs/Contents/man"
-# setenv MANPATH "${MANPATH}:/Applications/DrupalStack.app/Contents/Resources/app/apache2/man:/Applications/DrupalStack.app/Contents/Resources/app/common/man:/Applications/DrupalStack.app/Contents/Resources/app/common/openssl/man:/Applications/DrupalStack.app/Contents/Resources/app/common/share/man:/Applications/DrupalStack.app/Contents/Resources/app/php/php/man:/Applications/GitHub.app/Contents/Resources/git/share/man:/Applications/SourceTree.app/Contents/Resources/git_local/share/man:/Applications/Xcode.app/Contents/Developer/Platforms/AppleTVSimulator.platform/Developer/SDKs/AppleTVSimulator.sdk/usr/share/man:/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/share/man:/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/share/man:/Applications/Xcode.app/Contents/Developer/Platforms/WatchOS.platform/Developer/usr/share/man:/Applications/Xcode.app/Contents/Developer/Platforms/WatchSimulator.platform/Developer/SDKs/WatchSimulator.sdk/usr/share/man:/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk/usr/share/man:/Applications/Xcode.app/Contents/Developer/Toolchains/Swift_2.3.xctoolchain/usr/share/man:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/share/man:/Applications/Xcode.app/Contents/Developer/usr/share/man:/Applications/Xcode.app/Contents/Developer/usr/share/xcs/xcsd/node_modules/nano/node_modules/follow/node_modules/request/node_modules/http-signature/node_modules/ctype/man:/Applications/Xcode.app/Contents/Developer/usr/share/xcs/xcsd/node_modules/nano/node_modules/request/node_modules/http-signature/node_modules/ctype/man:/Applications/Xcode.app/Contents/Developer/usr/share/xcs/xcsd/node_modules/request/node_modules/http-signature/node_modules/ctype/man"
 
 # good way to regenerate PATH
 # locate '/bin' '/sbin' | \
@@ -64,5 +62,10 @@ setenv PATH "${PATH}:/Users/Steve/Projects/DistZilla/Dist-Zilla/bin"
 
 #setenv PERL5LIB "~/Projects/Programming/Thingiverse/lib"
 
-setenv WORDS /usr/share/dict/web2
-alias inkscape "/Applications/Inkscape.app/Contents/Resources/bin/inkscape"
+if ( -f /usr/share/dict/web2 ) then
+  setenv WORDS /usr/share/dict/web2
+endif
+setenv jack '66.228.43.9'
+alias jack ssh "steve@$jack"
+setenv WORDS 
+alias inkscape "/Applications/Inkscape.app/Contents/MacOS/inkscape"

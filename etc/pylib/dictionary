@@ -1,0 +1,5 @@
+dictionary = {'Mahdi': 5, 'Lizbon': 6}
+
+# dict.get() takes a second value as a default
+his_apples = dictionary.get('Mahdi', 0)
+her_apples = dictionary.get('Jennifer', 0)

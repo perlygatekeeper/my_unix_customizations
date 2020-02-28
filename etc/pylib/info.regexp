@@ -1,0 +1,6 @@
+import re
+
+
+text = "This is a longish sentence, Steve!"
+
+underscores_instead_of_spaces = re.sub('\s', '_', text)

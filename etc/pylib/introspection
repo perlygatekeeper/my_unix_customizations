@@ -1,0 +1,7 @@
+for method in dir(MyObject):
+  if not callable(getattr( MyObject, method)):
+    print (method)
+
+print dir(MyObject)
+
+print type(MyObject)
