@@ -2,11 +2,17 @@
 #
 # A perl script to list the first N primes>
 # All primes from 2 to 99999 are stored at the end of the script>
-#
+
 $name = $0; $name =~ s'.*/''; # remove path--like basename
 $usage = "usage:\n$name [MAX]";
 use strict;
 use warnings;
+
+
+use Benchmark;
+my $t0 = Benchmark->new;
+
+
 
 my ($i, @wheel_primes, @primes);
 my $preload = 0;
@@ -21,15 +27,15 @@ my $N=int(96/$L);        # $N is the number of primes to print on a 96-character
 # we will load some number of known primes from the end of this script.  This isn't necessary, as the algorithm used
 # works with no pre-known primes, even 2, as the foreach loop won't be run.
 # in fact, I populated the known-prime list with $name 100000 >> $name.
-if ( $preload ) {
-  while (<DATA>) {
-    next if (/^$|^\s*#/); # skip blank and commented lines.
-  # s/^#//; # activate this line (and comment previous one) if you'd rather have the known primes on comment lines
-    chomp;
-    push(@primes,split);
-    last if ($primes[$#primes] > $MAX)
-  }
-}
+#if ( $preload ) {
+#  while (<DATA>) {
+#    next if (/^$|^\s*#/); # skip blank and commented lines.
+#  # s/^#//; # activate this line (and comment previous one) if you'd rather have the known primes on comment lines
+#    chomp;
+#    push(@primes,split);
+#    last if ($primes[$#primes] > $MAX)
+#  }
+#}
 
 @wheel_primes = (  2, 3, 5, 7 );
 @primes = (  11,  13,  17,  19,  23,  29,  31,  37,  41,  43,  47,  53,
@@ -48,15 +54,24 @@ my $offsets = [   1,  11,  13,  17,  19,  23,  29,  31,  37,  41,  43,
                 149, 151, 157, 163, 167, 169, 173, 179, 181, 187, 191,
 		193, 197, 199, 209 ] ;
 
-  foreach my $generator (  1 .. ( 1 + int($MAX/210) )  ) {
+  my $sqrt = 14;
+  my $square = ($sqrt+1) * ($sqrt+1) ;
+  foreach my $generator ( 1 .. ( 1 + int($MAX/210) )  ) {
     my $prime_canidate;
-    my $sqrt;
-    my $is_prime;;
+    my $is_prime;
     foreach my $offset ( @$offsets ) {
       $prime_canidate = 210 * $generator + $offset;
-      $sqrt = sqrt $prime_canidate;
+      if ( $prime_canidate >= $square ) {
+        $sqrt += 1;
+        $square = ($sqrt+1) * ($sqrt+1) ;
+      }
+###      my $real_sqrt = sqrt $prime_canidate;
       $is_prime = 1;
 #     test for divisors amoung all primes up to sqrt(canidate)
+###      if ( int($real_sqrt) != $sqrt ) {
+###        print ("Error in new sqrt code, gen: $generator, canidate: $prime_canidate  ( sqrt: $real_sqrt, new_sqrt: $sqrt )\n");
+###        exit;
+###      }
       foreach my $prime (@primes) {
 	    next if ( $prime < 11 );
         last if ( $prime > $sqrt );
@@ -72,6 +87,8 @@ my $offsets = [   1,  11,  13,  17,  19,  23,  29,  31,  37,  41,  43,
     }
   }
 }
+my $t1 = Benchmark->new;
+my $td = timediff($t1, $t0);
 
 # PRINT THEM OUT
 foreach my $prime ( @wheel_primes, @primes) {
@@ -79,6 +96,9 @@ foreach my $prime ( @wheel_primes, @primes) {
   printf "%${L}d", $prime; $i++;
   printf "\n" if (not ($i%$N));
 }
+printf "\n";
+printf "(%d, %d, %d, %d)  %d to %d.\n", @wheel_primes, $primes[0], $primes[$#primes];
+printf "Found %d or more primes in %s.\n", $i, timestr($td);
 printf "\n";
 
 exit 0;
@@ -105,6 +125,11 @@ __END__
   # we have only primes.
   #
   # this is 8 numbers of each 30 consecutive natural numbers (26.7%)
+  #
+  # The number of divisions needed is reduced when using a wheel sieve with the basis {2, 3}       to 1/3    < 34%
+  # of the number necessary for trial division.
+  # Larger bases reduce this proportion even further; for example, with basis         {2, 3, 5}    to 8/30   < 27%;
+  # and with basis                                                                    {2, 3, 5, 7} to 48/210 < 23%.
 
   # A wheel seive based on 2x3x5x7 = 210 produces the generator:
   # preload primes (below 210): ( 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97,
@@ -129,8 +154,8 @@ __END__
   # ie. where P >= 11 and P < SQRT(MAX)
   # this is 48 of each 210 conscutive numbers (22.9%).
 
-  # Here are the primes between 2 and 100_000
-  # 600 * 16 - 8 = 9592	
+  # Here are the primes between 2 and 99_960
+  # 600 * 16 - 12 = 9588	
 
      2     3     5     7    11    13    17    19    23    29    31    37    41    43    47    53 
     59    61    67    71    73    79    83    89    97   101   103   107   109   113   127   131 
@@ -731,4 +756,4 @@ __END__
  99371 99377 99391 99397 99401 99409 99431 99439 99469 99487 99497 99523 99527 99529 99551 99559
  99563 99571 99577 99581 99607 99611 99623 99643 99661 99667 99679 99689 99707 99709 99713 99719
  99721 99733 99761 99767 99787 99793 99809 99817 99823 99829 99833 99839 99859 99871 99877 99881
- 99901 99907 99923 99929 99961 99971 99989 99991
+ 99901 99907 99923 99929

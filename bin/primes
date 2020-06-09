@@ -8,6 +8,10 @@ $usage = "usage:\n$name [MAX]";
 use strict;
 use warnings;
 
+
+use Benchmark;
+my $t0 = Benchmark->new;
+
 my ($i, @primes, );
 my $preload = 0;
 my $MAX = 100000;
@@ -60,6 +64,11 @@ foreach my $prime (@primes) {
   printf "%${L}d", $prime; $i++;
   printf "\n" if (not ($i%$N));
 }
+printf "\n";
+my $t1 = Benchmark->new;
+my $td = timediff($t1, $t0);
+printf "%d to %d.\n", $primes[0], $primes[$#primes];
+printf "Found %d primes in %s.\n", $#primes, timestr($td);
 printf "\n";
 
 exit 0;

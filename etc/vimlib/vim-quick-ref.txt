@@ -223,7 +223,7 @@ n               an absolute line number n
 .  $            the current line, the last line in file
 %  *            entire file, visual area
 't              position of mark t
-/p/ ?p?         the next, previous line where p matches
+/p/ ?p?         the next, previous line where p matches158098
 +n -n           +n, -n to the preceding line number
 
 Folding

@@ -1,3 +1,5 @@
+# https://www.ibm.com/developerworks/library/l-pyint/index.html
+
 for method in dir(MyObject):
   if not callable(getattr( MyObject, method)):
     print (method)
@@ -5,3 +7,4 @@ for method in dir(MyObject):
 print dir(MyObject)
 
 print type(MyObject)
+

@@ -1,0 +1,55 @@
+# str     
+x = "Hello World"
+print(x, ' is a ', type(x))
+
+# int     
+x = 20
+print(x, ' is a ', type(x))
+
+# float   
+x = 20.5
+print(x, ' is a ', type(x))
+
+# complex 
+x = 1j
+print(x, ' is a ', type(x))
+
+# list    
+x = ["apple", "banana", "cherry"]
+print(x, ' is a ', type(x))
+
+# tuple   
+x = ("apple", "banana", "cherry")
+print(x, ' is a ', type(x))
+
+# range   
+x = range(6)
+print(x, ' is a ', type(x))
+
+# dict    
+x = {"name" : "John", "age" : 36}
+print(x, ' is a ', type(x))
+
+# set     
+x = {"apple", "banana", "cherry"}
+print(x, ' is a ', type(x))
+
+# frozenset       
+x = frozenset({"apple", "banana", "cherry"})
+print(x, ' is a ', type(x))
+
+# bool    
+x = True
+print(x, ' is a ', type(x))
+
+# bytes   
+x = b"Hello"
+print(x, ' is a ', type(x))
+
+# bytearray       
+x = bytearray(5)
+print(x, ' is a ', type(x))
+
+# memoryview
+x = memoryview(bytes(5))
+print(x, ' is a ', type(x))

@@ -1,0 +1,25 @@
+  help> keywords
+ 
+  Here is a list of the Python keywords.  Enter any keyword to get more help.
+ 
+  and                 elif                global              or
+  assert              else                if                  pass
+  break               except              import              print
+  class               exec                in                  raise
+  continue            finally             is                  return
+  def                 for                 lambda              try
+  del                 from                not                 while
+ 
+  help> quit
+ 
+  You are now leaving help and returning to the Python interpreter.
+  If you want to ask for help on a particular object directly from the
+  interpreter, you can type "help(object)".  Executing "help('string')"
+  has the same effect as typing a particular string at the help> prompt.
+
+  >>> import keyword
+  >>> keyword.kwlist
+  ['and', 'assert', 'break', 'class', 'continue', 'def', 'del', 'elif', 'else',
+  'except', 'exec', 'finally', 'for', 'from', 'global', 'if', 'import', 'in', 'is',
+  'lambda', 'not', 'or', 'pass', 'print', 'raise', 'return', 'try', 'while', 'yield']
+
