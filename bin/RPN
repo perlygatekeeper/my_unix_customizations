@@ -303,7 +303,7 @@ sub initialize {
     };
   $commands{'quit'}=
     {'type'=>'utility',
-     'aliases'=>['exit', 'lo', 'logout', 'bye'],
+     'aliases'=>['exit', 'lo', 'logout', 'bye', 'ZZ'],
      'help'=>'exits the program',
      'code'=>\&save_exit
     };
