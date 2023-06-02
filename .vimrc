@@ -253,14 +253,14 @@ nnoremap <A-Right> :bnext<CR>
 "iab choe chemistry.ohio-state.edu
 "iab matna manta
 "iab chemsitry chemistry
+"iab HYB Hundred Years Boar
+"iab prodcut product
+"iab produtc product
+"iab resluts results
+"iab direcotry directory
+"iab Dh Drakkenheim
+"iab St3ve Steve
 iab ev environment variable
-iab prodcut product
-iab produtc product
-iab resluts results
-iab direcotry directory
-iab St3ve Steve
-iab Dh Drakkenheim
-iab HYB Hundred Years Boar
 
 let g:snipMate = {}
 let g:snipMate.scope_aliases = {} 
