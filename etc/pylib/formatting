@@ -1,0 +1,12 @@
+# https://www.w3schools.com/python/python_string_formatting.asp
+
+price = 49
+txt = "The price is {} dollars"
+print(txt.format(price))
+
+# You can add parameters inside the curly brackets to specify how to convert the value:
+# Example
+# Format the price to be displayed as a number with two decimals:
+
+txt = "The price is {:.2f} dollars"
+print(txt.format(price))
