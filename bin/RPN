@@ -23,15 +23,16 @@
 #version=2.7; # binary now does NOT use unpack
 $version=2.8; # display functions binary WIDTH, oct, and hex all work now.
               # input of numbers in octal, hex and binary 0b10011001  all work
-			  # default display is still decimal for numbers, though this could
-			  # change
-			  # stack .   <- will list all stack names
+	      # default display is still decimal for numbers, though this could change
+	      # stack .   <- will list all stack names
+
+$todo ="make language independent";
+$todo.="loop, for, variables";
 
 $name = $0; $name =~ s'.*/''; # remove path--like basename
 $usage = "usage:\n$name [--version]";
-$last_mod_date='Sun, Sep 1, 2013';
-$todo ="make language independent";
-$todo.="loop, for, variables";
+# $last_mod_date='Sun, Sep 1, 2013';
+$last_mod_date='Mon, Jun 5, 2023';
 $author="Dr. Steven Parker";
 $copyright="$last_mod_date. All rights reserved.";
 
