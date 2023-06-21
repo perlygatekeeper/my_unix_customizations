@@ -21,10 +21,14 @@
               # switched subroutine names as with numeric_n to n_arguments
 #version=2.6; # fixed constant function
 #version=2.7; # binary now does NOT use unpack
-$version=2.8; # display functions binary WIDTH, oct, and hex all work now.
+#version=2.8; # display functions binary WIDTH, oct, and hex all work now.
               # input of numbers in octal, hex and binary 0b10011001  all work
 	      # default display is still decimal for numbers, though this could change
 	      # stack .   <- will list all stack names
+$version=2.9; # fixed small bug with printf, help string had a comma in place of one of the periods
+              # haven't touched this in 10 years
+              # added stubs for financial and statistical functions
+              # added types hash, not used yet but could be used in 'help types'
 
 $todo ="make language independent";
 $todo.="loop, for, variables";
@@ -32,7 +36,7 @@ $todo.="loop, for, variables";
 $name = $0; $name =~ s'.*/''; # remove path--like basename
 $usage = "usage:\n$name [--version]";
 # $last_mod_date='Sun, Sep 1, 2013';
-$last_mod_date='Mon, Jun 5, 2023';
+$last_mod_date='Tue, Jun 20, 2023';
 $author="Dr. Steven Parker";
 $copyright="$last_mod_date. All rights reserved.";
 
@@ -54,8 +58,7 @@ while ( defined ($input = $term->readline($prompt)) ) {
   if ($input!~/\S/) {
     next;
   }
-# chomp($_); $term->add_history($_); # ARGGGG!  What a stupid mistake! it was $input not $_!
-  chomp($input); $term->add_history($input);
+  chomp($input); # $term->add_history($input);
   print STDERR "added line to history.\n" if ( $debug );
   if ($input=~m/^\s*(([-+]?\d+)\s*\.\.\s*([-+]?\d+))/) { # line N .. M
     if ($2==$3) {
@@ -111,7 +114,7 @@ sub execute {
     }
     if (not $commands{$abbrevs{$command}}->{'code'}
        or ref($commands{$abbrevs{$command}}->{'code'}) ne "CODE") {
-      print STDERR "code for '$command' not defined.\n";
+      printf STDERR "code for '%s' is '%s' and appears to be not defined.\n", $command, $commands{$abbrevs{$command}}->{'code'};
       return 0;
     }
     print "about to execute code for '$abbrevs{$command}'\n" if ($debug);
@@ -217,6 +220,18 @@ sub initialize {
   $constants->{'r7'}->{'value'}=	sqrt(7.00);
   $constants->{'r7'}->{'discription'}=	'square root of 7';
   $stacks{'primes'} = primes();
+  %types = { 'boolian'    => 'true or false',
+             'contant'    => 'named constants such as Pi',
+             'conversion' => 'convert from one unit of measurement to another',
+             'debug'      => 'functions meant to help the developer find errors in RPN',
+             'flow'       => 'functions which branch or loop',
+             'numeric'    => 'arithmatic functions',
+             'stack'      => 'switching, listing, deleting or creating stacks',
+             'string'     => 'treating the stack elements as strings',
+             'trig'       => 'various triginometric functions',
+             'statistics' => 'statistical functions (not yet implemented)',
+             'financial'  => 'financial functions (not yet implemented)',
+             'utility'    => 'displaying stack elements, exiting program or printing help messages', };
   $commands{'noop'}=
     {'type'=>'flow',
      'help'=>"no operation",
@@ -393,7 +408,7 @@ sub initialize {
              "INDENTd,i - decimal\n" .
              "INDENTx,X - hexadecimal with (abcdef) or (ABCDEF) respectively\n" .
              "INDENTo   - octal\n" .
-             "INDENTnb  - binary format\n",
+             "INDENTnb  - binary format\n" .
              "INDENTf   - floating point\n" .
              "INDENTe,E - exponential format with (e00) or (E00) respectively\n" .
              "INDENTg,G - floating point or exponential format with (e00) or (E00) respectively\n" .
