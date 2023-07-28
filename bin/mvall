@@ -102,6 +102,7 @@ sub response {
 }
 
 __END__
+
 TO RENAME ALL LEFT TO RIGHT
 unnamed.jpg     	gear.jpg  	
 unnamed (1).jpg 	gear1.jpg 	
@@ -121,19 +122,11 @@ unnamed (7).jpg 	gear7.jpg
 unnamed (8).jpg 	gear8.jpg 	
 unnamed (9).jpg 	gear9.jpg 	
                 	          	
-                	          	
-
-
 USE
 
 mvall 'unnamed( .(\d+).)?' 'gear$2'
-
 OR 
-
 mvall 'unnamed(?: .(\d+).)?' 'gear$1'
-
-
-
 
 imbedded flags
 "(?adlupimnsx-imnsx)"
@@ -161,15 +154,11 @@ imbedded flags
 "aa", "a", "d", "l", and "u" (mutually exclusive)
     These modifiers, all new in 5.14, affect which character-set rules (Unicode, etc.) are used, as described below in "Character set modifiers".
 
-
 imbedded flags with pattern (non-capturing)
 "(?:pattern)"
 "(?adluimnsx-imnsx:pattern)"
 "(?^aluimnsx:pattern)"
 
-
 Starting in Perl 5.14, a "^" (caret or circumflex accent) immediately after the "?" is a
 shorthand equivalent to "d-imnsx". Flags (except "d") may follow the caret to override it.
 But a minus sign is not legal with it.
-
-
