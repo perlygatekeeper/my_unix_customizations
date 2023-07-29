@@ -2,8 +2,8 @@ HISTSIZE=8192
 HISTFILESIZE=8192
 HISTCONTROL=erasedups:ignorespace
 # append to the history file, don't overwrite it
-shopt -s histappend
-bind '"\ep": history-search-backward'
+# shopt -s histappend
+# bind '"\ep": history-search-backward'
 alias      a=alias
 a          u=unalias
 a          h=history
@@ -36,27 +36,27 @@ a        vrc='vim ~/.bash_profile'
 a        arc='vim ~/.bash_aliases'
 a       vvrc='vim ~/.vimrc'
 a         rp='hash -r'
-function mine {
-        export PERL5LIB="/home/parks17/etc/perllib:${PERL5LIB}"
-        export PATH="/home/parks17/bin:${PATH}"
+#function mine {
+        # export PERL5LIB="/home/parks17/etc/perllib:${PERL5LIB}"
+        # export PATH="/home/parks17/bin:${PATH}"
         # export PATH=`/home/parks17/bin/cleanpath`
         # export HISTSIZE=8192
         # cd /investments/bee_hive/bee_config_tidied
-}
+#}
 function here {
-        export PATH="${PATH}:."
+        PATH="${PATH}:."
 }
 function addpath {
-        export PATH="${PATH}:$1"
+        PATH="${PATH}:$1"
 }
 function postpath {
-        export PATH="${PATH}:$1"
+        PATH="${PATH}:$1"
 }
 function prepath {
-        export PATH="$1:${PATH}"
+        PATH="$1:${PATH}"
 }
 function pwdpath {
-        export PATH="`pwd`:${PATH}"
+        PATH="`pwd`:${PATH}"
 }
 function mcd {
         mkdir $1
@@ -107,3 +107,22 @@ a o2b="perl -e 'printf qq|%b\n|, oct( shift )'"
 #              Search backward through the history for the string of characters between the start of the current line and the point.  This is a non-incremental search.
 bind '"\ep": history-search-backward'
 bind '"\en": history-search-forward'
+
+a ginfo='echo "Branches:"; git branch -v; echo "\nRemotes:"; git remote -v; echo "\nStatus:"; git status'
+a   gic='git commit'
+a gicam='git commit -a -m '
+a  gich='git checkout'
+a   gib='git branch'
+a  gibv='git branch -v'
+a  gibr='git branch -r'
+a   gir='git remote'
+a  girv='git remote -v'
+a   gis='git status'
+a  gidi='git diff'
+a gpush='git push origin'
+a gpull='git pull origin'
+a  gits='a | grep git'
+# get a new branch from github for the first time.
+# > git checkout master
+# > git pull
+# > git checkout -b company-megabrowse-navigation --track origin/company-megabrowse-navigation
