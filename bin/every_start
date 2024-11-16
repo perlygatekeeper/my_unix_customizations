@@ -19,7 +19,7 @@ if ($name=~/^o/i) { # must be odd then even (odd starts with 1st element or elem
 }
 
 @lines=<>;
-print "processing " . scalar(@lines);
+# print "processing " . scalar(@lines);
 foreach $chunk (0 .. ($every-1)) {
   for ($i=(($start+$chunk)%$every); $i<=$#lines; $i+=$every) { print $lines[$i]; }
 }

@@ -45,14 +45,14 @@ my $dir=".";
 my @names = readdir(DIR);
 closedir(DIR);
 @names = grep(/^[^.]/,@names); # for . and .. entries and other dot files
-print "OK, found " . scalar(@names) . " files to rename using '$search' and '$replace'.\n";
+print "OK, found " . scalar(@names) . " files to test for renaming using '$search' and '$replace'.\n";
 
 if (not @names) {
   print "Nothing to do.\n";
   print "$usage\n"
 } else {
   foreach my $name (@names) {
-    my $new_name;
+    my $new_name = '';
     eval "(\$new_name = \$name) =~ s/$search/$replace/$global$case_insensitive";
     if ( $new_name eq $name ) {
       print "File '$name' unaffected by ($search:$replace) transformation, ignoring...\n" if ($verbose);
@@ -102,6 +102,22 @@ sub response {
 }
 
 __END__
+
+Ep 147 Barbarian from Hell.docx
+Ep 147 Barbarian from Hell.txt
+Ep 148 The Arcane Hand Monk.docx
+Ep 148 The Arcane Hand Monk.txt
+Ep 149 The Moon Singer.docx
+Ep 149 The Moon Singer.txt
+Ep 150 The Giant Barbarian.docx
+Ep 150 The Giant Barbarian.txt
+Ep 151 The Shadow Blade Monk.docx
+Ep 151 The Shadow Blade Monk.txt
+Ep 152 Law & Disorder.docx
+Ep 152 Law & Disorder.txt
+
+  mvall '(Ep 1[45][789012])- ((\.docx)(?:\.txt))' '$1 $2'
+  mvall '(Ep .*)\.docx\.txt' '$1.txt'
 
 TO RENAME ALL LEFT TO RIGHT
 unnamed.jpg     	gear.jpg  	

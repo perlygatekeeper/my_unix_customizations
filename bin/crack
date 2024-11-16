@@ -84,6 +84,9 @@ print "\\t for tabs, \\n for newlines, \\f for formfeeds, \\b for backspaces\n";
 print "\\o for occurance, \\l for line, \\r for returns, \\e for escapes\n";
 print "\\i|\\I for roman numeral, \\a|\\A for alphabetic\n";
 print "and \### for octal ascii codes\n";
+print "\n";
+print "example to replace QQQ with three digit line numbers\n";
+print "crk -m ge '010' 'sprintf('\%03d',\$.)\n";
 exit 1;
 }
 

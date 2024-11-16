@@ -601,6 +601,12 @@ sub initialize {
      'help'=>"replace number on top of stack with that number's tangent",
      'code'=> \&one_argument
     };
+  $commands{'degrees_radians'}=
+    {'aliases'=>['dtor'],
+     'type'=>'conversion',
+     'help'=>"treat number on top of stack as a an angle in degrees and convert it to radians",
+     'code'=> \&convert
+    };
   $commands{'fahrenheit_celsius'}=
     {'aliases'=>['ftoc'],
      'type'=>'conversion',
@@ -892,6 +898,8 @@ sub convert {
     push(@results,($val-32)/1.8);
   } elsif ($cmd =~ m,celsius(_fahrenheit)?,i) {
     push(@results,($val*1.8)+32);
+  } elsif ($cmd =~ m,kilometer(_mile)?,i) {
+    push(@results,$val/1.609);
   } elsif ($cmd =~ m,kilometer(_mile)?,i) {
     push(@results,$val/1.609);
   } elsif ($cmd =~ m,mile(_kilometer)?,i) {
