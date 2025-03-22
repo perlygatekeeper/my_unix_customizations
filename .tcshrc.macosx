@@ -45,6 +45,7 @@ setenv MANPATH "${MANPATH}:/Applications/3D Design Apps/Inventor Fusion.app/Cont
 setenv MANPATH "${MANPATH}:/opt/local/Library/Frameworks/Python.framework/Versions/2.7/share/man"
 setenv MANPATH "${MANPATH}:/opt/local/Library/Frameworks/Python.framework/Versions/3.4/share/man"
 setenv MANPATH "${MANPATH}:/opt/local/Library/Frameworks/Python.framework/Versions/3.5/share/man"
+setenv MANPATH "${MANPATH}:/opt/local/share/man/mysql57"
 
 # good way to regenerate PATH
 # locate '/bin' '/sbin' | \
@@ -53,6 +54,7 @@ setenv MANPATH "${MANPATH}:/opt/local/Library/Frameworks/Python.framework/Versio
 setenv PATH "/bin:/sbin:/opt/X11/bin:/usr/bin:/usr/sbin:/usr/libexec:/usr/local/bin"
 setenv PATH "${HOME}/bin:$PATH"
 setenv PATH "/opt/local/bin:/opt/local/sbin:$PATH"
+setenv PATH "/opt/local/lib/mysql57/bin:$PATH"
 setenv PATH "${PATH}:/Library/Developer/CommandLineTools/usr/bin"
 setenv PATH "${PATH}:/Users/Steve/Projects/DistZilla/Dist-Zilla/Dist-Zilla-5.032/bin"
 setenv PATH "${PATH}:/Users/Steve/Projects/DistZilla/Dist-Zilla/bin"
