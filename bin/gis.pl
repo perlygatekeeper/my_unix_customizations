@@ -21,8 +21,8 @@ use strict;
 my %opt = (
    dir   => ".",
    safe  => "0",
-   procs => "20",
-   ua    => "Mozilla/1.0",
+   procs => "5",
+   ua    => "Mozilla/5.0",
    query => "",
 );
 

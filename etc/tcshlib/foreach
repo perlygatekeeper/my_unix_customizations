@@ -1,0 +1,3 @@
+foreach i (*)
+echo $i
+end

@@ -7,22 +7,41 @@ use warnings;
 my $name = $0; $name =~ s'.*/''; # remove path--like basename
 my $usage = "usage:\n$name [FILENAME ...]";
 
-# Check if a filename is provided
-if (@ARGV != 1) {
-    die "Usage: $0 <filename>\n";
+my $use_readbackwards = eval {
+    require File::ReadBackwards;
+    File::ReadBackwards->import();
+    1;
+};
+
+if (@ARGV > 1) {
+    die "Usage: $0 [filename]\n";
 }
 
-my $filename = $ARGV[0];
-
-# Open the file for reading
-open my $fh, '<', $filename or die "Could not open file '$filename': $!\n";
-
-# Read the file into an array
-my @lines = reverse <$fh>;
-close $fh;
-
-# Print the lines in reverse order
-print @lines;
+if (@ARGV == 1) {
+    my $filename = $ARGV[0];
+    if ($use_readbackwards) {
+        # Open the file for reading in reverse using File::ReadBackwards
+        my $bw = File::ReadBackwards->new($filename) or die "Could not open file '$filename': $!\n";
+        
+        # Read and print each line in reverse order
+        while (my $line = $bw->readline) {
+            print $line;
+        }
+        
+        $bw->close;
+    } else {
+        # Fallback method: Load entire file into memory and reverse
+        open my $fh, '<', $filename or die "Could not open file '$filename': $!\n";
+        my @lines = reverse <$fh>;
+        close $fh;
+        
+        print @lines;
+    }
+} else {
+    # Act as a filter: Read from standard input and reverse
+    my @lines = reverse <STDIN>;
+    print @lines;
+}
 
 exit 0;
 

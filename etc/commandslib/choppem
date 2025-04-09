@@ -1,0 +1,59 @@
+   660	16:56	sudo port install imagemagick
+   661	16:59	convert -help
+   662	17:00	convert -v
+   663	17:01	convert townpackunlabelled.webp townpackunlabelled.png
+   664	17:01	convert Statis_Pod_Product_Crafting_Tree.webp Statis_Pod_Product_Crafting_Tree.png
+   665	1:31	convert Product_Crafting_Tree.webp Product_Crafting_Tree.png
+
+   740	23:20	port info ImageMagick
+   741	23:21	port contents ImageMagick
+   742	23:21	port contents ImageMagick | less
+   743	23:21	man mogrify
+   744	23:24	cd ../Desktop/
+   745	23:25	webpinfo NMS\ Glyphs.webp
+   746	23:26	96 87
+   747	23:30	convert -crop 96x87+0+0 NMS\ Glyphs.png NMS_Glyphs_0.png
+   748	23:31	convert -crop 96x87+96+0 NMS\ Glyphs.png NMS_Glyphs_1.png
+   749	23:31	convert -crop 96x87+192+0 NMS\ Glyphs.png NMS_Glyphs_2.png
+   750	23:32	convert -crop 96x87+288+0 NMS\ Glyphs.png NMS_Glyphs_3.png
+   751	23:32	convert -crop 96x87+0+87 NMS\ Glyphs.png NMS_Glyphs_4.png
+   752	23:32	convert -crop 96x87+96+87 NMS\ Glyphs.png NMS_Glyphs_5.png
+   753	23:33	convert -crop 96x87+192+87 NMS\ Glyphs.png NMS_Glyphs_6.png
+   754	23:33	convert -crop 96x87+288+87 NMS\ Glyphs.png NMS_Glyphs_7.png
+   755	23:33	convert -crop 96x87+0+173 NMS\ Glyphs.png NMS_Glyphs_8.png
+   756	23:33	convert -crop 96x87+96+173 NMS\ Glyphs.png NMS_Glyphs_9.png
+   757	23:34	convert -crop 96x87+192+173 NMS\ Glyphs.png NMS_Glyphs_A.png
+   758	23:34	convert -crop 96x87+288+173 NMS\ Glyphs.png NMS_Glyphs_B.png
+   759	23:34	convert -crop 96x87+0+260 NMS\ Glyphs.png NMS_Glyphs_C.png
+   760	23:34	convert -crop 96x87+96+260 NMS\ Glyphs.png NMS_Glyphs_D.png
+   761	23:34	convert -crop 96x87+192+260 NMS\ Glyphs.png NMS_Glyphs_E.png
+   762	23:35	convert -crop 96x87+288+260 NMS\ Glyphs.png NMS_Glyphs_F.png
+   763	23:41	h > Slice_Glyphs.sh
+   764	23:41	webpinfo ../Desktop/NMS\ Glyphs.webp
+   765	23:41	webpinfo ../Desktop/NMS\ Glyphs.webp >> Slice_Glyphs.sh
+   766	23:42	h | tail -1 >> Slice_Glyphs.sh
+   767	23:42	cx Slice_Glyphs.sh
+   768	23:42	h | tail -3 >> Slice_Glyphs.sh
+   769	23:43	h | tail >> Slice_Glyphs.sh
+   770	23:45	vi Slice_Glyphs.sh
+
+
+  1308	2:17	converter -crop 409x17+824+556 20231121011641_1.jpg
+  1309	2:20	converter 20231121011641_1.jpg -crop 409x17+824+556 20231121011641_cropped.jpg
+  1310	2:20	convert 20231121011641_1.jpg -crop 409x17+824+556 20231121011641_cropped.jpg
+  1311	2:20	convert 20231121011641_1.jpg -crop 409x17+824+554 20231121011641_cropped.jpg
+  1312	2:21	convert 20231121011641_1.jpg -crop 409x17+824+550 20231121011641_cropped.jpg
+  1313	2:21	convert 20231121011641_1.jpg -crop 410x18+822+552 20231121011641_cropped.jpg
+  1314	2:22	convert 20231121011641_1.jpg -crop 410x18+822+550 20231121011641_cropped.jpg
+  1315	2:22	convert 20231121011641_1.jpg -crop 410x18+822+551 20231121011641_cropped.jpg
+
+  1780	14:12	cd Downloads/Enshrouded\ Maps/
+  1781	14:13	convert Best_Locations_Base_Guide_\(3\).webp Best_Locations_Base_Guide_3.png
+  1782	14:13	convert Best_Locations_Base_Guide_\(6\).webp Best_Locations_Base_Guide_6.png
+  1783	14:13	convert Levels.webp Levels.png
+  1784	14:14	convert enshrouded-map-guide-fully-revealed-early-access-map-showing-cinder-vault-ancient-spire-ancient-obelisk-elixir-well-flame-shrine-flame-sanctum-and-shroud-root-v2.webp Enshrouded-map-showing-much.png
+
+  2154	22:31	convert Free-Pack.jpeg -crop 150x112 +repage +adjoin Free_%02d.gif
+  2194	3:25	convert TeleportationCircle_01.png -fuzz 1% -fill transparent -alpha set -background white TeleportationCircle_01t.png
+
+
