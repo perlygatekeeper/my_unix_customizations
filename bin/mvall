@@ -119,6 +119,12 @@ Ep 152 Law & Disorder.txt
   mvall '(Ep 1[45][789012])- ((\.docx)(?:\.txt))' '$1 $2'
   mvall '(Ep .*)\.docx\.txt' '$1.txt'
 
+  mvall 'DSC_0(.*)' 'DSC_1$1'
+  OK, found 20 files to test for renaming using 'DSC_0(.*)' and 'DSC_1$1'.
+  Shall I rename 'DSC_0019.JPG' to 'DSC_1019.JPG' [y/N/q] y
+  Moved         DSC_0019.JPG ->         DSC_1019.JPG
+
+
 TO RENAME ALL LEFT TO RIGHT
 unnamed.jpg     	gear.jpg  	
 unnamed (1).jpg 	gear1.jpg 	

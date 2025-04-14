@@ -40,29 +40,29 @@ setenv PERL_RL Gnu
 # sort | \
 # uniq | \
 # perl -p -0 -e 's,\n/,:/,smg;'
-setenv MANPATH "/usr/share/man:/usr/local/share/man:/opt/X11/share/man:/opt/local/libexec/gnubin/man:/opt/local/share/man:/opt/local/share/perl5.24/man:/Users/Steve/perl5/man:/usr/lib/usr/local/share/man"
-setenv MANPATH "${MANPATH}:/Applications/3D Design Apps/Inventor Fusion.app/Contents/Frameworks/LIDS.framework/share/man"
-setenv MANPATH "${MANPATH}:/opt/local/Library/Frameworks/Python.framework/Versions/2.7/share/man"
-setenv MANPATH "${MANPATH}:/opt/local/Library/Frameworks/Python.framework/Versions/3.4/share/man"
-setenv MANPATH "${MANPATH}:/opt/local/Library/Frameworks/Python.framework/Versions/3.5/share/man"
-setenv MANPATH "${MANPATH}:/opt/local/share/man/mysql57"
+setenv MANPATH "/usr/share/man:/usr/local/share/man:/usr/X11/share/man:/usr/local/libexec/gnubin/man:/usr/local/share/man:/usr/local/share/perl5.24/man:/Users/Steve/perl5/man:/usr/lib/usr/local/share/man"
+# setenv MANPATH "${MANPATH}:/Applications/3D Design Apps/Inventor Fusion.app/Contents/Frameworks/LIDS.framework/share/man"
+# setenv MANPATH "${MANPATH}:/usr/local/Library/Frameworks/Python.framework/Versions/2.7/share/man"
+# setenv MANPATH "${MANPATH}:/usr/local/Library/Frameworks/Python.framework/Versions/3.4/share/man"
+# setenv MANPATH "${MANPATH}:/usr/local/Library/Frameworks/Python.framework/Versions/3.5/share/man"
+# setenv MANPATH "${MANPATH}:/usr/local/share/man/mysql57"
 
 # good way to regenerate PATH
 # locate '/bin' '/sbin' | \
 # wwo -'\.cpan' -'Frameworks' -'Platforms' -'DrupalStack'| \
 # grep 'bin$'
-setenv PATH "/bin:/sbin:/opt/X11/bin:/usr/bin:/usr/sbin:/usr/libexec:/usr/local/bin"
+
+setenv PATH "/bin:/sbin:/usr/X11/bin:/usr/bin:/usr/sbin:/usr/libexec:/usr/local/bin"
 setenv PATH "${HOME}/bin:$PATH"
-setenv PATH "/opt/local/bin:/opt/local/sbin:$PATH"
-setenv PATH "/opt/local/lib/mysql57/bin:$PATH"
-setenv PATH "${PATH}:/Library/Developer/CommandLineTools/usr/bin"
-setenv PATH "${PATH}:/Users/Steve/Projects/DistZilla/Dist-Zilla/Dist-Zilla-5.032/bin"
-setenv PATH "${PATH}:/Users/Steve/Projects/DistZilla/Dist-Zilla/bin"
+setenv PATH "/usr/local/mysql/bin:$PATH"
+
+# setenv PATH "${PATH}:/Library/Developer/CommandLineTools/usr/bin"
+# setenv PATH "${PATH}:/Users/Steve/Projects/DistZilla/Dist-Zilla/Dist-Zilla-5.032/bin"
+# setenv PATH "${PATH}:/Users/Steve/Projects/DistZilla/Dist-Zilla/bin"
 
 # MacPorts Installer addition on 2016-10-13_at_20:41:15: adding an appropriate PATH variable for use with MacPorts.
 # setenv PATH "/opt/local/bin:/opt/local/sbin:$PATH"
-
-#setenv PERL5LIB "~/Projects/Programming/Thingiverse/lib"
+# setenv PERL5LIB "~/Projects/Programming/Thingiverse/lib"
 
 if ( -f /usr/share/dict/web2 ) then
   setenv WORDS /usr/share/dict/web2
