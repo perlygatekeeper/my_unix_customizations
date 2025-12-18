@@ -36,7 +36,7 @@ $todo.="loop, for, variables";
 $name = $0; $name =~ s'.*/''; # remove path--like basename
 $usage = "usage:\n$name [--version]";
 # $last_mod_date='Sun, Sep 1, 2013';
-$last_mod_date='Tue, Jun 20, 2023';
+$last_mod_date='Tue, Jul 15, 2025';
 $author="Dr. Steven Parker";
 $copyright="$last_mod_date. All rights reserved.";
 
@@ -894,31 +894,31 @@ sub convert {
   } else {
     $val=shift(@{$s});
   }
-  if      ($cmd =~ m,fahrenheit(_celsius)?,i) {
+  if      ($cmd =~ m,^fahrenheit(_celsius)?,i) {
     push(@results,($val-32)/1.8);
-  } elsif ($cmd =~ m,celsius(_fahrenheit)?,i) {
+  } elsif ($cmd =~ m,^celsius(_fahrenheit)?,i) {
     push(@results,($val*1.8)+32);
-  } elsif ($cmd =~ m,kilometer(_mile)?,i) {
+  } elsif ($cmd =~ m,^kilometer(_mile)?,i) {
     push(@results,$val/1.609);
-  } elsif ($cmd =~ m,kilometer(_mile)?,i) {
+  } elsif ($cmd =~ m,^kilometer(_mile)?,i) {
     push(@results,$val/1.609);
-  } elsif ($cmd =~ m,mile(_kilometer)?,i) {
+  } elsif ($cmd =~ m,^mile(_kilometer)?,i) {
     push(@results,$val*1.609);
-  } elsif ($cmd =~ m,centimeter(_inch)?,i) {
+  } elsif ($cmd =~ m,^centimeter(_inch)?,i) {
     push(@results,$val/2.54);
-  } elsif ($cmd =~ m,inch(_centimeter)?,i) {
+  } elsif ($cmd =~ m,^inch(_centimeter)?,i) {
     push(@results,$val*2.54);
-  } elsif ($cmd =~ m,gram(_ounce)?,i) {
+  } elsif ($cmd =~ m,^gram(_ounce)?,i) {
     push(@results,$val*28.35);
-  } elsif ($cmd =~ m,ounce(_gram)?,i) {
+  } elsif ($cmd =~ m,^ounce(_gram)?,i) {
     push(@results,$val/28.35);
-  } elsif ($cmd =~ m,kilogram(_pound)?,i) {
+  } elsif ($cmd =~ m,^kilogram(_pound)?,i) {
     push(@results,$val*2.20458553791875);
-  } elsif ($cmd =~ m,pound(_kilogram)?,i) {
+  } elsif ($cmd =~ m,^pound(_kilogram)?,i) {
     push(@results,$val/2.20458553791875);
-  } elsif ($cmd =~ m,liter(_quart)?,i) {
+  } elsif ($cmd =~ m,^liter(_quart)?,i) {
     push(@results,$val*1.05669);
-  } elsif ($cmd =~ m,quart(_liter)?,i) {
+  } elsif ($cmd =~ m,^quart(_liter)?,i) {
     push(@results,$val/1.05669);
   } else {
     printf STDERR "unknown cmd '%s' given to %s routine.\n", $cmd, 'one argument numeric';

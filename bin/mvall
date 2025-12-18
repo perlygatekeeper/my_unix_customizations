@@ -10,6 +10,7 @@ my $usage = "usage:\n$name [-global] [-insensitive] [-force] (do not ask before 
 my $verbose ='';
 my $case_insensitive ='';
 my $global ='';
+my $exec ='';
 my $force ='';
 my $search ='';
 my $replace ='';
@@ -19,6 +20,10 @@ if ($ARGV[0]=~/-v(er(bose)?)?/) {
 }
 if ($ARGV[0]=~/-i(nsensitive)?/) {
   $case_insensitive='i';
+  shift;
+}
+if ($ARGV[0]=~/-e(xecute)?/) {
+  $exec='e';
   shift;
 }
 if ($ARGV[0]=~/-g(lobal)?/) {
@@ -51,9 +56,11 @@ if (not @names) {
   print "Nothing to do.\n";
   print "$usage\n"
 } else {
-  foreach my $name (@names) {
+  foreach my $name ( reverse sort @names ) {
+    # foreach my $name ( sort @names ) {
     my $new_name = '';
-    eval "(\$new_name = \$name) =~ s/$search/$replace/$global$case_insensitive";
+    # print "(\$new_name = \$name) =~ s/$search/$replace/$exec$global$case_insensitive\n";
+    eval "(\$new_name = \$name) =~ s/$search/$replace/$exec$global$case_insensitive";
     if ( $new_name eq $name ) {
       print "File '$name' unaffected by ($search:$replace) transformation, ignoring...\n" if ($verbose);
       next;
@@ -103,6 +110,8 @@ sub response {
 
 __END__
 
+  mvall '(Ep[^-]+)-([^.]+)(\.docx)?(\.docx|\.txt)$' '$1$2$4'
+
 Ep 147 Barbarian from Hell.docx
 Ep 147 Barbarian from Hell.txt
 Ep 148 The Arcane Hand Monk.docx
@@ -116,8 +125,6 @@ Ep 151 The Shadow Blade Monk.txt
 Ep 152 Law & Disorder.docx
 Ep 152 Law & Disorder.txt
 
-  mvall '(Ep 1[45][789012])- ((\.docx)(?:\.txt))' '$1 $2'
-  mvall '(Ep .*)\.docx\.txt' '$1.txt'
 
   mvall 'DSC_0(.*)' 'DSC_1$1'
   OK, found 20 files to test for renaming using 'DSC_0(.*)' and 'DSC_1$1'.

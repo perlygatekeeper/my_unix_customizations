@@ -1,7 +1,8 @@
 #!/usr/bin/env perl
 # A perl script to start on a given regexp and stop on another
 # or a given line number and ending on another
-my $last_mod_date='Sat, Jun 23, 2018';
+#  $last_mod_date='Sat, Jun 23, 2018';
+my $last_mod_date='Wed, Oct 15, 2025';
 my $version="1.1"; # added last_mod_date, etc., split off README and started tests
 my $todo="Things yet to do.";
 my $author="Dr. Steven Parker";
@@ -13,7 +14,7 @@ $usage .= "[ ( -?      | -help  | -debug | -usage ) ]\n\t";
 $usage .= "[ ( -on     | -begin | -start ) start_regexp ]\n\t";
 $usage .= "[ ( -off    | -end   | -stop  ) stop_regexp ]\n\t";
 $usage .= "[ ( -regexp | -find  | -grep  ) regexp ]\n\t";
-$usage .= "[ -lead N -linger M  | -context N ]\n\t";
+$usage .= "[ -lead N   | -linger M  | -context N ]\n\t";
 $usage .= "[  N..M     |  N..   |  ..M  |  N  ]\n\t";
 $usage .= "[ -number ]\n\t";
 $usage .= "[ [ -file ] file1 file2 .. ]";

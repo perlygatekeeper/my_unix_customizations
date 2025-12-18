@@ -1,24 +1,36 @@
-#!/usr/bin/env perl -i
-#
+#!/usr/bin/env perl
 # A perl script to emulate part of the dos2unix command
-#
-$name = $0; $name =~ s'.*/''; # remove path--like basename
-$usage = "usage:\n$name [-ascii] [-iso] [-7]";
+# Check if we have filenames as arguments AND we're not reading from a pipe
+use strict;
+use warnings;
+my $name = $0; $name =~ s'.*/''; # remove path--like basename
+# my $usage = "usage:\n$name [-ascii] [-iso] [-7] [filename]";
+my $usage = "usage:\n$name [ filename ]";
 
-if ($name=~/dos2unix/i) {
-  while (<>) {
-    s/\r\n/\n/g;
-    print;
-  }
-} elsif ($name=~/unix2dos/i) {
-  while (<>) {
-    s/([^\r])\n/$1\r\n/g;
-    print;
-  }
+if (@ARGV && -t STDIN) {
+    # We have filenames and STDIN is a terminal (not a pipe)
+    # Enable in-place editing
+    local @ARGV = @ARGV;  # Make a local copy we can modify
+    local $^I = '';       # Equivalent to -i (empty string = no backup)
+    
+    while (<>) {
+        if ($name=~/dos2unix/i) {
+            s/\r\n/\n/g;
+        } elsif ($name=~/unix2dos/i) {
+            s/([^\r])\n/$1\r\n/g;
+        }
+        print;
+    }
 } else {
-  while (<>) {
-    print;
-  }
+    # No filenames or reading from pipe - act as a filter
+    while (<STDIN>) {
+        if ($name=~/dos2unix/i) {
+            s/\r\n/\n/g;
+        } elsif ($name=~/unix2dos/i) {
+            s/([^\r])\n/$1\r\n/g;
+        }
+        print;
+    }
 }
 
 exit 0;

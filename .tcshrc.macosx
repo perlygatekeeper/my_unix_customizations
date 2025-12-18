@@ -27,6 +27,8 @@ a trace    'dtruss'
 a installed     port installed
 a contents      port contents
 a files         port provides
+a outdated      sudo  port upgrade outdated
+a selfupdate    sudo  port selfupdate
 a inst          sudo port install
 a search        port search
 
@@ -40,7 +42,7 @@ setenv PERL_RL Gnu
 # sort | \
 # uniq | \
 # perl -p -0 -e 's,\n/,:/,smg;'
-setenv MANPATH "/usr/share/man:/usr/local/share/man:/usr/X11/share/man:/usr/local/libexec/gnubin/man:/usr/local/share/man:/usr/local/share/perl5.24/man:/Users/Steve/perl5/man:/usr/lib/usr/local/share/man"
+setenv MANPATH "/usr/share/man:/usr/local/share/man:/usr/X11/share/man:/usr/local/libexec/gnubin/man:/usr/local/share/man:/opt/local/share/perl5.34/siteman:/opt/local/share/man"
 # setenv MANPATH "${MANPATH}:/Applications/3D Design Apps/Inventor Fusion.app/Contents/Frameworks/LIDS.framework/share/man"
 # setenv MANPATH "${MANPATH}:/usr/local/Library/Frameworks/Python.framework/Versions/2.7/share/man"
 # setenv MANPATH "${MANPATH}:/usr/local/Library/Frameworks/Python.framework/Versions/3.4/share/man"
@@ -60,9 +62,9 @@ setenv PATH "/usr/local/mysql/bin:$PATH"
 # setenv PATH "${PATH}:/Users/Steve/Projects/DistZilla/Dist-Zilla/Dist-Zilla-5.032/bin"
 # setenv PATH "${PATH}:/Users/Steve/Projects/DistZilla/Dist-Zilla/bin"
 
-# MacPorts Installer addition on 2016-10-13_at_20:41:15: adding an appropriate PATH variable for use with MacPorts.
-# setenv PATH "/opt/local/bin:/opt/local/sbin:$PATH"
 # setenv PERL5LIB "~/Projects/Programming/Thingiverse/lib"
+setenv PERL5LIB "/opt/local/lib/perl5/vendor_perl/5.34:$HOME/perl5/lib/perl5"
+setenv PATH "$HOME/perl5/bin:$PATH"
 
 if ( -f /usr/share/dict/web2 ) then
   setenv WORDS /usr/share/dict/web2
