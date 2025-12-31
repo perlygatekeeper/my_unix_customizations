@@ -24,13 +24,14 @@ a trace    'dtruss'
 #          port provides include/tiff.h
 
 
-a installed     port installed
-a contents      port contents
-a files         port provides
-a outdated      sudo  port upgrade outdated
-a selfupdate    sudo  port selfupdate
-a inst          sudo port install
-a search        port search
+a installed     'port installed'
+a contents      'port contents'
+a files         'port provides'
+a outdated      'sudo  port upgrade outdated'
+a selfupdate    'sudo  port selfupdate'
+a inst          'sudo port install'
+a search        'port search'
+a ports         'alias | grep port'
 
 setenv PERL_RL Gnu
 

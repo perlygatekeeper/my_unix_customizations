@@ -972,6 +972,8 @@ sub one_argument {
     unshift(@results, log($val) );
   } elsif ($cmd =~ m,exp,i) {
     unshift(@results, exp($val) );
+  } elsif ($cmd =~ m,sine,i) {
+    unshift(@results, sin($val) );
   } elsif ($cmd =~ m,cosine,i) {
     unshift(@results, cos($val) );
   } elsif ($cmd =~ m,tangent,i) {

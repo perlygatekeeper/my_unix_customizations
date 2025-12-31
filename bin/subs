@@ -23,6 +23,13 @@ if ($name=~/sub/) {
       printf "%s %s", $func;
     } 
   } 
+} elsif ( $name =~ /def/ ) {
+  while (<>) {
+    if (/^\s*def\s*\S+\s*\(\s*(\$|\))/) {
+      ($func=$_) =~ s/^\s*function\s+//;
+      printf "%s %s", $func;
+    } 
+  } 
 }
 
 exit 0;
@@ -32,3 +39,4 @@ __END__
 echo use:    find . -type f -exec grep '^ln' {} \; | sh
 echo subs is the 'real' file
 ln -fs subs func
+ln -fs subs def
