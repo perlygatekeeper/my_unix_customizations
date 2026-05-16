@@ -24,6 +24,7 @@ a dots		'ls -d .??*'
 a lsdir		'ls -l | grep drw'
 a cx		"chmod +x"
 a mcd		"mkdir \!:1; cd \!:1;"
+a mkday		'set _d = `date +%Y%m%d` && mkdir $_d && cd $_d'
 a orig 		'cp \!* \!*.orig'
 a odiff         'diff -b -w \!* \!*.orig'
 a sdiff         'sdiff -B -b -W -w `tput cols`'

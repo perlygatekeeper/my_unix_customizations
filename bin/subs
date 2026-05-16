@@ -20,14 +20,14 @@ if ($name=~/sub/) {
   while (<>) {
     if (/^\s*function\s*\S+\s*\(\s*(\$|\))/) {
       ($func=$_) =~ s/^\s*function\s+//;
-      printf "%s %s", $func;
+      printf "%s", $func;
     } 
   } 
 } elsif ( $name =~ /def/ ) {
   while (<>) {
-    if (/^\s*def\s*\S+\s*\(\s*(\$|\))/) {
-      ($func=$_) =~ s/^\s*function\s+//;
-      printf "%s %s", $func;
+    if (/^\s*(def|class.*:)\s*/) {
+      ( $def = $_ ) =~ s/^\s*(def)\s*//;
+      printf "%s %s", $def;
     } 
   } 
 }
