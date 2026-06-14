@@ -1,4 +1,6 @@
 #!/usr/bin/env perl
+use strict;
+use warnings;
 
 # A perl-5 script to implement a reverse polish notation calculator
 # simple numeric calc, no strings, code, complex numbers on stack.
@@ -9,7 +11,7 @@
               # push's -> unshift's
               # prompt now has top value of stack
               # fixed log10 (had to come before log in search)
-#version=2.3; # add boolian functions
+#version=2.3; # add boolean functions
               # add saved stacks and history
               # add readin of customized functions and constants
 #version=2.4; # added, min, max and ave functions
@@ -25,31 +27,29 @@
               # input of numbers in octal, hex and binary 0b10011001  all work
 	      # default display is still decimal for numbers, though this could change
 	      # stack .   <- will list all stack names
-$version=2.9; # fixed small bug with printf, help string had a comma in place of one of the periods
+#version=2.9; # fixed small bug with printf, help string had a comma in place of one of the periods
               # haven't touched this in 10 years
               # added stubs for financial and statistical functions
               # added types hash, not used yet but could be used in 'help types'
+$version=3.0; # begin AI refactor with first Claude, then chatgpt
+              # small fixes in logic, and typo fixes
 
 $todo ="make language independent";
 $todo.="loop, for, variables";
 
 $name = $0; $name =~ s'.*/''; # remove path--like basename
 $usage = "usage:\n$name [--version]";
-# $last_mod_date='Sun, Sep 1, 2013';
-$last_mod_date='Tue, Jul 15, 2025';
+$last_mod_date='Sat, Jun 13, 2026';
 $author="Dr. Steven Parker";
 $copyright="$last_mod_date. All rights reserved.";
 
-if ($ARGV[0] =~ /^--v(ersion)?/i) {
+if (defined $ARGV[0] && $ARGV[0] =~ /^--v(ersion)?/i) {
   printf "$name written by $author, version $version, last modified $last_mod_date.\n";
   exit 0;
 }
 
 &initialize();
 $debug=0;
-
-# print STDERR "Ready for input...\n" if (-t);
-
 
 $prompt = "Input [" . ((defined $stack_ref->[0])? $stack_ref->[0] : $empty) . "] ";
 my $num_type;
@@ -134,7 +134,7 @@ sub help {
   my($indent_spaces)=" " x ($command_space + $type_space + 4); # + 4, since we have _()_ characters
   my($header)=sprintf "%${command_space}s  %${type_space}s  %s\n", "Command", "Type", "Help Message";
   my($command_format)="%${command_space}s (%${type_space}s) %s\n";
-  $/=''; # $*=1; # enable paragraph mode & mulitline pattern matching.
+  $/=''; # $*=1; # enable paragraph mode & multiline pattern matching.
   if ($abbrev=$arg_array->[0]) {
     if ($command=$abbrevs{$abbrev}) {
         ($help=$commands{$command}->{'help'})=~s/INDENT/$indent_spaces/g;
@@ -206,29 +206,29 @@ sub initialize {
 # $\="\n";
   $number_format="%s";
   $constants->{'pi'}->{'value'}=	2 * atan2(1,0);
-  $constants->{'pi'}->{'discription'}=	'ratio of the circumference to the diameter of a circle';
+  $constants->{'pi'}->{'description'}=	'ratio of the circumference to the diameter of a circle';
   $constants->{'e'}->{'value'}=		exp(1);
-  $constants->{'e'}->{'discription'}=	'base of the natural logarithm';
+  $constants->{'e'}->{'description'}=	'base of the natural logarithm';
   $constants->{'av'}->{'value'}=	6.022 * 10**23;
-  $constants->{'av'}->{'discription'}=	"Avogadro's number, # atoms/mole";
+  $constants->{'av'}->{'description'}=	"Avogadro's number, # atoms/mole";
   $constants->{'r2'}->{'value'}=	sqrt(2.00);
-  $constants->{'r2'}->{'discription'}=	'square root of 2';
+  $constants->{'r2'}->{'description'}=	'square root of 2';
   $constants->{'r3'}->{'value'}=	sqrt(3.00);
-  $constants->{'r3'}->{'discription'}=	'square root of 3';
+  $constants->{'r3'}->{'description'}=	'square root of 3';
   $constants->{'r5'}->{'value'}=	sqrt(5.00);
-  $constants->{'r5'}->{'discription'}=	'square root of 5';
+  $constants->{'r5'}->{'description'}=	'square root of 5';
   $constants->{'r7'}->{'value'}=	sqrt(7.00);
-  $constants->{'r7'}->{'discription'}=	'square root of 7';
+  $constants->{'r7'}->{'description'}=	'square root of 7';
   $stacks{'primes'} = primes();
-  %types = { 'boolian'    => 'true or false',
-             'contant'    => 'named constants such as Pi',
+  %types = { 'boolean'    => 'true or false',
+             'constant'    => 'named constants such as Pi',
              'conversion' => 'convert from one unit of measurement to another',
              'debug'      => 'functions meant to help the developer find errors in RPN',
              'flow'       => 'functions which branch or loop',
-             'numeric'    => 'arithmatic functions',
+             'numeric'    => 'arithmetic functions',
              'stack'      => 'switching, listing, deleting or creating stacks',
              'string'     => 'treating the stack elements as strings',
-             'trig'       => 'various triginometric functions',
+             'trig'       => 'various trigonometric functions',
              'statistics' => 'statistical functions (not yet implemented)',
              'financial'  => 'financial functions (not yet implemented)',
              'utility'    => 'displaying stack elements, exiting program or printing help messages', };
@@ -257,15 +257,17 @@ sub initialize {
     {'type'=>'flow',
      'aliases'=>['ifthen'],
      'help'=>"top 3 elements of stack are popped,\n".
-	     "INDENTthe top value is a boolean and second and third are a RPN functions\n".
+	     "INDENTthe top value is a boolean and second and third are RPN functions\n".
 	     "INDENTfirst RPN function is executed if the boolean was true\n".
 	     "INDENTsecond RPN function is executed if the boolean was false",
      'code'=>sub { my($s,$cmd,$args,$args_array)=@_;
 		   my($test)=shift(@{$s});
 		   my($input1)=shift(@{$s});
 		   my($input2)=shift(@{$s});
-                   if ( ($test and not &execute($input2)) or (not &execute($input2)) ) {
-                     print STDERR "unknown input type '$input', command would be '$command'\n";
+                   if ( $test ) {
+                     &execute($input1) or print STDERR "unknown input type '$input1'\n";
+                   } else {
+                     &execute($input2) or print STDERR "unknown input type '$input2'\n";
                    }
 	         },
     };
@@ -280,7 +282,7 @@ sub initialize {
     };
   $commands{'function'}=
     {'type'=>'utility',
-     'help'=>"treats first argument as a perl funcation and applies to top element of the stack\n" .
+     'help'=>"treats first argument as a perl function and applies to top element of the stack\n" .
 	     "INDENTie, 'function oct' would replace top value of the stack with perl's oct(value)",
      'code'=>\&one_argument
     };
@@ -297,7 +299,7 @@ sub initialize {
      'code'=>\&help
     };
   $commands{'constant'}=
-    {'type'=>'contant',
+    {'type'=>'constant',
      'help'=>'lists constants known or pushes a named constant on the stack',
      'code'=>sub { my($s,$cmd,$args,$args_array)=@_;
 		   if (@{$args_array}) {
@@ -309,7 +311,7 @@ sub initialize {
 		       foreach (sort keys %{$constants}) {
 		         printf STDERR "%10s:\t%14g\t%s\n", $_,
 		                                      $constants->{$_}->{'value'},
-		                                      $constants->{$_}->{'discription'};
+		                                      $constants->{$_}->{'description'};
 		       }
 		     } else {
 		       print STDERR "There are no constants defined.\n";
@@ -516,13 +518,13 @@ sub initialize {
     };
   $commands{'log10'}=
     {'type'=>'numeric',
-     'help'=>"replaces number on top of stack with it's logaritm base 10",
+     'help'=>"replaces number on top of stack with its logarithm base 10",
      'code'=> \&one_argument
     };
   $commands{'log'}=
     {'aliases'=>['ln'],
      'type'=>'numeric',
-     'help'=>"replaces number on top of stack with it's natural logaritm",
+     'help'=>"replaces number on top of stack with it's natural logarithm",
      'code'=> \&one_argument
     };
   $commands{'exp'}=
@@ -550,7 +552,7 @@ sub initialize {
   foreach $QQ ( '<',  '>',  '<=', '>=', '<=>', '==', '!=',
 		'lt', 'gt', 'le', 'ge', 'cmp', 'eq', 'ne') {
     $commands{$QQ}=
-      {'type'=>'boolian',
+      {'type'=>'boolean',
        'help'=>sprintf("pops two numbers off the stack, pushes the result of a %-3s b",$QQ),
        'code'=> \&two_arguments
       };
@@ -605,6 +607,12 @@ sub initialize {
     {'aliases'=>['dtor'],
      'type'=>'conversion',
      'help'=>"treat number on top of stack as a an angle in degrees and convert it to radians",
+     'code'=> \&convert
+    };
+  $commands{'radians_degrees'}=
+    {'aliases'=>['rtod'],
+     'type'=>'conversion',
+     'help'=>"treat number on top of stack as a an angle in radians and convert it to degrees",
      'code'=> \&convert
     };
   $commands{'fahrenheit_celsius'}=
@@ -894,32 +902,36 @@ sub convert {
   } else {
     $val=shift(@{$s});
   }
-  if      ($cmd =~ m,^fahrenheit(_celsius)?,i) {
-    push(@results,($val-32)/1.8);
+  if      ($cmd =~ m,^degrees(_radians)?,i) {
+    push(@results,$val * atan2(1,1) / 45);
+  } elsif ($cmd =~ m,^radians(_degrees)?,i) {
+    push(@results,$val / atan2(1,1) * 45);
+  } elsif ($cmd =~ m,^fahrenheit(_celsius)?,i) {
+    push(@results,($val - 32) / 1.8);
   } elsif ($cmd =~ m,^celsius(_fahrenheit)?,i) {
-    push(@results,($val*1.8)+32);
+    push(@results,($val * 1.8) + 32);
   } elsif ($cmd =~ m,^kilometer(_mile)?,i) {
-    push(@results,$val/1.609);
+    push(@results,$val / 1.609);
   } elsif ($cmd =~ m,^kilometer(_mile)?,i) {
-    push(@results,$val/1.609);
+    push(@results,$val / 1.609);
   } elsif ($cmd =~ m,^mile(_kilometer)?,i) {
-    push(@results,$val*1.609);
+    push(@results,$val * 1.609);
   } elsif ($cmd =~ m,^centimeter(_inch)?,i) {
-    push(@results,$val/2.54);
+    push(@results,$val / 2.54);
   } elsif ($cmd =~ m,^inch(_centimeter)?,i) {
-    push(@results,$val*2.54);
+    push(@results,$val * 2.54);
   } elsif ($cmd =~ m,^gram(_ounce)?,i) {
-    push(@results,$val*28.35);
+    push(@results,$val / 28.3495);
   } elsif ($cmd =~ m,^ounce(_gram)?,i) {
-    push(@results,$val/28.35);
+    push(@results,$val * 28.3495);
   } elsif ($cmd =~ m,^kilogram(_pound)?,i) {
-    push(@results,$val*2.20458553791875);
+    push(@results,$val * 2.20458553791875);
   } elsif ($cmd =~ m,^pound(_kilogram)?,i) {
-    push(@results,$val/2.20458553791875);
+    push(@results,$val / 2.20458553791875);
   } elsif ($cmd =~ m,^liter(_quart)?,i) {
-    push(@results,$val*1.05669);
+    push(@results,$val * 1.05669);
   } elsif ($cmd =~ m,^quart(_liter)?,i) {
-    push(@results,$val/1.05669);
+    push(@results,$val / 1.05669);
   } else {
     printf STDERR "unknown cmd '%s' given to %s routine.\n", $cmd, 'one argument numeric';
     return;
@@ -929,7 +941,7 @@ sub convert {
 
 sub one_argument {
   my($s,$cmd,$arg_str,$arg_array)=@_;
-  # I will handle single argument arthematic or functions
+  # I will handle single argument arithmetic or functions
   # negate, increment, decrement, sqrt, log, log10, exp
   # sin, cos, tan
   # and via the 'op' command +=, -=, *=, /=, etc.
@@ -977,7 +989,7 @@ sub one_argument {
   } elsif ($cmd =~ m,cosine,i) {
     unshift(@results, cos($val) );
   } elsif ($cmd =~ m,tangent,i) {
-    unshift(@results, tan($val) );
+    unshift(@results, sin($val)/cos($val) );
   } elsif ($cmd =~ m,function,i) {
     local($func)=$arg_array->[0];
     if ($func) {
@@ -1077,7 +1089,7 @@ sub n_arguments {
 
 sub two_arguments {
   my($s,$cmd,$arg_str,$arg_array)=@_;
-  # I will handle two argument arthematic
+  # I will handle two argument arithmetic
   # add, subtract, multiply, divide, exponentiate, modulo
   # + - * / ** or ^ % 
   my($val1,$val2,$depth);
