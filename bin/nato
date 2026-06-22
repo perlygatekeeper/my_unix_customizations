@@ -1,0 +1,81 @@
+#!/usr/bin/env python3
+# echo nato is the 'real' file
+# ln -fs nato      military
+
+
+import sys
+import argparse
+
+NATO = {
+    'A': 'Alpha',   'B': 'Bravo',    'C': 'Charlie',
+    'D': 'Delta',   'E': 'Echo',     'F': 'Foxtrot',
+    'G': 'Golf',    'H': 'Hotel',    'I': 'India',
+    'J': 'Juliett', 'K': 'Kilo',     'L': 'Lima',
+    'M': 'Mike',    'N': 'November', 'O': 'Oscar',
+    'P': 'Papa',    'Q': 'Quebec',   'R': 'Romeo',
+    'S': 'Sierra',  'T': 'Tango',    'U': 'Uniform',
+    'V': 'Victor',  'W': 'Whiskey',  'X': 'X-ray',
+    'Y': 'Yankee',  'Z': 'Zulu',
+    '0': 'Zero',    '1': 'One',      '2': 'Two',
+    '3': 'Three',   '4': 'Four',     '5': 'Five',
+    '6': 'Six',     '7': 'Seven',    '8': 'Eight',
+    '9': 'Nine',
+    ' ': '',        '-': 'Dash',
+    ';': 'Semi',    ':': 'Colon',
+    '.': 'Period',  ',': 'Comma',
+    '=': 'Equals',  '+': 'Plus',
+    '~': 'Tilde',   '/': 'Slash',   '\\': 'Backslash',
+    '_': 'Underscore',
+    '@': 'At',      '#': 'Hash',     '%': 'Percent',
+    '?': 'Question','!': 'Bang',     '&': 'Ampersand',
+    '*': 'Asterisk','(': 'Left-Paren', ')': 'Right-Paren',
+    '[': 'Left-Bracket', ']': 'Right-Bracket',
+    '{': 'Left-Brace',   '}': 'Right-Brace',
+    "'": 'Quote',   '"': 'Double-Quote',
+    '<': 'Less-Than', '>': 'Greater-Than',
+    '|': 'Pipe',    '$': 'Dollar',
+}
+
+REVERSE = {
+    word.upper(): ch
+    for ch, word in NATO.items()
+    if word
+}
+
+parser = argparse.ArgumentParser()
+parser.add_argument(
+    "-1", "--one-line",
+    action="store_true",
+    dest="one_line",
+    help="output one line per input line"
+)
+parser.add_argument(
+    "-r", "--reverse",
+    action="store_true",
+    help="convert NATO words back to characters"
+)
+
+args = parser.parse_args()
+
+for line in sys.stdin:
+    line = line.rstrip('\n')
+
+    if args.reverse:
+        chars = []
+        for word in line.split():
+            chars.append(REVERSE.get(word.upper(), '?'))
+        print(''.join(chars))
+
+    elif args.one_line:
+        words = []
+        for ch in line:
+            word = NATO.get(ch.upper(), '(unknown)')
+            if word:
+                words.append(word)
+        print(' '.join(words))
+
+    else:
+        for ch in line:
+            word = NATO.get(ch.upper(), '(unknown)')
+            if word:
+                print(f"{ch} -> {word}")
