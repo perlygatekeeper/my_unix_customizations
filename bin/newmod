@@ -13,7 +13,7 @@ my($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst)=localtime(time);
 $day = sprintf("%s, %s %s, %d", $day[$wday], $mo[$mon], $mday, $year+1900);
 
 while (<>) {
-  s/^(.*\$.*mod_date.*)=\s*(['"])[^\2]+\2\s*;\s*/\1=\2$day\2;/;
+  s/^(.*\$.*mod_date.*=\s*)(['"])[^\2]+\2\s*;\s*/\1\2$day\2;/i;
   print;
 }
 

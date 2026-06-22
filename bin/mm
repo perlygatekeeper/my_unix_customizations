@@ -1,2 +1,2 @@
 #!/bin/sh
-/usr/bin/make -f ~/etc/makelib/Makefile
+exec /usr/bin/make -f "${HOME}/etc/makelib/Makefile" "$@"
